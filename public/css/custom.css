@@ -1,0 +1,52 @@
+.admin-avatar {
+    background-image: url("../backend/static/avatars/000m.jpg") !important ;
+}
+
+.logout {
+    display: none;
+}
+
+.authentication {
+    z-index: 10;
+}
+
+.web-index {
+    z-index: 0;
+}
+
+.minimal-msg {
+    padding: 10px;
+}
+
+.mail-header {
+    display: inline-block;
+}
+
+.web-cookies {
+    bottom: 30px;
+    left: 20px;
+}
+
+.web-nav-top {
+    top: -2rem;
+    right: 3rem;
+    z-index: -1;
+}
+
+.web-nav-bottom {
+    bottom: -2rem;
+    right: -2rem;
+    z-index: -1;
+}
+
+.web-nav-bottom-3 {
+    top: 3rem;
+    right: -3rem;
+    z-index: -1;
+}
+
+.web-nav-bottom-2 {
+    bottom: 2.5rem;
+    left: -4.5rem;
+    z-index: -1;
+}
