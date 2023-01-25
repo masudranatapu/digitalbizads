@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 
 ul {
     margin: 0;
@@ -38,10 +38,21 @@ a {
     font-weight: 900;
     color: #4D257E;
     letter-spacing: 0.1px;
+    text-shadow: 2px 7px 5px rgb(0 0 0 / 30%), 0px -4px 10px rgb(255 255 255 / 30%);
+}
+
+.carousel-inner {
+    border: 6px solid #ffc107;
+    box-shadow: rgb(0 0 0 / 25%) 0px 0.0625em 0.0625em, rgb(0 0 0 / 25%) 0px 0.125em 0.5em, rgb(255 255 255 / 10%) 0px 0px 0px 1px inset;
+}
+
+.carousel-item img {
+    border-radius: 16px;
+    padding: 10px;
 }
 
 .purchase_btn {
-    margin-top: -16px;
+    margin-top: -26px;
     z-index: 1;
     position: relative;
 }
@@ -50,7 +61,7 @@ a {
     padding: 12px 27px;
     display: inline-block;
     font-size: 14px;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Roboto Condensed', sans-serif;
     font-weight: 600;
     color: #000000;
     text-transform: uppercase;
@@ -63,9 +74,8 @@ a {
     -o-transition: all 0.3s ease-in-out;
 }
 
-
 .purchase_btn a:hover {
-    background: #212121;
+    background: #373737;
     color: #fff;
 }
 
@@ -89,12 +99,13 @@ a {
     display: inline-block;
     background: #fff;
     position: relative;
-    padding: 1px 14px;
-    font-size: 16px;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
+    padding: 3px 15px;
+    font-size: 17px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 600;
     text-transform: uppercase;
     border-radius: 1px;
+    font-style: oblique;
 }
 
 .social_item img {
@@ -110,7 +121,7 @@ a {
 .copyright_text p {
     margin: 0;
     font-size: 15px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Roboto Condensed', sans-serif;
     font-weight: 400;
     color: #fff;
 }
@@ -135,7 +146,7 @@ a {
 
 .modal-header h1 {
     font-size: 20px !important;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Roboto Condensed', sans-serif;
     font-weight: 700;
 }
 
