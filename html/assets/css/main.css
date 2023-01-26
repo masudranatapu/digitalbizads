@@ -33,12 +33,50 @@ a {
 }
 
 .card_title h2 {
-    font-size: 44px;
+    font-size: 29px;
     font-family: "Poppins";
     font-weight: 900;
     color: #4D257E;
     letter-spacing: 0.1px;
     text-shadow: 2px 7px 5px rgb(0 0 0 / 30%), 0px -4px 10px rgb(255 255 255 / 30%);
+}
+
+.card_title h2 img {
+    border: 1px solid #ddd;
+    width: 60px;
+    border-radius: 100px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.login_btn {
+    position: absolute;
+    top: 29px;
+    right: 0;
+}
+
+.subscribe {
+    padding: 0px 10px;
+}
+
+.subscribe .form-control {
+    height: 50px;
+    font-size: 14px;
+    font-family: 'Poppins';
+    font-weight: 600;
+    box-shadow: none !important;
+    outline: none !important;
+    border: none !important;
+}
+
+.subscribe .input-group-text {
+    border: none !important;
+    border-bottom: 2px;
+    font-size: 17px;
+    font-family: 'Roboto Condensed', sans-serif;
+    color: #000;
+    background: #FFC107;
+    font-weight: 500;
 }
 
 /* .carousel-inner {
@@ -127,10 +165,7 @@ a {
     font-size: 14px;
 }
 
-.modal {
-    /* background: linear-gradient(315deg, #141619ba 0%, #0c1e37 100%); */
 
-}
 
 .modal-content {
     padding: 0;
@@ -185,6 +220,51 @@ a {
     width: 58px;
 }
 
+.card_title h2 a svg {
+    width: 45px !important;
+}
+
+
+.login_modal .form-label {
+    font-size: 16px;
+    color: #555;
+    font-family: 'Poppins', sans-serif;
+}
+
+.login_modal .form-control {
+    height: 49px;
+    font-size: 13px;
+    color: #212121;
+    font-weight: 500;
+    border: 1px solid #EEE;
+    background: #f0f6ff;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.login_modal .btn.btn-primary {
+    border: none !important;
+    border-radius: 3px;
+    padding: 12px 40px;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-family: 'Roboto Condensed', sans-serif;
+    letter-spacing: 1px;
+    background-color: #FFC107 !important;
+    color: #212121;
+}
+
+.login_modal .btn.btn-primary:hover {
+    background: #212121 !important;
+    color: #ffffff;
+}
+
+.dont_have_account p {
+    margin: 0;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+}
 
 @media screen and (max-width:420px) {
     .card_title h2 {

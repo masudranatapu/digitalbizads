@@ -19,8 +19,22 @@
     <div class="card_wrapper">
         <div class="card_template">
             <!-- title -->
-            <div class="card_title pb-2 pt-2 text-center">
-                <h2>Express T-Shirts</h2>
+            <div class="card_title p-2 pt-3">
+                <h2>
+                    <div class="text-center">
+                        <img src="assets/images/logo.jpg" width="140" alt="logo">
+                    </div>
+                    <!-- <span>Express T-Shirts</span> -->
+                    <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
+                        data-bs-target="#loginModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none"
+                            stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </a>
+                </h2>
             </div>
 
             <!-- slider -->
@@ -109,6 +123,17 @@
                 </div>
             </div>
 
+            <!-- subscribe -->
+            <div class="subscribe mb-3">
+                <form action="#" method="post">
+                    <div class="input-group">
+                        <input type="text" name="email" id="email" class="form-control"
+                            placeholder="Enter your emaill..." required>
+                        <button type="submit" class="input-group-text btn btn-primary">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+
             <!-- copyright -->
             <div class="bottom_content text-center pb-3">
                 <p>CashApp: $SBOWEN2005</p>
@@ -135,6 +160,88 @@
                     <div class="qe_code text-center">
                         <img src="assets/images/qr-code.png" alt="image">
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="login_modal modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="loginModalLabel">Login</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" method="post">
+                        <div class="mb-3">
+                            <label class="form-label" for="username">Username or Email</label>
+                            <input type="text" name="username" id="username" class="form-control"
+                                placeholder="Username or Email Address" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="password">Password</label>
+                            <input type="password" name="password" id="password" class="form-control"
+                                placeholder="Password" required>
+                        </div>
+                        <div class="text-center mb-3">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+
+                        <div class="dont_have_account text-center">
+                            <p>Don't have an Account? <a href="javascript:void(0)" data-bs-toggle="modal"
+                                    data-bs-target="#signupModal">Signup</a></p>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="login_modal modal fade" id="signupModal" tabindex="-1" aria-labelledby="loginModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="loginModalLabel">Sign Up</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" method="post">
+                        <div class="mb-3">
+                            <label class="form-label" for="username">Username</label>
+                            <input type="text" name="username" id="username" class="form-control" placeholder="Username"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="email">Email</label>
+                            <input type="email" name="email" id="email" class="form-control" placeholder="Email Address"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="password">Password</label>
+                            <input type="password" name="password" id="password" class="form-control"
+                                placeholder="Password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="confimation_password">Confirm Password</label>
+                            <input type="password" name="confimation_password" id="confimation_password"
+                                class="form-control" placeholder="Password" required>
+                        </div>
+                        <div class="text-center mb-3">
+                            <button type="submit" class="btn btn-primary">Sign up</button>
+                        </div>
+
+                        <div class="dont_have_account text-center">
+                            <p>Already have an Account? <a href="javascript:void(0)" data-bs-toggle="modal"
+                                    data-bs-target="#loginModal">Login</a></p>
+                        </div>
+
+                    </form>
                 </div>
             </div>
         </div>
