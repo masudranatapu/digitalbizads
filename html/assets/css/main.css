@@ -11,25 +11,25 @@ a {
     text-decoration: none;
 }
 
-.card_template {
-    padding: 0;
+.card_wrapper {
+    max-width: 420px;
+    min-height: 100%;
+    border: 5px solid #565454;
+    box-shadow: 0px 24px 60px rgb(0 0 0 / 10%);
+    margin: 0 auto;
+    background: #2c2c2c;
+    border-radius: 20px;
     position: relative;
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-    box-shadow: rgb(128 128 128 / 35%) 0px 4px 6.84px;
-    -webkit-box-flex: 1;
-    -webkit-flex-grow: 1;
-    -ms-flex-positive: 1;
-    flex-grow: 1;
-    width: 100%;
-    background: #212121;
-    padding-bottom: 23px;
+    border: 34px solid #222222;
+    border-width: 34px 5px;
+    border-radius: 34px;
     overflow: hidden;
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
 }
 
 .card_title {
     background: #fff;
+    border-radius: 15px 15px 0px 0px;
 }
 
 .card_title h2 {
@@ -41,7 +41,7 @@ a {
     text-shadow: 2px 7px 5px rgb(0 0 0 / 30%), 0px -4px 10px rgb(255 255 255 / 30%);
 }
 
-.carousel-inner {
+/* .carousel-inner {
     border: 6px solid #ffc107;
     box-shadow: rgb(0 0 0 / 25%) 0px 0.0625em 0.0625em, rgb(0 0 0 / 25%) 0px 0.125em 0.5em, rgb(255 255 255 / 10%) 0px 0px 0px 1px inset;
 }
@@ -49,24 +49,19 @@ a {
 .carousel-item img {
     border-radius: 16px;
     padding: 10px;
-}
+} */
 
-.purchase_btn {
-    margin-top: -26px;
-    z-index: 1;
-    position: relative;
-}
 
 .purchase_btn a {
-    padding: 12px 27px;
-    display: inline-block;
-    font-size: 14px;
-    font-family: 'Roboto Condensed', sans-serif;
-    font-weight: 600;
-    color: #000000;
+    padding: 10px 27px;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    color: #202020;
+    letter-spacing: 1px;
     text-transform: uppercase;
-    border-radius: 50px;
-    background: #ffc107;
+    display: block;
+    background: #ffffff;
     transition: all 0.3s ease-in-out;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
@@ -75,8 +70,7 @@ a {
 }
 
 .purchase_btn a:hover {
-    background: #373737;
-    color: #fff;
+    background: #ffc107;
 }
 
 .section_heading {
@@ -109,26 +103,32 @@ a {
 }
 
 .social_item img {
-    width: 53px;
+    width: 50px;
     border: 2px solid #ffc107;
     margin: 0 auto;
     display: flex;
     border-radius: 50px;
     padding: 7px;
-    background: #343333;
+    background: #424242;
 }
 
-.copyright_text p {
+.bottom_content p {
+    color: #fff;
     margin: 0;
     font-size: 15px;
-    font-family: 'Roboto Condensed', sans-serif;
-    font-weight: 400;
-    color: #fff;
+    font-family: 'Roboto Condensed';
+    font-weight: 500;
+}
+
+.bottom_content p strong {
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 14px;
 }
 
 .modal {
-    background: linear-gradient(315deg, #141619ba 0%, #0c1e37 100%);
-    backdrop-filter: blur(4px);
+    /* background: linear-gradient(315deg, #141619ba 0%, #0c1e37 100%); */
+
 }
 
 .modal-content {
