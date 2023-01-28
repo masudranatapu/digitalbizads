@@ -42,9 +42,6 @@ a {
 }
 
 .card_title h2 img {
-    border: 1px solid #ddd;
-    width: 60px;
-    border-radius: 100px;
     margin: 0 auto;
     text-align: center;
 }
