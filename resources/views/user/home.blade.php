@@ -48,7 +48,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center mb-3">
-                                        <div class="subheader">{{ __('Business Cards') }}</div>
+                                        <div class="subheader">{{ __('DigitalBizAds Cards') }}</div>
                                     </div>
                                     <div class="h1">{{ $business_card == 999 ? __('Unlimited') : $business_card }}</div>
                                     <a class="btn btn-sm btn-white" href="{{ route('user.cards') }}">
@@ -89,7 +89,7 @@
                                     <div>
                                         <div class="row">
                                             <div class="col-9">
-                                                <h3>{{ __('Total Business Cards Overview') }}</h3>
+                                                <h3>{{ __('DigitalBizAds Cards Overview') }}</h3>
                                             </div>
                                         </div>
                                         

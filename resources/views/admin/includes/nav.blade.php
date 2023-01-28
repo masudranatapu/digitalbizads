@@ -19,7 +19,7 @@
                             </span>
                         </a>
                     </li>
-                    <li class="nav-item {{ request()->is('admin/themes') ? 'active' : '' }}">
+                    {{-- <li class="nav-item {{ request()->is('admin/themes') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('admin.themes') }}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-id"
@@ -37,7 +37,7 @@
                                 {{ __('Themes') }}
                             </span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li
                         class="nav-item dropdown {{ request()->is('admin/plans') || request()->is('admin/add-plan') ? 'active' : '' }}">
                         <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" role="button"
@@ -176,14 +176,10 @@
                         <div class="dropdown-menu">
                             <a href="{{ route('admin.settings') }}"
                                 class="dropdown-item">{{ __('General Settings') }}</a>
-                            <a href="{{ url('languages') }}" target="_blank" class="dropdown-item">{{ __('Translations')
-                                }}</a>
-                            <a href="{{ route('admin.generate.sitemap') }}"
-                                class="dropdown-item">{{ __('Generate Sitemap') }}</a>
+                            {{-- <a href="{{ url('languages') }}" target="_blank" class="dropdown-item">{{ __('Translations')
+                                }}</a> --}}
                             <a href="{{ route('admin.tax.setting') }}"
                                 class="dropdown-item">{{ __('Invoice & Tax') }}</a>
-                            <a href="{{ route('admin.check') }}"
-                                class="dropdown-item">{{ __('Check Update') }}</a>
                         </div>
                     </li>
 

@@ -110,26 +110,26 @@
                             <p class="mt-3">{{ __($plan->plan_description) }}</p>
                             <ul class="list-unstyled lh-lg">
                                 <li><span>{{ $plan->no_of_vcards == '999' ? __('Unlimited') : $plan->no_of_vcards }}
-                                        {{ __('vCards') }}</span></li>
+                                        {{ __('DigitalBizAds Cards') }}</span></li>
                                 <li><span>{{ $plan->no_of_services == '999' ? __('Unlimited') : $plan->no_of_services }}
                                         {{ __('Services/Products') }}</span></li>
                                 <li><span>{{ $plan->no_of_galleries == '999' ? __('Unlimited') : $plan->no_of_galleries }}
                                         {{ __('Galleries') }}</span></li>
-                                <li><span>{{ $plan->no_of_features == '999' ? __('Unlimited') : $plan->no_of_features }}
+                                {{-- <li><span>{{ $plan->no_of_features == '999' ? __('Unlimited') : $plan->no_of_features }}
                                         {{ __('Card Features') }}</span></li>
                                 <li><span>{{ $plan->no_of_payments == '999' ? __('Unlimited') : $plan->no_of_payments }}
-                                        {{ __('Payment Listed') }}</span></li>
+                                        {{ __('Payment Listed') }}</span></li> --}}
                                 <li> <span>{{ $plan->personalized_link == '0' ? __('No') : '' }}
                                         {{ __('Personalized Link') }}
                                         {{ $plan->personalized_link == '1' ? __('Available') : '' }}</span></li>
                                 <li> <span>{{ $plan->hide_branding == '0' ? __('No') : '' }}
                                         {{ __('Hide Branding') }}
                                         {{ $plan->hide_branding == '1' ? __('Available') : '' }}</span></li>
-                                <li><span>{{ $plan->free_setup == '0' ? __('No') : '' }} {{ __('Free Setup') }}
+                                {{-- <li><span>{{ $plan->free_setup == '0' ? __('No') : '' }} {{ __('Free Setup') }}
                                         {{ $plan->free_setup == '1' ? __('Available') : '' }}</span></li>
                                 <li> <span>{{ $plan->free_support == '0' ? __('No') : '' }}
                                         {{ __('Free Support') }}
-                                        {{ $plan->free_support == '1' ? __('Available') : '' }}</span></li>
+                                        {{ $plan->free_support == '1' ? __('Available') : '' }}</span></li> --}}
 
                             </ul>
                             <div class="text-center mt-4">

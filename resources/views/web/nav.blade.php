@@ -42,14 +42,14 @@
             </svg>
         </li>
 
-        <li>
+        {{-- <li>
             @if (request()->is('/') != false)
             <a class="text-lg font-bold hover:text-dark text-dark" href="#features">{{ __('Features') }}</a>
             @else
             <a class="text-lg font-bold hover:text-dark text-dark" href="{{ route('home-locale') }}#features">{{
                 __('Features') }}</a>
             @endif
-        </li>
+        </li> 
 
         <li class="text-gray-800">
             <svg class="w-4 h-4 current-fill" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24"
@@ -58,7 +58,7 @@
                     d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z">
                 </path>
             </svg>
-        </li>
+        </li>--}}
 
         <li>
             @if (request()->is('/') != false)
@@ -80,7 +80,7 @@
             <a class="text-lg font-bold hover:text-dark text-dark" href="{{ route('contact') }}">{{ __('Contact') }}</a>
         </li>
         {{-- Check webtools --}}
-        @if ($settings->google_adsense_code != 'DISABLE_BOTH')
+        {{-- @if ($settings->google_adsense_code != 'DISABLE_BOTH')
         <li class="text-gray-800">
             <svg class="w-4 h-4 current-fill" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24"
                 stroke="currentColor">
@@ -115,7 +115,7 @@
               </div>
             </div>
         </div> 
-        @endif
+        @endif --}}
     </ul>
 
     <div class="hidden lg:inline-block">
@@ -130,9 +130,7 @@
         <a class="hidden lg:inline-block py-2 px-6 bg-{{ $config[11]->config_value }}-500 hover:bg-{{ $config[11]->config_value }}-600 text-lg text-white font-bold rounded-l-xl rounded-t-xl transition duration-200"
             href="{{ route('user.dashboard') }}">{{ __('Dashboard') }}</a>
         @endguest
-
-
-        @if(count(config('app.languages')) > 1)
+        {{-- @if(count(config('app.languages')) > 1)
 
         <div @click.away="open = false" class="hidden cursor-pointer lg:inline-block px-2 transition duration-200"
             x-data="{ open: false }">
@@ -163,7 +161,7 @@
             </div>
         </div>
 
-        @endif
+        @endif --}}
     </div>
 </nav>
 <section>
@@ -233,7 +231,7 @@
                             href="{{ route('home-locale') }}#how-it-works">{{ __('How it works?') }}</a>
                         @endif
                     </li>
-                    <li class="mb-1">
+                    {{-- <li class="mb-1">
                         @if (request()->is('/') != false)
                         <a class="block p-4 text-lg font-semibold text-gray-400 hover:bg-{{ $config[11]->config_value }}-50 hover:text-{{ $config[11]->config_value }}-600 rounded"
                             href="#features">{{ __('Features') }}</a>
@@ -241,7 +239,7 @@
                         <a class="block p-4 text-lg font-semibold text-gray-400 hover:bg-{{ $config[11]->config_value }}-50 hover:text-{{ $config[11]->config_value }}-600 rounded"
                             href="{{ route('home-locale') }}#features">{{ __('Features') }}</a>
                         @endif
-                    </li>
+                    </li> --}}
                     <li class="mb-1">
                         @if (request()->is('/') != false)
                         <a class="block p-4 text-lg font-semibold text-gray-400 hover:bg-{{ $config[11]->config_value }}-50 hover:text-{{ $config[11]->config_value }}-600 rounded"
@@ -257,7 +255,7 @@
                     </li>
 
                     {{-- Check webtools --}}
-                    @if ($settings->google_adsense_code != 'DISABLE_BOTH')
+                    {{-- @if ($settings->google_adsense_code != 'DISABLE_BOTH')
                     <div @click.away="open = false" class="relative" x-data="{ open: false }">
                         <a @click="open = !open" class="block p-4 text-lg font-semibold text-gray-400 hover:bg-{{ $config[11]->config_value }}-50 hover:text-{{ $config[11]->config_value }}-600 rounded" style="cursor: pointer;">
                           <span>{{ __('Web Tools') }}</span>
@@ -284,7 +282,7 @@
                           </div>
                         </div>
                     </div> 
-                    @endif
+                    @endif --}}
 
                     @if(count(config('app.languages')) > 1)
 

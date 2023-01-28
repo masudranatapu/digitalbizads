@@ -136,7 +136,7 @@
 
 
 
-<section id="features">
+{{-- <section id="features">
     <div class="skew skew-top mr-for-radius">
         <svg class="h-8 md:h-12 lg:h-20 w-full text-gray-50" viewBox="0 0 10 10" preserveAspectRatio="none">
             <polygon fill="currentColor" points="0 0 10 10 0 10"></polygon>
@@ -353,7 +353,7 @@
             <polygon fill="currentColor" points="0 0 10 0 10 10"></polygon>
         </svg>
     </div>
-</section>
+</section> --}}
 
 <section id="pricing">
     <div class="skew skew-top mr-for-radius">
@@ -408,7 +408,7 @@
                                         clip-rule="evenodd"></path>
                                 </svg>
                                 <span>{{ __($plan->no_of_vcards == '999' ? 'Unlimited' : $plan->no_of_vcards) }}
-                                    {{ __('vCards') }}</span>
+                                    {{ __('DigitalBizAds Cards') }}</span>
                             </li>
                             <li class="mb-2 flex">
                                 <svg class="mr-2 w-5 h-5 {{ $plan->recommended == '1' ? 'text-'.$config[11]->config_value.'-400' : 'text-'.$config[11]->config_value.'-600'}}"
@@ -430,7 +430,7 @@
                                 <span>{{ __($plan->no_of_galleries == '999' ? 'Unlimited' : $plan->no_of_galleries) }}
                                     {{ __('Galleries') }}</span>
                             </li>
-                            <li class="mb-2 flex">
+                            {{-- <li class="mb-2 flex">
                                 <svg class="mr-2 w-5 h-5 {{ $plan->recommended == '1' ? 'text-'.$config[11]->config_value.'-400' : 'text-'.$config[11]->config_value.'-600'}}"
                                     xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd"
@@ -449,7 +449,7 @@
                                 </svg>
                                 <span>{{ __($plan->no_of_payments == '999' ? 'Unlimited' : $plan->no_of_payments) }}
                                     {{ __('Payment Listed') }}</span>
-                            </li>
+                            </li> --}}
                             <li class="mb-2 flex">
                                 <svg class="mr-2 w-5 h-5 {{ $plan->recommended == '1' ? 'text-'.$config[11]->config_value.'-400' : 'text-'.$config[11]->config_value.'-600' }}"
                                     xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="currentColor">
@@ -470,7 +470,7 @@
                                 <span>{{ __($plan->hide_branding == '0' ? 'No' : '') }} {{ __('Hide Branding') }}
                                     {{ __($plan->hide_branding == '1' ? 'Available' : '') }}</span>
                             </li>
-                            <li class="mb-2 flex">
+                            {{-- <li class="mb-2 flex">
                                 <svg class="mr-2 w-5 h-5 {{ $plan->recommended == '1' ? 'text-'.$config[11]->config_value.'-400' : 'text-'.$config[11]->config_value.'-600'}}"
                                     xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd"
@@ -489,7 +489,7 @@
                                 </svg>
                                 <span>{{ __($plan->free_support == '0' ? 'No' : '') }} {{ __('Free Support') }}
                                     {{ __($plan->free_support == '1' ? 'Available' : '') }}</span>
-                            </li>
+                            </li> --}}
                         </ul>
                         <a class="inline-block text-center py-2 px-4 w-full rounded-l-xl rounded-t-xl {{ $plan->recommended == '1' ? 'bg-white hover:bg-gray-100' : 'bg-'.$config[11]->config_value.'-600 hover:bg-'.$config[11]->config_value.'-700 text-white'}} font-bold leading-loose transition duration-200"
                             href="{{ route('register') }}">{{ __('Get Started') }}</a>

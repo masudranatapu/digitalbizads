@@ -117,7 +117,7 @@
                                                 <small class="text-muted">{{ __('For unlimited, enter 999') }} </small>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-xl-6">
+                                        {{-- <div class="col-md-6 col-xl-6">
                                             <div class="mb-3">
                                                 <label class="form-label required">{{ __('No. Of Card Features') }}</label>
                                                 <input type="number" class="form-control" name="no_of_features" min="1" max="999"
@@ -134,7 +134,7 @@
                                                     required>
                                                 <small class="text-muted">{{ __('For unlimited, enter 999') }} </small>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="col-md-3 col-xl-3">
                                             <div class="mb-3">
                                                 <div class="form-label">{{ __('Personalized Link') }}</div>
@@ -153,22 +153,22 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="col-md-3 col-xl-3">
+                                        {{-- <div class="col-md-3 col-xl-3">
                                             <div class="mb-3">
                                                 <div class="form-label">{{ __('Free Setup') }}</div>
                                                 <label class="form-check form-switch">
                                                     <input class="form-check-input" type="checkbox" name="free_setup">
                                                 </label>
                                             </div>
-                                        </div>
-                                        <div class="col-md-3 col-xl-3">
+                                        </div> --}}
+                                        {{-- <div class="col-md-3 col-xl-3">
                                             <div class="mb-3">
                                                 <div class="form-label">{{ __('Free Support') }}</div>
                                                 <label class="form-check form-switch">
                                                     <input class="form-check-input" type="checkbox" name="free_support">
                                                 </label>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                         <div class="col-md-4 col-xl-4 my-3">
                                             <div class="mb-3">
                                                 <button type="submit" class="btn btn-primary">

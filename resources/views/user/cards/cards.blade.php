@@ -11,7 +11,7 @@
                         {{ __('Overview') }}
                     </div>
                     <h2 class="page-title">
-                        {{ __('Business Cards') }}
+                        {{ __('DigitalBizAds Cards') }}
                     </h2>
                 </div>
 
@@ -65,11 +65,11 @@
                         </button>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="{{ route('user.create.card') }}">
-                                {{ __('vCard') }}
+                                {{ __('DigitalBizAds Card') }}
                             </a>
-                            <a class="dropdown-item" href="{{ route('user.create.store') }}">
+                            {{-- <a class="dropdown-item" href="{{ route('user.create.store') }}">
                                 {{ __('WhatsApp Store') }}
-                            </a>
+                            </a> --}}
                         </div>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td>{{ __('No Business Cards Found.') }}</td>
+                                        <td>{{ __('No DigitalBizAds Cards Found.') }}</td>
                                         <td></td>
                                         <td></td>
                                     </tr>

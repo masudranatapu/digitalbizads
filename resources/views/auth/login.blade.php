@@ -4,8 +4,8 @@
 @section('content')
 <section>
     <div class="flex flex-wrap">
-        <div class="mt-10 pt-6 lg:pt-16 pb-6 w-full lg:w-1/2">
-            <div class="max-w-md mx-auto">
+        <div class="mt-10 pt-6 lg:pt-16 pb-6 w-full lg:w">
+            <div class="max-w-md mx-auto login-box">
                 <div class="mb-6 lg:mb-20 w-full px-3 flex items-center justify-between"><a
                         class="text-3xl font-bold leading-none" href="{{ url('/') }}">{{ config('app.name') }}</a><a
                         class="py-2 px-6 text-lg rounded-l-xl rounded-t-xl bg-{{ $config[11]->config_value }}-600 hover:bg-{{ $config[11]->config_value }}-700 text-white font-bold transition duration-200"
@@ -96,13 +96,6 @@
                 </div>
             </div>
         </div>
-        <div class="hidden lg:block relative w-full lg:w-1/2 bg-{{ $config[11]->config_value }}-600">
-            <div class="absolute bottom-0 inset-x-0 mx-auto mb-12 max-w-xl text-center authentication">
-                <img class="lg:max-w-xl mx-auto" src="{{ asset($config[13]->config_value) }}"
-                    alt="{{ $config[0]->config_value }}">
-            </div>
-        </div>
-
     </div>
 </section>
 @push('custom-js')

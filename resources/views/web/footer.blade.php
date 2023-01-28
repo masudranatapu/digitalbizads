@@ -20,7 +20,7 @@
             </a>
             @endif
 
-            @if (request()->is('/') != false)
+            {{-- @if (request()->is('/') != false)
             <a href="#features" class="my-3 block text-gray-300 hover:text-gray-100 text-lg font-medium duration-700">
                 {{ __('Features') }}
             </a>
@@ -28,7 +28,7 @@
             <a href="{{ route('home-locale') }}#features" class="my-3 block text-gray-300 hover:text-gray-100 text-lg font-medium duration-700">
                 {{ __('Features') }}
             </a>
-            @endif
+            @endif --}}
 
             @if (request()->is('/') != false)
             <a href="#pricing" class="my-3 block text-gray-300 hover:text-gray-100 text-lg font-medium duration-700">

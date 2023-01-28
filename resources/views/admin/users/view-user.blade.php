@@ -63,7 +63,7 @@
                                 <div class="col-md-7 col-xl-7">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h3 class="card-title">{{ __('Business Cards') }}</h3>
+                                            <h3 class="card-title">{{ __('DigitalBizAds Cards') }}</h3>
                                         </div>
                                         <div class="table-responsive px-2 py-2">
                                             <table class="table card-table table-vcenter text-nowrap datatable" id="table">
@@ -111,7 +111,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td class="text-center font-weight-bold" colspan="6">
-                                                            {{ __('No business cards found') }}!
+                                                            {{ __('No digitalbizads cards found') }}!
                                                         </td>
                                                     </tr>
                                                     @endif

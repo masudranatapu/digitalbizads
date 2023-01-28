@@ -34,7 +34,7 @@
                                 </svg>
                             </span>
                             <span class="nav-link-title">
-                                {{ __('Business Cards') }}
+                                {{ __('DigitalBizAds Cards') }}
                             </span>
                         </a>
                     </li>
@@ -96,7 +96,7 @@
                     </li>
 
                     {{-- Additional Tools --}}
-                    <li class="nav-item dropdown {{ request()->is('user/tools*') ? 'active' : '' }}">
+                    {{-- <li class="nav-item dropdown {{ request()->is('user/tools*') ? 'active' : '' }}">
                         <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
                             data-bs-auto-close="outside" role="button" aria-expanded="false">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -130,7 +130,7 @@
                                 {{ __('IP Lookup') }}
                             </a>
                         </div>
-                    </li>
+                    </li> --}}
                 </ul>
             </div>
         </div>

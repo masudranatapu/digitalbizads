@@ -462,11 +462,11 @@
                                                 </div>
 
                                                 {{-- Razorpay Settings --}}
-                                                <h2 class="page-title my-3">
+                                                {{-- <h2 class="page-title my-3">
                                                     {{ __('Razorpay Settings') }}
-                                                </h2>
+                                                </h2> --}}
                                                 {{-- Client Key --}}
-                                                <div class="col-md-6 col-xl-6">
+                                                {{-- <div class="col-md-6 col-xl-6">
                                                     <div class="mb-3">
                                                         <label class="form-label required">{{ __('Client Key') }}</label>
                                                         <input type="text" class="form-control"
@@ -474,17 +474,17 @@
                                                             value="{{ $config[6]->config_value }}"
                                                             placeholder="{{ __('Client Key') }}..." required>
                                                     </div>
-                                                </div>
+                                                </div> --}}
 
                                                 {{-- Secret --}}
-                                                <div class="col-md-6 col-xl-6">
+                                                {{-- <div class="col-md-6 col-xl-6">
                                                     <div class="mb-3">
                                                         <label class="form-label required">{{ __('Secret') }}</label>
                                                         <input type="text" class="form-control" name="razorpay_secret"
                                                             value="{{ $config[7]->config_value }}"
                                                             placeholder="{{ __('Secret') }}..." required>
                                                     </div>
-                                                </div>
+                                                </div> --}}
 
                                                 {{-- Stripe Settings --}}
                                                 <h2 class="page-title my-3">
