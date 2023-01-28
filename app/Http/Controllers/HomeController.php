@@ -23,6 +23,7 @@ class HomeController extends Controller
         $plans = Plan::where('status', 1)->where('is_private', '0')->get();
         $settings = Setting::where('status', 1)->first();
         $config = DB::table('config')->get();
+        
         $currency = Currency::where('iso_code', $config['1']->config_value)->first();
 
         SEOTools::setTitle($settings->site_name);

@@ -17,7 +17,7 @@ class Installer
      */
     public function handle(Request $request, Closure $next)
     {
-        if (file_exists('../storage/installed')) {
+        if (file_exists('../storage/installed') ?? true) {
             return $next($request);
         }
         return Redirect::to('/install');

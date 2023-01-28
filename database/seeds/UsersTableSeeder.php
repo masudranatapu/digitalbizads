@@ -18,7 +18,7 @@ class UsersTableSeeder extends Seeder
             'role_id' => '1',
             'name' => 'GoBiz',
             'email' => 'admin@admin.com',
-            'password' => bcrypt('admin@admin'),
+            'password' => bcrypt('12345678'),
             'auth_type' => 'Email',
         ]);
     }

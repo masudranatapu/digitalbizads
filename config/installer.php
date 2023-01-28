@@ -16,7 +16,7 @@ return [
         'minPhpVersion' => '8.1.0',
     ],
     'final' => [
-        'key' => true,
+        'key' => false,
         'publish' => false,
     ],
     'requirements' => [

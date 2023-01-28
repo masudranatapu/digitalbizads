@@ -48,122 +48,122 @@ class PaypalController extends Controller
 
     public function payWithpaypal(Request $request, $planId)
     {
-        if(Auth::user()) {
-        $plan_details = Plan::where('plan_id', $planId)->where('status', 1)->first();
-        $config = DB::table('config')->get();
-        $userData = User::where('id', Auth::user()->id)->first();
+        if (Auth::user()) {
+            $plan_details = Plan::where('plan_id', $planId)->where('status', 1)->first();
+            $config = DB::table('config')->get();
+            $userData = User::where('id', Auth::user()->id)->first();
 
-        if ($plan_details == null) {
-            return view('errors.404');
-        } else {
+            if ($plan_details == null) {
+                return view('errors.404');
+            } else {
 
-            $amountToBePaid = ((int)($plan_details->plan_price) * (int)($config[25]->config_value) / 100) + (int)($plan_details->plan_price);
+                $amountToBePaid = ((int)($plan_details->plan_price) * (int)($config[25]->config_value) / 100) + (int)($plan_details->plan_price);
 
-            $payer = new Payer();
-            $payer->setPaymentMethod('paypal');
+                $payer = new Payer();
+                $payer->setPaymentMethod('paypal');
 
-            $item_1 = new Item();
-            $item_1->setName($plan_details->plan_name . " Plan")
-                /** item name **/
-                ->setCurrency($config[1]->config_value)
-                ->setQuantity(1)
-                ->setPrice($amountToBePaid);
-            /** unit price **/
+                $item_1 = new Item();
+                $item_1->setName($plan_details->plan_name . " Plan")
+                    /** item name **/
+                    ->setCurrency($config[1]->config_value)
+                    ->setQuantity(1)
+                    ->setPrice($amountToBePaid);
+                /** unit price **/
 
-            $item_list = new ItemList();
-            $item_list->setItems(array($item_1));
+                $item_list = new ItemList();
+                $item_list->setItems(array($item_1));
 
-            $amount = new Amount();
-            $amount->setCurrency($config[1]->config_value)
-                ->setTotal($amountToBePaid);
-            $redirect_urls = new RedirectUrls();
-            /** Specify return URL **/
-            $redirect_urls->setReturnUrl(URL::route('paypalPaymentStatus'))
-                ->setCancelUrl(URL::route('paypalPaymentStatus'));
+                $amount = new Amount();
+                $amount->setCurrency($config[1]->config_value)
+                    ->setTotal($amountToBePaid);
+                $redirect_urls = new RedirectUrls();
+                /** Specify return URL **/
+                $redirect_urls->setReturnUrl(URL::route('paypalPaymentStatus'))
+                    ->setCancelUrl(URL::route('paypalPaymentStatus'));
 
-            $transaction = new Transaction();
-            $transaction->setAmount($amount)
-                ->setItemList($item_list)
-                ->setDescription($plan_details->plan_name . " Plan");
+                $transaction = new Transaction();
+                $transaction->setAmount($amount)
+                    ->setItemList($item_list)
+                    ->setDescription($plan_details->plan_name . " Plan");
 
-            $payment = new Payment();
-            $payment->setIntent('Sale')
-                ->setPayer($payer)
-                ->setRedirectUrls($redirect_urls)
-                ->setTransactions(array($transaction));
-            try {
-                $payment->create($this->_api_context);
-            } catch (\PayPal\Exception\PPConnectionException $ex) {
-                if (\Config::get('app.debug')) {
-                    \Session::put('error', 'Connection timeout');
-                    alert()->error(trans("Payment failed, Something went wrong!"));
-                    return redirect()->route('user.plans');
-                } else {
-                    \Session::put('error', 'Some error occur, sorry for inconvenient');
-                    alert()->error(trans("Payment failed, Something went wrong!"));
-                    return redirect()->route('user.plans');
+                $payment = new Payment();
+                $payment->setIntent('Sale')
+                    ->setPayer($payer)
+                    ->setRedirectUrls($redirect_urls)
+                    ->setTransactions(array($transaction));
+                try {
+                    $payment->create($this->_api_context);
+                } catch (\PayPal\Exception\PPConnectionException $ex) {
+                    if (\Config::get('app.debug')) {
+                        \Session::put('error', 'Connection timeout');
+                        alert()->error(trans("Payment failed, Something went wrong!"));
+                        return redirect()->route('user.plans');
+                    } else {
+                        \Session::put('error', 'Some error occur, sorry for inconvenient');
+                        alert()->error(trans("Payment failed, Something went wrong!"));
+                        return redirect()->route('user.plans');
+                    }
                 }
-            }
-            foreach ($payment->getLinks() as $link) {
-                if ($link->getRel() == 'approval_url') {
-                    $redirect_url = $link->getHref();
-                    break;
+                foreach ($payment->getLinks() as $link) {
+                    if ($link->getRel() == 'approval_url') {
+                        $redirect_url = $link->getHref();
+                        break;
+                    }
                 }
+
+                $invoice_details = [];
+
+                $invoice_details['from_billing_name'] = $config[16]->config_value;
+                $invoice_details['from_billing_address'] = $config[19]->config_value;
+                $invoice_details['from_billing_city'] = $config[20]->config_value;
+                $invoice_details['from_billing_state'] = $config[21]->config_value;
+                $invoice_details['from_billing_zipcode'] = $config[22]->config_value;
+                $invoice_details['from_billing_country'] = $config[23]->config_value;
+                $invoice_details['from_vat_number'] = $config[26]->config_value;
+                $invoice_details['from_billing_phone'] = $config[18]->config_value;
+                $invoice_details['from_billing_email'] = $config[17]->config_value;
+                $invoice_details['to_billing_name'] = $userData->billing_name;
+                $invoice_details['to_billing_address'] = $userData->billing_address;
+                $invoice_details['to_billing_city'] = $userData->billing_city;
+                $invoice_details['to_billing_state'] = $userData->billing_state;
+                $invoice_details['to_billing_zipcode'] = $userData->billing_zipcode;
+                $invoice_details['to_billing_country'] = $userData->billing_country;
+                $invoice_details['to_billing_phone'] = $userData->billing_phone;
+                $invoice_details['to_billing_email'] = $userData->billing_email;
+                $invoice_details['to_vat_number'] = $userData->vat_number;
+                $invoice_details['tax_name'] = $config[24]->config_value;
+                $invoice_details['tax_type'] = $config[14]->config_value;
+                $invoice_details['tax_value'] = $config[25]->config_value;
+                $invoice_details['invoice_amount'] = $amountToBePaid;
+                $invoice_details['subtotal'] = $plan_details->plan_price;
+                $invoice_details['tax_amount'] = (int)($plan_details->plan_price) * (int)($config[25]->config_value) / 100;
+
+                // Store into Database before starting PayPal redirect
+                $transaction = new TransactionModel();
+                $transaction->gobiz_transaction_id = uniqid();
+                $transaction->transaction_date = now();
+                $transaction->transaction_id = $payment->getId();
+                $transaction->user_id = Auth::user()->id;
+                $transaction->plan_id = $plan_details->plan_id;
+                $transaction->desciption = $plan_details->plan_name . " Plan";
+                $transaction->payment_gateway_name = "PayPal";
+                $transaction->transaction_amount = $amountToBePaid;
+                $transaction->transaction_currency = $config[1]->config_value;
+                $transaction->invoice_details = json_encode($invoice_details);
+                $transaction->payment_status = "PENDING";
+                $transaction->save();
+
+                /** add payment ID to session **/
+                \Session::put('paypal_payment_id', $payment->getId());
+                if (isset($redirect_url)) {
+                    /** redirect to paypal **/
+                    return Redirect::away($redirect_url);
+                }
+
+                \Session::put('error', 'Unknown error occurred');
+                alert()->error(trans("Payment failed, Something went wrong!"));
+                return redirect()->route('user.plans');
             }
-
-            $invoice_details = [];
-
-            $invoice_details['from_billing_name'] = $config[16]->config_value;
-            $invoice_details['from_billing_address'] = $config[19]->config_value;
-            $invoice_details['from_billing_city'] = $config[20]->config_value;
-            $invoice_details['from_billing_state'] = $config[21]->config_value;
-            $invoice_details['from_billing_zipcode'] = $config[22]->config_value;
-            $invoice_details['from_billing_country'] = $config[23]->config_value;
-            $invoice_details['from_vat_number'] = $config[26]->config_value;
-            $invoice_details['from_billing_phone'] = $config[18]->config_value;
-            $invoice_details['from_billing_email'] = $config[17]->config_value;
-            $invoice_details['to_billing_name'] = $userData->billing_name;
-            $invoice_details['to_billing_address'] = $userData->billing_address;
-            $invoice_details['to_billing_city'] = $userData->billing_city;
-            $invoice_details['to_billing_state'] = $userData->billing_state;
-            $invoice_details['to_billing_zipcode'] = $userData->billing_zipcode;
-            $invoice_details['to_billing_country'] = $userData->billing_country;
-            $invoice_details['to_billing_phone'] = $userData->billing_phone;
-            $invoice_details['to_billing_email'] = $userData->billing_email;
-            $invoice_details['to_vat_number'] = $userData->vat_number;
-            $invoice_details['tax_name'] = $config[24]->config_value;
-            $invoice_details['tax_type'] = $config[14]->config_value;
-            $invoice_details['tax_value'] = $config[25]->config_value;
-            $invoice_details['invoice_amount'] = $amountToBePaid;
-            $invoice_details['subtotal'] = $plan_details->plan_price;
-            $invoice_details['tax_amount'] = (int)($plan_details->plan_price) * (int)($config[25]->config_value) / 100;
-
-            // Store into Database before starting PayPal redirect
-            $transaction = new TransactionModel();
-            $transaction->gobiz_transaction_id = uniqid();
-            $transaction->transaction_date = now();
-            $transaction->transaction_id = $payment->getId();
-            $transaction->user_id = Auth::user()->id;
-            $transaction->plan_id = $plan_details->plan_id;
-            $transaction->desciption = $plan_details->plan_name . " Plan";
-            $transaction->payment_gateway_name = "PayPal";
-            $transaction->transaction_amount = $amountToBePaid;
-            $transaction->transaction_currency = $config[1]->config_value;
-            $transaction->invoice_details = json_encode($invoice_details);
-            $transaction->payment_status = "PENDING";
-            $transaction->save();
-
-            /** add payment ID to session **/
-            \Session::put('paypal_payment_id', $payment->getId());
-            if (isset($redirect_url)) {
-                /** redirect to paypal **/
-                return Redirect::away($redirect_url);
-            }
-
-            \Session::put('error', 'Unknown error occurred');
-            alert()->error(trans("Payment failed, Something went wrong!"));
-            return redirect()->route('user.plans');
-        }
         } else {
             return redirect()->route('login');
         }
@@ -238,7 +238,7 @@ class PaypalController extends Controller
                     'to_billing_name' => $encode['to_billing_name'],
                     'invoice_currency' => $transaction_details->transaction_currency,
                     'subtotal' => $encode['subtotal'],
-		            'tax_amount' => $encode['tax_amount'],
+                    'tax_amount' => $encode['tax_amount'],
                     'invoice_amount' => $encode['invoice_amount'],
                     'invoice_id' => $config[15]->config_value . $invoice_number,
                     'invoice_date' => $transaction_details->created_at,
@@ -250,7 +250,6 @@ class PaypalController extends Controller
                 try {
                     Mail::to($encode['to_billing_email'])->send(new \App\Mail\SendEmailInvoice($details));
                 } catch (\Exception $e) {
-
                 }
 
                 alert()->success(trans('Plan activation success!'));
@@ -275,7 +274,7 @@ class PaypalController extends Controller
                         $message = "Plan renewed successfully!";
                     }
 
-		    // Making all cards inactive, For Plan change
+                    // Making all cards inactive, For Plan change
                     BusinessCard::where('user_id', Auth::user()->user_id)->update([
                         'card_status' => 'inactive',
                     ]);
@@ -322,7 +321,7 @@ class PaypalController extends Controller
                     'to_billing_name' => $encode['to_billing_name'],
                     'invoice_currency' => $transaction_details->transaction_currency,
                     'subtotal' => $encode['subtotal'],
-		            'tax_amount' => $encode['tax_amount'],
+                    'tax_amount' => $encode['tax_amount'],
                     'invoice_amount' => $encode['invoice_amount'],
                     'invoice_id' => $config[15]->config_value . $invoice_number,
                     'invoice_date' => $transaction_details->created_at,
@@ -334,7 +333,6 @@ class PaypalController extends Controller
                 try {
                     Mail::to($encode['to_billing_email'])->send(new \App\Mail\SendEmailInvoice($details));
                 } catch (\Exception $e) {
-
                 }
 
                 alert()->success($message);
