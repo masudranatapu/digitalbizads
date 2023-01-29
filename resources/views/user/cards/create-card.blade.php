@@ -297,14 +297,6 @@
                                             <div class="col">
                                                 <div class="social_item">
                                                     <a href="#" target="_blank">
-                                                        <i class="fa fa-comment"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <!-- social icon -->
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a href="#" target="_blank">
                                                         <i class="fa fa-envelope"></i>
                                                     </a>
                                                 </div>
@@ -400,34 +392,38 @@
                                     <label for="video" class="form-label">Logo</label>
                                     <input type="text" name="video" id="video" class="form-control">
                                 </div>
-                                <div class="mb-3">
-                                    <label for="button_text" class="form-label">Button Text</label>
-                                    <input type="text" name="button_text" id="button_text" class="form-control">
-                                </div>
 
-                                <div class="mb-3">
-                                    <label for="phone" class="form-label">Phone</label>
-                                    <input type="number" name="phone" id="phone" class="form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="comment" class="form-label">Comment</label>
-                                    <input type="text" name="comment" id="comment" class="form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" name="email" id="email" class="form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="website" class="form-label">Website</label>
-                                    <input type="text" name="website" id="website" class="form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="facebook" class="form-label">Facebook</label>
-                                    <input type="text" name="facebook" id="facebook" class="form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="instagram" class="form-label">Instagram</label>
-                                    <input type="text" name="instagram" id="instagram" class="form-control">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="phone" class="form-label">Phone</label>
+                                            <input type="number" name="phone" id="phone" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" name="email" id="email" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="website" class="form-label">Website</label>
+                                            <input type="text" name="website" id="website" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="facebook" class="form-label">Facebook</label>
+                                            <input type="text" name="facebook" id="facebook" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="instagram" class="form-label">Instagram</label>
+                                            <input type="text" name="instagram" id="instagram" class="form-control">
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
