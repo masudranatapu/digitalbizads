@@ -32,6 +32,7 @@
         "spatie/laravel-cookie-consent": "^2.12",
         "spatie/laravel-sitemap": "^6.1",
         "stripe/stripe-php": "^7.91",
+        "symfony/symfony": "5.4.x",
         "uxweb/sweet-alert": "^2.0"
     },
     "require-dev": {

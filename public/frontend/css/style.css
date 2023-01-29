@@ -6,6 +6,7 @@
     .card-button {
         margin-left: 40px;
     }
+
     .scan {
         padding: 0 5em 1.5em 8em;
     }
@@ -27,6 +28,7 @@
     .card-button {
         margin-left: 15px;
     }
+
     .scan {
         padding: 0 5em 1.5em 5em;
     }
@@ -51,6 +53,7 @@
     .card-button {
         margin-left: 10px;
     }
+
     .scan {
         padding: 0 5em 1.5em 5em;
     }
@@ -118,6 +121,7 @@ img.profile {
 .qr-code-download {
     margin: 0 5.8em;
 }
+
 .login-box {
     background: white;
     padding: 10px;

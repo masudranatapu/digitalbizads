@@ -19,7 +19,7 @@ abstract class PackageServiceProvider extends ServiceProvider
     {
         $this->registeringPackage();
 
-        $this->package = new Package();
+        $this->package = $this->newPackage();
 
         $this->package->setBasePath($this->getPackageBaseDir());
 
@@ -36,6 +36,11 @@ abstract class PackageServiceProvider extends ServiceProvider
         $this->packageRegistered();
 
         return $this;
+    }
+
+    public function newPackage(): Package
+    {
+        return new Package();
     }
 
     public function boot()
@@ -76,6 +81,10 @@ abstract class PackageServiceProvider extends ServiceProvider
                         $migrationFileName,
                         $now->addSecond()
                     ), ], "{$this->package->shortName()}-migrations");
+
+                if ($this->package->runsMigrations) {
+                    $this->loadMigrationsFrom($filePath);
+                }
             }
 
             if ($this->package->hasTranslations) {
@@ -149,7 +158,7 @@ abstract class PackageServiceProvider extends ServiceProvider
             $migrationFileName = Str::of($migrationFileName)->afterLast('/');
         }
 
-        foreach (glob(database_path("${migrationsPath}*.php")) as $filename) {
+        foreach (glob(database_path("{$migrationsPath}*.php")) as $filename) {
             if ((substr($filename, -$len) === $migrationFileName . '.php')) {
                 return $filename;
             }

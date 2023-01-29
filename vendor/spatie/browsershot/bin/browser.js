@@ -16,11 +16,27 @@ const request = args[0].startsWith('-f ')
 
 const requestsList = [];
 
+const consoleMessages = [];
+
+const failedRequests = [];
+
 const getOutput = async (page, request) => {
     let output;
 
     if (request.action == 'requestsList') {
         output = JSON.stringify(requestsList);
+
+        return output;
+    }
+
+    if (request.action == 'consoleMessages') {
+        output = JSON.stringify(consoleMessages);
+
+        return output;
+    }
+
+    if (request.action == 'failedRequests') {
+        output = JSON.stringify(failedRequests);
 
         return output;
     }
@@ -85,23 +101,6 @@ const callChrome = async pup => {
 
         await page.setRequestInterception(true);
 
-        if (request.postParams) {
-            const postParamsArray = request.postParams;
-            const queryString = Object.keys(postParamsArray)
-                .map(key => `${key}=${postParamsArray[key]}`)
-                .join('&');
-            page.once("request", interceptedRequest => {
-                interceptedRequest.continue({
-                    method: "POST",
-                    postData: queryString,
-                    headers: {
-                        ...interceptedRequest.headers(),
-                        "Content-Type": "application/x-www-form-urlencoded"
-                    }
-                });
-            });
-        }
-
         const contentUrl = request.options.contentUrl;
         const parsedContentUrl = contentUrl ? contentUrl.replace(/\/$/, "") : undefined;
         let pageContent;
@@ -110,6 +109,23 @@ const callChrome = async pup => {
             pageContent = fs.readFileSync(request.url.replace('file://', ''));
             request.url = contentUrl;
         }
+
+        page.on('console',  message => consoleMessages.push({
+            type: message.type(),
+            message: message.text(),
+            location: message.location()
+        }));
+
+        page.on('response', function (response) {
+            if (response.status() >= 200 && response.status() <= 399) {
+                return;
+            }
+
+            failedRequests.push({
+                status: response.status(),
+                url: response.url(),
+            });
+        })
 
         page.on('request', interceptedRequest => {
             var headers = interceptedRequest.headers();
@@ -160,6 +176,22 @@ const callChrome = async pup => {
                     });
                     return;
                 }
+            }
+
+            if (request.postParams) {
+                const postParamsArray = request.postParams;
+                const queryString = Object.keys(postParamsArray)
+                    .map(key => `${key}=${postParamsArray[key]}`)
+                    .join('&');
+                interceptedRequest.continue({
+                    method: "POST",
+                    postData: queryString,
+                    headers: {
+                        ...interceptedRequest.headers(),
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                });
+                return;
             }
 
             interceptedRequest.continue({ headers });
@@ -271,7 +303,7 @@ const callChrome = async pup => {
         if (request.options.delay) {
             await page.waitForTimeout(request.options.delay);
         }
-        
+
         if (request.options.initialPageNumber) {
             await page.evaluate((initialPageNumber) => {
                 window.pageStart = initialPageNumber;

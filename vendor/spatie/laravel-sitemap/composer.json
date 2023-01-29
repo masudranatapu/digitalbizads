@@ -18,21 +18,26 @@
     "require": {
         "php": "^8.0",
         "guzzlehttp/guzzle": "^7.2",
-        "illuminate/support": "^8.0|^9.0",
-        "nesbot/carbon": "^2.0",
+        "illuminate/support": "^8.0|^9.0|^10.0",
+        "nesbot/carbon": "^2.63",
         "spatie/crawler": "^7.0",
         "spatie/laravel-package-tools": "^1.5",
         "symfony/dom-crawler": "^5.1.14|^6.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
-        "orchestra/testbench": "^6.23|^7.0",
+        "orchestra/testbench": "^6.23|^7.0|^8.0",
+        "pestphp/pest": "^1.22",
         "phpunit/phpunit": "^9.5",
+        "spatie/pest-plugin-snapshots": "^1.1",
         "spatie/phpunit-snapshot-assertions": "^4.0",
         "spatie/temporary-directory": "^2.0"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "extra": {
         "laravel": {
@@ -54,6 +59,6 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
-        "test": "vendor/bin/phpunit"
+        "test": "vendor/bin/pest"
     }
 }

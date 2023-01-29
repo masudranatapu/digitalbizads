@@ -4,6 +4,9 @@ namespace Spatie\Browsershot;
 
 use Spatie\Browsershot\Exceptions\CouldNotTakeBrowsershot;
 use Spatie\Browsershot\Exceptions\ElementNotFound;
+use Spatie\Browsershot\Exceptions\FileDoesNotExistException;
+use Spatie\Browsershot\Exceptions\FileUrlNotAllowed;
+use Spatie\Browsershot\Exceptions\HtmlIsNotAllowedToContainFile;
 use Spatie\Browsershot\Exceptions\UnsuccessfulResponse;
 use Spatie\Image\Image;
 use Spatie\Image\Manipulations;
@@ -34,6 +37,7 @@ class Browsershot
     protected $postParams = [];
     protected $additionalOptions = [];
     protected $temporaryOptionsDirectory;
+    protected $tempPath = '';
     protected $writeOptionsToFile = false;
     protected $chromiumArguments = [];
 
@@ -61,6 +65,11 @@ class Browsershot
     public static function html(string $html)
     {
         return (new static())->setHtml($html);
+    }
+
+    public static function htmlFromFilePath(string $filePath): self
+    {
+        return (new static())->setHtmlFromFilePath($filePath);
     }
 
     public function __construct(string $url = '', bool $deviceEmulate = false)
@@ -112,6 +121,13 @@ class Browsershot
     public function setChromePath(string $executablePath)
     {
         $this->setOption('executablePath', $executablePath);
+
+        return $this;
+    }
+
+    public function setCustomTempPath(string $tempPath)
+    {
+        $this->tempPath = $tempPath;
 
         return $this;
     }
@@ -227,7 +243,23 @@ class Browsershot
 
     public function setUrl(string $url)
     {
+        if (Helpers::stringStartsWith(strtolower($url), 'file://')) {
+            throw FileUrlNotAllowed::make();
+        }
+
         $this->url = $url;
+        $this->html = '';
+
+        return $this;
+    }
+
+    public function setHtmlFromFilePath(string $filePath): self
+    {
+        if (false === file_exists($filePath)) {
+            throw new FileDoesNotExistException($filePath);
+        }
+
+        $this->url = 'file://'.$filePath;
         $this->html = '';
 
         return $this;
@@ -242,6 +274,10 @@ class Browsershot
 
     public function setHtml(string $html)
     {
+        if (Helpers::stringContains(strtolower($html), 'file://')) {
+            throw HtmlIsNotAllowedToContainFile::make();
+        }
+
         $this->html = $html;
         $this->url = '';
 
@@ -575,7 +611,7 @@ class Browsershot
             return base64_decode($encodedImage);
         }
 
-        $temporaryDirectory = (new TemporaryDirectory())->create();
+        $temporaryDirectory = (new TemporaryDirectory($this->tempPath))->create();
 
         $this->save($temporaryDirectory->path('screenshot.png'));
 
@@ -631,6 +667,23 @@ class Browsershot
         return json_decode($this->callBrowser($command), true);
     }
 
+    /**
+     * @return array{type: string, message: string, location:array}
+     */
+    public function consoleMessages(): array
+    {
+        $command = $this->createConsoleMessagesCommand();
+
+        return json_decode($this->callBrowser($command), true);
+    }
+
+    public function failedRequests(): array
+    {
+        $command = $this->createFailedRequestsCommand();
+
+        return json_decode($this->callBrowser($command), true);
+    }
+
     public function applyManipulations(string $imagePath)
     {
         Image::load($imagePath)
@@ -640,14 +693,14 @@ class Browsershot
 
     public function createBodyHtmlCommand(): array
     {
-        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
+        $url = $this->getFinalContentsUrl();
 
         return $this->createCommand($url, 'content');
     }
 
     public function createScreenshotCommand($targetPath = null): array
     {
-        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
+        $url = $this->getFinalContentsUrl();
 
         $options = [
             'type' => $this->screenshotType,
@@ -671,7 +724,7 @@ class Browsershot
 
     public function createPdfCommand($targetPath = null): array
     {
-        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
+        $url = $this->getFinalContentsUrl();
 
         $options = [];
 
@@ -698,7 +751,7 @@ class Browsershot
 
     public function createEvaluateCommand(string $pageFunction): array
     {
-        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
+        $url = $this->getFinalContentsUrl();
 
         $options = [
             'pageFunction' => $pageFunction,
@@ -709,9 +762,29 @@ class Browsershot
 
     public function createTriggeredRequestsListCommand(): array
     {
-        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
+        $url = $this->html
+            ? $this->createTemporaryHtmlFile()
+            : $this->url;
 
         return $this->createCommand($url, 'requestsList');
+    }
+
+    public function createConsoleMessagesCommand(): array
+    {
+        $url = $this->html
+            ? $this->createTemporaryHtmlFile()
+            : $this->url;
+
+        return $this->createCommand($url, 'consoleMessages');
+    }
+
+    public function createFailedRequestsCommand(): array
+    {
+        $url = $this->html
+            ? $this->createTemporaryHtmlFile()
+            : $this->url;
+
+        return $this->createCommand($url, 'failedRequests');
     }
 
     public function setRemoteInstance(string $ip = '127.0.0.1', int $port = 9222): self
@@ -784,7 +857,7 @@ class Browsershot
 
     protected function createTemporaryHtmlFile(): string
     {
-        $this->temporaryHtmlDirectory = (new TemporaryDirectory())->create();
+        $this->temporaryHtmlDirectory = (new TemporaryDirectory($this->tempPath))->create();
 
         file_put_contents($temporaryHtmlFile = $this->temporaryHtmlDirectory->path('index.html'), $this->html);
 
@@ -800,7 +873,7 @@ class Browsershot
 
     protected function createTemporaryOptionsFile(string $command): string
     {
-        $this->temporaryOptionsDirectory = (new TemporaryDirectory())->create();
+        $this->temporaryOptionsDirectory = (new TemporaryDirectory($this->tempPath))->create();
 
         file_put_contents($temporaryOptionsFile = $this->temporaryOptionsDirectory->path('command.js'), $command);
 
@@ -847,11 +920,15 @@ class Browsershot
 
         $binPath = $this->binPath ?: __DIR__.'/../bin/browser.js';
 
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        $optionsCommand = $this->getOptionsCommand(json_encode($command));
+
+        if ($this->isWindows()) {
             $fullCommand =
                 $nodeBinary.' '
                 .escapeshellarg($binPath).' '
-                .'"'.str_replace('"', '\"', (json_encode($command))).'"';
+                .'"'
+                .$optionsCommand
+                .'"';
 
             return escapeshellcmd($fullCommand);
         }
@@ -859,8 +936,6 @@ class Browsershot
         $setIncludePathCommand = "PATH={$this->includePath}";
 
         $setNodePathCommand = $this->getNodePathCommand($nodeBinary);
-
-        $optionsCommand = $this->getOptionsCommand(json_encode($command));
 
         return
             $setIncludePathCommand.' '
@@ -886,8 +961,11 @@ class Browsershot
     {
         if ($this->writeOptionsToFile) {
             $temporaryOptionsFile = $this->createTemporaryOptionsFile($command);
+            $command = "-f {$temporaryOptionsFile}";
+        }
 
-            return escapeshellarg("-f {$temporaryOptionsFile}");
+        if ($this->isWindows()) {
+            return str_replace('"', '\"', $command);
         }
 
         return escapeshellarg($command);
@@ -924,5 +1002,17 @@ class Browsershot
         return $this
             ->setOption('initialPageNumber', ($initialPage - 1))
             ->pages($initialPage.'-');
+    }
+
+    private function isWindows()
+    {
+        return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
+    }
+
+    private function getFinalContentsUrl(): string
+    {
+        $url = $this->html ? $this->createTemporaryHtmlFile() : $this->url;
+
+        return $url;
     }
 }

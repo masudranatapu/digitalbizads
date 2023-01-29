@@ -20,6 +20,7 @@
     <link href="{{ asset('backend/css/demo.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('backend/css/styles.css') }}" rel="stylesheet" />
     <link href="{{ asset('backend/css/fontawesome-iconpicker.min.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
     <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap4.min.css') }}">
     <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
@@ -59,7 +60,7 @@
     @endif
     {{-- Preloader --}}
     <script>
-    $(document).ready(function() {
+        $(document).ready(function() {
         "use strict";
         $('.preloader-wrapper').fadeOut();
     });
