@@ -362,77 +362,107 @@
                     <div class="card card_form">
                         <div class="card-body">
                             <form action="#" method="post" enctype="multipart/form-data">
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Text or Logo</label>
-                                    <select id="selectField1" class="form-control">
-                                        <option value="text">Text</option>
-                                        <option value="logo">Logo</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3" id="textfield">
-                                    <label for="text" class="form-label">Text</label>
-                                    <input type="text" name="text" id="text" class="form-control">
-                                </div>
-                                <div class="mb-3 d-none" id="logofield">
-                                    <label for="logo" class="form-label">Logo</label>
-                                    <input type="file" name="logo" id="logo" class="form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Gallery or Video</label>
-                                    <select id="selectField2" class="form-control">
-                                        <option value="gallery">Gallery</option>
-                                        <option value="video">Video</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3" id="galleryfield">
-                                    <label for="gallery" class="form-label">Gallery (Select multiple image)</label>
-                                    <input type="file" name="gallery[]" id="gallery" class="form-control" required>
-                                </div>
-                                <div class="mb-3 d-none" id="videofield">
-                                    <label for="video" class="form-label">Logo</label>
-                                    <input type="text" name="video" id="video" class="form-control">
-                                </div>
-
                                 <div class="row">
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="adsname" class="form-label">DigitalBizAds Name</label>
+                                            <input type="text" placeholder="ads name" name="adsname" id="adsname" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3" id="textfield">
+                                            <label for="color" class="form-label">DigitalBizAds Color</label>
+                                            <input type="color" placeholder="card color" name="color" id="color" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="" class="form-label">Select Logo/Heading</label>
+                                            <select id="selectField1" class="form-control">
+                                                <option value="text">Heading</option>
+                                                <option value="logo">Logo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3" id="textfield">
+                                            <label for="text" class="form-label">Heading</label>
+                                            <input type="text" placeholder="ads heading" name="text" id="text" class="form-control">
+                                        </div>
+                                        <div class="mb-3 d-none" id="logofield">
+                                            <label for="logo" class="form-label">Logo</label>
+                                            <input type="file" name="logo" id="logo" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="" class="form-label">Gallery or Video</label>
+                                            <select id="selectField2" class="form-control">
+                                                <option value="gallery">Gallery</option>
+                                                <option value="videourl">Video Url</option>
+                                                <option value="videosource">Uplaod Video</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3" id="galleryfield">
+                                            <label for="gallery" class="form-label">Gallery (Select Multiple Images)</label>
+                                            <input type="file" name="gallery[]" id="gallery" class="form-control" required>
+                                        </div>
+                                        <div class="mb-3 d-none" id="videourl">
+                                            <label for="video" class="form-label">Video Url</label>
+                                            <input type="text" name="video" placeholder="your video url" id="video" class="form-control">
+                                        </div>
+                                        <div class="mb-3 d-none" id="videosource">
+                                            <label for="video" class="form-label">Uplaod Video</label>
+                                            <input type="text" name="video" placeholder="upload your video" id="video" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                              <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="phone" class="form-label">Phone</label>
-                                            <input type="number" name="phone" id="phone" class="form-control">
+                                            <input type="number" name="phone" id="phone" placeholder="your phone" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="email" name="email" id="email" class="form-control">
+                                            <input type="email" name="email" placeholder="your email" id="email" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="website" class="form-label">Website</label>
-                                            <input type="text" name="website" id="website" class="form-control">
+                                            <input type="text" name="website" placeholder="your website" id="website" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="facebook" class="form-label">Facebook</label>
-                                            <input type="text" name="facebook" id="facebook" class="form-control">
+                                            <input type="text" name="facebook" placeholder="facebook username" id="facebook" class="form-control">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3">
                                             <label for="instagram" class="form-label">Instagram</label>
-                                            <input type="text" name="instagram" id="instagram" class="form-control">
+                                            <input type="text" name="instagram" id="instagram" placeholder="instagram username" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="foote_text" class="form-label">Copyright</label>
+                                            <input type="text" name="foote_text" placeholder="copyright" id="foote_text" class="form-control">
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="mb-3">
-                                    <label for="foote_text" class="form-label">Footer Text</label>
-                                    <input type="text" name="foote_text" id="foote_text" class="form-control">
-                                </div>
-
-                                <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary">Save</button>
+                                    <button type="submit" class="btn btn-primary">Create Your DigitalBizAds</button>
                                 </div>
                             </form>
                         </div>
@@ -466,12 +496,18 @@
       // gallery and video fiedl
       $("#selectField2").change(function(){
         var selected2 = $(this).val();
-        if(selected2 === "video"){
+        if(selected2 === "videourl"){
             $('#galleryfield').addClass('d-none');
-            $('#videofield').removeClass('d-none');
+            $('#videourl').removeClass('d-none');
+            $('#videosource').addClass('d-none');
+        }else if(selected2 === "videosource"){
+            $('#galleryfield').addClass('d-none');
+            $('#videourl').addClass('d-none');
+            $('#videosource').removeClass('d-none');
         }else{
             $('#galleryfield').removeClass('d-none');
-            $('#videofield').addClass('d-none');
+            $('#videourl').addClass('d-none');
+            $('#videosource').addClass('d-none');
         }
       });
     });

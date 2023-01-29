@@ -87,6 +87,7 @@ a {
 .card_title h2 {
     font-size: 29px;
     font-family: "Poppins";
+    text-align: center;
     font-weight: 900;
     color: #4D257E;
     letter-spacing: 0.1px;
