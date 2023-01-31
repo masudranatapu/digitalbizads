@@ -191,9 +191,14 @@ Route::group(['middleware' => 'Installer'], function () {
         // Upload media images
         Route::post('multiple', [MediaController::class, 'multipleImages'])->name('multiple');
 
+        Route::post('card/store', [CardController::class, 'postStore'])->name('card.store');
+        Route::get('create-card', [CardController::class, 'CreateCard'])->name('create.card');
+        Route::get('edit-card/{id}', [CardController::class, 'editCard'])->name('edit.card');
+
+
         if (env('APP_TYPE') == 'VCARD' || env('APP_TYPE') == 'BOTH') {
             // Create Business Card
-            Route::get('create-card', [CardController::class, 'CreateCard'])->name('create.card');
+            // Route::get('create-card', [CardController::class, 'CreateCard'])->name('create.card');
             Route::post('save-business-card', [CardController::class, 'saveBusinessCard'])->name('save.business.card');
             Route::get('social-links/{id}', [CardController::class, 'socialLinks'])->name('social.links');
             Route::post('save-social-links/{id}', [CardController::class, 'saveSocialLinks'])->name('save.social.links');
@@ -209,7 +214,7 @@ Route::group(['middleware' => 'Installer'], function () {
         // Check link
         Route::post('check-link', [CardController::class, 'checkLink'])->name('check.link');
         // Edit Business Card
-        Route::get('edit-card/{id}', [EditCardController::class, 'editCard'])->name('edit.card');
+        // Route::get('edit-card/{id}', [EditCardController::class, 'editCard'])->name('edit.card');
         Route::post('update-business-card/{id}', [EditCardController::class, 'updateBusinessCard'])->name('update.business.card');
         Route::get('edit-social-links/{id}', [EditCardController::class, 'socialLinks'])->name('edit.social.links');
         Route::post('update-social-links/{id}', [EditCardController::class, 'updateSocialLinks'])->name('update.social.links');
@@ -294,7 +299,10 @@ Route::group(['middleware' => 'Installer'], function () {
     Route::get('/sign-in-with-google', [LoginController::class, 'handleProviderCallback']);
 
     // Profile
-    Route::get('{id}', [ProfileController::class, 'profile', 'ShareWidget'])->name('profile');
+    // Route::get('{id}', [ProfileController::class, 'profile', 'ShareWidget'])->name('profile');
 
     Route::get('/download/{id}', [ProfileController::class, 'downloadVcard'])->name('download.vCard');
 });
+
+
+Route::get('{cardurl}', ['as'=>'card.preview', 'uses'=>'HomeController@getPreview']);

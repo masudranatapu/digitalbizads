@@ -1,6 +1,17 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
-
 @section('content')
+
+<style>
+    span.error {
+    color: #E53935;
+    padding: 2px 0px;
+}
+</style>
+<?php
+
+$tabindex = 1;
+
+?>
 <div class="page-wrapper">
     <div class="container-xl">
         <!-- Page title -->
@@ -20,199 +31,6 @@
     <div class="page-body">
         <div class="container-xl">
             <div class="row row-deck row-cards">
-
-                <!--
-                    <form action="{{ route('user.save.business.card') }}" method="post" enctype="multipart/form-data"
-                        class="card">
-                        @csrf
-                        {{-- Create Card --}}
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-md-5 col-xl-5">
-                                    <div class="mb-3">
-                                        <div class="row g-2">
-                                            @foreach ($themes as $theme)
-                                            <div class="col-lg-5 col-sm-6 col-md-6 col-6">
-                                                <label class="form-imagecheck mb-2">
-                                                    <input type="radio" name="theme_id" value="{{ $theme->theme_id }}"
-                                                        class="form-imagecheck-input" required checked />
-                                                    <span class="form-imagecheck-figure text-center font-weight-bold">
-                                                        <img src="{{ asset('backend/img/vCards/'.$theme->theme_thumbnail) }}"
-                                                            class="w-100 h-100 object-cover"
-                                                            alt="{{ $theme->theme_name }}"
-                                                            class="form-imagecheck-image">
-                                                        <span class="badge bg-dark">{{ $theme->theme_name }}</span>
-                                                    </span>
-                                                </label>
-                                            </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-7 col-xl-7">
-                                    <div class="row">
-                                        <div class="col-md-6 col-xl-6">
-                                            <div class="mb-3">
-                                                <label class="form-label required">{{ __('Card Color') }}</label>
-                                                <div class="row g-2">
-                                                    <div class="col-auto">
-                                                        <label class="form-colorinput">
-                                                            <input name="card_color" type="radio" value="blue"
-                                                                class="form-colorinput-input" required checked />
-                                                            <span class="form-colorinput-color bg-blue"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <label class="form-colorinput form-colorinput-light">
-                                                            <input name="card_color" type="radio" value="indigo"
-                                                                class="form-colorinput-input" required />
-                                                            <span class="form-colorinput-color bg-indigo"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <label class="form-colorinput">
-                                                            <input name="card_color" type="radio" value="green"
-                                                                class="form-colorinput-input" required />
-                                                            <span class="form-colorinput-color bg-green"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <label class="form-colorinput">
-                                                            <input name="card_color" type="radio" value="yellow"
-                                                                class="form-colorinput-input" required />
-                                                            <span class="form-colorinput-color bg-yellow"></span>
-                                                        </label>
-                                                    </div>
-
-                                                    <div class="col-auto">
-                                                        <label class="form-colorinput">
-                                                            <input name="card_color" type="radio" value="red"
-                                                                class="form-colorinput-input" required />
-                                                            <span class="form-colorinput-color bg-red"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <label class="form-colorinput">
-                                                            <input name="card_color" type="radio" value="purple"
-                                                                class="form-colorinput-input" required />
-                                                            <span class="form-colorinput-color bg-purple"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <label class="form-colorinput">
-                                                            <input name="card_color" type="radio" value="pink"
-                                                                class="form-colorinput-input" required />
-                                                            <span class="form-colorinput-color bg-pink"></span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <label class="form-colorinput form-colorinput-light">
-                                                            <input name="card_color" type="radio" value="gray"
-                                                                class="form-colorinput-input" required />
-                                                            <span class="form-colorinput-color bg-muted"></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-xl-6">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="card_lang">{{ __('Language') }} <span
-                                                        class="text-danger">*</span></label>
-                                                <select name="card_lang" id="card_lang" class="form-control" required>
-                                                    @foreach(config('app.languages') as $langLocale => $langName)
-                                                    <option class="dropdown-item" value="{{ $langLocale }}" {{
-                                                        $langLocale=='en' ? 'selected' : '' }}>
-                                                        {{ $langName }} ({{ strtoupper($langLocale) }})
-                                                    </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-xl-6">
-                                            <div class="mb-3">
-                                                <div class="form-label required">{{ __('Cover') }}</div>
-                                                <input type="file" class="form-control" name="cover"
-                                                    placeholder="{{ __('Cover') }}..." required
-                                                    accept=".jpeg,.jpg,.png,.gif,.svg" />
-                                                <small class="text-muted">{{ __('Recommended : 604 x 250 pixels')
-                                                    }}</small>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-xl-6">
-                                            <div class="mb-3">
-                                                <div class="form-label required">{{ __('Logo') }}</div>
-                                                <input type="file" class="form-control" name="logo"
-                                                    placeholder="{{ __('Logo') }}..." required
-                                                    accept=".jpeg,.jpg,.png,.gif,.svg" />
-                                                <small class="text-muted">{{ __('Recommended : 500 x 500 pixels')
-                                                    }}</small>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-6 col-xl-6">
-                                            <div class="mb-3">
-                                                <label class="form-label required">{{ __('Title') }}</label>
-                                                <input type="text" class="form-control" name="title"
-                                                    onload="convertToLink(this.value); checkLink()"
-                                                    onkeyup="convertToLink(this.value); checkLink()"
-                                                    value="{{ old('title') }}"
-                                                    placeholder="{{ __('Business name / Your name') }}..." required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 col-xl-6">
-                                            <div class="mb-3">
-                                                <label class="form-label required">{{ __('Sub Title') }}</label>
-                                                <input type="text" class="form-control" name="subtitle"
-                                                    value="{{ old('subtitle') }}"
-                                                    placeholder="{{ __('Location / Job title') }}..." required>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-12 col-xl-12">
-                                            <div class="mb-3">
-                                                <label class="form-label required">{{ __('Description') }}</label>
-                                                <textarea class="form-control" name="description"
-                                                    data-bs-toggle="autosize"
-                                                    placeholder="{{ __('About business / Bio') }}..."
-                                                    required>{{ old('description') }}</textarea>
-                                            </div>
-                                        </div>
-
-                                        @if ($plan_details->personalized_link)
-                                        <div class="col-md-10 col-xl-10">
-                                            <div class="mb-3">
-                                                <label class="form-label required">{{ __('Personalized Link') }}</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text">
-                                                        {{ URL::to('/') }}
-                                                    </span>
-                                                    <input type="text" class="form-control" name="link"
-                                                        placeholder="{{ __('Personalized Link') }}" autocomplete="off"
-                                                        id="plink" onkeyup="checkLink()" value="{{ old('link') }}"
-                                                        minlength="3" required>
-                                                </div>
-                                                <p id="status"></p>
-                                            </div>
-                                        </div>
-                                        @endif
-
-                                    </div>
-
-                                    <div class="col-md-4 col-xl-4 my-3">
-                                        <div class="mb-3">
-                                            <button type="submit" class="btn btn-primary">
-                                                {{ __('Submit & Next') }}
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    -->
-
-
                 <div class="col-md-5 col-xl-5">
                     <div class="card_preview_sec">
                         <div class="card_wrapper">
@@ -361,47 +179,60 @@
                 <div class="col-md-7 col-xl-7">
                     <div class="card card_form">
                         <div class="card-body">
-                            <form action="#" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('user.card.store') }}" method="post" id="card-form" novalidate="novalidate" enctype="multipart/form-data">
+                                @csrf
                                 <div class="row">
                                     <div class="col-6">
-                                        <div class="mb-3">
+                                        <div class="mb-3 form-input">
                                             <label for="adsname" class="form-label">DigitalBizAds Name</label>
-                                            <input type="text" placeholder="ads name" name="adsname" id="adsname" class="form-control">
+                                            <input type="text" placeholder="ads name" name="adsname" id="adsname" class="form-control @error('gallery_type') is-invalid @enderror" value="{{ old('adsname') }}" tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('adsname'))
+                                                <span class="help-block text-danger">{{$errors->first('adsname') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="mb-3" id="textfield">
+                                        <div class="mb-3 form-input" id="textfield">
                                             <label for="color" class="form-label">DigitalBizAds Color</label>
-                                            <input type="color" placeholder="card color" name="color" id="color" class="form-control">
+                                            <input type="color" placeholder="card color" name="color" id="color" value="{{ old('color') }}" class="form-control @error('gallery_type') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('color'))
+                                                <span class="help-block text-danger">{{$errors->first('color') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <div class="mb-3">
+                                        <div class="mb-3 form-input">
                                             <label for="" class="form-label">Select Logo/Heading</label>
-                                            <select id="selectField1" class="form-control">
+                                            <select id="selectField1" class="form-control" tabindex="{{ $tabindex++ }}">
                                                 <option value="text">Heading</option>
                                                 <option value="logo">Logo</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="mb-3" id="textfield">
+                                        <div class="mb-3 form-input" id="headline">
                                             <label for="text" class="form-label">Heading</label>
-                                            <input type="text" placeholder="ads heading" name="text" id="text" class="form-control">
+                                            <input type="text" placeholder="ads heading" name="text" id="text" value="{{ old('text') }}" class="form-control @error('text') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('text'))
+                                                <span class="help-block text-danger">{{$errors->first('text') }}</span>
+                                            @endif
                                         </div>
-                                        <div class="mb-3 d-none" id="logofield">
+                                        <div class="mb-3 d-none form-input" id="logofield">
                                             <label for="logo" class="form-label">Logo</label>
-                                            <input type="file" name="logo" id="logo" class="form-control">
+                                            <input type="file" name="logo" id="logo" class="form-control @error('logo') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('logo'))
+                                                <span class="help-block text-danger">{{$errors->first('logo') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <div class="mb-3">
+                                        <div class="mb-3 form-input">
                                             <label for="" class="form-label">Gallery or Video</label>
-                                            <select id="selectField2" class="form-control">
+                                            <select id="selectField2" name="gallery_type" class="form-control" tabindex="{{ $tabindex++ }}">
                                                 <option value="gallery">Gallery</option>
                                                 <option value="videourl">Video Url</option>
                                                 <option value="videosource">Uplaod Video</option>
@@ -409,58 +240,95 @@
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="mb-3" id="galleryfield">
+                                        <div class="mb-3 form-input" id="galleryfield">
                                             <label for="gallery" class="form-label">Gallery (Select Multiple Images)</label>
-                                            <input type="file" name="gallery[]" id="gallery" class="form-control" required>
+                                            <input type="file" name="gallery[]" id="gallery" class="form-control @error('gallery') is-invalid @enderror" tabindex="{{ $tabindex++ }}" multiple required>
+                                            @if ($errors->has('gallery'))
+                                                <span class="help-block text-danger">{{$errors->first('gallery') }}</span>
+                                            @endif
                                         </div>
-                                        <div class="mb-3 d-none" id="videourl">
+                                        <div class="mb-3 d-none form-input" id="videourl">
                                             <label for="video" class="form-label">Video Url</label>
-                                            <input type="text" name="video" placeholder="your video url" id="video" class="form-control">
+                                            <input type="text" name="video" placeholder="your video url" value="{{ old('video') }}" id="video" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('video'))
+                                                <span class="help-block text-danger">{{$errors->first('video') }}</span>
+                                            @endif
                                         </div>
-                                        <div class="mb-3 d-none" id="videosource">
+                                        <div class="mb-3 form-input d-none" id="videosource">
                                             <label for="video" class="form-label">Uplaod Video</label>
-                                            <input type="text" name="video" placeholder="upload your video" id="video" class="form-control">
+                                            <input type="file" name="video" placeholder="upload your video" id="video" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('video'))
+                                                <span class="help-block text-danger">{{$errors->first('video') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
                               <div class="row">
                                     <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label for="phone" class="form-label">Phone</label>
-                                            <input type="number" name="phone" id="phone" placeholder="your phone" class="form-control">
+                                        <div class="mb-3 form-input">
+                                            <label for="phone_number" class="form-label">Phone</label>
+                                            <input type="number" name="phone_number" id="phone" placeholder="your phone" value="{{ old('phone_number') }}" class="form-control @error('phone') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('phone_number'))
+                                                <span class="help-block text-danger">{{$errors->first('phone_number') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="mb-3">
+                                        <div class="mb-3 form-input">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="email" name="email" placeholder="your email" id="email" class="form-control">
+                                            <input type="email" name="email" placeholder="your email" id="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('email'))
+                                                <span class="help-block text-danger">{{$errors->first('email') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="mb-3">
+                                        <div class="mb-3 form-input">
                                             <label for="website" class="form-label">Website</label>
-                                            <input type="text" name="website" placeholder="your website" id="website" class="form-control">
+                                            <input type="text" name="website" placeholder="your website" value="{{ old('website') }}" id="website" class="form-control @error('website') is-invalid @enderror"  tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('website'))
+                                                <span class="help-block text-danger">{{$errors->first('website') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="mb-3">
+                                        <div class="mb-3 form-input">
                                             <label for="facebook" class="form-label">Facebook</label>
-                                            <input type="text" name="facebook" placeholder="facebook username" id="facebook" class="form-control">
+                                            <input type="text" name="facebook" placeholder="facebook username" value="{{ old('facebook') }}" id="facebook" class="form-control @error('facebook') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('facebook'))
+                                                <span class="help-block text-danger">{{$errors->first('facebook') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="mb-3">
+                                        <div class="mb-3 form-input">
                                             <label for="instagram" class="form-label">Instagram</label>
-                                            <input type="text" name="instagram" id="instagram" placeholder="instagram username" class="form-control">
+                                            <input type="text" name="instagram" id="instagram" placeholder="instagram username" value="{{ old('instagram') }}" class="form-control @error('instagram') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('instagram'))
+                                                <span class="help-block text-danger">{{$errors->first('instagram') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3 form-input">
+                                            <label for="cashapp" class="form-label">CashApp</label>
+                                            <input type="text" name="cashapp" id="cashapp" placeholder="cashapp username" value="{{ old('cashapp') }}" class="form-control @error('cashapp') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('cashapp'))
+                                                <span class="help-block text-danger">{{$errors->first('cashapp') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="mb-3">
+                                        <div class="mb-3 form-input">
                                             <label for="foote_text" class="form-label">Copyright</label>
-                                            <input type="text" name="foote_text" placeholder="copyright" id="foote_text" class="form-control">
+                                            <input type="text" name="foote_text" placeholder="copyright" id="foote_text" value="{{ old('foote_text') }}" class="form-control @error('foote_text') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('foote_text'))
+                                                <span class="help-block text-danger">{{$errors->first('foote_text') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="mb-3">
                                     <button type="submit" class="btn btn-primary">Create Your DigitalBizAds</button>
                                 </div>
@@ -479,16 +347,20 @@
 
 @push('custom-js')
 
+
+
+<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+
 <script>
     $(document).ready(function(){
      // logo and text field
       $("#selectField1").change(function(){
         var selected = $(this).val();
         if(selected === "logo"){
-            $('#textfield').addClass('d-none');
+            $('#headline').addClass('d-none');
             $('#logofield').removeClass('d-none');
         }else{
-            $('#textfield').removeClass('d-none');
+            $('#headline').removeClass('d-none');
             $('#logofield').addClass('d-none');
         }
       });
@@ -511,11 +383,6 @@
         }
       });
     });
-</script>
-
-
-
-<script>
     function checkLink(){
     "use strict";
     var plink = $('#plink').val();
@@ -540,18 +407,62 @@
 /* Encode string to link */
 function convertToLink( str ) {
     "use strict";
-    //replace all special characters | symbols with a space
     str = str.replace(/[`~!@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ')
              .toLowerCase();
-
-    // trim spaces at start and end of string
     str = str.replace(/^\s+|\s+$/gm,'');
-
-    // replace space with dash/hyphen
     str = str.replace(/\s+/g, '-');
     document.getElementById("plink").value = str;
     //return str;
   }
+
+
+  $('#card-form').validate({
+        rules: {
+                'adsname': {
+                required: true,
+                maxlength: 124,
+                minlength: 2,
+            },
+            // 'location': {
+            //     required: false,
+            //     maxlength: 124,
+            //     minlength: 2,
+            // },
+            // 'designation': {
+            //     required: true,
+            //     maxlength: 124,
+            //     minlength: 2,
+            // },
+            // 'company_name': {
+            //     required: true,
+            //     maxlength: 124,
+            //     minlength: 2,
+            // },
+            // 'bio': {
+            //     required: false,
+            //     maxlength: 255,
+            // },
+        },
+        messages: {},
+        // submitHandler: function(form) {
+        //     $('.save-card-spinner').addClass('active');
+        //     $(this).find('.save-card').prop('disabled', true);
+        //     $(".btn-txt").text("Processing ...");
+        //     setTimeout(function(){
+        //         $(".save-card-spinner").removeClass("active");
+        //         $('.save-card').attr("disabled", false);
+        //         $(".btn-txt").text("Save");
+        //     }, 50000);
+        //     form.submit();
+
+        // },
+          errorPlacement: function(error, element) {
+            $(element).parents('.form-input').append(error)
+        },
+    });
+
+
+
 </script>
 @endpush
 @endsection

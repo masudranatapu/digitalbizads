@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\User;
-
+use Str;
+use File;
 use App\Plan;
 use App\User;
 use App\Theme;
@@ -19,11 +20,11 @@ use App\BusinessHour;
 use App\StoreProduct;
 use App\BusinessField;
 use Illuminate\Http\Request;
-use Jorenvh\Share\ShareFacade;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -54,9 +55,13 @@ class CardController extends Controller
 
         if ($active_plan != null) {
             $business_cards = DB::table('business_cards')
-                ->join('users', 'business_cards.user_id', '=', 'users.user_id')
+                ->join('users', 'business_cards.user_id', '=', 'users.id')
                 ->select('users.user_id', 'users.plan_validity', 'business_cards.*')
-                ->where('business_cards.user_id', Auth::user()->user_id)->where('business_cards.status', 1)->orderBy('business_cards.id', 'desc')->get();
+                ->where('business_cards.user_id', Auth::user()->id)
+                ->where('business_cards.status', 1)
+                ->orderBy('business_cards.id', 'desc')
+                ->get();
+
             $settings = Setting::where('status', 1)->first();
 
             return view('user.cards.cards', compact('business_cards', 'settings'));
@@ -64,6 +69,231 @@ class CardController extends Controller
             return redirect()->route('user.plans');
         }
     }
+
+
+    // Create Card
+    public function CreateCard()
+    {
+        $themes = Theme::where('theme_description', 'vCard')->where('status', 1)->get();
+        $settings = Setting::where('status', 1)->first();
+        $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('status', '1')->count();
+
+        $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
+        $plan_details = json_decode($plan->plan_details);
+
+	    if($plan_details->no_of_vcards == 999) {
+            $no_cards = 999999;
+        } else {
+            $no_cards = $plan_details->no_of_vcards;
+        }
+
+        if ($cards <= $no_cards) {
+            return view('user.cards.create-card', compact('themes', 'settings', 'plan_details'));
+        } else {
+            alert()->error(trans('Maximum card creation limit is exceeded, Please upgrade your plan.'));
+            return redirect()->route('user.cards');
+        }
+    }
+
+    // Save card
+    public function postStore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'adsname' => 'required',
+            'color' => 'required',
+            // 'card_lang' => 'required',
+            // 'cover' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:' . env("SIZE_LIMIT") . '',
+            'logo' => 'image|mimes:jpeg,png,jpg,gif,svg|',
+            // 'title' => 'required',
+            // 'subtitle' => 'required',
+            // 'description' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return back();
+        }
+
+        $cardId = uniqid();
+    //     if ($request->link) {
+    //         $personalized_link = $request->link;
+    //     } else {
+    //         $personalized_link = $cardId;
+    //     }
+    //     $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
+    //     $user_details = User::where('user_id', Auth::user()->user_id)->first();
+    //     $plan_details = json_decode($user_details->plan_details, true);
+    //     $logo = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->logo->getClientOriginalName()) . '.' . $request->logo->extension();
+    //     $cover = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->cover->getClientOriginalName()) . '.' . $request->cover->extension();
+    //     $request->logo->move(public_path('backend/img/vCards'), $logo);
+    //     $request->cover->move(public_path('backend/img/vCards'), $cover);
+    //     $card_url = strtolower(preg_replace('/\s+/', '-', $personalized_link));
+    //     $current_card = BusinessCard::where('card_url', $card_url)->count();
+	// if($plan_details['no_of_vcards'] == 999) {
+    //         $no_cards = 999999;
+    //     } else {
+    //         $no_cards = $plan_details['no_of_vcards'];
+    //     }
+    //     if ($current_card == 0) {
+    //         // Checking, If the user plan allowed card creation is less than created card.
+    //         if ($cards < $no_cards) {
+                DB::beginTransaction();
+                try {
+                    $card = new BusinessCard();
+                    $card->adsname = $request->adsname;
+                    $card->card_id = $cardId;
+                    $card->user_id = Auth::user()->id;
+                    $card->theme_id= 1;
+                    $card->theme_color = $request->color;
+                    $card->card_lang = 'en';
+                    $card->card_url = $cardId;
+                    $card->title = $request->text;
+                    $card->card_type = 'vcard';
+                    $card->phone_number = $request->phone_number;
+                    $card->email = $request->email ?? Auth::user()->email;
+                    $card->footer_text = $request->footer_text;
+                    $card->status = 1;
+                    $card->created_at = date('Y-m-d H:i:s');
+                    $card->created_by = Auth::user()->id;
+                    if(!is_null($request->file('logo')))
+                    {
+                        $logo_ = $request->file('logo');
+                        $base_name = preg_replace('/\..+$/', '', $logo_->getClientOriginalName());
+                        $base_name = explode(' ', $base_name);
+                        $base_name = implode('-', $base_name);
+                        $base_name = Str::lower($base_name);
+                        $image_name = $base_name."-".uniqid().".".$logo_->getClientOriginalExtension();
+                        $file_path = 'assets/uploads/logo/';
+                        if (!File::exists($file_path)) {
+                            File::makeDirectory($file_path, 777, true);
+                        }
+                        $logo_->move($file_path, $image_name);
+                        $card->logo = $file_path.$image_name;
+                    }
+                    $card->save();
+                    if($request->gallery_type=='videosource'){
+                        $_video = $request->file('video');
+                        $base_name = preg_replace('/\..+$/', '', $_video->getClientOriginalName());
+                        $video_name = $base_name . "-" . uniqid() . "." .$_video->getClientOriginalExtension();
+                        $file_path = 'assets/uploads/videos';
+                        if (! File::exists($file_path)) {
+                            File::makeDirectory($file_path);
+                        }
+                        $_video->move($file_path, $video_name);
+                        $video = asset($file_path.'/'.$video_name);
+
+                        DB::table('business_cards')->where('id',$card->id)->update([
+                            'video'=>$video
+                        ]);
+
+                    }elseif ($request->gallery_type=='videourl') {
+                        $video =  $this->getYoutubeEmbad($request->video);
+                        DB::table('business_cards')->where('id',$card->id)->update([
+                            'video'=>$video
+                        ]);
+                    }
+                    elseif ($request->gallery_type=='gallery') {
+
+                        if($request->gallery){
+                            foreach ($request->gallery as $key => $gallery) {
+                                if(!is_null($request->file('gallery')[$key]))
+                                {
+                                    $gallery_image = $request->file('gallery')[$key];
+                                    $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
+                                    $base_name = explode(' ', $base_name);
+                                    $base_name = implode('-', $base_name);
+                                    $base_name = Str::lower($base_name);
+                                    $image_name = $base_name."-".uniqid().".".$gallery_image->getClientOriginalExtension();
+                                    $file_path = 'assets/uploads/gallery/';
+                                    if (!File::exists($file_path)) {
+                                        File::makeDirectory($file_path, 777, true);
+                                    }
+                                    $gallery_image->move($file_path, $image_name);
+                                    $_gallery = $file_path.$image_name;
+
+                                    $gallery_photo = new Gallery();
+                                    $gallery_photo->photo = $_gallery;
+                                    $gallery_photo->card_id = $card->id;
+                                    $gallery_photo->save();
+                                }
+                            }
+                        }
+                    }
+
+                    if($request->website){
+                        DB::table('business_fields')->insert([
+                            'card_id'=> $card->id,
+                            'type' => 'website',
+                            'icon' => 'fa fa-globe',
+                            'label' => 'website',
+                            'content' => $request->website,
+                            // 'position' => $card->id,
+                            'status' => 1,
+                            'created_at' => date('Y-m-d H:i:s')
+
+                        ]);
+                    }
+                    if($request->facebook){
+                        DB::table('business_fields')->insert([
+                            'card_id'=> $card->id,
+                            'type' => 'facebook',
+                            'icon' => 'fab fa-facebook',
+                            'label' => 'facebook',
+                            'content' => $request->facebook,
+                            // 'position' => $card->id,
+                            'status' => 1,
+                            'created_at' => date('Y-m-d H:i:s')
+
+                        ]);
+                    }
+                    if($request->instagram){
+                        DB::table('business_fields')->insert([
+                            'card_id'=> $card->id,
+                            'type' => 'instagram',
+                            'icon' => 'fab fa-instagram',
+                            'label' => 'instagram',
+                            'content' => $request->instagram,
+                            // 'position' => $card->id,
+                            'status' => 1,
+                            'created_at' => date('Y-m-d H:i:s')
+
+                        ]);
+                    }
+                    if($request->cashapp){
+                        DB::table('business_fields')->insert([
+                            'card_id'=> $card->id,
+                            'type' => 'cashapp',
+                            // 'icon' => $card->id,
+                            'label' => 'cashapp',
+                            'content' => $request->cashapp,
+                            // 'position' => $card->id,
+                            'status' => 1,
+                            'created_at' => date('Y-m-d H:i:s')
+
+                        ]);
+                    }
+
+                } catch (\Exception $e) {
+                    dd($e);
+                    DB::rollback();
+                    Toastr::warning(trans('Unable to create card'), 'Warning', ["positionClass" => "toast-top-center"]);
+                    return redirect()->back();
+                }
+                DB::commit();
+                Toastr::success(trans('Card successfully created'), 'Warning', ["positionClass" => "toast-top-center"]);
+                return redirect()->route('user.cards');
+            }
+
+
+        public function editCard(Request $request,$id){
+            $card  = BusinessCard::where('card_id',$id)->first();
+            $card->fields =BusinessField::where('card_id',$card->id)->get();
+            $card->gallery =Gallery::where('card_id',$card->id)->get();
+            $settings = Setting::where('status', 1)->first();
+
+            return view('user.cards.edit-card',compact('card','settings'));
+
+        }
+
+
 
     public function plans()
     {
@@ -138,7 +368,7 @@ class CardController extends Controller
 
                     Session::put('locale', $business_card_details->card_lang);
                     app()->setLocale(Session::get('locale'));
-                    
+
                     $qr_url = "https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=" . $url;
 
                     $shareComponent['facebook'] = "https://www.facebook.com/sharer/sharer.php?u=$url&quote=$shareContent";
@@ -236,29 +466,8 @@ class CardController extends Controller
         }
     }
 
-    // Create Card
-    public function CreateCard()
-    {
-        $themes = Theme::where('theme_description', 'vCard')->where('status', 1)->get();
-        $settings = Setting::where('status', 1)->first();
-        $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
 
-        $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
-        $plan_details = json_decode($plan->plan_details);
-	
-	    if($plan_details->no_of_vcards == 999) {
-            $no_cards = 999999;
-        } else {
-            $no_cards = $plan_details->no_of_vcards;
-        }
 
-        if ($cards <= $no_cards) {
-            return view('user.cards.create-card', compact('themes', 'settings', 'plan_details'));
-        } else {
-            alert()->error(trans('Maximum card creation limit is exceeded, Please upgrade your plan.'));
-            return redirect()->route('user.cards');
-        }
-    }
 
     // Save card
     public function saveBusinessCard(Request $request)
@@ -367,15 +576,15 @@ class CardController extends Controller
                 if (count($request->icon) <= $plan_details->no_of_features) {
                     for ($i = 0; $i < count($request->icon); $i++) {
                         if (isset($request->icon[$i]) && isset($request->label[$i]) && isset($request->value[$i])) {
-                            
-                            
+
+
                             $customContent = $request->value[$i];
-                            
-                            
+
+
                             if($request->type[$i] == 'youtube') {
                               $customContent = str_replace('https://www.youtube.com/watch?v=','', $request->value[$i]);
                             }
-                            
+
                             if($request->type[$i] == 'map') {
 			                  if(substr($request->value[$i], 0, 3) == 'pb=') {
             				    $customContent = $request->value[$i];
@@ -385,8 +594,8 @@ class CardController extends Controller
                               	$customContent = str_replace('https://www.google.com/maps/embed?', '', $customContent);
                               }
             			    }
-                        
-                            
+
+
                             $field = new BusinessField();
                             $field->card_id = $id;
                             $field->type = $request->type[$i];
@@ -395,7 +604,7 @@ class CardController extends Controller
                             $field->content = $customContent;
                             $field->position = $i + 1;
                             $field->save();
-                            
+
                         } else {
                             alert()->error(trans('Atleast add one feature.'));
                             return redirect()->route('user.social.links', $id);
@@ -730,7 +939,7 @@ class CardController extends Controller
             if ($selected_plan == null) {
                 return view('errors.404');
             } else {
-    
+
                 if ($selected_plan->plan_price == 0) {
                     if(Auth::user()->billing_name == "") {
                         return redirect()->route('user.billing', $id);
@@ -825,4 +1034,18 @@ class CardController extends Controller
 
         return response()->json($resp);
     }
+
+
+    public function getYoutubeEmbad($url){
+
+        $query = parse_url($url);
+        if(isset($query['query'])){
+           $remove_extra = substr($query['query'], 0, strpos($query['query'], "&"));
+            $_query = $remove_extra;
+            $video_id = trim($_query,'v=');
+        }
+        $video_file = 'https://www.youtube.com/embed/'.$video_id;
+        return $video_file;
+    }
+
 }

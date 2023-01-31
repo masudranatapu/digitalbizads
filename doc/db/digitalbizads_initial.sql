@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 28, 2023 at 11:24 AM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.1.6
+-- Generation Time: Jan 31, 2023 at 02:55 PM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.4.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -32,27 +32,39 @@ CREATE TABLE `business_cards` (
   `card_id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `theme_id` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `adsname` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `theme_color` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `card_lang` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'EN',
-  `cover` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `profile` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `cover` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `logo` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `card_url` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `card_type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `title` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sub_title` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `card_type` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `sub_title` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `card_status` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'activated',
+  `phone_number` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `video` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `footer_text` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `created_by` int(11) DEFAULT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_by` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `deleted_by` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `business_cards`
 --
 
-INSERT INTO `business_cards` (`id`, `card_id`, `user_id`, `theme_id`, `theme_color`, `card_lang`, `cover`, `profile`, `card_url`, `card_type`, `title`, `sub_title`, `description`, `card_status`, `status`, `created_at`, `updated_at`) VALUES
-(1, '63d4edfa856f0', '63d4eb634a936', '7ccc432a06vhd', 'green', 'en', '/backend/img/vCards/IMG-63d4edfa8619b-heavy-duty-best-fishing-rods-for-big-fish.jpg.jpg', '/backend/img/vCards/IMG-63d4edfa85fd0-5f6f1d4bc69e71601117515.jpg.jpg', '63d4edfa856f0', 'vcard', 'DigitalBizAds Card', 'Digital Card', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'activated', '1', '2023-01-28 03:42:18', '2023-01-28 03:42:18');
+INSERT INTO `business_cards` (`id`, `card_id`, `user_id`, `theme_id`, `adsname`, `theme_color`, `card_lang`, `cover`, `logo`, `card_url`, `card_type`, `title`, `sub_title`, `description`, `phone_number`, `email`, `video`, `footer_text`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`, `deleted_at`, `deleted_by`) VALUES
+(1, '63d9096c479d7', '2', '1', 'Bigo Online', '#000000', 'en', NULL, NULL, '63d9096c479d7', 'vcard', 'Bigo Online Heading', NULL, NULL, '01710788656', 'arifmahmud64@gmail.com', NULL, NULL, '1', '2023-01-31 06:28:28', 2, '2023-01-31 06:28:28', NULL, NULL, NULL),
+(2, '63d9197214503', '2', '1', 'ada', '#000000', 'en', NULL, NULL, '63d9197214503', 'vcard', 'sdasdsadasd', NULL, NULL, '01710788656', 'aaa@gmail.com', 'https://www.youtube.com/embed/', NULL, '1', '2023-01-31 07:36:50', 2, '2023-01-31 07:36:50', NULL, NULL, NULL),
+(3, '63d919cb66f73', '2', '1', 'asas', '#000000', 'en', NULL, NULL, '63d919cb66f73', 'vcard', 'adadasdasd', NULL, NULL, '01710788656', 'asdasdas@gmail.com', 'http://127.0.0.1:8000/assets/uploads/videos/video-63d919cb6857d.mp4', NULL, '1', '2023-01-31 07:38:19', 2, '2023-01-31 07:38:19', NULL, NULL, NULL),
+(4, '63d91aa2b6db5', '2', '1', 'adadad', '#000000', 'en', NULL, NULL, '63d91aa2b6db5', 'vcard', 'adadad', NULL, NULL, '01710788656', 'asasas@gmail.com', 'https://www.youtube.com/embed/yMLnqerhUG0', NULL, '1', '2023-01-31 07:41:54', 2, '2023-01-31 07:41:54', NULL, NULL, NULL),
+(11, '63d91d73e1bb1', '2', '1', 'asdasda', '#000000', 'en', NULL, NULL, '63d91d73e1bb1', 'vcard', 'dasdasd', NULL, NULL, '01710788656', 'asdasda@gmail.com', 'https://www.youtube.com/embed/yMLnqerhUG0', NULL, '1', '2023-01-31 07:53:55', 2, '2023-01-31 07:53:55', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -64,10 +76,10 @@ CREATE TABLE `business_fields` (
   `id` int(10) UNSIGNED NOT NULL,
   `card_id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `icon` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `icon` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `label` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `position` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `position` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `status` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -78,7 +90,25 @@ CREATE TABLE `business_fields` (
 --
 
 INSERT INTO `business_fields` (`id`, `card_id`, `type`, `icon`, `label`, `content`, `position`, `status`, `created_at`, `updated_at`) VALUES
-(1, '63d4edfa856f0', 'address', 'fab fa-accessible-icon', 'Odometer', 'Rony', '1', '1', '2023-01-28 03:42:36', '2023-01-28 03:42:36');
+(1, '1', 'website', NULL, 'website', 'https://www.facebook.com/', NULL, '1', '2023-01-31 06:28:28', '2023-01-31 12:28:28'),
+(2, '1', 'facebook', NULL, 'facebook', 'arifurrahmansw', NULL, '1', '2023-01-31 06:28:28', '2023-01-31 12:28:28'),
+(3, '1', 'instagram', NULL, 'instagram', 'arifurrahmansw', NULL, '1', '2023-01-31 06:28:28', '2023-01-31 12:28:28'),
+(4, '2', 'website', '2', 'website', 'https://www.youtube.com/', NULL, '1', '2023-01-31 07:36:50', '2023-01-31 13:36:50'),
+(5, '2', 'facebook', 'fab fa-facebook', 'facebook', 'sadasd', NULL, '1', '2023-01-31 07:36:50', '2023-01-31 13:36:50'),
+(6, '2', 'instagram', 'fab fa-instagram', 'instagram', 'asdsad', NULL, '1', '2023-01-31 07:36:50', '2023-01-31 13:36:50'),
+(7, '2', 'cashapp', NULL, 'cashapp', 'asdasd', NULL, '1', '2023-01-31 07:36:50', '2023-01-31 13:36:50'),
+(8, '3', 'website', '3', 'website', 'https://www.youtube.com/', NULL, '1', '2023-01-31 07:38:19', '2023-01-31 13:38:19'),
+(9, '3', 'facebook', 'fab fa-facebook', 'facebook', 'aasa', NULL, '1', '2023-01-31 07:38:19', '2023-01-31 13:38:19'),
+(10, '3', 'instagram', 'fab fa-instagram', 'instagram', 'sasas', NULL, '1', '2023-01-31 07:38:19', '2023-01-31 13:38:19'),
+(11, '3', 'cashapp', NULL, 'cashapp', 'asasas', NULL, '1', '2023-01-31 07:38:19', '2023-01-31 13:38:19'),
+(12, '4', 'website', '4', 'website', 'https://www.youtube.com', NULL, '1', '2023-01-31 07:41:54', '2023-01-31 13:41:54'),
+(13, '4', 'facebook', 'fab fa-facebook', 'facebook', 'sdadasd', NULL, '1', '2023-01-31 07:41:54', '2023-01-31 13:41:54'),
+(14, '4', 'instagram', 'fab fa-instagram', 'instagram', 'asdasd', NULL, '1', '2023-01-31 07:41:54', '2023-01-31 13:41:54'),
+(15, '4', 'cashapp', NULL, 'cashapp', 'asdsad', NULL, '1', '2023-01-31 07:41:54', '2023-01-31 13:41:54'),
+(16, '11', 'website', 'fa fa-globe', 'website', 'https://www.youtube.com', NULL, '1', '2023-01-31 07:53:55', '2023-01-31 13:53:55'),
+(17, '11', 'facebook', 'fab fa-facebook', 'facebook', 'asasas', NULL, '1', '2023-01-31 07:53:55', '2023-01-31 13:53:55'),
+(18, '11', 'instagram', 'fab fa-instagram', 'instagram', 'asas', NULL, '1', '2023-01-31 07:53:55', '2023-01-31 13:53:55'),
+(19, '11', 'cashapp', NULL, 'cashapp', 'asas', NULL, '1', '2023-01-31 07:53:55', '2023-01-31 13:53:55');
 
 -- --------------------------------------------------------
 
@@ -109,6 +139,27 @@ CREATE TABLE `business_hours` (
 
 INSERT INTO `business_hours` (`id`, `card_id`, `Monday`, `Tuesday`, `Wednesday`, `Thursday`, `Friday`, `Saturday`, `Sunday`, `is_always_open`, `is_display`, `status`, `created_at`, `updated_at`) VALUES
 (1, '63d4edfa856f0', '09:00 - 18:30', '09:00 - 18:30', '09:00 - 18:30', '09:00 - 18:30', '09:00 - 18:30', '09:00 - 18:30', '09:00 - 18:30', 'Closed', '1', '1', '2023-01-28 03:42:51', '2023-01-28 03:42:51');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `card_gallery`
+--
+
+CREATE TABLE `card_gallery` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `card_id` int(11) NOT NULL,
+  `photo` varchar(190) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data for table `card_gallery`
+--
+
+INSERT INTO `card_gallery` (`id`, `card_id`, `photo`, `created_at`, `updated_at`) VALUES
+(1, 1, 'assets/uploads/gallery/arobil_logo_70x70-63d9096c48a25.png', '2023-01-31 06:28:28', '2023-01-31 06:28:28');
 
 -- --------------------------------------------------------
 
@@ -1051,6 +1102,12 @@ ALTER TABLE `business_hours`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `card_gallery`
+--
+ALTER TABLE `card_gallery`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `config`
 --
 ALTER TABLE `config`
@@ -1180,18 +1237,24 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `business_cards`
 --
 ALTER TABLE `business_cards`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `business_fields`
 --
 ALTER TABLE `business_fields`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `business_hours`
 --
 ALTER TABLE `business_hours`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `card_gallery`
+--
+ALTER TABLE `card_gallery`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
