@@ -52,44 +52,44 @@
                         </h2>
                     @endif
             </div>
-            @if (!empty($cardinfo->gallery))
-            @if ($cardinfo->gallery[0]->gallery_type=='videourl')
-            <div class="video_wrapper">
-                <div class="ratio ratio-1x1">
-                    <iframe width="100%"  src="{{ $cardinfo->gallery[0]->content }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-            </div>
-                @elseif ($cardinfo->gallery[0]->gallery_type=='videosource')
-             <!-- Video -->
-             <div class="video_wrapper">
-                <div class="ratio ratio-1x1">
-                        <video  autoplay="" loop="" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover" controls>
-                            <source src="{{ $cardinfo->gallery[0]->content }}" type="video/mp4">
-                            <source src="{{ $cardinfo->gallery[0]->content }}" type="video/ogg">
-                        </video>
-                </div>
-            </div>
-            @elseif ($cardinfo->gallery[0]->gallery_type=='gallery')
-            <div class="carousel_slider">
-                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        @foreach ($cardinfo->gallery as $key=> $gallery)
-                        <div class="carousel-item {{ $key==0 ? 'active' : '' }}">
-                            <img src="{{ asset($gallery->content) }}" class="d-block w-100" alt="image">
+            @if (!empty($cardinfo->gallery[0]))
+                @if ($cardinfo->gallery[0]->gallery_type=='videourl')
+                    <div class="video_wrapper">
+                        <div class="ratio ratio-1x1">
+                            <iframe width="100%"  src="{{ $cardinfo->gallery[0]->content }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
-                        @endforeach
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
-                        data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
-                        data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </button>
-                </div>
-            </div>
-            @endif
+                @elseif ($cardinfo->gallery[0]->gallery_type=='videosource')
+                    <!-- Video -->
+                    <div class="video_wrapper">
+                        <div class="ratio ratio-1x1">
+                                <video  autoplay="" loop="" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover" controls>
+                                    <source src="{{ $cardinfo->gallery[0]->content }}" type="video/mp4">
+                                    <source src="{{ $cardinfo->gallery[0]->content }}" type="video/ogg">
+                                </video>
+                        </div>
+                    </div>
+                @elseif ($cardinfo->gallery[0]->gallery_type=='gallery')
+                    <div class="carousel_slider">
+                        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                @foreach ($cardinfo->gallery as $key=> $gallery)
+                                <div class="carousel-item {{ $key==0 ? 'active' : '' }}">
+                                    <img src="{{ asset($gallery->content) }}" class="d-block w-100" alt="image">
+                                </div>
+                                @endforeach
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                    </div>
+                @endif
             @endif
                 <!-- purchase button -->
                 <div class="purchase_btn text-center mb-4">
@@ -128,7 +128,7 @@
                             <div class="social_item qrcode_icon">
                                 <a href="javascript:void(0)" target="_blank" data-bs-toggle="modal"
                                     data-bs-target="#qrcodeModal">
-                                    <img src="assets/images/icon/qr-code.svg" alt="qr-code">
+                                    <img src="{{ asset('assets/images/icon/qr-code.svg') }}" alt="qr-code">
                                 </a>
                             </div>
                         </div>

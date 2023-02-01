@@ -52,21 +52,112 @@
                             <div class="card_template">
                                 <!-- title -->
                                 <div class="card_title p-2 pt-3">
-                                    <h2>
-                                        <span>Express T-Shirts</span>
-                                        <a href="javascript:void(0)" class="float-end login_btn">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <line x1="3" y1="12" x2="21" y2="12"></line>
-                                                <line x1="3" y1="6" x2="21" y2="6"></line>
-                                                <line x1="3" y1="18" x2="21" y2="18"></line>
-                                            </svg>
-                                        </a>
-                                    </h2>
+                                    @if (!empty($card->logo))
+                                        <h2>
+                                            <div class="text-center">
+                                                <img src="{{ asset($card->logo) }}" alt="logo">
+                                            </div>
+                                            <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
+                                                data-bs-target="#loginModal">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none"
+                                                    stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                                                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                                                </svg>
+                                            </a>
+                                        </h2>
+                                        @else
+                                            <h2>
+                                                <span>{{ $card->title }}</span>
+                                                <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
+                                                    data-bs-target="#loginModal">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none"
+                                                        stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                                                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                                                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                                                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                                                    </svg>
+                                                </a>
+                                            </h2>
+                                        @endif
                                 </div>
                                 <!-- slider -->
-                                <div class="carousel_slider">
+                                {{-- <div class="carousel_slider">
+                                    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active">
+                                                <img src="{{ asset('backend/img') }}/1.jpg" class="d-block w-100"
+                                                    alt="image">
+                                            </div>
+                                            <div class="carousel-item">
+                                                <img src="{{ asset('backend/img') }}/2.jpg" class="d-block w-100"
+                                                    alt="image">
+                                            </div>
+                                            <div class="carousel-item">
+                                                <img src="{{ asset('backend/img') }}/3.jpg" class="d-block w-100"
+                                                    alt="image">
+                                            </div>
+                                        </div>
+                                        <button class="carousel-control-prev" type="button"
+                                            data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                                viewBox="0 0 24 24" fill="none" stroke="#212121" stroke-width="1"
+                                                stroke-linecap="butt" stroke-linejoin="bevel">
+                                                <path d="M19 12H6M12 5l-7 7 7 7"></path>
+                                            </svg>
+                                        </button>
+                                        <button class="carousel-control-next" type="button"
+                                            data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                                                viewBox="0 0 24 24" fill="none" stroke="#212121" stroke-width="1"
+                                                stroke-linecap="butt" stroke-linejoin="bevel">
+                                                <path d="M5 12h13M12 5l7 7-7 7"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div> --}}
+                                @if (!empty($card->gallery[0]))
+                                    @if ($card->gallery[0]->gallery_type=='videourl')
+                                        <div class="video_wrapper">
+                                            <div class="ratio ratio-1x1">
+                                                <iframe width="100%"  src="{{ $card->gallery[0]->content }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                            </div>
+                                        </div>
+                                    @elseif ($card->gallery[0]->gallery_type=='videosource')
+                                        <!-- Video -->
+                                        <div class="video_wrapper">
+                                            <div class="ratio ratio-1x1">
+                                                    <video  autoplay="" loop="" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover" controls>
+                                                        <source src="{{ $card->gallery[0]->content }}" type="video/mp4">
+                                                        <source src="{{ $card->gallery[0]->content }}" type="video/ogg">
+                                                    </video>
+                                            </div>
+                                        </div>
+                                    @elseif ($card->gallery[0]->gallery_type=='gallery')
+                                        <div class="carousel_slider">
+                                            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                                                <div class="carousel-inner">
+                                                    @foreach ($card->gallery as $key=> $gallery)
+                                                    <div class="carousel-item {{ $key==0 ? 'active' : '' }}">
+                                                        <img src="{{ asset($gallery->content) }}" class="d-block w-100" alt="image">
+                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                                                    data-bs-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                </button>
+                                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                                                    data-bs-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @else
+                                 <!-- slider -->
+                                 <div class="carousel_slider">
                                     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                                         <div class="carousel-inner">
                                             <!-- carousel item -->
@@ -104,9 +195,12 @@
                                     </div>
                                 </div>
 
+                                @endif
+
                                 <!-- purchase button -->
                                 <div class="purchase_btn text-center mb-4">
-                                    <a href="{{ $card->website }}">Shop</a>
+                                    <a href="{{ $card->website }}">SHOP</a>
+
                                 </div>
 
                                 <!-- social medai -->
@@ -117,55 +211,86 @@
 
                                     <div class="social_wrapper">
                                         <div class="row row-cols-4 row-cols-sm-5 g-3">
-                                            <!-- social icon -->
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a href="#" target="_blank">
-                                                        <i class="fa fa-phone"></i>
-                                                    </a>
+                                             <!-- social icon -->
+                                            @if (!empty($card->phone_number))
+                                                <div class="col">
+                                                    <div class="social_item">
+                                                        <a href="tel:{{ $card->phone_number }}">
+                                                            <i class="fa fa-phone"></i>
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <!-- social icon -->
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a href="#" target="_blank">
-                                                        <i class="fa fa-envelope"></i>
-                                                    </a>
+                                                <div class="col">
+                                                    <div class="social_item">
+                                                        <a href="sms://{{ $card->phone_number }}">
+                                                            <i class="fa fa-comment"></i>
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            @endif
+                                            <!-- Qr code icon -->
+                                                <div class="col">
+                                                    <div class="social_item qrcode_icon">
+                                                        <a href="javascript:void(0)" target="_blank" data-bs-toggle="modal"
+                                                            data-bs-target="#qrcodeModal">
+                                                            <img src="{{ asset('assets/images/icon/qr-code.svg') }}" alt="qr-code">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            @if (!empty($card->email))
                                             <!-- social icon -->
+                                                <div class="col">
+                                                    <div class="social_item">
+                                                        <a href="mailto:{{ $card->email }}">
+                                                            <i class="fa fa-envelope"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                            @if (!empty($card->website))
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="#" target="_blank">
+                                                    <a href="{{ $card->website }}" target="_blank">
                                                         <i class="fa fa-globe"></i>
                                                     </a>
                                                 </div>
                                             </div>
-                                            <!-- Qr code icon -->
+                                            @endif
+                                            <!-- social icon -->
+
+                                            <!-- social icon -->
+                                            @if (!empty($card->contacts))
+                                            @foreach ($card->contacts as $contact)
+
+                                            {{--
                                             <div class="col">
-                                                <div class="social_item qrcode_icon">
-                                                    <a href="javascript:void(0)" target="_blank">
-                                                        <img src="{{ asset('backend/img') }}/icon/qr-code.svg"
-                                                            alt="qr-code">
+                                                <div class="social_item">
+                                                    <a href="{{ $card->contacts }}" target="_blank">
+                                                        <i class="fa fa-comment"></i>
                                                     </a>
                                                 </div>
-                                            </div>
+                                            </div> --}}
+
+                                            @if ($contact->label=='facebook')
                                             <!-- social icon -->
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="#" target="_blank">
+                                                    <a href="https://www.facebook.com/{{ $contact->content }}" target="_blank">
                                                         <i class="fab fa-facebook"></i>
                                                     </a>
                                                 </div>
                                             </div>
-                                            <!-- social icon -->
+                                            @elseif ($contact->label=='instagram')
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="#" target="_blank">
+                                                    <a href="https://www.instagram.com/{{ $contact->content }}" target="_blank">
                                                         <i class="fab fa-instagram"></i>
                                                     </a>
                                                 </div>
                                             </div>
+                                            @endif
+                                            @endforeach
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

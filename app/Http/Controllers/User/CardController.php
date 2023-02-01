@@ -102,16 +102,13 @@ class CardController extends Controller
             alert()->error(trans('Your package is expired please upgrade'));
             return redirect()->route('user.plans');
         }
-        dd($validity);
         $check = checkCardLimit(Auth::id());
         if ($check == false) {
             alert()->error(trans('Your card limit is over please upgrade your package for more card'));
             return redirect()->back();
         }
-
         $user_details = User::where('user_id', Auth::user()->user_id)->first();
         $plan_details = json_decode($user_details->plan_details, true);
-
         if($request->gallery_type=='videosource'){
             $validator = Validator::make($request->all(), [
                    'video' => 'required|mimetypes:video/x-ms-asf,video/x-flv,video/mp4,application/x-mpegURL,video/MP2T,video/3gpp,video/quicktime,video/x-msvideo,video/x-ms-wmv,video/avi | max:50000'
@@ -121,7 +118,6 @@ class CardController extends Controller
                 'video' =>'required|url',
            ]);
         }
-
         $validator = Validator::make($request->all(), [
             'adsname' => 'required',
             'theme_color' => 'required|max:10',
@@ -265,7 +261,7 @@ class CardController extends Controller
                             'label' => 'facebook',
                             'content' => $request->facebook,
                             'status' => 1,
-                            'updated_at' => date('Y-m-d H:i:s')
+                            'created_at' => date('Y-m-d H:i:s')
                         ]);
                     }
                     if($request->instagram){
@@ -276,7 +272,7 @@ class CardController extends Controller
                             'label' => 'instagram',
                             'content' => $request->instagram,
                             'status' => 1,
-                            'updated_at' => date('Y-m-d H:i:s')
+                            'created_at' => date('Y-m-d H:i:s')
                         ]);
                     }
                 } catch (\Exception $e) {
