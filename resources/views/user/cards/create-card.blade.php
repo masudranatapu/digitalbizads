@@ -515,6 +515,14 @@ function convertToLink( str ) {
         }
     }
 
+    $(document).ready(function(){
+    $('#gallery').change(function(){
+        $(".carousel-inner").html('');
+        for (var i = 0; i < $(this)[0].files.length; i++) {
+            $(".carousel-inner").append('<div class="carousel-item active"><img src="'+window.URL.createObjectURL(this.files[i])+'" class="d-block w-100"/></div>');
+        }
+    });
+});
 
     $('#adsname,#personalized_link').on('keyup keydown paste',function(){
         var str = $(this).val();
