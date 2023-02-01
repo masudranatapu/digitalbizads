@@ -24,12 +24,10 @@
         <div class="card_template">
             <!-- title -->
             <div class="card_title p-2 pt-3">
-
                     @if (!empty($cardinfo->logo))
-
                     <h2>
                         <div class="text-center">
-                            <img src="{{ asset($cardinfo->logo) }}" width="140" alt="logo">
+                            <img src="{{ asset($cardinfo->logo) }}" alt="logo">
                         </div>
                         <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
                             data-bs-target="#loginModal">
@@ -61,8 +59,12 @@
             @if (!empty($cardinfo->gallery))
 
             @if ($cardinfo->gallery[0]->gallery_type=='videourl')
-                <iframe width="100%" height="315" src="{{ $cardinfo->gallery[0]->content }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            @elseif ($cardinfo->gallery[0]->gallery_type=='videosource')
+            <div class="video_wrapper">
+                <div class="ratio ratio-1x1">
+                    <iframe width="100%"  src="{{ $cardinfo->gallery[0]->content }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+                @elseif ($cardinfo->gallery[0]->gallery_type=='videosource')
              <!-- Video -->
              <div class="video_wrapper">
                 <div class="ratio ratio-1x1">
@@ -189,6 +191,7 @@
             <div class="subscribe mb-3">
                 <form action="{{ route('card.subscriber') }}" method="post">
                     @csrf
+                    <input type="hidden" id="" name="{{  }}">
                     <div class="input-group">
                         <input type="text" name="email" id="email" class="form-control @error('email') is-invalid @enderror"
                             placeholder="Enter your emaill..." required>

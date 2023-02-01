@@ -9,6 +9,27 @@
 </style>
 <?php
     $tabindex = 1;
+
+
+    if(!empty($card->gallery[0])){
+        if ($card->gallery[0]['gallery_type']=='gallery'){
+            $gallery_type ='gallery';
+        }
+        elseif ($card->gallery[0]['gallery_type']=='videourl') {
+            $gallery_type ='videourl';
+        }
+        elseif ($card->gallery[0]['gallery_type']=='videosource') {
+            $gallery_type ='videosource';
+        }
+    }else{
+        $gallery_type = 'gallery';
+    }
+
+
+
+
+
+
 ?>
 <div class="page-wrapper">
     <div class="container-xl">
@@ -231,30 +252,30 @@
                                         <div class="mb-3 form-input">
                                             <label for="" class="form-label">Gallery or Video</label>
                                             <select id="selectField2" name="gallery_type" class="form-control" tabindex="{{ $tabindex++ }}">
-                                                <option value="gallery" @if (!empty($card->gallery[0]['gallery_type']=='gallery')) selected @endif>Gallery</option>
-                                                <option value="videourl" @if (!empty($card->gallery[0]['gallery_type']=='videourl')) selected @endif>Video Url</option>
-                                                <option value="videosource" @if (!empty($card->gallery[0]['gallery_type']=='videosource')) selected @endif>Uplaod Video</option>
+                                                <option value="gallery" @if ($gallery_type=='gallery') selected @endif>Gallery</option>
+                                                <option value="videourl" @if ($gallery_type=='videourl') selected @endif>Video Url</option>
+                                                <option value="videosource" @if ($gallery_type=='videosource') selected @endif>Uplaod Video</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="mb-3 form-input" id="galleryfield">
+                                        <div class="mb-3 form-input {{ $gallery_type=='gallery' ? 'd-block':'d-none' }}" id="galleryfield">
                                             <label for="gallery" class="form-label">Gallery (Select Multiple Images)</label>
                                             <input type="file" name="gallery[]" id="gallery" class="form-control @error('gallery') is-invalid @enderror" tabindex="{{ $tabindex++ }}" multiple required>
                                             @if ($errors->has('gallery'))
                                                 <span class="help-block text-danger">{{$errors->first('gallery') }}</span>
                                             @endif
                                         </div>
-                                        <div class="mb-3 d-none form-input" id="videourl">
+                                        <div class="mb-3 form-input {{ $gallery_type=='videourl' ? 'd-block':'d-none' }}" id="videourl">
                                             <label for="video" class="form-label">Video Url</label>
-                                            <input type="text" name="video" placeholder="your video url" id="video" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->video }}">
+                                            <input type="text" name="video" placeholder="your video url" id="video" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->gallery[0]['content'] }}">
                                             @if ($errors->has('video'))
                                                 <span class="help-block text-danger">{{$errors->first('video') }}</span>
                                             @endif
                                         </div>
-                                        <div class="mb-3 form-input d-none" id="videosource">
+                                        <div class="mb-3 form-input {{ $gallery_type=='videosource' ? 'd-block':'d-none' }}" id="videosource">
                                             <label for="video" class="form-label">Uplaod Video</label>
-                                            <input type="text" name="video" placeholder="upload your video" id="video" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="file" name="video" placeholder="upload your video" id="video" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('video'))
                                                 <span class="help-block text-danger">{{$errors->first('video') }}</span>
                                             @endif

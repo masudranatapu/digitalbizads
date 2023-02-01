@@ -44,6 +44,7 @@ a {
 .card_title h2 img {
     margin: 0 auto;
     text-align: center;
+    max-height: 50px;
 }
 
 .login_btn {

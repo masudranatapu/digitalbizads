@@ -51,7 +51,7 @@
                                             @csrf
                                             <div class="row">
                                                 {{-- Script Type --}}
-                                                <div class="col-md-4 col-xl-4">
+                                                {{-- <div class="col-md-4 col-xl-4">
                                                     <div class="mb-3">
                                                         <label class="form-label required"
                                                             for="app_type">{{ __('Application Type') }}</label>
@@ -68,7 +68,7 @@
                                                                 {{ __('Both') }}</option>
                                                         </select>
                                                     </div>
-                                                </div>
+                                                </div> --}}
 
                                                 {{-- Timezone --}}
                                                 <div class="col-md-4 col-xl-4">

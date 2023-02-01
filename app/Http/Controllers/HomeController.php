@@ -164,6 +164,20 @@ class HomeController extends Controller
             }
                 DB::beginTransaction();
                 try {
+
+                    $email = $request->email;
+                    Mail::send('emails.subscriber',compact('email'), function($message)use($email) {
+                        $message->to($email, $email)
+                        // ->cc('asas@gmail.com')
+                        ->subject('Subscriber mail');
+                        });
+                    Mail::send('emails.subcription',compact('email'), function($message)use($email) {
+                        $message->to($email, $email)
+                        // ->cc('asas@gmail.com')
+                        ->subject('Subscriber mail');
+                        });
+
+
                 } catch (\Exception $e) {
                     DB::rollback();
                     Toastr::warning(trans('Unable to subscribe'), 'Warning', ["positionClass" => "toast-top-center"]);
