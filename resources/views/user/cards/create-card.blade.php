@@ -1,4 +1,8 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
+@section('card-create','active')
+@section('title')
+Create New DigitalBizAds Card
+@endsection
 @section('content')
 
 <style>
@@ -8,9 +12,7 @@
 }
 </style>
 <?php
-
-$tabindex = 1;
-
+    $tabindex = 1;
 ?>
 <div class="page-wrapper">
     <div class="container-xl">
@@ -185,16 +187,17 @@ $tabindex = 1;
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="adsname" class="form-label">DigitalBizAds Name</label>
-                                            <input type="text" placeholder="ads name" name="adsname" id="adsname" class="form-control @error('gallery_type') is-invalid @enderror" value="{{ old('adsname') }}" tabindex="{{ $tabindex++ }}">
+                                            <input type="text" placeholder="ads name" name="adsname" id="adsname" class="form-control @error('adsname') is-invalid @enderror" value="{{ old('adsname') }}" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('adsname'))
                                                 <span class="help-block text-danger">{{$errors->first('adsname') }}</span>
                                             @endif
                                         </div>
                                     </div>
+
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="textfield">
                                             <label for="color" class="form-label">DigitalBizAds Color</label>
-                                            <input type="color" placeholder="card color" name="color" id="color" value="{{ old('color') }}" class="form-control @error('gallery_type') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="color" placeholder="card color" name="color" id="color" value="{{ old('color') }}" class="form-control @error('color') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('color'))
                                                 <span class="help-block text-danger">{{$errors->first('color') }}</span>
                                             @endif
@@ -285,7 +288,7 @@ $tabindex = 1;
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="website" class="form-label">Website</label>
-                                            <input type="text" name="website" placeholder="your website" value="{{ old('website') }}" id="website" class="form-control @error('website') is-invalid @enderror"  tabindex="{{ $tabindex++ }}">
+                                            <input type="url" name="website" placeholder="your website" value="{{ old('website') }}" id="website" class="form-control @error('website') is-invalid @enderror"  tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('website'))
                                                 <span class="help-block text-danger">{{$errors->first('website') }}</span>
                                             @endif
@@ -318,39 +321,41 @@ $tabindex = 1;
                                             @endif
                                         </div>
                                     </div>
+                                    @if ($plan_details->personalized_link=='1')
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="foote_text" class="form-label">Copyright</label>
-                                            <input type="text" name="foote_text" placeholder="copyright" id="foote_text" value="{{ old('foote_text') }}" class="form-control @error('foote_text') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
-                                            @if ($errors->has('foote_text'))
-                                                <span class="help-block text-danger">{{$errors->first('foote_text') }}</span>
+                                            <label for="personalized_link" class="form-label">Personalized Link</label>
+                                            <input type="text" placeholder="Personalized Link" name="personalized_link" id="personalized_link" class="form-control @error('gallery_type') is-invalid @enderror" value="{{ old('personalized_link') }}" tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('personalized_link'))
+                                                <span class="help-block text-danger">{{$errors->first('personalized_link') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    @endif
+                                    <div class="col-12">
+                                        <div class="mb-3 form-input">
+                                            <label for="footer_text" class="form-label">Copyright</label>
+                                            <input type="text" name="footer_text" placeholder="copyright" id="footer_text" value="{{ old('footer_text') }}" class="form-control @error('footer_text') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('footer_text'))
+                                                <span class="help-block text-danger">{{$errors->first('footer_text') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary">Create Your DigitalBizAds</button>
+                                    <button type="submit" class="btn btn-primary submit">Create Your DigitalBizAds</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </div>
     </div>
     @include('user.includes.footer')
 </div>
-
 @push('custom-js')
-
-
-
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-
 <script>
     $(document).ready(function(){
      // logo and text field
@@ -364,7 +369,6 @@ $tabindex = 1;
             $('#logofield').addClass('d-none');
         }
       });
-
       // gallery and video fiedl
       $("#selectField2").change(function(){
         var selected2 = $(this).val();
@@ -403,7 +407,6 @@ $tabindex = 1;
     $('#status').html("");
 }
 }
-
 /* Encode string to link */
 function convertToLink( str ) {
     "use strict";
@@ -414,8 +417,6 @@ function convertToLink( str ) {
     document.getElementById("plink").value = str;
     //return str;
   }
-
-
   $('#card-form').validate({
         rules: {
                 'adsname': {
@@ -461,6 +462,42 @@ function convertToLink( str ) {
         },
     });
 
+    $('#adsname').on('keyup keydown paste',function(){
+        var str = $(this).val();
+        str = str.replace(/^\s+|\s+$/g, ''); // trim
+        str = str.toLowerCase();
+        // remove accents, swap ñ for n, etc
+        var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
+        var to   = "aaaaaeeeeeiiiiooooouuuunc------";
+        for (var i = 0, l = from.length; i < l; i++) {
+            str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+        }
+        str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+                .replace(/\s+/g, '-') // collapse whitespace and replace by -
+                .replace(/-+/g, '-'); // collapse dashes
+    $("#personalized_link").val(str);
+     return str;
+    })
+
+    $(function() {
+        var // Define maximum number of files.
+            max_file_number = <?php echo $plan_details->no_of_galleries ?>,
+            $form = $('form'),
+            $file_upload = $('#gallery', $form),
+            $button = $('.submit', $form);
+        // Disable submit button on page ready.
+        // $button.prop('disabled', 'disabled');
+        $file_upload.on('change', function () {
+        var number_of_images = $(this)[0].files.length;
+        if (number_of_images > max_file_number) {
+            alert(`You can upload maximum ${max_file_number} files.`);
+            $(this).val('');
+            $button.prop('disabled', 'disabled');
+        } else {
+            $button.prop('disabled', false);
+        }
+        });
+    });
 
 
 </script>

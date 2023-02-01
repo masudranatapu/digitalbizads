@@ -19,7 +19,7 @@ use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Illuminate\Support\Facades\Redirect;
-
+use Validator;
 class HomeController extends Controller
 {
     public function index()
@@ -130,6 +130,7 @@ class HomeController extends Controller
             // DB::table('business_cards')->where('id',$cardinfo->id)->increment('total_hit', 1);
             $user = User::find($cardinfo->user_id);
             $url = url($cardinfo->card_url);
+
             if(Auth::user() && ($cardinfo->user_id == Auth::id()) ){
             }else{
                 // if($cardinfo->status == 0){
@@ -148,5 +149,29 @@ class HomeController extends Controller
             return redirect()->route('user.card.create');
         }
     }
+
+
+
+
+
+    public function postSubscriber(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email'
+            ]);
+            if ($validator->fails()) {
+                return back();
+            }
+                DB::beginTransaction();
+                try {
+                } catch (\Exception $e) {
+                    DB::rollback();
+                    Toastr::warning(trans('Unable to subscribe'), 'Warning', ["positionClass" => "toast-top-center"]);
+                    return redirect()->back();
+                }
+                DB::commit();
+                Toastr::success(trans('Successfully subscribe'), 'Warning', ["positionClass" => "toast-top-center"]);
+                 return redirect()->back();
+            }
 
 }

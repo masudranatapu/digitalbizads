@@ -106,14 +106,10 @@
                                         <td class="text-muted">
                                             {{ date('d/M/Y', strtotime($row->plan_validity)) }}</td>
                                         <td class="text-muted">
-                                            @if ($row->status == '0')
-
-                                            <span class="badge bg-red">{{ __('Inactive') }}</span
-
-                                            @else
-
+                                            @if ($row->card_status == 'activate')
                                             <span class="badge bg-green">{{ __('Active') }}</span>
-
+                                           @else
+                                           <span class="badge bg-red">{{ __('Inactive') }}</span>
                                             @endif
                                         </td>
                                         <td>
@@ -126,12 +122,10 @@
                                                 <a class="btn btn-primary btn-sm"
                                                     href="{{ route('card.preview', $row->card_url)}}"
                                                     target="_blank">{{ __('Preview') }}</a>
-{{--
+                                                    {{--
                                                 <a class="btn btn-primary btn-sm"
                                                     href="{{ URL::to('/')."/".$row->card_url }}"
                                                     target="_blank">{{ __('Live') }}</a> --}}
-
-
                                                 {{-- @if ($row->status == '1')
                                                 <a class="open-model btn btn-primary btn-sm"
                                                     data-id="{{ $row->card_id }}"

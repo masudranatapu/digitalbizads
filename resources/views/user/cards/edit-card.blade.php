@@ -8,9 +8,7 @@
 }
 </style>
 <?php
-
-$tabindex = 1;
-
+    $tabindex = 1;
 ?>
 <div class="page-wrapper">
     <div class="container-xl">
@@ -50,7 +48,6 @@ $tabindex = 1;
                                         </a>
                                     </h2>
                                 </div>
-
                                 <!-- slider -->
                                 <div class="carousel_slider">
                                     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
@@ -92,7 +89,7 @@ $tabindex = 1;
 
                                 <!-- purchase button -->
                                 <div class="purchase_btn text-center mb-4">
-                                    <a href="#">Shop</a>
+                                    <a href="{{ $card->website }}">Shop</a>
                                 </div>
 
                                 <!-- social medai -->
@@ -207,15 +204,15 @@ $tabindex = 1;
                                         <div class="mb-3 form-input">
                                             <label for="" class="form-label">Select Logo/Heading</label>
                                             <select id="selectField1" class="form-control" tabindex="{{ $tabindex++ }}">
-                                                <option value="text">Heading</option>
-                                                <option value="logo">Logo</option>
+                                                <option value="text" @if (!empty($card->title)) selected @endif>Heading</option>
+                                                <option value="logo" @if (!empty($card->logo)) selected @endif>Logo</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="headline">
                                             <label for="text" class="form-label">Heading</label>
-                                            <input type="text" placeholder="ads heading" name="text" id="text" class="form-control @error('text') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->text }}">
+                                            <input type="text" placeholder="ads heading" name="text" id="text" class="form-control @error('text') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->title }}">
                                             @if ($errors->has('text'))
                                                 <span class="help-block text-danger">{{$errors->first('text') }}</span>
                                             @endif
@@ -234,9 +231,9 @@ $tabindex = 1;
                                         <div class="mb-3 form-input">
                                             <label for="" class="form-label">Gallery or Video</label>
                                             <select id="selectField2" name="gallery_type" class="form-control" tabindex="{{ $tabindex++ }}">
-                                                <option value="gallery">Gallery</option>
-                                                <option value="videourl">Video Url</option>
-                                                <option value="videosource">Uplaod Video</option>
+                                                <option value="gallery" @if (!empty($card->gallery[0]['gallery_type']=='gallery')) selected @endif>Gallery</option>
+                                                <option value="videourl" @if (!empty($card->gallery[0]['gallery_type']=='videourl')) selected @endif>Video Url</option>
+                                                <option value="videosource" @if (!empty($card->gallery[0]['gallery_type']=='videosource')) selected @endif>Uplaod Video</option>
                                             </select>
                                         </div>
                                     </div>
@@ -310,7 +307,27 @@ $tabindex = 1;
                                             @endif
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3 form-input">
+                                            <label for="cashapp" class="form-label">CashApp</label>
+                                            <input type="text" name="cashapp" id="cashapp" placeholder="cashapp username" value="{{ old('cashapp') }}" class="form-control @error('cashapp') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('cashapp'))
+                                                <span class="help-block text-danger">{{$errors->first('cashapp') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    @if ($plan_details->personalized_link=='1')
                                     <div class="col-6">
+                                        <div class="mb-3 form-input">
+                                            <label for="personalized_link" class="form-label">Personalized Link</label>
+                                            <input type="text" placeholder="Personalized Link" name="personalized_link" id="personalized_link" class="form-control @error('gallery_type') is-invalid @enderror" value="{{ old('personalized_link') }}" tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('personalized_link'))
+                                                <span class="help-block text-danger">{{$errors->first('personalized_link') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    @endif
+                                    <div class="col-12">
                                         <div class="mb-3 form-input">
                                             <label for="foote_text" class="form-label">Copyright</label>
                                             <input type="text" name="foote_text" placeholder="copyright" id="foote_text" class="form-control @error('foote_text') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->foote_text }}">
@@ -320,7 +337,6 @@ $tabindex = 1;
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="mb-3">
                                     <button type="submit" class="btn btn-primary">Update Your DigitalBizAds</button>
                                 </div>

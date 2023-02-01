@@ -19,7 +19,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'd56624acb3e707c52167185b9765226f9edc13fd',
+    'reference' => 'd007f7cb075904a2da4032972070306f4a94e03a',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -50,6 +50,15 @@ private static $installed = array (
       array (
       ),
       'reference' => '14335e33189a0902941a9795f744dea2a4a929f1',
+    ),
+    'bacon/bacon-qr-code' => 
+    array (
+      'pretty_version' => '2.0.8',
+      'version' => '2.0.8.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '8674e51bb65af933a5ffaf1c308a660387c35c22',
     ),
     'behat/transliterator' => 
     array (
@@ -102,6 +111,15 @@ private static $installed = array (
       array (
         0 => '*',
       ),
+    ),
+    'dasprid/enum' => 
+    array (
+      'pretty_version' => '1.0.3',
+      'version' => '1.0.3.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '5abf82f213618696dda8e3bf6f64dd042d8542b2',
     ),
     'davedevelopment/hamcrest-php' => 
     array (
@@ -612,7 +630,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'd56624acb3e707c52167185b9765226f9edc13fd',
+      'reference' => 'd007f7cb075904a2da4032972070306f4a94e03a',
     ),
     'laravel/serializable-closure' => 
     array (
@@ -1316,6 +1334,15 @@ private static $installed = array (
       array (
       ),
       'reference' => 'c6c1022351a901512170118436c764e473f6de8c',
+    ),
+    'simplesoftwareio/simple-qrcode' => 
+    array (
+      'pretty_version' => '4.2.0',
+      'version' => '4.2.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '916db7948ca6772d54bb617259c768c9cdc8d537',
     ),
     'spatie/browsershot' => 
     array (

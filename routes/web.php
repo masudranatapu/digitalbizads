@@ -55,6 +55,7 @@ Route::group(['middleware' => 'Installer'], function () {
     Route::get('privacy-policy', [HomeController::class, 'privacyPolicy'])->name('privacy.policy');
     Route::get('terms-and-conditions', [HomeController::class, 'termsAndConditions'])->name('terms.and.conditions');
     Route::get('refund-policy', [HomeController::class, 'refundPolicy'])->name('refund.policy');
+    Route::post('card/subscriber', [HomeController::class, 'postSubscriber'])->name('card.subscriber');
 
     // Web Tools
     // HTML

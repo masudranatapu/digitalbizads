@@ -14,20 +14,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     <title>{{ $cardinfo->adsname}}</title>
+    <?php
+    // dd($cardinfo->gallery[0]->gallery_type);
+
+    ?>
 </head>
 <body>
     <div class="card_wrapper">
         <div class="card_template">
             <!-- title -->
             <div class="card_title p-2 pt-3">
-                    @if (!empty($cardinfo->logo))
-                    <div class="text-center">
-                        <img src="{{ asset($cardinfo->logo) }}" width="140" alt="logo">
-                    </div>
-                    @else
-                    <div class="card_title p-2 pt-3">
-                        <h2>
 
+                    @if (!empty($cardinfo->logo))
+
+                    <h2>
+                        <div class="text-center">
+                            <img src="{{ asset($cardinfo->logo) }}" width="140" alt="logo">
+                        </div>
+                        <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
+                            data-bs-target="#loginModal">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none"
+                                stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="3" y1="12" x2="21" y2="12"></line>
+                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                <line x1="3" y1="18" x2="21" y2="18"></line>
+                            </svg>
+                        </a>
+                    </h2>
+                    @else
+                    {{-- <div class="card_title p-2 pt-3"> --}}
+                        <h2>
                             <span>{{ $cardinfo->title }}</span>
                             <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
                                 data-bs-target="#loginModal">
@@ -39,55 +55,32 @@
                                 </svg>
                             </a>
                         </h2>
-                    </div>
+                    {{-- </div> --}}
                     @endif
-
-
-                    <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
-                        data-bs-target="#loginModal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none"
-                            stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="3" y1="12" x2="21" y2="12"></line>
-                            <line x1="3" y1="6" x2="21" y2="6"></line>
-                            <line x1="3" y1="18" x2="21" y2="18"></line>
-                        </svg>
-                    </a>
-                </h2>
             </div>
-            @if (!empty($cardinfo->video))
+            @if (!empty($cardinfo->gallery))
 
-                <!-- Video -->
-                <div class="video_wrapper">
-                    <div class="ratio ratio-1x1">
-                            <video  autoplay="" loop="" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover" controls>
-                                <source src="{{ $cardinfo->video }}" type="video/mp4">
-                                <source src="{{ $cardinfo->video }}" type="video/ogg">
-                            </video>
-                    </div>
+            @if ($cardinfo->gallery[0]->gallery_type=='videourl')
+                <iframe width="100%" height="315" src="{{ $cardinfo->gallery[0]->content }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            @elseif ($cardinfo->gallery[0]->gallery_type=='videosource')
+             <!-- Video -->
+             <div class="video_wrapper">
+                <div class="ratio ratio-1x1">
+                        <video  autoplay="" loop="" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover" controls>
+                            <source src="{{ $cardinfo->gallery[0]->content }}" type="video/mp4">
+                            <source src="{{ $cardinfo->gallery[0]->content }}" type="video/ogg">
+                        </video>
                 </div>
-            @elseif ($cardinfo->gallery)
-
-            <!-- slider -->
+            </div>
+            @elseif ($cardinfo->gallery[0]->gallery_type=='gallery')
             <div class="carousel_slider">
                 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
-                        <!-- carousel item -->
-
                         @foreach ($cardinfo->gallery as $key=> $gallery)
                         <div class="carousel-item {{ $key==0 ? 'active' : '' }}">
-                            <img src="{{ asset($gallery->photo) }}" class="d-block w-100" alt="image">
+                            <img src="{{ asset($gallery->content) }}" class="d-block w-100" alt="image">
                         </div>
                         @endforeach
-
-                        {{--
-                        <!-- carousel item -->
-                        <div class="carousel-item">
-                            <img src="{{ asset('assets/images/2.jpg') }}" class="d-block w-100" alt="image">
-                        </div>
-                        <!-- carousel item -->
-                        <div class="carousel-item">
-                            <img src="{{ asset('assets/images/3.jpg') }}" class="d-block w-100" alt="image">
-                        </div> --}}
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
                         data-bs-slide="prev">
@@ -100,12 +93,13 @@
                 </div>
             </div>
             @endif
-
-            <!-- purchase button -->
-            <div class="purchase_btn text-center mb-4">
-                <a href="{{ $cardinfo->website }}">SHOP</a>
-            </div>
-
+            @endif
+            @if (!empty($cardinfo->website))
+                <!-- purchase button -->
+                <div class="purchase_btn text-center mb-4">
+                    <a href="{{ $cardinfo->website }}">SHOP</a>
+                </div>
+            @endif
             <!-- social medai -->
             <div class="social_wrapper mb-3">
                 <div class="section_heading text-center mb-3">
@@ -136,6 +130,13 @@
                             <div class="social_item">
                                 <a href="mailto:{{ $cardinfo->email }}" target="_blank">
                                     <i class="fa fa-envelope"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="social_item">
+                                <a href="{{ $cardinfo->website }}" target="_blank">
+                                    <i class="fa fa-globe"></i>
                                 </a>
                             </div>
                         </div>
@@ -171,14 +172,7 @@
                                 </a>
                             </div>
                         </div>
-                        @elseif ($contact->label=='website')
-                        <div class="col">
-                            <div class="social_item">
-                                <a href="{{ $contact->content }}" target="_blank">
-                                    <i class="fa fa-globe"></i>
-                                </a>
-                            </div>
-                        </div>
+
                         @endif
 
                         @endforeach
@@ -193,10 +187,14 @@
 
             <!-- subscribe -->
             <div class="subscribe mb-3">
-                <form action="#" method="post">
+                <form action="{{ route('card.subscriber') }}" method="post">
+                    @csrf
                     <div class="input-group">
-                        <input type="text" name="email" id="email" class="form-control"
+                        <input type="text" name="email" id="email" class="form-control @error('email') is-invalid @enderror"
                             placeholder="Enter your emaill..." required>
+                        @if ($errors->has('email'))
+                            <span class="help-block text-danger">{{$errors->first('email') }}</span>
+                        @endif
                         <button type="submit" class="input-group-text btn btn-primary">Subscribe</button>
                     </div>
                 </form>
@@ -204,16 +202,10 @@
 
             <!-- copyright -->
             <div class="bottom_content text-center pb-3">
-                <p>CashApp: {{ $cardinfo->facebook }}</p>
+                <p>CashApp: {{ $cardinfo->cashapp }}</p>
             </div>
         </div>
     </div>
-
-
-
-
-
-
 
     <!-- Qrcode Modal -->
     <div class="qrcode_modal modal fade" id="qrcodeModal" tabindex="-1" aria-labelledby="qrcodeModalLabel"
@@ -226,7 +218,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="qe_code text-center">
-                        <img src="{{ asset('assets/images/qr-code.png') }}" alt="image">
+                        {!! QrCode::size(200)->color(74, 74, 74, 80)->generate(url($cardinfo->card_url))!!}
+
+                        {{-- <img src="{{ asset('assets/images/qr-code.png') }}" alt="image"> --}}
                     </div>
                 </div>
             </div>

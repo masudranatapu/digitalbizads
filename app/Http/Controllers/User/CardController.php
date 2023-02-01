@@ -58,7 +58,7 @@ class CardController extends Controller
                 ->join('users', 'business_cards.user_id', '=', 'users.id')
                 ->select('users.user_id', 'users.plan_validity', 'business_cards.*')
                 ->where('business_cards.user_id', Auth::user()->id)
-                ->where('business_cards.status', 1)
+                ->where('business_cards.card_status','activate')
                 ->orderBy('business_cards.id', 'desc')
                 ->get();
 
@@ -76,8 +76,7 @@ class CardController extends Controller
     {
         $themes = Theme::where('theme_description', 'vCard')->where('status', 1)->get();
         $settings = Setting::where('status', 1)->first();
-        $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('status', '1')->count();
-
+        $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', '1')->count();
         $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
         $plan_details = json_decode($plan->plan_details);
 
@@ -121,10 +120,6 @@ class CardController extends Controller
     //     $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
     //     $user_details = User::where('user_id', Auth::user()->user_id)->first();
     //     $plan_details = json_decode($user_details->plan_details, true);
-    //     $logo = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->logo->getClientOriginalName()) . '.' . $request->logo->extension();
-    //     $cover = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->cover->getClientOriginalName()) . '.' . $request->cover->extension();
-    //     $request->logo->move(public_path('backend/img/vCards'), $logo);
-    //     $request->cover->move(public_path('backend/img/vCards'), $cover);
     //     $card_url = strtolower(preg_replace('/\s+/', '-', $personalized_link));
     //     $current_card = BusinessCard::where('card_url', $card_url)->count();
 	// if($plan_details['no_of_vcards'] == 999) {
@@ -150,7 +145,8 @@ class CardController extends Controller
                     $card->phone_number = $request->phone_number;
                     $card->email = $request->email ?? Auth::user()->email;
                     $card->footer_text = $request->footer_text;
-                    $card->status = 1;
+                    $card->cashapp = $request->cashapp;
+                    $card->card_status = 'activate';
                     $card->created_at = date('Y-m-d H:i:s');
                     $card->created_by = Auth::user()->id;
                     if(!is_null($request->file('logo')))
@@ -180,14 +176,18 @@ class CardController extends Controller
                         $_video->move($file_path, $video_name);
                         $video = asset($file_path.'/'.$video_name);
 
-                        DB::table('business_cards')->where('id',$card->id)->update([
-                            'video'=>$video
+                        DB::table('card_gallery')->insert([
+                            'content'=>$video,
+                            'card_id' => $card->id,
+                            'gallery_type'=>$request->gallery_type,
                         ]);
 
                     }elseif ($request->gallery_type=='videourl') {
                         $video =  $this->getYoutubeEmbad($request->video);
-                        DB::table('business_cards')->where('id',$card->id)->update([
-                            'video'=>$video
+                        DB::table('card_gallery')->insert([
+                            'content'=>$video,
+                            'card_id' => $card->id,
+                            'gallery_type'=>$request->gallery_type,
                         ]);
                     }
                     elseif ($request->gallery_type=='gallery') {
@@ -208,10 +208,10 @@ class CardController extends Controller
                                     }
                                     $gallery_image->move($file_path, $image_name);
                                     $_gallery = $file_path.$image_name;
-
                                     $gallery_photo = new Gallery();
-                                    $gallery_photo->photo = $_gallery;
+                                    $gallery_photo->content = $_gallery;
                                     $gallery_photo->card_id = $card->id;
+                                    $gallery_photo->gallery_type =$request->gallery_type;
                                     $gallery_photo->save();
                                 }
                             }
@@ -225,7 +225,7 @@ class CardController extends Controller
                             'icon' => 'fa fa-globe',
                             'label' => 'website',
                             'content' => $request->website,
-                            // 'position' => $card->id,
+                            'position' => BusinessField::where('card_id',$card->id)->max('position')+1,
                             'status' => 1,
                             'created_at' => date('Y-m-d H:i:s')
 
@@ -238,7 +238,7 @@ class CardController extends Controller
                             'icon' => 'fab fa-facebook',
                             'label' => 'facebook',
                             'content' => $request->facebook,
-                            // 'position' => $card->id,
+                            'position' => BusinessField::where('card_id',$card->id)->max('position')+1,
                             'status' => 1,
                             'created_at' => date('Y-m-d H:i:s')
 
@@ -251,23 +251,9 @@ class CardController extends Controller
                             'icon' => 'fab fa-instagram',
                             'label' => 'instagram',
                             'content' => $request->instagram,
-                            // 'position' => $card->id,
+                            'position' => BusinessField::where('card_id',$card->id)->max('position')+1,
                             'status' => 1,
                             'created_at' => date('Y-m-d H:i:s')
-
-                        ]);
-                    }
-                    if($request->cashapp){
-                        DB::table('business_fields')->insert([
-                            'card_id'=> $card->id,
-                            'type' => 'cashapp',
-                            // 'icon' => $card->id,
-                            'label' => 'cashapp',
-                            'content' => $request->cashapp,
-                            // 'position' => $card->id,
-                            'status' => 1,
-                            'created_at' => date('Y-m-d H:i:s')
-
                         ]);
                     }
 
@@ -285,11 +271,12 @@ class CardController extends Controller
 
         public function editCard(Request $request,$id){
             $card  = BusinessCard::where('card_id',$id)->first();
-            $card->fields =BusinessField::where('card_id',$card->id)->get();
-            $card->gallery =Gallery::where('card_id',$card->id)->get();
+            $card->contacts =BusinessField::where('card_id',$card->id)->get();
+            $card->gallery = Gallery::where('card_id',$card->id)->get();
             $settings = Setting::where('status', 1)->first();
-
-            return view('user.cards.edit-card',compact('card','settings'));
+            $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
+            $plan_details = json_decode($plan->plan_details);
+            return view('user.cards.edit-card',compact('card','settings', 'plan_details'));
 
         }
 
@@ -1041,11 +1028,15 @@ class CardController extends Controller
         $query = parse_url($url);
         if(isset($query['query'])){
            $remove_extra = substr($query['query'], 0, strpos($query['query'], "&"));
+
             $_query = $remove_extra;
             $video_id = trim($_query,'v=');
         }
         $video_file = 'https://www.youtube.com/embed/'.$video_id;
         return $video_file;
     }
+
+
+
 
 }
