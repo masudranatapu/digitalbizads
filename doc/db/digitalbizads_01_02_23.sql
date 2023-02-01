@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 01, 2023 at 08:39 AM
+-- Generation Time: Feb 01, 2023 at 02:34 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -48,10 +48,11 @@ CREATE TABLE `business_cards` (
   `website` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `footer_text` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `card_status` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
+  `status` tinyint(4) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `created_by` int(11) DEFAULT NULL,
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_by` datetime DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   `deleted_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -60,8 +61,8 @@ CREATE TABLE `business_cards` (
 -- Dumping data for table `business_cards`
 --
 
-INSERT INTO `business_cards` (`id`, `card_id`, `user_id`, `theme_id`, `adsname`, `theme_color`, `card_lang`, `cover`, `logo`, `card_url`, `card_type`, `title`, `sub_title`, `description`, `phone_number`, `email`, `cashapp`, `website`, `footer_text`, `card_status`, `created_at`, `created_by`, `updated_at`, `updated_by`, `deleted_at`, `deleted_by`) VALUES
-(2, '63da0bd9ded54', 2, 1, 'My DigitalBizAds  ads', '#1511e4', 'en', NULL, 'assets/uploads/logo/arobil_logo_70x70-63da0bd9df53c.png', '63da0bd9ded54', 'vcard', NULL, NULL, NULL, '01710788656', 'arifmahmud64@gmail.com', 'arifurrahmansw', NULL, NULL, 'activate', '2023-02-01 00:51:05', 2, '2023-02-01 00:51:05', NULL, NULL, NULL);
+INSERT INTO `business_cards` (`id`, `card_id`, `user_id`, `theme_id`, `adsname`, `theme_color`, `card_lang`, `cover`, `logo`, `card_url`, `card_type`, `title`, `sub_title`, `description`, `phone_number`, `email`, `cashapp`, `website`, `footer_text`, `card_status`, `status`, `created_at`, `created_by`, `updated_at`, `updated_by`, `deleted_at`, `deleted_by`) VALUES
+(1, '63da699314b0a', 3, 1, 'Arifur New Shop', '#08e756', 'en', NULL, NULL, '63da699314b0a', 'vcard', 'Arifur New Shop1', NULL, NULL, '01710788656', 'arifur@gmail.com', 'arifurrahmansw3', 'https://mailtrap.io/', 'assfasfasf', 'activated', 1, '2023-02-01 07:30:59', 3, '2023-02-01 07:30:59', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -71,7 +72,7 @@ INSERT INTO `business_cards` (`id`, `card_id`, `user_id`, `theme_id`, `adsname`,
 
 CREATE TABLE `business_fields` (
   `id` int(10) UNSIGNED NOT NULL,
-  `card_id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `card_id` int(11) NOT NULL,
   `type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `icon` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `label` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -87,9 +88,8 @@ CREATE TABLE `business_fields` (
 --
 
 INSERT INTO `business_fields` (`id`, `card_id`, `type`, `icon`, `label`, `content`, `position`, `status`, `created_at`, `updated_at`) VALUES
-(1, '2', 'website', 'fa fa-globe', 'website', 'https://www.youtube.com/', '1', '1', '2023-02-01 00:51:05', '2023-02-01 06:51:05'),
-(2, '2', 'facebook', 'fab fa-facebook', 'facebook', 'arifurrahmansw', '2', '1', '2023-02-01 00:51:05', '2023-02-01 06:51:05'),
-(3, '2', 'instagram', 'fab fa-instagram', 'instagram', 'arifurrahmansw', '3', '1', '2023-02-01 00:51:05', '2023-02-01 06:51:05');
+(1, 1, 'facebook', 'fab fa-facebook', 'facebook', 'arifurrahmansw1', NULL, '1', '2023-02-01 07:30:59', '2023-02-01 13:30:59'),
+(2, 1, 'instagram', 'fab fa-instagram', 'instagram', 'arifurrahmansw2', NULL, '1', '2023-02-01 07:30:59', '2023-02-01 13:30:59');
 
 -- --------------------------------------------------------
 
@@ -132,6 +132,7 @@ CREATE TABLE `card_gallery` (
   `card_id` int(11) NOT NULL,
   `content` varchar(190) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `gallery_type` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `position` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
@@ -140,8 +141,12 @@ CREATE TABLE `card_gallery` (
 -- Dumping data for table `card_gallery`
 --
 
-INSERT INTO `card_gallery` (`id`, `card_id`, `content`, `gallery_type`, `created_at`, `updated_at`) VALUES
-(1, 2, 'https://www.youtube.com/embed/zrEHli0Uvhc', 'videourl', '2023-02-01 06:51:05', '2023-02-01 06:51:05');
+INSERT INTO `card_gallery` (`id`, `card_id`, `content`, `gallery_type`, `position`, `created_at`, `updated_at`) VALUES
+(1, 1, 'assets/uploads/gallery/pexels-daniel-rocha-14857249-63da69931761d.jpg', 'gallery', NULL, '2023-02-01 07:30:59', '2023-02-01 07:30:59'),
+(2, 1, 'assets/uploads/gallery/pexels-italo-melo-2379004-63da69931c0b5.jpg', 'gallery', NULL, '2023-02-01 07:30:59', '2023-02-01 07:30:59'),
+(3, 1, 'assets/uploads/gallery/pexels-monstera-5384429-63da69931daa7.jpg', 'gallery', NULL, '2023-02-01 07:30:59', '2023-02-01 07:30:59'),
+(4, 1, 'assets/uploads/gallery/pexels-moose-photos-1587009-63da69931e8af.jpg', 'gallery', NULL, '2023-02-01 07:30:59', '2023-02-01 07:30:59'),
+(5, 1, 'assets/uploads/gallery/pexels-shakin-ahmed-13880214-63da699320668.jpg', 'gallery', NULL, '2023-02-01 07:30:59', '2023-02-01 07:30:59');
 
 -- --------------------------------------------------------
 
@@ -997,7 +1002,8 @@ CREATE TABLE `transactions` (
 --
 
 INSERT INTO `transactions` (`id`, `gobiz_transaction_id`, `transaction_date`, `transaction_id`, `user_id`, `plan_id`, `desciption`, `payment_gateway_name`, `transaction_currency`, `transaction_amount`, `invoice_number`, `invoice_prefix`, `invoice_details`, `payment_status`, `status`, `created_at`, `updated_at`) VALUES
-(1, '63d4ebc621a75', '2023-01-28 09:32:54', '63d4ebc621add', '2', '60673288f0d35', 'Beginner Plan', 'FREE', 'USD', '0', NULL, NULL, '{\"from_billing_name\":\"\",\"from_billing_address\":\"\",\"from_billing_city\":\"\",\"from_billing_state\":\"\",\"from_billing_zipcode\":\"\",\"from_billing_country\":\"\",\"from_vat_number\":\"\",\"from_billing_phone\":\"\",\"from_billing_email\":\"\",\"to_billing_name\":\"Rony\",\"to_billing_address\":\"dhaka\",\"to_billing_city\":\"dhaka\",\"to_billing_state\":\"1234\",\"to_billing_zipcode\":\"1214\",\"to_billing_country\":\"Bangladesh\",\"to_billing_phone\":\"01990572321\",\"to_billing_email\":\"ronymia.tech@gmail.com\",\"to_vat_number\":\"123\",\"tax_name\":\"\",\"tax_type\":\"\",\"tax_value\":\"\",\"invoice_amount\":0,\"subtotal\":0,\"tax_amount\":0}', 'SUCCESS', '1', '2023-01-28 03:32:54', '2023-01-28 03:32:54');
+(1, '63d4ebc621a75', '2023-01-28 09:32:54', '63d4ebc621add', '2', '60673288f0d35', 'Beginner Plan', 'FREE', 'USD', '0', NULL, NULL, '{\"from_billing_name\":\"\",\"from_billing_address\":\"\",\"from_billing_city\":\"\",\"from_billing_state\":\"\",\"from_billing_zipcode\":\"\",\"from_billing_country\":\"\",\"from_vat_number\":\"\",\"from_billing_phone\":\"\",\"from_billing_email\":\"\",\"to_billing_name\":\"Rony\",\"to_billing_address\":\"dhaka\",\"to_billing_city\":\"dhaka\",\"to_billing_state\":\"1234\",\"to_billing_zipcode\":\"1214\",\"to_billing_country\":\"Bangladesh\",\"to_billing_phone\":\"01990572321\",\"to_billing_email\":\"ronymia.tech@gmail.com\",\"to_vat_number\":\"123\",\"tax_name\":\"\",\"tax_type\":\"\",\"tax_value\":\"\",\"invoice_amount\":0,\"subtotal\":0,\"tax_amount\":0}', 'SUCCESS', '1', '2023-01-28 03:32:54', '2023-01-28 03:32:54'),
+(2, '63da692aa085d', '2023-02-01 13:29:14', '63da692aa08d9', '3', '60673288f0d35', 'Beginner Plan', 'FREE', 'USD', '0', NULL, NULL, '{\"from_billing_name\":\"\",\"from_billing_address\":\"\",\"from_billing_city\":\"\",\"from_billing_state\":\"\",\"from_billing_zipcode\":\"\",\"from_billing_country\":\"\",\"from_vat_number\":\"\",\"from_billing_phone\":\"\",\"from_billing_email\":\"\",\"to_billing_name\":\"Arifur\",\"to_billing_address\":\"werwer\",\"to_billing_city\":\"werwer\",\"to_billing_state\":\"werwr\",\"to_billing_zipcode\":\"1215\",\"to_billing_country\":\"Bangladesh\",\"to_billing_phone\":\"01710788565\",\"to_billing_email\":\"arfmahmud64@gmail.com\",\"to_vat_number\":null,\"tax_name\":\"\",\"tax_type\":\"\",\"tax_value\":\"\",\"invoice_amount\":0,\"subtotal\":0,\"tax_amount\":0}', 'SUCCESS', '1', '2023-02-01 07:29:14', '2023-02-01 07:29:14');
 
 -- --------------------------------------------------------
 
@@ -1022,7 +1028,7 @@ CREATE TABLE `translations` (
 --
 
 CREATE TABLE `users` (
-  `id` int(10) UNSIGNED NOT NULL,
+  `id` int(10) NOT NULL,
   `user_id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1050,7 +1056,7 @@ CREATE TABLE `users` (
   `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 --
 -- Dumping data for table `users`
@@ -1058,7 +1064,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `user_id`, `name`, `email`, `role_id`, `email_verified_at`, `password`, `auth_type`, `profile_image`, `plan_id`, `term`, `plan_details`, `plan_validity`, `plan_activation_date`, `billing_name`, `type`, `vat_number`, `billing_address`, `billing_city`, `billing_state`, `billing_zipcode`, `billing_country`, `billing_phone`, `billing_email`, `status`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, '609c03880ee47', 'Admin', 'arobil@gmail.com', 1, NULL, '$2y$10$6CTjoLHHCVY.tN8.ZQ3GJOAzdAAP/x5fw.dvBsINrZsz.3ftLdBsK', 'Email', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '2023-01-28 07:33:19', '2023-01-28 02:07:48'),
-(2, '63d4eb634a936', 'Rony', 'ronymia.tech@gmail.com', 2, NULL, '$2y$10$keJSi20npNuj/Fkxz4S9O.Oc2eCjjcpTGD4p1uwenVIU/mq2031Gu', 'Email', NULL, '60673288f0d35', '9999', '{\"id\":1,\"plan_id\":\"60673288f0d35\",\"plan_name\":\"Beginner\",\"plan_description\":\"You can take your Biginner plan to start your first Journey !!\",\"plan_price\":\"0\",\"validity\":\"31\",\"no_of_vcards\":\"1\",\"no_of_services\":5,\"no_of_galleries\":5,\"no_of_features\":5,\"no_of_payments\":5,\"personalized_link\":\"0\",\"hide_branding\":\"0\",\"free_setup\":\"0\",\"free_support\":\"0\",\"recommended\":\"0\",\"is_private\":\"0\",\"status\":\"1\",\"created_at\":\"2023-01-28T13:33:18.000000Z\",\"updated_at\":\"2023-01-28T09:25:26.000000Z\"}', '2023-02-28 09:32:54', '2023-01-28 03:32:54', 'Rony', 'personal', '123', 'dhaka', 'dhaka', '1234', '1214', 'Bangladesh', '01990572321', 'ronymia.tech@gmail.com', 1, NULL, '2023-01-28 03:31:15', '2023-01-28 03:32:54');
+(2, '63d4eb634a936', 'Rony', 'ronymia.tech@gmail.com', 2, NULL, '$2y$10$keJSi20npNuj/Fkxz4S9O.Oc2eCjjcpTGD4p1uwenVIU/mq2031Gu', 'Email', NULL, '60673288f0d35', '9999', '{\"id\":1,\"plan_id\":\"60673288f0d35\",\"plan_name\":\"Beginner\",\"plan_description\":\"You can take your Biginner plan to start your first Journey !!\",\"plan_price\":\"0\",\"validity\":\"31\",\"no_of_vcards\":\"1\",\"no_of_services\":5,\"no_of_galleries\":5,\"no_of_features\":5,\"no_of_payments\":5,\"personalized_link\":\"0\",\"hide_branding\":\"0\",\"free_setup\":\"0\",\"free_support\":\"0\",\"recommended\":\"0\",\"is_private\":\"0\",\"status\":\"1\",\"created_at\":\"2023-01-28T13:33:18.000000Z\",\"updated_at\":\"2023-01-28T09:25:26.000000Z\"}', '2022-02-28 09:32:54', '2023-01-28 03:32:54', 'Rony', 'personal', '123', 'dhaka', 'dhaka', '1234', '1214', 'Bangladesh', '01990572321', 'ronymia.tech@gmail.com', 1, NULL, '2023-01-28 03:31:15', '2023-02-01 05:44:07'),
+(3, '63da686ca8829', 'Arifur', 'arfmahmud64@gmail.com', 2, NULL, '$2y$10$J4rrUSjTJmWmYVrbBIFBTuy4JQaKfMPuke.wxeTkgsLc8WuCZVige', 'Email', NULL, '60673288f0d35', '9999', '{\"id\":1,\"plan_id\":\"60673288f0d35\",\"plan_name\":\"Beginner\",\"plan_description\":\"You can take your Biginner plan to start your first Journey !!\",\"plan_price\":\"0\",\"validity\":\"31\",\"no_of_vcards\":\"1\",\"no_of_services\":5,\"no_of_galleries\":5,\"no_of_features\":5,\"no_of_payments\":5,\"personalized_link\":\"0\",\"hide_branding\":\"0\",\"free_setup\":\"0\",\"free_support\":\"0\",\"recommended\":\"0\",\"is_private\":\"0\",\"status\":\"1\",\"created_at\":\"2023-01-28T13:33:18.000000Z\",\"updated_at\":\"2023-01-28T09:25:26.000000Z\"}', '2023-03-04 13:29:14', '2023-02-01 07:29:14', 'Arifur', 'personal', NULL, 'werwer', 'werwer', 'werwr', '1215', 'Bangladesh', '01710788565', 'arfmahmud64@gmail.com', 1, NULL, '2023-02-01 07:26:04', '2023-02-01 07:29:14');
 
 --
 -- Indexes for dumped tables
@@ -1069,7 +1076,8 @@ INSERT INTO `users` (`id`, `user_id`, `name`, `email`, `role_id`, `email_verifie
 --
 ALTER TABLE `business_cards`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `business_cards_card_url_unique` (`card_url`);
+  ADD UNIQUE KEY `business_cards_card_url_unique` (`card_url`),
+  ADD KEY `fk_business_cards_users` (`user_id`);
 
 --
 -- Indexes for table `business_fields`
@@ -1209,7 +1217,9 @@ ALTER TABLE `translations`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `users_email_unique` (`email`);
+  ADD UNIQUE KEY `users_email_unique` (`email`),
+  ADD UNIQUE KEY `id` (`id`),
+  ADD KEY `id_2` (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -1219,13 +1229,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `business_cards`
 --
 ALTER TABLE `business_cards`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `business_fields`
 --
 ALTER TABLE `business_fields`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `business_hours`
@@ -1237,7 +1247,7 @@ ALTER TABLE `business_hours`
 -- AUTO_INCREMENT for table `card_gallery`
 --
 ALTER TABLE `card_gallery`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `config`
@@ -1339,7 +1349,7 @@ ALTER TABLE `themes`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `translations`
@@ -1351,11 +1361,17 @@ ALTER TABLE `translations`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `business_cards`
+--
+ALTER TABLE `business_cards`
+  ADD CONSTRAINT `fk_business_cards_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `translations`
