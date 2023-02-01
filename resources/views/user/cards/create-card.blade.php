@@ -197,7 +197,7 @@ Create New DigitalBizAds Card
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="textfield">
                                             <label for="theme_color" class="form-label">DigitalBizAds Color</label>
-                                            <input type="color" placeholder="card color" name="theme_color" id="theme_color" value="{{ old('theme_color') }}" class="form-control @error('theme_color') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="color" placeholder="card color" name="theme_color" id="theme_color" value="{{ old('theme_color') }}" class="form-control @error('theme_color') is-invalid @enderror" tabindex="{{ $tabindex++ }}" required>
                                             @if ($errors->has('color'))
                                                 <span class="help-block text-danger">{{$errors->first('color') }}</span>
                                             @endif
@@ -208,7 +208,7 @@ Create New DigitalBizAds Card
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="" class="form-label">Select Logo/Heading</label>
-                                            <select id="selectField1" class="form-control" tabindex="{{ $tabindex++ }}">
+                                            <select id="selectField1" class="form-control" tabindex="{{ $tabindex++ }}" required>
                                                 <option value="text">Heading</option>
                                                 <option value="logo">Logo</option>
                                             </select>
@@ -235,7 +235,7 @@ Create New DigitalBizAds Card
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="" class="form-label">Gallery or Video</label>
-                                            <select id="selectField2" name="gallery_type" class="form-control" tabindex="{{ $tabindex++ }}">
+                                            <select id="selectField2" name="gallery_type" class="form-control" tabindex="{{ $tabindex++ }}" required>
                                                 <option value="gallery">Gallery</option>
                                                 <option value="videourl">Video Url</option>
                                                 <option value="videosource">Uplaod Video</option>
@@ -245,14 +245,14 @@ Create New DigitalBizAds Card
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="galleryfield">
                                             <label for="gallery" class="form-label">Gallery (Select Multiple Images)</label>
-                                            <input type="file" name="gallery[]" id="gallery" class="form-control @error('gallery') is-invalid @enderror" tabindex="{{ $tabindex++ }}" multiple required>
+                                            <input type="file" name="gallery[]" id="gallery" class="form-control @error('gallery') is-invalid @enderror" tabindex="{{ $tabindex++ }}" multiple>
                                             @if ($errors->has('gallery'))
                                                 <span class="help-block text-danger">{{$errors->first('gallery') }}</span>
                                             @endif
                                         </div>
                                         <div class="mb-3 d-none form-input" id="videourl">
                                             <label for="video" class="form-label">Video Url</label>
-                                            <input type="text" name="video" placeholder="your video url" value="{{ old('video') }}" id="video" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="url" name="video" placeholder="your video url" value="{{ old('video') }}" id="video" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('video'))
                                                 <span class="help-block text-danger">{{$errors->first('video') }}</span>
                                             @endif
@@ -270,7 +270,7 @@ Create New DigitalBizAds Card
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="phone_number" class="form-label">Phone</label>
-                                            <input type="number" name="phone_number" id="phone" placeholder="your phone" value="{{ old('phone_number') }}" class="form-control @error('phone') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="number" name="phone_number" id="phone" placeholder="your phone" value="{{ old('phone_number') }}" class="form-control @error('phone') is-invalid @enderror" tabindex="{{ $tabindex++ }}" required>
                                             @if ($errors->has('phone_number'))
                                                 <span class="help-block text-danger">{{$errors->first('phone_number') }}</span>
                                             @endif
@@ -279,7 +279,7 @@ Create New DigitalBizAds Card
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="email" name="email" placeholder="your email" id="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="email" name="email" placeholder="your email" id="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" tabindex="{{ $tabindex++ }}" required>
                                             @if ($errors->has('email'))
                                                 <span class="help-block text-danger">{{$errors->first('email') }}</span>
                                             @endif
@@ -321,7 +321,7 @@ Create New DigitalBizAds Card
                                             @endif
                                         </div>
                                     </div>
-                                    @if ($plan_details->personalized_link=='1')
+                                    {{-- @if ($plan_details->personalized_link=='1') --}}
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="personalized_link" class="form-label">Personalized Link</label>
@@ -329,9 +329,10 @@ Create New DigitalBizAds Card
                                             @if ($errors->has('personalized_link'))
                                                 <span class="help-block text-danger">{{$errors->first('personalized_link') }}</span>
                                             @endif
+                                            <span id="status"></span>
                                         </div>
                                     </div>
-                                    @endif
+                                    {{-- @endif --}}
                                     <div class="col-12">
                                         <div class="mb-3 form-input">
                                             <label for="footer_text" class="form-label">Copyright</label>
@@ -387,9 +388,17 @@ Create New DigitalBizAds Card
         }
       });
     });
+
+
+    $(document).on('input','#personalized_link',function(e){
+        checkLink();
+
+    })
+
+
     function checkLink(){
     "use strict";
-    var plink = $('#plink').val();
+    var plink = $('#personalized_link').val();
     if(plink.length > 2){
 
     $.ajax({
@@ -419,30 +428,30 @@ function convertToLink( str ) {
   }
   $('#card-form').validate({
         rules: {
-                'adsname': {
+            'adsname': {
                 required: true,
                 maxlength: 124,
                 minlength: 2,
             },
-            // 'location': {
-            //     required: false,
-            //     maxlength: 124,
-            //     minlength: 2,
-            // },
-            // 'designation': {
-            //     required: true,
-            //     maxlength: 124,
-            //     minlength: 2,
-            // },
+            'email': {
+                required: false,
+                maxlength: 124,
+                minlength: 2,
+            },
+            'phone_number': {
+                required: true,
+                maxlength: 20,
+                minlength: 8,
+            },
             // 'company_name': {
             //     required: true,
             //     maxlength: 124,
             //     minlength: 2,
             // },
-            // 'bio': {
-            //     required: false,
-            //     maxlength: 255,
-            // },
+            'footer_text': {
+                required: false,
+                maxlength: 255,
+            },
         },
         messages: {},
         // submitHandler: function(form) {
@@ -462,25 +471,22 @@ function convertToLink( str ) {
         },
     });
 
-    $('#adsname').on('keyup keydown paste',function(){
+    $('#adsname,#personalized_link').on('keyup keydown paste',function(){
         var str = $(this).val();
         str = str.replace(/^\s+|\s+$/g, ''); // trim
         str = str.toLowerCase();
-        // remove accents, swap ñ for n, etc
         var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
         var to   = "aaaaaeeeeeiiiiooooouuuunc------";
         for (var i = 0, l = from.length; i < l; i++) {
             str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
         }
-        str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
-                .replace(/\s+/g, '-') // collapse whitespace and replace by -
-                .replace(/-+/g, '-'); // collapse dashes
+        str = str.replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '').replace(/-+/g, '');
     $("#personalized_link").val(str);
      return str;
     })
 
     $(function() {
-        var // Define maximum number of files.
+        var
             max_file_number = <?php echo $plan_details->no_of_galleries ?>,
             $form = $('form'),
             $file_upload = $('#gallery', $form),

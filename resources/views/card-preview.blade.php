@@ -15,8 +15,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     <title>{{ $cardinfo->adsname}}</title>
     <?php
-    // dd($cardinfo->gallery[0]->gallery_type);
-
     ?>
 </head>
 <body>
@@ -40,7 +38,6 @@
                         </a>
                     </h2>
                     @else
-                    {{-- <div class="card_title p-2 pt-3"> --}}
                         <h2>
                             <span>{{ $cardinfo->title }}</span>
                             <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
@@ -53,11 +50,9 @@
                                 </svg>
                             </a>
                         </h2>
-                    {{-- </div> --}}
                     @endif
             </div>
             @if (!empty($cardinfo->gallery))
-
             @if ($cardinfo->gallery[0]->gallery_type=='videourl')
             <div class="video_wrapper">
                 <div class="ratio ratio-1x1">
@@ -96,7 +91,6 @@
             </div>
             @endif
             @endif
-
                 <!-- purchase button -->
                 <div class="purchase_btn text-center mb-4">
                     @if (!empty($cardinfo->website))
@@ -113,6 +107,7 @@
                 <div class="social_wrapper">
                     <div class="row row-cols-4 row-cols-sm-5 g-3">
                         <!-- social icon -->
+                        @if (!empty($cardinfo->phone_number))
                         <div class="col">
                             <div class="social_item">
                                 <a href="tel:{{ $cardinfo->phone_number }}">
@@ -120,6 +115,14 @@
                                 </a>
                             </div>
                         </div>
+                        <div class="col">
+                            <div class="social_item">
+                                <a href="sms://{{ $cardinfo->phone_number }}">
+                                    <i class="fa fa-comment"></i>
+                                </a>
+                            </div>
+                        </div>
+                        @endif
                         <!-- Qr code icon -->
                         <div class="col">
                             <div class="social_item qrcode_icon">
@@ -129,14 +132,17 @@
                                 </a>
                             </div>
                         </div>
+                        @if (!empty($cardinfo->email))
                          <!-- social icon -->
                          <div class="col">
                             <div class="social_item">
-                                <a href="mailto:{{ $cardinfo->email }}" target="_blank">
+                                <a href="mailto:{{ $cardinfo->email }}">
                                     <i class="fa fa-envelope"></i>
                                 </a>
                             </div>
                         </div>
+                        @endif
+                        @if (!empty($cardinfo->website))
                         <div class="col">
                             <div class="social_item">
                                 <a href="{{ $cardinfo->website }}" target="_blank">
@@ -144,6 +150,7 @@
                                 </a>
                             </div>
                         </div>
+                        @endif
                         <!-- social icon -->
 
                         <!-- social icon -->
@@ -176,15 +183,9 @@
                                 </a>
                             </div>
                         </div>
-
                         @endif
-
                         @endforeach
                         @endif
-
-
-
-
                     </div>
                 </div>
             </div>
@@ -223,15 +224,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="qe_code text-center">
-                        {!! QrCode::size(200)->color(74, 74, 74, 80)->generate(url($cardinfo->card_url))!!}
-
-                        {{-- <img src="{{ asset('assets/images/qr-code.png') }}" alt="image"> --}}
+                        {!! QrCode::size(150)->generate(url($cardinfo->card_url))!!}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Login Modal -->
     <div class="login_modal modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel"
         aria-hidden="true">
@@ -246,13 +244,19 @@
                         @csrf
                         <div class="mb-3">
                             <label class="form-label" for="username">Username or Email</label>
-                            <input type="text" name="username" id="username" class="form-control"
+                            <input type="text" name="username" id="username" value="{{ old('username') }}" class="form-control @error('email') is-invalid @enderror"
                                 placeholder="Username or Email Address" required>
+                            @if($errors->has('username'))
+                                <span class="help-block text-danger">{{ $errors->first('username') }}</span>
+                            @endif
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="password">Password</label>
-                            <input type="password" name="password" id="password" class="form-control"
+                            <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror"
                                 placeholder="Password" required>
+                                @if($errors->has('password'))
+                                    <span class="help-block text-danger">{{ $errors->first('password') }}</span>
+                                @endif
                         </div>
                         <div class="text-center mb-3">
                             <button type="submit" class="btn btn-primary">Login</button>
@@ -283,23 +287,36 @@
                         @csrf
                         <div class="mb-3">
                             <label class="form-label" for="username">Username</label>
-                            <input type="text" name="username" id="username" class="form-control" placeholder="Username"
+                            <input type="text" name="username" id="username" value="{{ old('username') }}" class="form-control @error('email') is-invalid @enderror"
+                            placeholder="Username"
                                 required>
+                                @if($errors->has('username'))
+                                    <span class="help-block text-danger">{{ $errors->first('username') }}</span>
+                                @endif
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="email">Email</label>
-                            <input type="email" name="email" id="email" class="form-control" placeholder="Email Address"
+                            <input type="email" name="email" id="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" placeholder="Email Address"
                                 required>
+                            @if($errors->has('email'))
+                                <span class="help-block text-danger">{{ $errors->first('email') }}</span>
+                            @endif
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="password">Password</label>
-                            <input type="password" name="password" id="password" class="form-control"
+                            <input type="password" name="password" value="{{ old('password') }}" id="password" class="form-control @error('password') is-invalid @enderror"
                                 placeholder="Password" required>
+                                @if($errors->has('password'))
+                                    <span class="help-block text-danger">{{ $errors->first('password') }}</span>
+                                @endif
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="confimation_password">Confirm Password</label>
-                            <input type="password" name="confimation_password" id="confimation_password"
-                                class="form-control" placeholder="Password" required>
+                            <input type="password" name="confimation_password" value="{{ old('confimation_password') }}" id="confimation_password"
+                                class="form-control @error('confimation_password') is-invalid @enderror" placeholder="Password" required>
+                                @if($errors->has('confimation_password'))
+                                    <span class="help-block text-danger">{{ $errors->first('confimation_password') }}</span>
+                                @endif
                         </div>
                         <div class="text-center mb-3">
                             <button type="submit" class="btn btn-primary">Sign up</button>
@@ -315,12 +332,7 @@
             </div>
         </div>
     </div>
-
-
     <!-- js file -->
     <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
-
-
 </body>
-
 </html>

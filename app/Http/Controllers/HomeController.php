@@ -116,39 +116,37 @@ class HomeController extends Controller
 
     public function getPreview($cardurl)
     {
-
             $cardinfo = BusinessCard::select('business_cards.*','plans.plan_name','plans.hide_branding')
             ->where('business_cards.card_url', $cardurl)
             ->leftJoin('users','users.id','business_cards.user_id')
             ->leftJoin('plans','plans.id','users.plan_id')
             ->first();
             if($cardinfo == null){
-                return redirect()->route('user.card.create');
+                return redirect()->route('home-locale');
             }
-
         if($cardinfo){
             $cardinfo->gallery = Gallery::where('card_id',$cardinfo->id)->get();
             $cardinfo->contacts = BusinessField::where('card_id',$cardinfo->id)->get();
-            // DB::table('business_cards')->where('id',$cardinfo->id)->increment('total_hit', 1);
             $user = User::find($cardinfo->user_id);
             $url = url($cardinfo->card_url);
 
-            if(Auth::user() && ($cardinfo->user_id == Auth::id()) ){
-            }else{
-                // if($cardinfo->status == 0){
-                //     Toastr::warning('This card is not active now');
-                //     return redirect()->route('home');
-                // }
-                if($cardinfo->status == 2){
-                    Toastr::warning('This card is not available');
-                    return redirect()->route('home');
+
+
+                if($cardinfo->card_status == 'deactive'){
+                    alert()->error(trans('This card is not active now'));
+                    return redirect()->route('home-locale');
                 }
-            }
+                if($cardinfo->card_status == 2){
+                    alert()->error(trans('This card is not available'));
+                    return redirect()->route('home-locale');
+                }
+
+
             return view('card-preview', compact('cardinfo','user'));
         }else{
 
-            Toastr::warning('This card is not available please create your desired card');
-            return redirect()->route('user.card.create');
+            alert()->error(trans('This card is not available please create your desired card'));
+            return redirect()->route('home-locale');
         }
     }
 
@@ -181,11 +179,11 @@ class HomeController extends Controller
 
                 } catch (\Exception $e) {
                     DB::rollback();
-                    Toastr::warning(trans('Unable to subscribe'), 'Warning', ["positionClass" => "toast-top-center"]);
+                    alert()->error(trans('Unable to subscribe'));
                     return redirect()->back();
                 }
                 DB::commit();
-                Toastr::success(trans('Successfully subscribe'), 'Warning', ["positionClass" => "toast-top-center"]);
+                alert()->success(trans('Successfully subscribe'));
                  return redirect()->back();
             }
 

@@ -306,3 +306,11 @@ a {
         width: 65%;
     }
 }
+.qe_code svg {
+    width: 200px;
+    border: 1px solid #f8f8f8;
+    border-radius: 1px;
+    padding: 5px;
+    background: #ffffff;
+    box-shadow: rgb(0 0 0 / 16%) 0px 1px 4px;
+}

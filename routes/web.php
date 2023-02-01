@@ -193,6 +193,9 @@ Route::group(['middleware' => 'Installer'], function () {
         Route::post('multiple', [MediaController::class, 'multipleImages'])->name('multiple');
 
         Route::post('card/store', [CardController::class, 'postStore'])->name('card.store');
+        Route::post('card/update/{id}', [CardController::class, 'postUpdate'])->name('card.update');
+
+
         Route::get('create-card', [CardController::class, 'CreateCard'])->name('create.card');
         Route::get('edit-card/{id}', [CardController::class, 'editCard'])->name('edit.card');
 

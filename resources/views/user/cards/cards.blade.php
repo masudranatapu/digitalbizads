@@ -106,7 +106,7 @@
                                         <td class="text-muted">
                                             {{ date('d/M/Y', strtotime($row->plan_validity)) }}</td>
                                         <td class="text-muted">
-                                            @if ($row->card_status == 'activate')
+                                            @if ($row->card_status == 'activated')
                                             <span class="badge bg-green">{{ __('Active') }}</span>
                                            @else
                                            <span class="badge bg-red">{{ __('Inactive') }}</span>

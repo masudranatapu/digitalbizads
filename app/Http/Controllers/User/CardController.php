@@ -58,7 +58,7 @@ class CardController extends Controller
                 ->join('users', 'business_cards.user_id', '=', 'users.id')
                 ->select('users.user_id', 'users.plan_validity', 'business_cards.*')
                 ->where('business_cards.user_id', Auth::user()->id)
-                ->where('business_cards.card_status','activate')
+                ->where('business_cards.card_status','activated')
                 ->orderBy('business_cards.id', 'desc')
                 ->get();
 
@@ -97,30 +97,52 @@ class CardController extends Controller
     // Save card
     public function postStore(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'adsname' => 'required',
-            'color' => 'required',
-            // 'card_lang' => 'required',
-            // 'cover' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:' . env("SIZE_LIMIT") . '',
-            'logo' => 'image|mimes:jpeg,png,jpg,gif,svg',
-            // 'title' => 'required',
-            // 'subtitle' => 'required',
-            // 'description' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return back();
+
+        $user_details = User::where('user_id', Auth::user()->user_id)->first();
+        $plan_details = json_decode($user_details->plan_details, true);
+
+        if($request->gallery_type=='videosource'){
+            $validator = Validator::make($request->all(), [
+                   'video' => 'required|mimetypes:video/x-ms-asf,video/x-flv,video/mp4,application/x-mpegURL,video/MP2T,video/3gpp,video/quicktime,video/x-msvideo,video/x-ms-wmv,video/avi | max:50000'
+              ]);
+        }elseif($request->gallery_type=='videourl'){
+            $validator = Validator::make($request->all(), [
+                'video' =>'required|url',
+           ]);
         }
 
+        $validator = Validator::make($request->all(), [
+            'adsname' => 'required',
+            'theme_color' => 'required|max:10',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'text' => 'nullable|string|min:3|max:191',
+            'phone_number' => 'required',
+            'email' => 'required|email|max:191',
+            'website' => 'nullable|string|url|max:191',
+            'facebook' => 'nullable|string|max:191',
+            'instagram' => 'nullable|string|max:191',
+            'cashapp' => 'nullable|string|max:191',
+            'personalized_link' => 'nullable|string|max:191',
+            'footer_text' => 'nullable|string|max:191',
+          ]);
+
+          if ($validator->fails())
+          {
+            return redirect()->back()->withErrors($validator)->withInput();
+          }
         $cardId = uniqid();
-    //     if ($request->link) {
-    //         $personalized_link = $request->link;
-    //     } else {
-    //         $personalized_link = $cardId;
-    //     }
+
+        if($plan_details['personalized_link']=='1'){
+            if ($request->personalized_link) {
+                $personalized_link = $request->personalized_link;
+            } else {
+                $personalized_link = $cardId;
+            }
+        }
     //     $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
-    //     $user_details = User::where('user_id', Auth::user()->user_id)->first();
-    //     $plan_details = json_decode($user_details->plan_details, true);
-    //     $card_url = strtolower(preg_replace('/\s+/', '-', $personalized_link));
+        $user_details = User::where('user_id', Auth::user()->user_id)->first();
+        $plan_details = json_decode($user_details->plan_details, true);
+        $card_url = strtolower(preg_replace('/\s+/', '-', $personalized_link));
     //     $current_card = BusinessCard::where('card_url', $card_url)->count();
 	// if($plan_details['no_of_vcards'] == 999) {
     //         $no_cards = 999999;
@@ -142,12 +164,13 @@ class CardController extends Controller
                     $card->card_url = $cardId;
                     $card->title = $request->text;
                     $card->card_type = 'vcard';
+                    $card->card_url = $card_url;
                     $card->phone_number = $request->phone_number;
                     $card->email = $request->email ?? Auth::user()->email;
                     $card->footer_text = $request->footer_text;
                     $card->cashapp = $request->cashapp;
                     $card->website = $request->website;
-                    $card->card_status = 'activate';
+                    $card->card_status = 'activated';
                     $card->created_at = date('Y-m-d H:i:s');
                     $card->created_by = Auth::user()->id;
                     if(!is_null($request->file('logo')))
@@ -166,7 +189,7 @@ class CardController extends Controller
                         $card->logo = $file_path.$image_name;
                     }
                     $card->save();
-                    if($request->gallery_type=='videosource'){
+                    if(!empty($request->video) &&$request->gallery_type=='videosource'){
                         $_video = $request->file('video');
                         $base_name = preg_replace('/\..+$/', '', $_video->getClientOriginalName());
                         $video_name = $base_name . "-" . uniqid() . "." .$_video->getClientOriginalExtension();
@@ -183,7 +206,7 @@ class CardController extends Controller
                             'gallery_type'=>$request->gallery_type,
                         ]);
 
-                    }elseif ($request->gallery_type=='videourl') {
+                    }elseif (!empty($request->video) &&$request->gallery_type=='videourl') {
                         $video =  $this->getYoutubeEmbad($request->video);
                         DB::table('card_gallery')->insert([
                             'content'=>$video,
@@ -191,7 +214,7 @@ class CardController extends Controller
                             'gallery_type'=>$request->gallery_type,
                         ]);
                     }
-                    elseif ($request->gallery_type=='gallery') {
+                    elseif (!empty($request->gallery) &&$request->gallery_type=='gallery') {
 
                         if($request->gallery){
                             foreach ($request->gallery as $key => $gallery) {
@@ -218,20 +241,6 @@ class CardController extends Controller
                             }
                         }
                     }
-
-                    // if($request->website){
-                    //     DB::table('business_fields')->insert([
-                    //         'card_id'=> $card->id,
-                    //         'type' => 'website',
-                    //         'icon' => 'fa fa-globe',
-                    //         'label' => 'website',
-                    //         'content' => $request->website,
-                    //         'position' => BusinessField::where('card_id',$card->id)->max('position')+1,
-                    //         'status' => 1,
-                    //         'created_at' => date('Y-m-d H:i:s')
-
-                    //     ]);
-                    // }
                     if($request->facebook){
                         DB::table('business_fields')->insert([
                             'card_id'=> $card->id,
@@ -239,10 +248,8 @@ class CardController extends Controller
                             'icon' => 'fab fa-facebook',
                             'label' => 'facebook',
                             'content' => $request->facebook,
-                            'position' => BusinessField::where('card_id',$card->id)->max('position')+1,
                             'status' => 1,
-                            'created_at' => date('Y-m-d H:i:s')
-
+                            'updated_at' => date('Y-m-d H:i:s')
                         ]);
                     }
                     if($request->instagram){
@@ -252,20 +259,18 @@ class CardController extends Controller
                             'icon' => 'fab fa-instagram',
                             'label' => 'instagram',
                             'content' => $request->instagram,
-                            'position' => BusinessField::where('card_id',$card->id)->max('position')+1,
                             'status' => 1,
-                            'created_at' => date('Y-m-d H:i:s')
+                            'updated_at' => date('Y-m-d H:i:s')
                         ]);
                     }
-
                 } catch (\Exception $e) {
-                    dd($e);
+                    dd($e->getMessage());
                     DB::rollback();
-                    Toastr::warning(trans('Unable to create card'), 'Warning', ["positionClass" => "toast-top-center"]);
+                    alert()->error(trans('Unable to create card'));
                     return redirect()->back();
                 }
                 DB::commit();
-                Toastr::success(trans('Card successfully created'), 'Warning', ["positionClass" => "toast-top-center"]);
+                alert()->success(trans('Card successfully created'));
                 return redirect()->route('user.cards');
             }
 
@@ -284,17 +289,43 @@ class CardController extends Controller
 
         public function postUpdate(Request $request,$id)
         {
+            $validator = Validator::make($request->all(), [
+                'adsname' => 'required',
+                'theme_color' => 'required|max:10',
+                'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+                'text' => 'nullable|string|min:3|max:191',
+                'phone_number' => 'required',
+                'email' => 'required|email|max:191',
+                'website' => 'nullable|string|url|max:191',
+                'facebook' => 'nullable|string|max:191',
+                'instagram' => 'nullable|string|max:191',
+                'cashapp' => 'nullable|string|max:191',
+                'personalized_link' => 'nullable|string|max:191',
+                'footer_text' => 'nullable|string|max:191',
+              ]);
 
+              if ($validator->fails())
+              {
+                return redirect()->back()->withErrors($validator)->withInput();
+              }
+
+            if (!empty($request->personalized_link)) {
+                $personalized_link = $request->personalized_link;
+                $card_url = strtolower(preg_replace('/\s+/', '-', $personalized_link));
+            }
+            $user_details = User::where('user_id', Auth::user()->user_id)->first();
+            $plan_details = json_decode($user_details->plan_details, true);
             DB::beginTransaction();
             try {
-
                 $card = BusinessCard::findOrFail($id);
                 $card->adsname = $request->adsname;
-                $card->card_id = $cardId;
+                // $card->card_id = $cardId;
                 $card->theme_id= $request->theme_id;
                 $card->theme_color = $request->theme_color;
                 $card->card_lang = 'en';
-                $card->card_url = '';
+                if($plan_details['personalized_link']=='1' && !empty($card_url)){
+                    $card->card_url = $card_url;
+                }
                 $card->title = $request->text;
                 $card->card_type = 'vcard';
                 $card->phone_number = $request->phone_number;
@@ -302,7 +333,7 @@ class CardController extends Controller
                 $card->footer_text = $request->footer_text;
                 $card->cashapp = $request->cashapp;
                 $card->website = $request->website;
-                $card->card_status = 'activate';
+                $card->card_status = 'activated';
                 $card->updated_at = date('Y-m-d H:i:s');
                 $card->updated_by = Auth::user()->id;
                 if(!is_null($request->file('logo')))
@@ -321,7 +352,7 @@ class CardController extends Controller
                     $card->logo = $file_path.$image_name;
                 }
                 $card->update();
-                if($request->gallery_type=='videosource'){
+                if(!empty($request->video) && $request->gallery_type=='videosource'){
                     $_video = $request->file('video');
                     $base_name = preg_replace('/\..+$/', '', $_video->getClientOriginalName());
                     $video_name = $base_name . "-" . uniqid() . "." .$_video->getClientOriginalExtension();
@@ -338,7 +369,7 @@ class CardController extends Controller
                         'gallery_type'=>$request->gallery_type,
                     ]);
 
-                }elseif ($request->gallery_type=='videourl') {
+                }elseif (!empty($request->video) && $request->gallery_type=='videourl') {
                     $video =  $this->getYoutubeEmbad($request->video);
                     DB::table('card_gallery')->where('card_id',$card->id)->delete();
                     DB::table('card_gallery')->insert([
@@ -347,7 +378,7 @@ class CardController extends Controller
                         'gallery_type'=>$request->gallery_type,
                     ]);
                 }
-                elseif ($request->gallery_type=='gallery') {
+                elseif (!empty($request->gallery) && $request->gallery_type=='gallery') {
                     if($request->gallery){
                         DB::table('card_gallery')->where('card_id',$card->id)->delete();
                         foreach ($request->gallery as $key => $gallery) {
@@ -374,23 +405,42 @@ class CardController extends Controller
                         }
                     }
                 }
-
-
-
+                if(!empty($request->facebook)){
+                    DB::table('business_fields')->where('card_id',$card->id)->where('type','facebook')->delete();
+                    DB::table('business_fields')->insert([
+                        'card_id'=> $card->id,
+                        'type' => 'facebook',
+                        'icon' => 'fab fa-facebook',
+                        'label' => 'facebook',
+                        'content' => $request->facebook,
+                        'status' => 1,
+                        'created_at' => date('Y-m-d H:i:s')
+                    ]);
+                }
+                if(!empty($request->instagram)){
+                    DB::table('business_fields')->where('card_id',$card->id)->where('type','instagram')->delete();
+                    DB::table('business_fields')->insert([
+                        'card_id'=> $card->id,
+                        'type' => 'instagram',
+                        'icon' => 'fab fa-instagram',
+                        'label' => 'instagram',
+                        'content' => $request->instagram,
+                        'status' => 1,
+                        'created_at' => date('Y-m-d H:i:s')
+                    ]);
+                }
 
 
             } catch (\Exception $e) {
-                dd($e);
+                dd($e->getMessage());
                 DB::rollback();
-                Toastr::warning(trans('Unable to update card'), 'Warning', ["positionClass" => "toast-top-center"]);
+                alert()->error(trans('Unable to update cardd'));
                 return redirect()->back();
             }
             DB::commit();
-            Toastr::success(trans('Card successfully updated'), 'Warning', ["positionClass" => "toast-top-center"]);
+            alert()->success(trans('Card successfully updated'));
             return redirect()->route('user.cards');
         }
-
-
 
 
 

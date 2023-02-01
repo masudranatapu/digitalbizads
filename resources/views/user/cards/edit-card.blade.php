@@ -25,7 +25,7 @@
         $gallery_type = 'gallery';
     }
 
-    // dd($card->contacts);
+    // dd($card);
 ?>
 <div class="page-wrapper">
     <div class="container-xl">
@@ -193,14 +193,14 @@
                 <div class="col-md-7 col-xl-7">
                     <div class="card card_form">
                         <div class="card-body">
-                            <form action="{{ route('user.card.store') }}" method="post" id="card-form" novalidate="novalidate" enctype="multipart/form-data">
+                            <form action="{{ route('user.card.update',$card->id) }}" method="post" id="card-form" novalidate="novalidate" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="adsname" class="form-label">DigitalBizAds Name</label>
                                             <input type="text" placeholder="ads name" name="adsname" id="adsname" class="form-control @error('adsname') is-invalid @enderror" tabindex="{{ $tabindex++ }}"
-                                            value="{{ $card->adsname }}">
+                                            value="{{ $card->adsname }}" required>
                                             @if ($errors->has('adsname'))
                                                 <span class="help-block text-danger">{{$errors->first('adsname') }}</span>
                                             @endif
@@ -209,7 +209,7 @@
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="textfield">
                                             <label for="color" class="form-label">DigitalBizAds Color</label>
-                                            <input type="color" placeholder="card color" name="theme_color" id="theme_color" class="form-control @error('theme_color') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->theme_color }}">
+                                            <input type="color" placeholder="card color" name="theme_color" id="theme_color" class="form-control @error('theme_color') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->theme_color }}" required>
                                             @if ($errors->has('color'))
                                                 <span class="help-block text-danger">{{$errors->first('color') }}</span>
                                             @endif
@@ -219,8 +219,8 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="" class="form-label">Select Logo/Heading</label>
-                                            <select id="selectField1" class="form-control" tabindex="{{ $tabindex++ }}">
+                                            <label for="selectField1" class="form-label">Select Logo/Heading</label>
+                                            <select id="selectField1" class="form-control" tabindex="{{ $tabindex++ }}" required>
                                                 <option value="text" @if (!empty($card->title)) selected @endif>Heading</option>
                                                 <option value="logo" @if (!empty($card->logo)) selected @endif>Logo</option>
                                             </select>
@@ -247,7 +247,7 @@
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="" class="form-label">Gallery or Video</label>
-                                            <select id="selectField2" name="gallery_type" class="form-control" tabindex="{{ $tabindex++ }}">
+                                            <select id="selectField2" name="gallery_type" class="form-control" tabindex="{{ $tabindex++ }}" required>
                                                 <option value="gallery" @if ($gallery_type=='gallery') selected @endif>Gallery</option>
                                                 <option value="videourl" @if ($gallery_type=='videourl') selected @endif>Video Url</option>
                                                 <option value="videosource" @if ($gallery_type=='videosource') selected @endif>Uplaod Video</option>
@@ -257,14 +257,14 @@
                                     <div class="col-6">
                                         <div class="mb-3 form-input {{ $gallery_type=='gallery' ? 'd-block':'d-none' }}" id="galleryfield">
                                             <label for="gallery" class="form-label">Gallery (Select Multiple Images)</label>
-                                            <input type="file" name="gallery[]" id="gallery" class="form-control @error('gallery') is-invalid @enderror" tabindex="{{ $tabindex++ }}" multiple required>
+                                            <input type="file" name="gallery[]" id="gallery" class="form-control @error('gallery') is-invalid @enderror" tabindex="{{ $tabindex++ }}" multiple>
                                             @if ($errors->has('gallery'))
                                                 <span class="help-block text-danger">{{$errors->first('gallery') }}</span>
                                             @endif
                                         </div>
                                         <div class="mb-3 form-input {{ $gallery_type=='videourl' ? 'd-block':'d-none' }}" id="videourl">
                                             <label for="video" class="form-label">Video Url</label>
-                                            <input type="text" name="video" placeholder="your video url" id="video" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->gallery[0]['content'] }}">
+                                            <input type="url" name="video" placeholder="your video url" id="video" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="">
                                             @if ($errors->has('video'))
                                                 <span class="help-block text-danger">{{$errors->first('video') }}</span>
                                             @endif
@@ -282,7 +282,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="phone_number" class="form-label">Phone</label>
-                                            <input type="number" name="phone_number" id="phone_number" placeholder="your phone" class="form-control @error('phone') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->phone_number }}">
+                                            <input type="number" name="phone_number" id="phone_number" placeholder="your phone" class="form-control @error('phone') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->phone_number }}" required>
                                             @if ($errors->has('phone_number'))
                                                 <span class="help-block text-danger">{{$errors->first('phone_number') }}</span>
                                             @endif
@@ -291,7 +291,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="email" name="email" placeholder="your email" id="email" class="form-control @error('email') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->email }}">
+                                            <input type="email" name="email" placeholder="your email" id="email" class="form-control @error('email') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->email }}" required>
                                             @if ($errors->has('email'))
                                                 <span class="help-block text-danger">{{$errors->first('email') }}</span>
                                             @endif
@@ -300,7 +300,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="website" class="form-label">Website</label>
-                                            <input type="text" name="website" placeholder="your website" id="website" class="form-control @error('website') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->website }}">
+                                            <input type="url" name="website" placeholder="your website" id="website" class="form-control @error('website') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->website }}">
                                             @if ($errors->has('website'))
                                                 <span class="help-block text-danger">{{$errors->first('website') }}</span>
                                             @endif
@@ -310,7 +310,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="facebook" class="form-label">Facebook</label>
-                                            <input type="text" name="facebook" placeholder="facebook username" id="facebook" class="form-control @error('facebook') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->facebook }}">
+                                            <input type="text" name="facebook" placeholder="facebook username" id="facebook" class="form-control @error('facebook') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ getInputValue($card->id,'facebook') }}">
                                             @if ($errors->has('facebook'))
                                                 <span class="help-block text-danger">{{$errors->first('facebook') }}</span>
                                             @endif
@@ -320,7 +320,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="instagram" class="form-label">Instagram</label>
-                                            <input type="text" name="instagram" id="instagram" placeholder="instagram username" class="form-control @error('instagram') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->instagram }}">
+                                            <input type="text" name="instagram" id="instagram" placeholder="instagram username" class="form-control @error('instagram') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ getInputValue($card->id,'instagram') }}">
                                             @if ($errors->has('instagram'))
                                                 <span class="help-block text-danger">{{$errors->first('instagram') }}</span>
                                             @endif
@@ -337,7 +337,7 @@
                                             @endif
                                         </div>
                                     </div>
-                                    @if ($plan_details->personalized_link=='1')
+                                    {{-- @if ($plan_details->personalized_link=='1') --}}
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="personalized_link" class="form-label">Personalized Link</label>
@@ -347,7 +347,7 @@
                                             @endif
                                         </div>
                                     </div>
-                                    @endif
+                                    {{-- @endif --}}
                                     <div class="col-12">
                                         <div class="mb-3 form-input">
                                             <label for="footer_text" class="form-label">Copyright</label>
@@ -487,8 +487,39 @@ function convertToLink( str ) {
         },
     });
 
+    $('#adsname,#personalized_link').on('keyup keydown paste',function(){
+        var str = $(this).val();
+        str = str.replace(/^\s+|\s+$/g, ''); // trim
+        str = str.toLowerCase();
+        var from = "ãàáäâẽèéëêìíïîõòóöôùúüûñç·/_,:;";
+        var to   = "aaaaaeeeeeiiiiooooouuuunc------";
+        for (var i = 0, l = from.length; i < l; i++) {
+            str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+        }
+        str = str.replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '').replace(/-+/g, '');
+    $("#personalized_link").val(str);
+     return str;
+    })
 
-
+    $(function() {
+        var
+            max_file_number = <?php echo $plan_details->no_of_galleries ?>,
+            $form = $('form'),
+            $file_upload = $('#gallery', $form),
+            $button = $('.submit', $form);
+        // Disable submit button on page ready.
+        // $button.prop('disabled', 'disabled');
+        $file_upload.on('change', function () {
+        var number_of_images = $(this)[0].files.length;
+        if (number_of_images > max_file_number) {
+            alert(`You can upload maximum ${max_file_number} files.`);
+            $(this).val('');
+            $button.prop('disabled', 'disabled');
+        } else {
+            $button.prop('disabled', false);
+        }
+        });
+    });
 </script>
 @endpush
 @endsection

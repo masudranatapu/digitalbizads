@@ -481,7 +481,7 @@
                                             </p>
                                             <p>{{ __('Simply go here') }}
                                                 <a href="{{ ENV('APP_URL') }}/login">{{ ENV('APP_NAME') }}</a>
-                                                 {{ __('to get started create a vCard or WhatsApp store today.') }}
+                                                 {{ __('to get started create a vCard today.') }}
                                             </p>
 
 
