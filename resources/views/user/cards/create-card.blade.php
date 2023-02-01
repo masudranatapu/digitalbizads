@@ -38,13 +38,29 @@ Create New DigitalBizAds Card
                         <div class="card_wrapper">
                             <div class="card_template">
                                 <!-- title -->
-                                <div class="card_title p-2 pt-3">
-                                    <h2>
-                                        <span>Express T-Shirts</span>
+                                <div class="card_title p-2 pt-3" id="titleDiv">
+                                    <h2 class="">
+                                        <span  id="preview_name">Express T-Shirts</span>
                                         <a href="javascript:void(0)" class="float-end login_btn">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
                                                 viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
                                                 stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="3" y1="12" x2="21" y2="12"></line>
+                                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                                <line x1="3" y1="18" x2="21" y2="18"></line>
+                                            </svg>
+                                        </a>
+                                    </h2>
+                                </div>
+                                <div class="card_title p-2 pt-3 d-none" id="logoDiv">
+                                    <h2 class="">
+                                        <div class="text-center">
+                                            <img src="{{ asset('assets/images/bizads.png') }}" width="140" id="previewLogo" alt="logo">
+                                        </div>
+                                        <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
+                                            data-bs-target="#loginModal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none"
+                                                stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
                                                 <line x1="3" y1="12" x2="21" y2="12"></line>
                                                 <line x1="3" y1="6" x2="21" y2="6"></line>
                                                 <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -217,14 +233,14 @@ Create New DigitalBizAds Card
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="headline">
                                             <label for="text" class="form-label">Heading</label>
-                                            <input type="text" placeholder="ads heading" name="text" id="text" value="{{ old('text') }}" class="form-control @error('text') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="text" placeholder="ads heading" name="text"  data-preview="preview_name" data-concat="preview_name" id="text" value="{{ old('text') }}" class="form-control cin preview_name @error('text') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('text'))
                                                 <span class="help-block text-danger">{{$errors->first('text') }}</span>
                                             @endif
                                         </div>
                                         <div class="mb-3 d-none form-input" id="logofield">
                                             <label for="logo" class="form-label">Logo</label>
-                                            <input type="file" name="logo" id="logo" class="form-control @error('logo') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="file" name="logo" id="logo"  onchange="readURL(this);" class="form-control @error('logo') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('logo'))
                                                 <span class="help-block text-danger">{{$errors->first('logo') }}</span>
                                             @endif
@@ -234,7 +250,7 @@ Create New DigitalBizAds Card
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="" class="form-label">Gallery or Video</label>
+                                            <label for="selectField2" class="form-label">Gallery or Video</label>
                                             <select id="selectField2" name="gallery_type" class="form-control" tabindex="{{ $tabindex++ }}" required>
                                                 <option value="gallery">Gallery</option>
                                                 <option value="videourl">Video Url</option>
@@ -270,7 +286,7 @@ Create New DigitalBizAds Card
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="phone_number" class="form-label">Phone</label>
-                                            <input type="number" name="phone_number" id="phone" placeholder="your phone" value="{{ old('phone_number') }}" class="form-control @error('phone') is-invalid @enderror" tabindex="{{ $tabindex++ }}" required>
+                                            <input type="number" name="phone_number" id="phone" placeholder="your phone" value="{{ old('phone_number') }}" data-preview="preview_phone_number" class="form-control cin @error('phone') is-invalid @enderror" tabindex="{{ $tabindex++ }}" required>
                                             @if ($errors->has('phone_number'))
                                                 <span class="help-block text-danger">{{$errors->first('phone_number') }}</span>
                                             @endif
@@ -279,7 +295,7 @@ Create New DigitalBizAds Card
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="email" name="email" placeholder="your email" id="email" value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" tabindex="{{ $tabindex++ }}" required>
+                                            <input type="email" name="email" placeholder="your email" id="email" value="{{ old('email') }}" class="form-control cin @error('email') is-invalid @enderror" tabindex="{{ $tabindex++ }}" data-preview="preview_email" required>
                                             @if ($errors->has('email'))
                                                 <span class="help-block text-danger">{{$errors->first('email') }}</span>
                                             @endif
@@ -288,7 +304,7 @@ Create New DigitalBizAds Card
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="website" class="form-label">Website</label>
-                                            <input type="url" name="website" placeholder="your website" value="{{ old('website') }}" id="website" class="form-control @error('website') is-invalid @enderror"  tabindex="{{ $tabindex++ }}">
+                                            <input type="url" name="website" placeholder="your website" value="{{ old('website') }}" id="website" class="form-control cin  @error('website') is-invalid @enderror"  tabindex="{{ $tabindex++ }}" data-preview="preview_company_websitelink" id="company_websitelink">
                                             @if ($errors->has('website'))
                                                 <span class="help-block text-danger">{{$errors->first('website') }}</span>
                                             @endif
@@ -325,7 +341,7 @@ Create New DigitalBizAds Card
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="personalized_link" class="form-label">Personalized Link</label>
-                                            <input type="text" placeholder="Personalized Link" name="personalized_link" id="personalized_link" class="form-control @error('gallery_type') is-invalid @enderror" value="{{ old('personalized_link') }}" tabindex="{{ $tabindex++ }}">
+                                            <input type="text" placeholder="Personalized Link" name="personalized_link" id="personalized_link" class="form-control @error('personalized_link') is-invalid @enderror" value="{{ old('personalized_link') }}" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('personalized_link'))
                                                 <span class="help-block text-danger">{{$errors->first('personalized_link') }}</span>
                                             @endif
@@ -357,6 +373,7 @@ Create New DigitalBizAds Card
 </div>
 @push('custom-js')
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('assets/js/card.js') }}"></script>
 <script>
     $(document).ready(function(){
      // logo and text field
@@ -470,6 +487,34 @@ function convertToLink( str ) {
             $(element).parents('.form-input').append(error)
         },
     });
+
+    $(document).on('change','#selectField1',function(){
+        var logo = $(this).val();
+        if(logo=='logo'){
+            $('#logoDiv').addClass('d-block').removeClass('d-none');
+            $('#titleDiv').addClass('d-none').removeClass('d-block');
+        }else{
+            $('#logoDiv').addClass('d-none').removeClass('d-block');
+            $('#titleDiv').addClass('d-block').removeClass('d-none');
+        }
+    })
+
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#previewLogo')
+                    .attr('src', e.target.result);
+                    // .width(150)
+                    // .height(200);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
 
     $('#adsname,#personalized_link').on('keyup keydown paste',function(){
         var str = $(this).val();

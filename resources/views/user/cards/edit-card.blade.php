@@ -55,7 +55,7 @@
                                     @if (!empty($card->logo))
                                         <h2>
                                             <div class="text-center">
-                                                <img src="{{ asset($card->logo) }}" alt="logo">
+                                                <img src="{{ asset($card->logo) }}" id="previewLogo" alt="logo">
                                             </div>
                                             <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
                                                 data-bs-target="#loginModal">
@@ -354,14 +354,14 @@
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="headline">
                                             <label for="text" class="form-label">Heading</label>
-                                            <input type="text" placeholder="ads heading" name="text" id="text" class="form-control @error('text') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->title }}">
+                                            <input type="text" placeholder="ads heading" name="text" id="text" data-preview="preview_name" data-concat="preview_name" class="form-control cin preview_name  @error('text') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->title }}">
                                             @if ($errors->has('text'))
                                                 <span class="help-block text-danger">{{$errors->first('text') }}</span>
                                             @endif
                                         </div>
                                         <div class="mb-3 d-none form-input" id="logofield">
                                             <label for="logo" class="form-label">Logo</label>
-                                            <input type="file" name="logo" id="logo" class="form-control @error('logo') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="file" name="logo" id="logo" onchange="readURL(this);" class="form-control @error('logo') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('logo'))
                                                 <span class="help-block text-danger">{{$errors->first('logo') }}</span>
                                             @endif
@@ -407,7 +407,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="phone_number" class="form-label">Phone</label>
-                                            <input type="number" name="phone_number" id="phone_number" placeholder="your phone" class="form-control @error('phone') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->phone_number }}" required>
+                                            <input type="number" name="phone_number" data-preview="preview_phone_number" id="phone_number" placeholder="your phone" class="form-control cin  @error('phone') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->phone_number }}" required>
                                             @if ($errors->has('phone_number'))
                                                 <span class="help-block text-danger">{{$errors->first('phone_number') }}</span>
                                             @endif
@@ -416,7 +416,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="email" name="email" placeholder="your email" id="email" class="form-control @error('email') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->email }}" required>
+                                            <input type="email" name="email" placeholder="your email" id="email" class="form-control cin  @error('email') is-invalid @enderror" data-preview="preview_email" tabindex="{{ $tabindex++ }}" value="{{ $card->email }}" required>
                                             @if ($errors->has('email'))
                                                 <span class="help-block text-danger">{{$errors->first('email') }}</span>
                                             @endif
@@ -425,7 +425,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="website" class="form-label">Website</label>
-                                            <input type="url" name="website" placeholder="your website" id="website" class="form-control @error('website') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->website }}">
+                                            <input type="url" name="website" placeholder="your website" id="website" class="form-control @error('website') is-invalid @enderror cin" tabindex="{{ $tabindex++ }}" value="{{ $card->website }}">
                                             @if ($errors->has('website'))
                                                 <span class="help-block text-danger">{{$errors->first('website') }}</span>
                                             @endif
@@ -497,10 +497,8 @@
 </div>
 
 @push('custom-js')
-
-
-
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('assets/js/card.js') }}"></script>
 
 <script>
     $(document).ready(function(){
@@ -554,6 +552,33 @@
     $('#status').html("");
 }
 }
+
+$(document).on('change','#selectField1',function(){
+        var logo = $(this).val();
+        if(logo=='logo'){
+            $('#logoDiv').addClass('d-block').removeClass('d-none');
+            $('#titleDiv').addClass('d-none').removeClass('d-block');
+        }else{
+            $('#logoDiv').addClass('d-none').removeClass('d-block');
+            $('#titleDiv').addClass('d-block').removeClass('d-none');
+        }
+    })
+
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#previewLogo')
+                    .attr('src', e.target.result);
+                    // .width(150)
+                    // .height(200);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 
 /* Encode string to link */
 function convertToLink( str ) {
