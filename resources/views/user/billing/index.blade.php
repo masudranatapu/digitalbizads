@@ -1,5 +1,4 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
-
 @section('content')
     <div class="page-wrapper">
         <div class="container-xl">
@@ -33,14 +32,14 @@
                                             <div class="mb-3">
                                                 <label class="form-label">{{ __('Name') }}</label>
                                                 <input type="text" class="form-control" name="billing_name"
-                                                    placeholder="{{ __('Name') }}..." value="{{ Auth::user()->billing_name }}">
+                                                    placeholder="{{ __('Name') }}..." value="{{ Auth::user()->billing_name ?? Auth::user()->name }}">
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-xl-4">
                                             <div class="mb-3">
                                                 <label class="form-label">{{ __('Email') }}</label>
                                                 <input type="email" class="form-control" name="billing_email"
-                                                    placeholder="{{ __('Email') }}..." value="{{ Auth::user()->billing_email }}">
+                                                    placeholder="{{ __('Email') }}..." value="{{ Auth::user()->billing_email ?? Auth::user()->email }}">
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-xl-4">
