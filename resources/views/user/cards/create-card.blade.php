@@ -208,7 +208,7 @@ Create New DigitalBizAds Card
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="" class="form-label">Select Logo/Heading</label>
-                                            <select id="selectField1" class="form-control" tabindex="{{ $tabindex++ }}" required>
+                                            <select id="selectField1" name="headline" class="form-control" tabindex="{{ $tabindex++ }}" required>
                                                 <option value="text">Heading</option>
                                                 <option value="logo">Logo</option>
                                             </select>

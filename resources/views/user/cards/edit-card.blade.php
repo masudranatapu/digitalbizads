@@ -220,7 +220,7 @@
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="selectField1" class="form-label">Select Logo/Heading</label>
-                                            <select id="selectField1" class="form-control" tabindex="{{ $tabindex++ }}" required>
+                                            <select id="selectField1" name="headline" class="form-control" tabindex="{{ $tabindex++ }}" required>
                                                 <option value="text" @if (!empty($card->title)) selected @endif>Heading</option>
                                                 <option value="logo" @if (!empty($card->logo)) selected @endif>Logo</option>
                                             </select>

@@ -97,6 +97,17 @@ class CardController extends Controller
     // Save card
     public function postStore(Request $request)
     {
+        $validity = checkPackageValidity(Auth::id());
+        if ($validity == false) {
+            alert()->error(trans('Your package is expired please upgrade'));
+            return redirect()->route('user.plans');
+        }
+        dd($validity);
+        $check = checkCardLimit(Auth::id());
+        if ($check == false) {
+            alert()->error(trans('Your card limit is over please upgrade your package for more card'));
+            return redirect()->back();
+        }
 
         $user_details = User::where('user_id', Auth::user()->user_id)->first();
         $plan_details = json_decode($user_details->plan_details, true);
@@ -138,17 +149,19 @@ class CardController extends Controller
             } else {
                 $personalized_link = $cardId;
             }
+        }else{
+            $personalized_link = $cardId;
         }
-    //     $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
+        $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
         $user_details = User::where('user_id', Auth::user()->user_id)->first();
         $plan_details = json_decode($user_details->plan_details, true);
         $card_url = strtolower(preg_replace('/\s+/', '-', $personalized_link));
-    //     $current_card = BusinessCard::where('card_url', $card_url)->count();
-	// if($plan_details['no_of_vcards'] == 999) {
-    //         $no_cards = 999999;
-    //     } else {
-    //         $no_cards = $plan_details['no_of_vcards'];
-    //     }
+        $current_card = BusinessCard::where('card_url', $card_url)->count();
+	    if($plan_details['no_of_vcards'] == 999) {
+            $no_cards = 999999;
+        } else {
+            $no_cards = $plan_details['no_of_vcards'];
+        }
     //     if ($current_card == 0) {
     //         // Checking, If the user plan allowed card creation is less than created card.
     //         if ($cards < $no_cards) {
@@ -161,8 +174,25 @@ class CardController extends Controller
                     $card->theme_id= 1;
                     $card->theme_color = $request->theme_color;
                     $card->card_lang = 'en';
-                    $card->card_url = $cardId;
-                    $card->title = $request->text;
+                    if($request->headline=='text'){
+                        $card->title = $request->text;
+                    }else{
+                        if(!is_null($request->file('logo')))
+                        {
+                            $logo_ = $request->file('logo');
+                            $base_name = preg_replace('/\..+$/', '', $logo_->getClientOriginalName());
+                            $base_name = explode(' ', $base_name);
+                            $base_name = implode('-', $base_name);
+                            $base_name = Str::lower($base_name);
+                            $image_name = $base_name."-".uniqid().".".$logo_->getClientOriginalExtension();
+                            $file_path = 'assets/uploads/logo/';
+                            if (!File::exists($file_path)) {
+                                File::makeDirectory($file_path, 777, true);
+                            }
+                            $logo_->move($file_path, $image_name);
+                            $card->logo = $file_path.$image_name;
+                        }
+                    }
                     $card->card_type = 'vcard';
                     $card->card_url = $card_url;
                     $card->phone_number = $request->phone_number;
@@ -173,21 +203,7 @@ class CardController extends Controller
                     $card->card_status = 'activated';
                     $card->created_at = date('Y-m-d H:i:s');
                     $card->created_by = Auth::user()->id;
-                    if(!is_null($request->file('logo')))
-                    {
-                        $logo_ = $request->file('logo');
-                        $base_name = preg_replace('/\..+$/', '', $logo_->getClientOriginalName());
-                        $base_name = explode(' ', $base_name);
-                        $base_name = implode('-', $base_name);
-                        $base_name = Str::lower($base_name);
-                        $image_name = $base_name."-".uniqid().".".$logo_->getClientOriginalExtension();
-                        $file_path = 'assets/uploads/logo/';
-                        if (!File::exists($file_path)) {
-                            File::makeDirectory($file_path, 777, true);
-                        }
-                        $logo_->move($file_path, $image_name);
-                        $card->logo = $file_path.$image_name;
-                    }
+                    $card->status = 1;
                     $card->save();
                     if(!empty($request->video) &&$request->gallery_type=='videosource'){
                         $_video = $request->file('video');
@@ -326,32 +342,43 @@ class CardController extends Controller
                 if($plan_details['personalized_link']=='1' && !empty($card_url)){
                     $card->card_url = $card_url;
                 }
-                $card->title = $request->text;
+                if($request->headline=='text'){
+
+                    $card->title = $request->text;
+                    DB::table('business_cards')->where('id',$id)->update([
+                        'logo' => NULL
+                    ]);
+                }else{
+                    if(!is_null($request->file('logo')))
+                    {
+                        DB::table('business_cards')->where('id',$id)->update([
+                            'text' => NULL
+                        ]);
+                        $logo_ = $request->file('logo');
+                        $base_name = preg_replace('/\..+$/', '', $logo_->getClientOriginalName());
+                        $base_name = explode(' ', $base_name);
+                        $base_name = implode('-', $base_name);
+                        $base_name = Str::lower($base_name);
+                        $image_name = $base_name."-".uniqid().".".$logo_->getClientOriginalExtension();
+                        $file_path = 'assets/uploads/logo/';
+                        if (!File::exists($file_path)) {
+                            File::makeDirectory($file_path, 777, true);
+                        }
+                        $logo_->move($file_path, $image_name);
+                        $card->logo = $file_path.$image_name;
+                    }
+                }
                 $card->card_type = 'vcard';
                 $card->phone_number = $request->phone_number;
                 $card->email = $request->email;
                 $card->footer_text = $request->footer_text;
                 $card->cashapp = $request->cashapp;
                 $card->website = $request->website;
-                $card->card_status = 'activated';
+                // $card->card_status = 'activated';
                 $card->updated_at = date('Y-m-d H:i:s');
                 $card->updated_by = Auth::user()->id;
-                if(!is_null($request->file('logo')))
-                {
-                    $logo_ = $request->file('logo');
-                    $base_name = preg_replace('/\..+$/', '', $logo_->getClientOriginalName());
-                    $base_name = explode(' ', $base_name);
-                    $base_name = implode('-', $base_name);
-                    $base_name = Str::lower($base_name);
-                    $image_name = $base_name."-".uniqid().".".$logo_->getClientOriginalExtension();
-                    $file_path = 'assets/uploads/logo/';
-                    if (!File::exists($file_path)) {
-                        File::makeDirectory($file_path, 777, true);
-                    }
-                    $logo_->move($file_path, $image_name);
-                    $card->logo = $file_path.$image_name;
-                }
                 $card->update();
+
                 if(!empty($request->video) && $request->gallery_type=='videosource'){
                     $_video = $request->file('video');
                     $base_name = preg_replace('/\..+$/', '', $_video->getClientOriginalName());
