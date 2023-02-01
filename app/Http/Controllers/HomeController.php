@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Plan;
 use App\User;
+use Validator;
 use App\Gallery;
 use App\Setting;
 use App\Currency;
@@ -14,12 +15,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Illuminate\Support\Facades\Redirect;
-use Validator;
+
 class HomeController extends Controller
 {
     public function index()
@@ -172,7 +174,7 @@ class HomeController extends Controller
                         ->subject('Subscriber mail');
                         });
                     Mail::send('emails.subcription',compact('email'), function($message)use($email) {
-                        $message->to($email, $email)
+                        $message->to('info@gmail.com')
                         ->subject('Subscriber mail');
                         });
 

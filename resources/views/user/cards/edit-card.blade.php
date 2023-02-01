@@ -25,11 +25,7 @@
         $gallery_type = 'gallery';
     }
 
-
-
-
-
-
+    // dd($card->contacts);
 ?>
 <div class="page-wrapper">
     <div class="container-xl">
@@ -203,7 +199,7 @@
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="adsname" class="form-label">DigitalBizAds Name</label>
-                                            <input type="text" placeholder="ads name" name="adsname" id="adsname" class="form-control @error('gallery_type') is-invalid @enderror" tabindex="{{ $tabindex++ }}"
+                                            <input type="text" placeholder="ads name" name="adsname" id="adsname" class="form-control @error('adsname') is-invalid @enderror" tabindex="{{ $tabindex++ }}"
                                             value="{{ $card->adsname }}">
                                             @if ($errors->has('adsname'))
                                                 <span class="help-block text-danger">{{$errors->first('adsname') }}</span>
@@ -213,7 +209,7 @@
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="textfield">
                                             <label for="color" class="form-label">DigitalBizAds Color</label>
-                                            <input type="color" placeholder="card color" name="color" id="color" class="form-control @error('gallery_type') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->color }}">
+                                            <input type="color" placeholder="card color" name="theme_color" id="theme_color" class="form-control @error('theme_color') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->theme_color }}">
                                             @if ($errors->has('color'))
                                                 <span class="help-block text-danger">{{$errors->first('color') }}</span>
                                             @endif
@@ -310,6 +306,7 @@
                                             @endif
                                         </div>
                                     </div>
+
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="facebook" class="form-label">Facebook</label>
@@ -319,6 +316,7 @@
                                             @endif
                                         </div>
                                     </div>
+
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="instagram" class="form-label">Instagram</label>
@@ -328,10 +326,12 @@
                                             @endif
                                         </div>
                                     </div>
+
+
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="cashapp" class="form-label">CashApp</label>
-                                            <input type="text" name="cashapp" id="cashapp" placeholder="cashapp username" value="{{ old('cashapp') }}" class="form-control @error('cashapp') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="text" name="cashapp" id="cashapp" placeholder="cashapp username" value="{{ $card->cashapp }}" class="form-control @error('cashapp') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('cashapp'))
                                                 <span class="help-block text-danger">{{$errors->first('cashapp') }}</span>
                                             @endif
@@ -341,7 +341,7 @@
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="personalized_link" class="form-label">Personalized Link</label>
-                                            <input type="text" placeholder="Personalized Link" name="personalized_link" id="personalized_link" class="form-control @error('gallery_type') is-invalid @enderror" value="{{ old('personalized_link') }}" tabindex="{{ $tabindex++ }}">
+                                            <input type="text" placeholder="Personalized Link" name="personalized_link" id="personalized_link" class="form-control @error('gallery_type') is-invalid @enderror" value="{{ $card->card_url }}" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('personalized_link'))
                                                 <span class="help-block text-danger">{{$errors->first('personalized_link') }}</span>
                                             @endif
@@ -350,10 +350,10 @@
                                     @endif
                                     <div class="col-12">
                                         <div class="mb-3 form-input">
-                                            <label for="foote_text" class="form-label">Copyright</label>
-                                            <input type="text" name="foote_text" placeholder="copyright" id="foote_text" class="form-control @error('foote_text') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->foote_text }}">
-                                            @if ($errors->has('foote_text'))
-                                                <span class="help-block text-danger">{{$errors->first('foote_text') }}</span>
+                                            <label for="footer_text" class="form-label">Copyright</label>
+                                            <input type="text" name="footer_text" placeholder="copyright" id="footer_text" class="form-control @error('footer_text') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->footer_text }}">
+                                            @if ($errors->has('footer_text'))
+                                                <span class="help-block text-danger">{{$errors->first('footer_text') }}</span>
                                             @endif
                                         </div>
                                     </div>

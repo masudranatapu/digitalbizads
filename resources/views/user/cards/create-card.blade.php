@@ -196,8 +196,8 @@ Create New DigitalBizAds Card
 
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="textfield">
-                                            <label for="color" class="form-label">DigitalBizAds Color</label>
-                                            <input type="color" placeholder="card color" name="color" id="color" value="{{ old('color') }}" class="form-control @error('color') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <label for="theme_color" class="form-label">DigitalBizAds Color</label>
+                                            <input type="color" placeholder="card color" name="theme_color" id="theme_color" value="{{ old('theme_color') }}" class="form-control @error('theme_color') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('color'))
                                                 <span class="help-block text-danger">{{$errors->first('color') }}</span>
                                             @endif

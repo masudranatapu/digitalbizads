@@ -102,7 +102,7 @@ class CardController extends Controller
             'color' => 'required',
             // 'card_lang' => 'required',
             // 'cover' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:' . env("SIZE_LIMIT") . '',
-            'logo' => 'image|mimes:jpeg,png,jpg,gif,svg|',
+            'logo' => 'image|mimes:jpeg,png,jpg,gif,svg',
             // 'title' => 'required',
             // 'subtitle' => 'required',
             // 'description' => 'required',
@@ -137,7 +137,7 @@ class CardController extends Controller
                     $card->card_id = $cardId;
                     $card->user_id = Auth::user()->id;
                     $card->theme_id= 1;
-                    $card->theme_color = $request->color;
+                    $card->theme_color = $request->theme_color;
                     $card->card_lang = 'en';
                     $card->card_url = $cardId;
                     $card->title = $request->text;
@@ -146,6 +146,7 @@ class CardController extends Controller
                     $card->email = $request->email ?? Auth::user()->email;
                     $card->footer_text = $request->footer_text;
                     $card->cashapp = $request->cashapp;
+                    $card->website = $request->website;
                     $card->card_status = 'activate';
                     $card->created_at = date('Y-m-d H:i:s');
                     $card->created_by = Auth::user()->id;
@@ -218,19 +219,19 @@ class CardController extends Controller
                         }
                     }
 
-                    if($request->website){
-                        DB::table('business_fields')->insert([
-                            'card_id'=> $card->id,
-                            'type' => 'website',
-                            'icon' => 'fa fa-globe',
-                            'label' => 'website',
-                            'content' => $request->website,
-                            'position' => BusinessField::where('card_id',$card->id)->max('position')+1,
-                            'status' => 1,
-                            'created_at' => date('Y-m-d H:i:s')
+                    // if($request->website){
+                    //     DB::table('business_fields')->insert([
+                    //         'card_id'=> $card->id,
+                    //         'type' => 'website',
+                    //         'icon' => 'fa fa-globe',
+                    //         'label' => 'website',
+                    //         'content' => $request->website,
+                    //         'position' => BusinessField::where('card_id',$card->id)->max('position')+1,
+                    //         'status' => 1,
+                    //         'created_at' => date('Y-m-d H:i:s')
 
-                        ]);
-                    }
+                    //     ]);
+                    // }
                     if($request->facebook){
                         DB::table('business_fields')->insert([
                             'card_id'=> $card->id,
@@ -279,6 +280,117 @@ class CardController extends Controller
             return view('user.cards.edit-card',compact('card','settings', 'plan_details'));
 
         }
+
+
+        public function postUpdate(Request $request,$id)
+        {
+
+            DB::beginTransaction();
+            try {
+
+                $card = BusinessCard::findOrFail($id);
+                $card->adsname = $request->adsname;
+                $card->card_id = $cardId;
+                $card->theme_id= $request->theme_id;
+                $card->theme_color = $request->theme_color;
+                $card->card_lang = 'en';
+                $card->card_url = '';
+                $card->title = $request->text;
+                $card->card_type = 'vcard';
+                $card->phone_number = $request->phone_number;
+                $card->email = $request->email;
+                $card->footer_text = $request->footer_text;
+                $card->cashapp = $request->cashapp;
+                $card->website = $request->website;
+                $card->card_status = 'activate';
+                $card->updated_at = date('Y-m-d H:i:s');
+                $card->updated_by = Auth::user()->id;
+                if(!is_null($request->file('logo')))
+                {
+                    $logo_ = $request->file('logo');
+                    $base_name = preg_replace('/\..+$/', '', $logo_->getClientOriginalName());
+                    $base_name = explode(' ', $base_name);
+                    $base_name = implode('-', $base_name);
+                    $base_name = Str::lower($base_name);
+                    $image_name = $base_name."-".uniqid().".".$logo_->getClientOriginalExtension();
+                    $file_path = 'assets/uploads/logo/';
+                    if (!File::exists($file_path)) {
+                        File::makeDirectory($file_path, 777, true);
+                    }
+                    $logo_->move($file_path, $image_name);
+                    $card->logo = $file_path.$image_name;
+                }
+                $card->update();
+                if($request->gallery_type=='videosource'){
+                    $_video = $request->file('video');
+                    $base_name = preg_replace('/\..+$/', '', $_video->getClientOriginalName());
+                    $video_name = $base_name . "-" . uniqid() . "." .$_video->getClientOriginalExtension();
+                    $file_path = 'assets/uploads/videos';
+                    if (! File::exists($file_path)) {
+                        File::makeDirectory($file_path);
+                    }
+                    $_video->move($file_path, $video_name);
+                    $video = asset($file_path.'/'.$video_name);
+                    DB::table('card_gallery')->where('card_id',$card->id)->delete();
+                    DB::table('card_gallery')->insert([
+                        'content'=>$video,
+                        'card_id' => $card->id,
+                        'gallery_type'=>$request->gallery_type,
+                    ]);
+
+                }elseif ($request->gallery_type=='videourl') {
+                    $video =  $this->getYoutubeEmbad($request->video);
+                    DB::table('card_gallery')->where('card_id',$card->id)->delete();
+                    DB::table('card_gallery')->insert([
+                        'content'=>$video,
+                        'card_id' => $card->id,
+                        'gallery_type'=>$request->gallery_type,
+                    ]);
+                }
+                elseif ($request->gallery_type=='gallery') {
+                    if($request->gallery){
+                        DB::table('card_gallery')->where('card_id',$card->id)->delete();
+                        foreach ($request->gallery as $key => $gallery) {
+                            if(!is_null($request->file('gallery')[$key]))
+                            {
+                                $gallery_image = $request->file('gallery')[$key];
+                                $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
+                                $base_name = explode(' ', $base_name);
+                                $base_name = implode('-', $base_name);
+                                $base_name = Str::lower($base_name);
+                                $image_name = $base_name."-".uniqid().".".$gallery_image->getClientOriginalExtension();
+                                $file_path = 'assets/uploads/gallery/';
+                                if (!File::exists($file_path)) {
+                                    File::makeDirectory($file_path, 777, true);
+                                }
+                                $gallery_image->move($file_path, $image_name);
+                                $_gallery = $file_path.$image_name;
+                                $gallery_photo = new Gallery();
+                                $gallery_photo->content = $_gallery;
+                                $gallery_photo->card_id = $card->id;
+                                $gallery_photo->gallery_type =$request->gallery_type;
+                                $gallery_photo->save();
+                            }
+                        }
+                    }
+                }
+
+
+
+
+
+            } catch (\Exception $e) {
+                dd($e);
+                DB::rollback();
+                Toastr::warning(trans('Unable to update card'), 'Warning', ["positionClass" => "toast-top-center"]);
+                return redirect()->back();
+            }
+            DB::commit();
+            Toastr::success(trans('Card successfully updated'), 'Warning', ["positionClass" => "toast-top-center"]);
+            return redirect()->route('user.cards');
+        }
+
+
 
 
 

@@ -96,12 +96,14 @@
             </div>
             @endif
             @endif
-            @if (!empty($cardinfo->website))
+
                 <!-- purchase button -->
                 <div class="purchase_btn text-center mb-4">
+                    @if (!empty($cardinfo->website))
                     <a href="{{ $cardinfo->website }}">SHOP</a>
+                    @endif
                 </div>
-            @endif
+
             <!-- social medai -->
             <div class="social_wrapper mb-3">
                 <div class="section_heading text-center mb-3">
