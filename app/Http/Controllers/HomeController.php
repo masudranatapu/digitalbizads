@@ -173,7 +173,6 @@ class HomeController extends Controller
                         });
                     Mail::send('emails.subcription',compact('email'), function($message)use($email) {
                         $message->to($email, $email)
-                        // ->cc('asas@gmail.com')
                         ->subject('Subscriber mail');
                         });
 

@@ -191,7 +191,7 @@
             <div class="subscribe mb-3">
                 <form action="{{ route('card.subscriber') }}" method="post">
                     @csrf
-                    <input type="hidden" id="" name="{{  }}">
+                    <input type="hidden" id="" name="card_id" value="{{ $cardinfo->id }}">
                     <div class="input-group">
                         <input type="text" name="email" id="email" class="form-control @error('email') is-invalid @enderror"
                             placeholder="Enter your emaill..." required>
