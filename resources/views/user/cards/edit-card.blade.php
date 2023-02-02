@@ -1,16 +1,8 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
 @section('content')
 
-<style>
-    span.error {
-    color: #E53935;
-    padding: 2px 0px;
-}
-</style>
 <?php
     $tabindex = 1;
-
-
     if(!empty($card->gallery[0])){
         if ($card->gallery[0]['gallery_type']=='gallery'){
             $gallery_type ='gallery';
@@ -25,8 +17,54 @@
         $gallery_type = 'gallery';
     }
 
+    if(old('theme_coloe')){
+    $theme_color = old('theme_coloe');
+    }elseif (!empty($card->theme_color)) {
+        $theme_color = $card->theme_color;
+    }else{
+        $theme_color = '#ffc107';
+    }
+    list($r, $g, $b) = sscanf($theme_color, "#%02x%02x%02x");
+    $theme_bg = "$r, $g, $b,.1";
+
     // dd($card);
 ?>
+@section('css')
+<style>
+   span.error {
+    color: #E53935;
+    padding: 2px 0px;
+}
+
+.purchase_btn a {
+    padding: 10px 27px;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    background: #ffc107;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+}
+
+a.social-contact.disabled {
+    opacity: .3;
+}
+.social_item i{
+    border-color:{{ $theme_color }}
+}
+
+.carousel-control-prev,.carousel-control-next{
+    background-color: {{ $theme_color.'!important'}} ;
+}
+</style>
+@endsection
 <div class="page-wrapper">
     <div class="container-xl">
         <!-- Page title -->
@@ -49,10 +87,10 @@
                 <div class="col-md-5 col-xl-5">
                     <div class="card_preview_sec">
                         <div class="card_wrapper">
-                            <div class="card_template">
+                            <div class="card_template" style="background-color: rgba({{ $theme_bg }})">
                                 <!-- title -->
-                                <div class="card_title p-2 pt-3">
-                                    @if (!empty($card->logo))
+                                @if (!empty($card->logo))
+                                <div class="card_title p-2 pt-3" id="logoDiv">
                                         <h2>
                                             <div class="text-center">
                                                 <img src="{{ asset($card->logo) }}" id="previewLogo" alt="logo">
@@ -67,21 +105,23 @@
                                                 </svg>
                                             </a>
                                         </h2>
-                                        @else
-                                            <h2>
-                                                <span>{{ $card->title }}</span>
-                                                <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
-                                                    data-bs-target="#loginModal">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none"
-                                                        stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                                                        <line x1="3" y1="12" x2="21" y2="12"></line>
-                                                        <line x1="3" y1="6" x2="21" y2="6"></line>
-                                                        <line x1="3" y1="18" x2="21" y2="18"></line>
-                                                    </svg>
-                                                </a>
-                                            </h2>
-                                        @endif
                                 </div>
+                                @else
+                                <div class="card_title p-2 pt-3" id="titleDiv">
+                                    <h2>
+                                        <span>{{ $card->title }}</span>
+                                        <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
+                                            data-bs-target="#loginModal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none"
+                                                stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="3" y1="12" x2="21" y2="12"></line>
+                                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                                <line x1="3" y1="18" x2="21" y2="18"></line>
+                                            </svg>
+                                        </a>
+                                    </h2>
+                                </div>
+                                @endif
                                 <!-- slider -->
                                 {{-- <div class="carousel_slider">
                                     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
@@ -199,8 +239,7 @@
 
                                 <!-- purchase button -->
                                 <div class="purchase_btn text-center mb-4">
-                                    <a href="{{ $card->website }}">SHOP</a>
-
+                                    <a href="{{ $card->website }}" style="background-color: {{ $theme_color }} ">SHOP</a>
                                 </div>
 
                                 <!-- social medai -->
@@ -215,7 +254,7 @@
                                             @if (!empty($card->phone_number))
                                                 <div class="col">
                                                     <div class="social_item">
-                                                        <a href="tel:{{ $card->phone_number }}">
+                                                        <a class="social-contact phone_number" href="tel:{{ $card->phone_number }}">
                                                             <i class="fa fa-phone"></i>
                                                         </a>
                                                     </div>
@@ -224,6 +263,16 @@
                                                     <div class="social_item">
                                                         <a href="sms://{{ $card->phone_number }}">
                                                             <i class="fa fa-comment"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                            @if (!empty($card->email))
+                                            <!-- social icon -->
+                                                <div class="col">
+                                                    <div class="social_item">
+                                                        <a class="social-contact user_email" href="mailto:{{ $card->email }}">
+                                                            <i class="fa fa-envelope"></i>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -237,20 +286,11 @@
                                                         </a>
                                                     </div>
                                                 </div>
-                                            @if (!empty($card->email))
-                                            <!-- social icon -->
-                                                <div class="col">
-                                                    <div class="social_item">
-                                                        <a href="mailto:{{ $card->email }}">
-                                                            <i class="fa fa-envelope"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            @endif
+
                                             @if (!empty($card->website))
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="{{ $card->website }}" target="_blank">
+                                                    <a class="social-contact website" href="{{ $card->website }}" target="_blank">
                                                         <i class="fa fa-globe"></i>
                                                     </a>
                                                 </div>
@@ -275,7 +315,7 @@
                                             <!-- social icon -->
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="https://www.facebook.com/{{ $contact->content }}" target="_blank">
+                                                    <a class="social-contact facebook" href="https://www.facebook.com/{{ $contact->content }}" target="_blank">
                                                         <i class="fab fa-facebook"></i>
                                                     </a>
                                                 </div>
@@ -283,7 +323,7 @@
                                             @elseif ($contact->label=='instagram')
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="https://www.instagram.com/{{ $contact->content }}" target="_blank">
+                                                    <a class="social-contact instagram" href="https://www.instagram.com/{{ $contact->content }}" target="_blank">
                                                         <i class="fab fa-instagram"></i>
                                                     </a>
                                                 </div>
@@ -302,14 +342,14 @@
                                             <input type="text" name="email" id="email" class="form-control"
                                                 placeholder="Enter your emaill..." required="">
                                             <button type="submit"
-                                                class="input-group-text btn btn-primary">Subscribe</button>
+                                                class="input-group-text btn btn-primary subscribe-btn" style="background-color: {{ $theme_color }}">Subscribe</button>
                                         </div>
                                     </form>
                                 </div>
 
                                 <!-- copyright -->
                                 <div class="bottom_content text-center pb-3">
-                                    <p>CashApp: $SBOWEN2005</p>
+                                    <p>CashApp: <span id="preview_cashapp">{{ $card->cashapp }}</span></p>
                                 </div>
                             </div>
                         </div>
@@ -371,7 +411,7 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="" class="form-label">Gallery or Video</label>
+                                            <label for="selectField2" class="form-label">Gallery or Video</label>
                                             <select id="selectField2" name="gallery_type" class="form-control" tabindex="{{ $tabindex++ }}" required>
                                                 <option value="gallery" @if ($gallery_type=='gallery') selected @endif>Gallery</option>
                                                 <option value="videourl" @if ($gallery_type=='videourl') selected @endif>Video Url</option>
@@ -389,14 +429,14 @@
                                         </div>
                                         <div class="mb-3 form-input {{ $gallery_type=='videourl' ? 'd-block':'d-none' }}" id="videourl">
                                             <label for="video" class="form-label">Video Url</label>
-                                            <input type="url" name="video" placeholder="your video url" id="video" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="">
+                                            <input type="url" name="video" placeholder="your video url" id="video_url" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="">
                                             @if ($errors->has('video'))
                                                 <span class="help-block text-danger">{{$errors->first('video') }}</span>
                                             @endif
                                         </div>
                                         <div class="mb-3 form-input {{ $gallery_type=='videosource' ? 'd-block':'d-none' }}" id="videosource">
                                             <label for="video" class="form-label">Uplaod Video</label>
-                                            <input type="file" name="video" placeholder="upload your video" id="video" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="file" name="video" placeholder="upload your video" id="video_file" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('video'))
                                                 <span class="help-block text-danger">{{$errors->first('video') }}</span>
                                             @endif
@@ -407,7 +447,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="phone_number" class="form-label">Phone</label>
-                                            <input type="number" name="phone_number" data-preview="preview_phone_number" id="phone_number" placeholder="your phone" class="form-control cin  @error('phone') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->phone_number }}" required>
+                                            <input type="number" name="phone_number" data-type="phone_number" data-preview="preview_phone_number" id="phone" placeholder="your phone" class="social_item_in form-control cin @error('phone') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ $card->phone_number }}" required>
                                             @if ($errors->has('phone_number'))
                                                 <span class="help-block text-danger">{{$errors->first('phone_number') }}</span>
                                             @endif
@@ -416,7 +456,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="email" name="email" placeholder="your email" id="email" class="form-control cin  @error('email') is-invalid @enderror" data-preview="preview_email" tabindex="{{ $tabindex++ }}" value="{{ $card->email }}" required>
+                                            <input type="email" name="email" data-type="user_email" data-type="email" placeholder="your email" id="email" class="social_item_in form-control cin @error('email') is-invalid @enderror" data-preview="preview_email" tabindex="{{ $tabindex++ }}" value="{{ $card->email }}" required>
                                             @if ($errors->has('email'))
                                                 <span class="help-block text-danger">{{$errors->first('email') }}</span>
                                             @endif
@@ -425,7 +465,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="website" class="form-label">Website</label>
-                                            <input type="url" name="website" placeholder="your website" id="website" class="form-control @error('website') is-invalid @enderror cin" tabindex="{{ $tabindex++ }}" value="{{ $card->website }}">
+                                            <input type="url" name="website"  data-type="website" placeholder="your website" id="website" class="social_item_in form-control cin @error('website') is-invalid @enderror cin" tabindex="{{ $tabindex++ }}" value="{{ $card->website }}">
                                             @if ($errors->has('website'))
                                                 <span class="help-block text-danger">{{$errors->first('website') }}</span>
                                             @endif
@@ -435,7 +475,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="facebook" class="form-label">Facebook</label>
-                                            <input type="text" name="facebook" placeholder="facebook username" id="facebook" class="form-control @error('facebook') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ getInputValue($card->id,'facebook') }}">
+                                            <input type="text" name="facebook" data-type="facebook" placeholder="facebook username" id="facebook" class="social_item_in form-control @error('facebook') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ getInputValue($card->id,'facebook') }}">
                                             @if ($errors->has('facebook'))
                                                 <span class="help-block text-danger">{{$errors->first('facebook') }}</span>
                                             @endif
@@ -445,7 +485,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="instagram" class="form-label">Instagram</label>
-                                            <input type="text" name="instagram" id="instagram" placeholder="instagram username" class="form-control @error('instagram') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ getInputValue($card->id,'instagram') }}">
+                                            <input type="text" name="instagram" id="instagram" data-type="instagram" placeholder="instagram username" class="social_item_in form-control @error('instagram') is-invalid @enderror" tabindex="{{ $tabindex++ }}" value="{{ getInputValue($card->id,'instagram') }}">
                                             @if ($errors->has('instagram'))
                                                 <span class="help-block text-danger">{{$errors->first('instagram') }}</span>
                                             @endif
@@ -456,7 +496,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="cashapp" class="form-label">CashApp</label>
-                                            <input type="text" name="cashapp" id="cashapp" placeholder="cashapp username" value="{{ $card->cashapp }}" class="form-control @error('cashapp') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="text" name="cashapp" data-preview="preview_cashapp" id="cashapp" placeholder="cashapp username" value="{{ $card->cashapp }}" class="form-control cin  @error('cashapp') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('cashapp'))
                                                 <span class="help-block text-danger">{{$errors->first('cashapp') }}</span>
                                             @endif
@@ -501,7 +541,29 @@
 <script src="{{ asset('assets/js/card.js') }}"></script>
 
 <script>
-    $(document).ready(function(){
+
+function hexToRgb(hex) {
+        const normal = hex.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
+        if (normal) return normal.slice(1).map(e => parseInt(e, 16));
+        const shorthand = hex.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i);
+        if (shorthand) return shorthand.slice(1).map(e => 0x11 * parseInt(e, 16));
+        return null;
+        }
+    $(document).on('input','#theme_color', function(e){
+        var current_color = $("#theme_color" ).val();
+        console.log(current_color);
+        // $( "#theme_color_input").val(current_color);
+        let hex2rgb= hexToRgb(current_color);
+        let rgb = hex2rgb.toString();
+        $('.social_item').find('i').css('border-color',current_color);
+        $('.subscribe-btn').css({'background-color' : current_color});
+        $('.purchase_btn').find('a').css({'background-color' : 'rgba('+rgb+',.1'+')'});
+        $('.card_template').css({'background-color' : 'rgba('+rgb+',.1'+')'});
+        $('.carousel-control-prev,.carousel-control-next').css({'background-color' : current_color});
+    })
+
+
+$(document).ready(function(){
      // logo and text field
       $("#selectField1").change(function(){
         var selected = $(this).val();
@@ -513,28 +575,40 @@
             $('#logofield').addClass('d-none');
         }
       });
-
-      // gallery and video fiedl
+      // gallery and video fiedl  digitalbizSlider  digitalBizEmbad digitaBizSourc
       $("#selectField2").change(function(){
         var selected2 = $(this).val();
         if(selected2 === "videourl"){
             $('#galleryfield').addClass('d-none');
             $('#videourl').removeClass('d-none');
             $('#videosource').addClass('d-none');
+            $('#digitalBizEmbad').addClass('d-block').removeClass('d-none');
+            $('#digitalbizSlider').addClass('d-none').removeClass('d-block');
+            $('#digitaBizSourc').addClass('d-none').removeClass('d-block');
         }else if(selected2 === "videosource"){
             $('#galleryfield').addClass('d-none');
             $('#videourl').addClass('d-none');
             $('#videosource').removeClass('d-none');
+            $('#digitalBizEmbad').addClass('d-none').removeClass('d-block');
+            $('#digitalbizSlider').addClass('d-none').removeClass('d-block');
+            $('#digitaBizSourc').addClass('d-block').removeClass('d-none');
         }else{
             $('#galleryfield').removeClass('d-none');
             $('#videourl').addClass('d-none');
             $('#videosource').addClass('d-none');
+            $('#digitalBizEmbad').addClass('d-none').removeClass('d-block');
+            $('#digitalbizSlider').addClass('d-block').removeClass('d-none');
+            $('#digitaBizSourc').addClass('d-none').removeClass('d-block');
         }
       });
     });
+
+    $(document).on('input','#personalized_link',function(e){
+        checkLink();
+    })
     function checkLink(){
     "use strict";
-    var plink = $('#plink').val();
+    var plink = $('#personalized_link').val();
     if(plink.length > 2){
 
     $.ajax({
@@ -552,8 +626,45 @@
     $('#status').html("");
 }
 }
+/* Encode string to link */
+function convertToLink( str ) {
+    "use strict";
+    str = str.replace(/[`~!@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ')
+             .toLowerCase();
+    str = str.replace(/^\s+|\s+$/gm,'');
+    str = str.replace(/\s+/g, '-');
+    document.getElementById("plink").value = str;
+    //return str;
+  }
+  $('#card-form').validate({
+        rules: {
+            'adsname': {
+                required: true,
+                maxlength: 124,
+                minlength: 2,
+            },
+            'email': {
+                required: false,
+                maxlength: 124,
+                minlength: 2,
+            },
+            'phone_number': {
+                required: true,
+                maxlength: 20,
+                minlength: 8,
+            },
+            'footer_text': {
+                required: false,
+                maxlength: 255,
+            },
+        },
+        messages: {},
+            errorPlacement: function(error, element) {
+            $(element).parents('.form-input').append(error)
+        },
+    });
 
-$(document).on('change','#selectField1',function(){
+    $(document).on('change','#selectField1',function(){
         var logo = $(this).val();
         if(logo=='logo'){
             $('#logoDiv').addClass('d-block').removeClass('d-none');
@@ -580,62 +691,20 @@ $(document).on('change','#selectField1',function(){
         }
     }
 
-/* Encode string to link */
-function convertToLink( str ) {
-    "use strict";
-    str = str.replace(/[`~!@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ')
-             .toLowerCase();
-    str = str.replace(/^\s+|\s+$/gm,'');
-    str = str.replace(/\s+/g, '-');
-    document.getElementById("plink").value = str;
-    //return str;
-  }
-
-
-  $('#card-form').validate({
-        rules: {
-                'adsname': {
-                required: true,
-                maxlength: 124,
-                minlength: 2,
-            },
-            // 'location': {
-            //     required: false,
-            //     maxlength: 124,
-            //     minlength: 2,
-            // },
-            // 'designation': {
-            //     required: true,
-            //     maxlength: 124,
-            //     minlength: 2,
-            // },
-            // 'company_name': {
-            //     required: true,
-            //     maxlength: 124,
-            //     minlength: 2,
-            // },
-            // 'bio': {
-            //     required: false,
-            //     maxlength: 255,
-            // },
-        },
-        messages: {},
-        // submitHandler: function(form) {
-        //     $('.save-card-spinner').addClass('active');
-        //     $(this).find('.save-card').prop('disabled', true);
-        //     $(".btn-txt").text("Processing ...");
-        //     setTimeout(function(){
-        //         $(".save-card-spinner").removeClass("active");
-        //         $('.save-card').attr("disabled", false);
-        //         $(".btn-txt").text("Save");
-        //     }, 50000);
-        //     form.submit();
-
-        // },
-          errorPlacement: function(error, element) {
-            $(element).parents('.form-input').append(error)
-        },
+    $(document).ready(function(){
+    $('#gallery').change(function(){
+        $(".carousel-inner").html('');
+        for (var i = 0; i < $(this)[0].files.length; i++) {
+            if(i==0){
+                var slider_active = 'active';
+            }
+            else{
+                var slider_active = '';
+            }
+            $(".carousel-inner").append('<div class="carousel-item '+slider_active+'"><img src="'+window.URL.createObjectURL(this.files[i])+'" class="d-block w-100"/></div>');
+        }
     });
+});
 
     $('#adsname,#personalized_link').on('keyup keydown paste',function(){
         var str = $(this).val();
@@ -649,6 +718,86 @@ function convertToLink( str ) {
         str = str.replace(/[^a-z0-9 -]/g, '').replace(/\s+/g, '').replace(/-+/g, '');
     $("#personalized_link").val(str);
      return str;
+    })
+    $('#video_url').on('change', function() {
+        var youtube_url = $(this).val();
+            var remove_after = youtube_url.split('&')[0];
+            var _file = remove_after.split("v=").pop();
+            if(_file){
+                file = _file;
+            }
+            else{
+                file = arr_video_file[i].split("/").pop();
+            }
+            video_tag = 'https://www.youtube.com/embed/'+file;
+        $('#youtube_video_preview').attr('src',video_tag);
+    });
+
+    $(function() {
+    $('#video_file').on('change', function(){
+      if (isVideo($(this).val())){
+        $('#video_preview').attr('src', URL.createObjectURL(this.files[0]));
+        $('.video-prev').show();
+      }
+      else
+      {
+        $('#video_file').val('');
+        $('.video-prev').hide();
+        alert("Only video files are allowed to upload.")
+      }
+    });
+});
+
+// If user tries to upload videos other than these extension , it will throw error.
+function isVideo(filename) {
+    var ext = getExtension(filename);
+    switch (ext.toLowerCase()) {
+    case 'm4v':
+    case 'avi':
+    case 'mp4':
+    case 'mov':
+    case 'mpg':
+    case 'mpeg':
+        // etc
+        return true;
+    }
+    return false;
+}
+
+function getExtension(filename) {
+    var parts = filename.split('.');
+    return parts[parts.length - 1];
+}
+
+    $('#gallery').change(function(){
+        $(".carousel-inner").html('');
+        for (var i = 0; i < $(this)[0].files.length; i++) {
+            if(i==0){
+                var slider_active = 'active';
+            }
+            else{
+                var slider_active = '';
+            }
+            $(".carousel-inner").append('<div class="carousel-item '+slider_active+'"><img src="'+window.URL.createObjectURL(this.files[i])+'" class="d-block w-100"/></div>');
+        }
+    });
+
+    $(document).on('input','.social_item_in',function(){
+        var this_value = $(this).val();
+        var this_type = $(this).attr('data-type');
+        $("a.social-contact").each(function() {
+            var href = $(this).attr("href");
+            if (href == '' || !href) {
+                $(this).addClass('disabled');
+                $('.'+this_type).removeClass('disabled');
+                $('.'+this_type).attr("href",this_value);
+
+            }else{
+                $('.'+this_type).removeClass('disabled');
+                $('.'+this_type).attr("href",this_value);
+            };
+        });
+
     })
 
     $(function() {
@@ -670,6 +819,9 @@ function convertToLink( str ) {
         }
         });
     });
+
+
+
 </script>
 @endpush
 @endsection

@@ -8,6 +8,7 @@ use Validator;
 use App\Gallery;
 use App\Setting;
 use App\Currency;
+use App\Subscriber;
 use App\BusinessCard;
 use App\BusinessField;
 use Illuminate\Http\Request;
@@ -157,33 +158,41 @@ class HomeController extends Controller
     public function postSubscriber(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email'
+            'email' => 'required|email|unique:subscribers,email,',
+            'card_id' => 'required|integer',
             ]);
-            if ($validator->fails()) {
-                return back();
+            if ($validator->fails())
+            {
+              return redirect()->back()->withErrors($validator)->withInput();
             }
                 DB::beginTransaction();
                 try {
+                    $subscriber = new Subscriber();
+                    $subscriber->email = $request->email;
+                    $subscriber->card_id = $request->card_id;
+                    $subscriber->created_at = date('Y-m-d H:i:s');
+                    $subscriber->save();
 
                     $email = $request->email;
-                    Mail::send('emails.subscriber',compact('email'), function($message)use($email) {
-                        $message->to($email, $email)
-                        // ->cc('asas@gmail.com')
-                        ->subject('Subscriber mail');
-                        });
-                    Mail::send('emails.subcription',compact('email'), function($message)use($email) {
-                        $message->to('info@gmail.com')
-                        ->subject('Subscriber mail');
-                        });
+                    // Mail::send('emails.subscriber',compact('email'), function($message)use($email) {
+                    //     $message->to($email, $email)
+                    //     // ->cc('asas@gmail.com')
+                    //     ->subject('Subscriber mail');
+                    //     });
+                    // Mail::send('emails.subcription',compact('email'), function($message)use($email) {
+                    //     $message->to('info@gmail.com')
+                    //     ->subject('Subscriber mail');
+                    //     });
 
 
                 } catch (\Exception $e) {
+                    dd($e->getMessage());
                     DB::rollback();
                     alert()->error(trans('Unable to subscribe'));
                     return redirect()->back();
                 }
                 DB::commit();
-                alert()->success(trans('Successfully subscribe'));
+                alert()->success(trans('Thank you You have successfully subscribed.'));
                  return redirect()->back();
             }
 

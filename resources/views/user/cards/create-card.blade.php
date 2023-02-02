@@ -4,7 +4,7 @@
 Create New DigitalBizAds Card
 @endsection
 @section('content')
-
+@section('css')
 <style>
     span.error {
     color: #E53935;
@@ -16,7 +16,25 @@ a.social-contact.disabled {
     opacity: .3;
 }
 
+.purchase_btn a {
+    padding: 10px 27px;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    background: #ffc107;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+}
+
 </style>
+@endsection
 <?php
     $tabindex = 1;
 ?>
@@ -42,7 +60,7 @@ a.social-contact.disabled {
                 <div class="col-md-5 col-xl-5">
                     <div class="card_preview_sec">
                         <div class="card_wrapper">
-                            <div class="card_template">
+                            <div class="card_template" style="background-color: {{  }}">
                                 <!-- title -->
                                 <div class="card_title p-2 pt-3" id="titleDiv">
                                     <h2 class="">
@@ -154,7 +172,7 @@ a.social-contact.disabled {
                                             <!-- social icon -->
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="" class="social-contact email" target="_blank">
+                                                    <a href="" class="social-contact user_email" target="_blank">
                                                         <i class="fa fa-envelope"></i>
                                                     </a>
                                                 </div>
@@ -203,7 +221,7 @@ a.social-contact.disabled {
                                             <input type="text" name="email" id="email" class="form-control"
                                                 placeholder="Enter your emaill..." required="">
                                             <button type="submit"
-                                                class="input-group-text btn btn-primary">Subscribe</button>
+                                                class="input-group-text btn btn-primary subscribe-btn">Subscribe</button>
                                         </div>
                                     </form>
                                 </div>
@@ -255,7 +273,7 @@ a.social-contact.disabled {
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="headline">
                                             <label for="text" class="form-label">Heading</label>
-                                            <input type="text" placeholder="ads heading" name="text"  data-preview="preview_name" data-concat="preview_name" id="text" value="{{ old('text') }}" class="form-control cin preview_name @error('text') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="text" placeholder="ads heading" name="text" data-preview="preview_name" data-concat="preview_name" id="text" value="{{ old('text') }}" class="form-control cin preview_name @error('text') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('text'))
                                                 <span class="help-block text-danger">{{$errors->first('text') }}</span>
                                             @endif
@@ -317,7 +335,7 @@ a.social-contact.disabled {
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="email" name="email" placeholder="your email" data-type="email" data-type="email" id="email" value="{{ old('email') }}" class="social_item_in form-control cin @error('email') is-invalid @enderror" tabindex="{{ $tabindex++ }}" data-preview="preview_email" required>
+                                            <input type="email" name="email" placeholder="your email" data-type="user_email" data-type="email" id="email" value="{{ old('email') }}" class="social_item_in form-control cin @error('email') is-invalid @enderror" tabindex="{{ $tabindex++ }}" data-preview="preview_email" required>
                                             @if ($errors->has('email'))
                                                 <span class="help-block text-danger">{{$errors->first('email') }}</span>
                                             @endif
@@ -397,6 +415,28 @@ a.social-contact.disabled {
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('assets/js/card.js') }}"></script>
 <script>
+
+function hexToRgb(hex) {
+        const normal = hex.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
+        if (normal) return normal.slice(1).map(e => parseInt(e, 16));
+        const shorthand = hex.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i);
+        if (shorthand) return shorthand.slice(1).map(e => 0x11 * parseInt(e, 16));
+        return null;
+        }
+    $(document).on('input','#theme_color', function(e){
+        var current_color = $("#theme_color" ).val();
+        console.log(current_color);
+        // $( "#theme_color_input").val(current_color);
+        let hex2rgb= hexToRgb(current_color);
+        let rgb = hex2rgb.toString();
+        $('.social_item').find('i').css('border-color',current_color);
+        $('.subscribe-btn').css({'background-color' : current_color});
+        $('.purchase_btn').find('a').css({'background-color' : 'rgba('+rgb+',.1'+')'});
+        $('.card_template').css({'background-color' : 'rgba('+rgb+',.1'+')'});
+        $('.carousel-control-prev,.carousel-control-next').css({'background-color' : current_color});
+    })
+
+
     $(document).ready(function(){
      // logo and text field
       $("#selectField1").change(function(){
@@ -628,25 +668,18 @@ function getExtension(filename) {
 
             }else{
                 $('.'+this_type).removeClass('disabled');
-                    if(this_type ='facebook'){
-                        var facebook = "https://www.facebook.com/"+this_value;
-                        $('.'+this_type).attr("href",facebook);
-                    }else if(this_type ='phone_number'){
-                        var facebook = "tel://"+this_value;
-                        $('.'+this_type).attr("href",facebook);
-                    }
+                    // if(this_type ='facebook'){
+                    //     var facebook = "https://www.facebook.com/"+this_value;
+                    //     $('.'+this_type).attr("href",facebook);
+                    // }else if(this_type ='phone_number'){
+                    //     var facebook = "tel://"+this_value;
+                    //     $('.'+this_type).attr("href",facebook);
+                    // }else{}
+                        $('.'+this_type).attr("href",this_value);
             };
-
         });
 
-
-
     })
-
-
-
-
-
 
     $(function() {
         var

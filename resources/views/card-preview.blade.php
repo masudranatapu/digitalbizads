@@ -13,9 +13,43 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+    <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/sweetalert.min.js') }}"></script>
+
     <title>{{ $cardinfo->adsname}}</title>
-    <?php
-    ?>
+<?php
+
+if (!empty($cardinfo->theme_color)) {
+        $theme_color = $cardinfo->theme_color;
+    }else{
+        $theme_color = '#ffc107';
+    }
+    list($r, $g, $b) = sscanf($theme_color, "#%02x%02x%02x");
+    $theme_bg = "$r, $g, $b,.1";
+
+
+?>
+
+    <style>
+        .card_template{
+            background-color:rgba({{ $theme_bg }});
+        }
+        .social_item i{
+            border-color:{{ $theme_color }}
+        }
+
+        .subscribe-btn,
+        .purchase_btn a,
+        .carousel-control-prev,
+        .carousel-control-next,
+        .purchase_btn a{
+            background-color: {{ $theme_color.'!important'}} ;
+        }
+        /* .card_title h2>span{
+            color:{{ $theme_color }}
+        } */
+
+    </style>
 </head>
 <body>
     <div class="card_wrapper">
@@ -199,9 +233,9 @@
                         <input type="text" name="email" id="email" class="form-control @error('email') is-invalid @enderror"
                             placeholder="Enter your emaill..." required>
                         @if ($errors->has('email'))
-                            <span class="help-block text-danger">{{$errors->first('email') }}</span>
+                            <span class="help-block text-danger d-block">{{$errors->first('email') }}</span>
                         @endif
-                        <button type="submit" class="input-group-text btn btn-primary">Subscribe</button>
+                        <button type="submit" class="input-group-text btn btn-primary subscribe-btn">Subscribe</button>
                     </div>
                 </form>
             </div>
@@ -333,6 +367,8 @@
         </div>
     </div>
     <!-- js file -->
+    @include('sweet::alert')
+
     <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
 </body>
 </html>
