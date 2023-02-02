@@ -1,8 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<?php
-?>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,10 +12,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/sweetalert.min.js') }}"></script>
-
     <title>{{ $cardinfo->adsname}}</title>
 <?php
-
 if (!empty($cardinfo->theme_color)) {
         $theme_color = $cardinfo->theme_color;
     }else{
@@ -26,10 +21,7 @@ if (!empty($cardinfo->theme_color)) {
     }
     list($r, $g, $b) = sscanf($theme_color, "#%02x%02x%02x");
     $theme_bg = "$r, $g, $b,.1";
-
-
 ?>
-
     <style>
         .card_template{
             background-color:rgba({{ $theme_bg }});
@@ -37,7 +29,6 @@ if (!empty($cardinfo->theme_color)) {
         .social_item i{
             border-color:{{ $theme_color }}
         }
-
         .subscribe-btn,
         .purchase_btn a,
         .carousel-control-prev,
@@ -45,10 +36,6 @@ if (!empty($cardinfo->theme_color)) {
         .purchase_btn a{
             background-color: {{ $theme_color.'!important'}} ;
         }
-        /* .card_title h2>span{
-            color:{{ $theme_color }}
-        } */
-
     </style>
 </head>
 <body>
@@ -355,12 +342,10 @@ if (!empty($cardinfo->theme_color)) {
                         <div class="text-center mb-3">
                             <button type="submit" class="btn btn-primary">Sign up</button>
                         </div>
-
                         <div class="dont_have_account text-center">
                             <p>Already have an Account? <a href="javascript:void(0)" data-bs-toggle="modal"
                                     data-bs-target="#loginModal">Login</a></p>
                         </div>
-
                     </form>
                 </div>
             </div>
