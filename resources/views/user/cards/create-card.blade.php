@@ -319,7 +319,7 @@ a.social-contact.disabled {
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="phone_number" class="form-label">Phone</label>
-                                            <input type="number" name="phone_number" id="phone" data-type="phone_number" placeholder="your phone" value="{{ old('phone_number') }}" data-preview="preview_phone_number" class="social_item_in form-control cin @error('phone') is-invalid @enderror" tabindex="{{ $tabindex++ }}" required>
+                                            <input type="number" name="phone_number" id="phone" data-attr="tel:" data-type="phone_number" placeholder="your phone" value="{{ old('phone_number') }}" data-preview="preview_phone_number" class="social_item_in form-control cin @error('phone') is-invalid @enderror" tabindex="{{ $tabindex++ }}" required>
                                             @if ($errors->has('phone_number'))
                                                 <span class="help-block text-danger">{{$errors->first('phone_number') }}</span>
                                             @endif
@@ -328,7 +328,7 @@ a.social-contact.disabled {
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="email" name="email" placeholder="your email" data-type="user_email" data-type="email" id="email" value="{{ old('email') }}" class="social_item_in form-control cin @error('email') is-invalid @enderror" tabindex="{{ $tabindex++ }}" data-preview="preview_email" required>
+                                            <input type="email" name="email" data-attr="mailto:" placeholder="your email" data-type="user_email" data-type="email" id="email" value="{{ old('email') }}" class="social_item_in form-control cin @error('email') is-invalid @enderror" tabindex="{{ $tabindex++ }}" data-preview="preview_email" required>
                                             @if ($errors->has('email'))
                                                 <span class="help-block text-danger">{{$errors->first('email') }}</span>
                                             @endif
@@ -337,7 +337,7 @@ a.social-contact.disabled {
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="website" class="form-label">Website</label>
-                                            <input type="url" name="website" placeholder="your website" data-type="website" value="{{ old('website') }}" id="website" class="social_item_in form-control cin  @error('website') is-invalid @enderror"  tabindex="{{ $tabindex++ }}" data-preview="preview_company_websitelink" id="company_websitelink">
+                                            <input type="url" name="website" data-attr="" placeholder="your website" data-type="website" value="{{ old('website') }}" id="website" class="social_item_in form-control cin  @error('website') is-invalid @enderror"  tabindex="{{ $tabindex++ }}" data-preview="preview_company_websitelink" id="company_websitelink">
                                             @if ($errors->has('website'))
                                                 <span class="help-block text-danger">{{$errors->first('website') }}</span>
                                             @endif
@@ -346,7 +346,7 @@ a.social-contact.disabled {
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="facebook" class="form-label">Facebook</label>
-                                            <input type="text" name="facebook" placeholder="facebook username" data-type="facebook" value="{{ old('facebook') }}" id="facebook" class="social_item_in form-control @error('facebook') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="text" name="facebook" data-attr="https://www.facebook.com/" placeholder="facebook username" data-type="facebook" value="{{ old('facebook') }}" id="facebook" class="social_item_in form-control @error('facebook') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('facebook'))
                                                 <span class="help-block text-danger">{{$errors->first('facebook') }}</span>
                                             @endif
@@ -355,7 +355,7 @@ a.social-contact.disabled {
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="instagram" class="form-label">Instagram</label>
-                                            <input type="text" name="instagram" id="instagram" data-type="instagram" placeholder="instagram username" value="{{ old('instagram') }}" class="social_item_in form-control @error('instagram') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="text" name="instagram" id="instagram" data-attr="https://www.instagram.com/" data-type="instagram" placeholder="instagram username" value="{{ old('instagram') }}" class="social_item_in form-control @error('instagram') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('instagram'))
                                                 <span class="help-block text-danger">{{$errors->first('instagram') }}</span>
                                             @endif
@@ -370,7 +370,7 @@ a.social-contact.disabled {
                                             @endif
                                         </div>
                                     </div>
-                                    {{-- @if ($plan_details->personalized_link=='1') --}}
+                                    @if ($plan_details->personalized_link=='1')
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="personalized_link" class="form-label">Personalized Link</label>
@@ -381,7 +381,7 @@ a.social-contact.disabled {
                                             <span id="status"></span>
                                         </div>
                                     </div>
-                                    {{-- @endif --}}
+                                    @endif
                                     <div class="col-12">
                                         <div class="mb-3 form-input">
                                             <label for="footer_text" class="form-label">Copyright</label>
@@ -652,12 +652,15 @@ function getExtension(filename) {
     $(document).on('input','.social_item_in',function(){
         var this_value = $(this).val();
         var this_type = $(this).attr('data-type');
+        var data_attr = $(this).attr('data-attr');
+        console.log(data_attr);
         $("a.social-contact").each(function() {
             var href = $(this).attr("href");
             if (href == '' || !href) {
                 $(this).addClass('disabled');
                 $('.'+this_type).removeClass('disabled');
-                $('.'+this_type).attr("href",this_value);
+
+                $('.'+this_type).attr("href",data_attr+this_value);
 
             }else{
                 $('.'+this_type).removeClass('disabled');
@@ -668,7 +671,7 @@ function getExtension(filename) {
                     //     var facebook = "tel://"+this_value;
                     //     $('.'+this_type).attr("href",facebook);
                     // }else{}
-                        $('.'+this_type).attr("href",this_value);
+                        $('.'+this_type).attr("href",data_attr+this_value);
             };
         });
 

@@ -548,7 +548,7 @@ a.social-contact.disabled {
                                             @endif
                                         </div>
                                     </div>
-                                    {{-- @if ($plan_details->personalized_link=='1') --}}
+                                    @if ($plan_details->personalized_link=='1')
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="personalized_link" class="form-label">Personalized Link</label>
@@ -558,7 +558,7 @@ a.social-contact.disabled {
                                             @endif
                                         </div>
                                     </div>
-                                    {{-- @endif --}}
+                                    @endif
                                     <div class="col-12">
                                         <div class="mb-3 form-input">
                                             <label for="footer_text" class="form-label">Copyright</label>
