@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 02, 2023 at 07:53 AM
+-- Generation Time: Feb 02, 2023 at 10:39 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -942,6 +942,20 @@ CREATE TABLE `store_products` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `subscribers`
+--
+
+CREATE TABLE `subscribers` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `card_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `themes`
 --
 
@@ -1194,6 +1208,12 @@ ALTER TABLE `store_products`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `subscribers`
+--
+ALTER TABLE `subscribers`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `themes`
 --
 ALTER TABLE `themes`
@@ -1337,6 +1357,12 @@ ALTER TABLE `settings`
 -- AUTO_INCREMENT for table `store_products`
 --
 ALTER TABLE `store_products`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `subscribers`
+--
+ALTER TABLE `subscribers`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
