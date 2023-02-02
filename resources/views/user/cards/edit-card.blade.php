@@ -106,10 +106,40 @@ a.social-contact.disabled {
                                             </a>
                                         </h2>
                                 </div>
+                                <div class="card_title p-2 pt-3 d-none" id="titleDiv">
+                                    <h2 class="">
+                                        <span id="preview_name">Express T-Shirts</span>
+                                        <a href="javascript:void(0)" class="float-end login_btn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                                viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="3" y1="12" x2="21" y2="12"></line>
+                                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                                <line x1="3" y1="18" x2="21" y2="18"></line>
+                                            </svg>
+                                        </a>
+                                    </h2>
+                                </div>
                                 @else
+                                <div class="card_title p-2 pt-3 d-none" id="logoDiv">
+                                    <h2>
+                                        <div class="text-center">
+                                            <img src="{{ asset('assets/images/bizads.png') }}" width="140" id="previewLogo" alt="logo">
+                                        </div>
+                                        <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
+                                            data-bs-target="#loginModal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none"
+                                                stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="3" y1="12" x2="21" y2="12"></line>
+                                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                                <line x1="3" y1="18" x2="21" y2="18"></line>
+                                            </svg>
+                                        </a>
+                                    </h2>
+                            </div>
                                 <div class="card_title p-2 pt-3" id="titleDiv">
                                     <h2>
-                                        <span>{{ $card->title }}</span>
+                                        <span id="preview_name">{{ $card->title }}</span>
                                         <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
                                             data-bs-target="#loginModal">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none"
@@ -122,8 +152,51 @@ a.social-contact.disabled {
                                     </h2>
                                 </div>
                                 @endif
-                                <!-- slider -->
-                                {{-- <div class="carousel_slider">
+
+
+                                <div class="slider-box" id="slider-box">
+
+                                @if (!empty($card->gallery[0]))
+                                    @if ($card->gallery[0]->gallery_type=='videourl')
+                                        <div class="video_wrapper" id="digitalBizEmbad">
+                                            <div class="ratio ratio-1x1">
+                                                <iframe width="100%"  src="{{ $card->gallery[0]->content }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                            </div>
+                                        </div>
+                                    @elseif ($card->gallery[0]->gallery_type=='videosource')
+                                        <!-- Video -->
+                                        <div class="video_wrapper" id="digitaBizSourc">
+                                            <div class="ratio ratio-1x1">
+                                                    <video  autoplay="" loop="" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover" controls>
+                                                        <source src="{{ $card->gallery[0]->content }}" type="video/mp4">
+                                                        <source src="{{ $card->gallery[0]->content }}" type="video/ogg">
+                                                    </video>
+                                            </div>
+                                        </div>
+                                    @elseif ($card->gallery[0]->gallery_type=='gallery')
+                                        <div class="carousel_slider"  id="digitalbizSlider">
+                                            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                                                <div class="carousel-inner">
+                                                    @foreach ($card->gallery as $key=> $gallery)
+                                                    <div class="carousel-item {{ $key==0 ? 'active' : '' }}">
+                                                        <img src="{{ asset($gallery->content) }}" class="d-block w-100" alt="image">
+                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                                                    data-bs-slide="prev">
+                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                </button>
+                                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                                                    data-bs-slide="next">
+                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @else
+                                 <!-- slider -->
+                                 <div class="carousel_slider" id="digitalbizSlider">
                                     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                                         <div class="carousel-inner">
                                             <div class="carousel-item active">
@@ -156,61 +229,33 @@ a.social-contact.disabled {
                                             </svg>
                                         </button>
                                     </div>
-                                </div> --}}
-                                @if (!empty($card->gallery[0]))
-                                    @if ($card->gallery[0]->gallery_type=='videourl')
-                                        <div class="video_wrapper">
-                                            <div class="ratio ratio-1x1">
-                                                <iframe width="100%"  src="{{ $card->gallery[0]->content }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                            </div>
-                                        </div>
-                                    @elseif ($card->gallery[0]->gallery_type=='videosource')
-                                        <!-- Video -->
-                                        <div class="video_wrapper">
-                                            <div class="ratio ratio-1x1">
-                                                    <video  autoplay="" loop="" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover" controls>
-                                                        <source src="{{ $card->gallery[0]->content }}" type="video/mp4">
-                                                        <source src="{{ $card->gallery[0]->content }}" type="video/ogg">
-                                                    </video>
-                                            </div>
-                                        </div>
-                                    @elseif ($card->gallery[0]->gallery_type=='gallery')
-                                        <div class="carousel_slider">
-                                            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                                                <div class="carousel-inner">
-                                                    @foreach ($card->gallery as $key=> $gallery)
-                                                    <div class="carousel-item {{ $key==0 ? 'active' : '' }}">
-                                                        <img src="{{ asset($gallery->content) }}" class="d-block w-100" alt="image">
-                                                    </div>
-                                                    @endforeach
-                                                </div>
-                                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
-                                                    data-bs-slide="prev">
-                                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                </button>
-                                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
-                                                    data-bs-slide="next">
-                                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    @endif
-                                @else
-                                 <!-- slider -->
-                                 <div class="carousel_slider">
+                                </div>
+                                @endif
+
+                                <div class="video_wrapper d-none" id="digitalBizEmbad">
+                                    <div class="ratio ratio-1x1">
+                                        <iframe width="100%" height="315"  id="youtube_video_preview" src="https://www.youtube.com/embed/Fhskvloj1gE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                                <div class="video_wrapper d-none" id="digitaBizSourc">
+                                    <div class="ratio ratio-1x1">
+                                            <video  autoplay="" loop="" muted="" playsinline="" id="video_preview" data-wf-ignore="true" data-object-fit="cover" controls>
+                                                <source src="{{ asset('assets/video.mp4') }}"   type="video/mp4">
+                                                <source src="{{ asset('assets/video.mp4') }}" type="video/ogg">
+                                            </video>
+                                    </div>
+                                </div>
+                                <div class="carousel_slider d-none" id="digitalbizSlider">
                                     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                                         <div class="carousel-inner">
-                                            <!-- carousel item -->
                                             <div class="carousel-item active">
                                                 <img src="{{ asset('backend/img') }}/1.jpg" class="d-block w-100"
                                                     alt="image">
                                             </div>
-                                            <!-- carousel item -->
                                             <div class="carousel-item">
                                                 <img src="{{ asset('backend/img') }}/2.jpg" class="d-block w-100"
                                                     alt="image">
                                             </div>
-                                            <!-- carousel item -->
                                             <div class="carousel-item">
                                                 <img src="{{ asset('backend/img') }}/3.jpg" class="d-block w-100"
                                                     alt="image">
@@ -235,7 +280,8 @@ a.social-contact.disabled {
                                     </div>
                                 </div>
 
-                                @endif
+
+                            </div>
 
                                 <!-- purchase button -->
                                 <div class="purchase_btn text-center mb-4">

@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="Developed By" content="Arobil limited" />
     <meta name="Designer" content="Rabin Mia" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset($cardinfo->logo) }}">
     <!-- css file -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -144,15 +146,6 @@ if (!empty($cardinfo->theme_color)) {
                             </div>
                         </div>
                         @endif
-                        <!-- Qr code icon -->
-                        <div class="col">
-                            <div class="social_item qrcode_icon">
-                                <a href="javascript:void(0)" target="_blank" data-bs-toggle="modal"
-                                    data-bs-target="#qrcodeModal">
-                                    <img src="{{ asset('assets/images/icon/qr-code.svg') }}" alt="qr-code">
-                                </a>
-                            </div>
-                        </div>
                         @if (!empty($cardinfo->email))
                          <!-- social icon -->
                          <div class="col">
@@ -163,6 +156,16 @@ if (!empty($cardinfo->theme_color)) {
                             </div>
                         </div>
                         @endif
+                        <!-- Qr code icon -->
+                        <div class="col">
+                            <div class="social_item qrcode_icon">
+                                <a href="javascript:void(0)" target="_blank" data-bs-toggle="modal"
+                                    data-bs-target="#qrcodeModal">
+                                    <img src="{{ asset('assets/images/icon/qr-code.svg') }}" alt="qr-code">
+                                </a>
+                            </div>
+                        </div>
+
                         @if (!empty($cardinfo->website))
                         <div class="col">
                             <div class="social_item">

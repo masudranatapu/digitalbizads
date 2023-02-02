@@ -10,12 +10,9 @@ Create New DigitalBizAds Card
     color: #E53935;
     padding: 2px 0px;
 }
-
 a.social-contact.disabled {
-
     opacity: .3;
 }
-
 .purchase_btn a {
     padding: 10px 27px;
     font-size: 20px;
@@ -32,7 +29,6 @@ a.social-contact.disabled {
     -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
 }
-
 </style>
 @endsection
 <?php
@@ -60,7 +56,7 @@ a.social-contact.disabled {
                 <div class="col-md-5 col-xl-5">
                     <div class="card_preview_sec">
                         <div class="card_wrapper">
-                            <div class="card_template" style="background-color: {{  }}">
+                            <div class="card_template">
                                 <!-- title -->
                                 <div class="card_title p-2 pt-3" id="titleDiv">
                                     <h2 class="">
@@ -97,17 +93,14 @@ a.social-contact.disabled {
                                 <div class="carousel_slider" id="digitalbizSlider">
                                     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                                         <div class="carousel-inner" id="gallery_preview" >
-                                            <!-- carousel item -->
                                             <div class="carousel-item active">
                                                 <img src="{{ asset('backend/img') }}/1.jpg" class="d-block w-100"
                                                     alt="image">
                                             </div>
-                                            <!-- carousel item -->
                                             <div class="carousel-item">
                                                 <img src="{{ asset('backend/img') }}/2.jpg" class="d-block w-100"
                                                     alt="image">
                                             </div>
-                                            <!-- carousel item -->
                                             <div class="carousel-item">
                                                 <img src="{{ asset('backend/img') }}/3.jpg" class="d-block w-100"
                                                     alt="image">
