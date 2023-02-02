@@ -128,6 +128,7 @@ $(document).on('keyup change','.video_title, .video_type, .video_file, .video_de
                 file = arr_video_file[i].split("/").pop();
             }
             video_tag = '<iframe src="https://www.youtube.com/embed/'+file+'" title="" frameborder="0" allow="accelerometer; encrypted-media; gyroscope;" allowfullscreen></iframe>';
+
         }else{
             file = arr_video_src[i];
             console.log(arr_video_src[i]);

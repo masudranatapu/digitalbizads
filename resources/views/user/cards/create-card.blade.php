@@ -10,6 +10,12 @@ Create New DigitalBizAds Card
     color: #E53935;
     padding: 2px 0px;
 }
+
+a.social-contact.disabled {
+
+    opacity: .3;
+}
+
 </style>
 <?php
     $tabindex = 1;
@@ -40,7 +46,7 @@ Create New DigitalBizAds Card
                                 <!-- title -->
                                 <div class="card_title p-2 pt-3" id="titleDiv">
                                     <h2 class="">
-                                        <span  id="preview_name">Express T-Shirts</span>
+                                        <span id="preview_name">Express T-Shirts</span>
                                         <a href="javascript:void(0)" class="float-end login_btn">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
                                                 viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
@@ -70,9 +76,9 @@ Create New DigitalBizAds Card
                                 </div>
 
                                 <!-- slider -->
-                                <div class="carousel_slider">
+                                <div class="carousel_slider" id="digitalbizSlider">
                                     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                                        <div class="carousel-inner">
+                                        <div class="carousel-inner" id="gallery_preview" >
                                             <!-- carousel item -->
                                             <div class="carousel-item active">
                                                 <img src="{{ asset('backend/img') }}/1.jpg" class="d-block w-100"
@@ -108,6 +114,22 @@ Create New DigitalBizAds Card
                                     </div>
                                 </div>
 
+                                 <!-- Video -->
+                                <div class="video_wrapper d-none" id="digitaBizSourc">
+                                    <div class="ratio ratio-1x1">
+                                            <video  autoplay="" loop="" muted="" id="video_preview" playsinline="" data-wf-ignore="true" data-object-fit="cover" controls>
+                                                <source src="{{ asset('assets/video.mp4') }}"   type="video/mp4">
+                                                <source src="{{ asset('assets/video.mp4') }}" type="video/ogg">
+                                            </video>
+                                    </div>
+                                </div>
+
+                                <div class="video_wrapper d-none" id="digitalBizEmbad">
+                                    <div class="ratio ratio-1x1">
+                                        <iframe width="100%" height="315"  id="youtube_video_preview" src="https://www.youtube.com/embed/Fhskvloj1gE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+
                                 <!-- purchase button -->
                                 <div class="purchase_btn text-center mb-4">
                                     <a href="#">Shop</a>
@@ -124,7 +146,7 @@ Create New DigitalBizAds Card
                                             <!-- social icon -->
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="#" target="_blank">
+                                                    <a href="" class="social-contact phone_number" target="_blank">
                                                         <i class="fa fa-phone"></i>
                                                     </a>
                                                 </div>
@@ -132,7 +154,7 @@ Create New DigitalBizAds Card
                                             <!-- social icon -->
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="#" target="_blank">
+                                                    <a href="" class="social-contact email" target="_blank">
                                                         <i class="fa fa-envelope"></i>
                                                     </a>
                                                 </div>
@@ -140,7 +162,7 @@ Create New DigitalBizAds Card
                                             <!-- social icon -->
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="#" target="_blank">
+                                                    <a href="" class="social-contact website" target="_blank">
                                                         <i class="fa fa-globe"></i>
                                                     </a>
                                                 </div>
@@ -157,7 +179,7 @@ Create New DigitalBizAds Card
                                             <!-- social icon -->
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="#" target="_blank">
+                                                    <a href="" class="social-contact facebook" target="_blank">
                                                         <i class="fab fa-facebook"></i>
                                                     </a>
                                                 </div>
@@ -165,7 +187,7 @@ Create New DigitalBizAds Card
                                             <!-- social icon -->
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="#" target="_blank">
+                                                    <a href="" class="social-contact instagram" target="_blank">
                                                         <i class="fab fa-instagram"></i>
                                                     </a>
                                                 </div>
@@ -188,7 +210,7 @@ Create New DigitalBizAds Card
 
                                 <!-- copyright -->
                                 <div class="bottom_content text-center pb-3">
-                                    <p>CashApp: $SBOWEN2005</p>
+                                    <p>CashApp: <span id="preview_cashapp">$SBOWEN2005</span> </p>
                                 </div>
                             </div>
                         </div>
@@ -268,14 +290,14 @@ Create New DigitalBizAds Card
                                         </div>
                                         <div class="mb-3 d-none form-input" id="videourl">
                                             <label for="video" class="form-label">Video Url</label>
-                                            <input type="url" name="video" placeholder="your video url" value="{{ old('video') }}" id="video" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="url" name="video" placeholder="your video url" value="{{ old('video') }}" id="video_url" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('video'))
                                                 <span class="help-block text-danger">{{$errors->first('video') }}</span>
                                             @endif
                                         </div>
                                         <div class="mb-3 form-input d-none" id="videosource">
                                             <label for="video" class="form-label">Uplaod Video</label>
-                                            <input type="file" name="video" placeholder="upload your video" id="video" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="file" name="video" placeholder="upload your video" id="video_file" class="form-control @error('video') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('video'))
                                                 <span class="help-block text-danger">{{$errors->first('video') }}</span>
                                             @endif
@@ -286,7 +308,7 @@ Create New DigitalBizAds Card
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="phone_number" class="form-label">Phone</label>
-                                            <input type="number" name="phone_number" id="phone" placeholder="your phone" value="{{ old('phone_number') }}" data-preview="preview_phone_number" class="form-control cin @error('phone') is-invalid @enderror" tabindex="{{ $tabindex++ }}" required>
+                                            <input type="number" name="phone_number" id="phone" data-type="phone_number" placeholder="your phone" value="{{ old('phone_number') }}" data-preview="preview_phone_number" class="social_item_in form-control cin @error('phone') is-invalid @enderror" tabindex="{{ $tabindex++ }}" required>
                                             @if ($errors->has('phone_number'))
                                                 <span class="help-block text-danger">{{$errors->first('phone_number') }}</span>
                                             @endif
@@ -295,7 +317,7 @@ Create New DigitalBizAds Card
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="email" name="email" placeholder="your email" id="email" value="{{ old('email') }}" class="form-control cin @error('email') is-invalid @enderror" tabindex="{{ $tabindex++ }}" data-preview="preview_email" required>
+                                            <input type="email" name="email" placeholder="your email" data-type="email" data-type="email" id="email" value="{{ old('email') }}" class="social_item_in form-control cin @error('email') is-invalid @enderror" tabindex="{{ $tabindex++ }}" data-preview="preview_email" required>
                                             @if ($errors->has('email'))
                                                 <span class="help-block text-danger">{{$errors->first('email') }}</span>
                                             @endif
@@ -304,7 +326,7 @@ Create New DigitalBizAds Card
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="website" class="form-label">Website</label>
-                                            <input type="url" name="website" placeholder="your website" value="{{ old('website') }}" id="website" class="form-control cin  @error('website') is-invalid @enderror"  tabindex="{{ $tabindex++ }}" data-preview="preview_company_websitelink" id="company_websitelink">
+                                            <input type="url" name="website" placeholder="your website" data-type="website" value="{{ old('website') }}" id="website" class="social_item_in form-control cin  @error('website') is-invalid @enderror"  tabindex="{{ $tabindex++ }}" data-preview="preview_company_websitelink" id="company_websitelink">
                                             @if ($errors->has('website'))
                                                 <span class="help-block text-danger">{{$errors->first('website') }}</span>
                                             @endif
@@ -313,7 +335,7 @@ Create New DigitalBizAds Card
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="facebook" class="form-label">Facebook</label>
-                                            <input type="text" name="facebook" placeholder="facebook username" value="{{ old('facebook') }}" id="facebook" class="form-control @error('facebook') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="text" name="facebook" placeholder="facebook username" data-type="facebook" value="{{ old('facebook') }}" id="facebook" class="social_item_in form-control @error('facebook') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('facebook'))
                                                 <span class="help-block text-danger">{{$errors->first('facebook') }}</span>
                                             @endif
@@ -322,7 +344,7 @@ Create New DigitalBizAds Card
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="instagram" class="form-label">Instagram</label>
-                                            <input type="text" name="instagram" id="instagram" placeholder="instagram username" value="{{ old('instagram') }}" class="form-control @error('instagram') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="text" name="instagram" id="instagram" data-type="instagram" placeholder="instagram username" value="{{ old('instagram') }}" class="social_item_in form-control @error('instagram') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('instagram'))
                                                 <span class="help-block text-danger">{{$errors->first('instagram') }}</span>
                                             @endif
@@ -331,7 +353,7 @@ Create New DigitalBizAds Card
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="cashapp" class="form-label">CashApp</label>
-                                            <input type="text" name="cashapp" id="cashapp" placeholder="cashapp username" value="{{ old('cashapp') }}" class="form-control @error('cashapp') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
+                                            <input type="text" name="cashapp" id="cashapp" placeholder="cashapp username" value="{{ old('cashapp') }}"  data-preview="preview_cashapp" class="form-control cin @error('cashapp') is-invalid @enderror" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('cashapp'))
                                                 <span class="help-block text-danger">{{$errors->first('cashapp') }}</span>
                                             @endif
@@ -387,32 +409,37 @@ Create New DigitalBizAds Card
             $('#logofield').addClass('d-none');
         }
       });
-      // gallery and video fiedl
+      // gallery and video fiedl  digitalbizSlider  digitalBizEmbad digitaBizSourc
       $("#selectField2").change(function(){
         var selected2 = $(this).val();
         if(selected2 === "videourl"){
             $('#galleryfield').addClass('d-none');
             $('#videourl').removeClass('d-none');
             $('#videosource').addClass('d-none');
+            $('#digitalBizEmbad').addClass('d-block').removeClass('d-none');
+            $('#digitalbizSlider').addClass('d-none').removeClass('d-block');
+            $('#digitaBizSourc').addClass('d-none').removeClass('d-block');
         }else if(selected2 === "videosource"){
             $('#galleryfield').addClass('d-none');
             $('#videourl').addClass('d-none');
             $('#videosource').removeClass('d-none');
+            $('#digitalBizEmbad').addClass('d-none').removeClass('d-block');
+            $('#digitalbizSlider').addClass('d-none').removeClass('d-block');
+            $('#digitaBizSourc').addClass('d-block').removeClass('d-none');
         }else{
             $('#galleryfield').removeClass('d-none');
             $('#videourl').addClass('d-none');
             $('#videosource').addClass('d-none');
+            $('#digitalBizEmbad').addClass('d-none').removeClass('d-block');
+            $('#digitalbizSlider').addClass('d-block').removeClass('d-none');
+            $('#digitaBizSourc').addClass('d-none').removeClass('d-block');
         }
       });
     });
 
-
     $(document).on('input','#personalized_link',function(e){
         checkLink();
-
     })
-
-
     function checkLink(){
     "use strict";
     var plink = $('#personalized_link').val();
@@ -460,30 +487,13 @@ function convertToLink( str ) {
                 maxlength: 20,
                 minlength: 8,
             },
-            // 'company_name': {
-            //     required: true,
-            //     maxlength: 124,
-            //     minlength: 2,
-            // },
             'footer_text': {
                 required: false,
                 maxlength: 255,
             },
         },
         messages: {},
-        // submitHandler: function(form) {
-        //     $('.save-card-spinner').addClass('active');
-        //     $(this).find('.save-card').prop('disabled', true);
-        //     $(".btn-txt").text("Processing ...");
-        //     setTimeout(function(){
-        //         $(".save-card-spinner").removeClass("active");
-        //         $('.save-card').attr("disabled", false);
-        //         $(".btn-txt").text("Save");
-        //     }, 50000);
-        //     form.submit();
-
-        // },
-          errorPlacement: function(error, element) {
+            errorPlacement: function(error, element) {
             $(element).parents('.form-input').append(error)
         },
     });
@@ -519,7 +529,13 @@ function convertToLink( str ) {
     $('#gallery').change(function(){
         $(".carousel-inner").html('');
         for (var i = 0; i < $(this)[0].files.length; i++) {
-            $(".carousel-inner").append('<div class="carousel-item active"><img src="'+window.URL.createObjectURL(this.files[i])+'" class="d-block w-100"/></div>');
+            if(i==0){
+                var slider_active = 'active';
+            }
+            else{
+                var slider_active = '';
+            }
+            $(".carousel-inner").append('<div class="carousel-item '+slider_active+'"><img src="'+window.URL.createObjectURL(this.files[i])+'" class="d-block w-100"/></div>');
         }
     });
 });
@@ -537,6 +553,100 @@ function convertToLink( str ) {
     $("#personalized_link").val(str);
      return str;
     })
+    $('#video_url').on('change', function() {
+        var youtube_url = $(this).val();
+            var remove_after = youtube_url.split('&')[0];
+            var _file = remove_after.split("v=").pop();
+            if(_file){
+                file = _file;
+            }
+            else{
+                file = arr_video_file[i].split("/").pop();
+            }
+            video_tag = 'https://www.youtube.com/embed/'+file;
+        $('#youtube_video_preview').attr('src',video_tag);
+    });
+
+    $(function() {
+    $('#video_file').on('change', function(){
+      if (isVideo($(this).val())){
+        $('#video_preview').attr('src', URL.createObjectURL(this.files[0]));
+        $('.video-prev').show();
+      }
+      else
+      {
+        $('#video_file').val('');
+        $('.video-prev').hide();
+        alert("Only video files are allowed to upload.")
+      }
+    });
+});
+
+// If user tries to upload videos other than these extension , it will throw error.
+function isVideo(filename) {
+    var ext = getExtension(filename);
+    switch (ext.toLowerCase()) {
+    case 'm4v':
+    case 'avi':
+    case 'mp4':
+    case 'mov':
+    case 'mpg':
+    case 'mpeg':
+        // etc
+        return true;
+    }
+    return false;
+}
+
+function getExtension(filename) {
+    var parts = filename.split('.');
+    return parts[parts.length - 1];
+}
+
+    $('#gallery').change(function(){
+        $(".carousel-inner").html('');
+        for (var i = 0; i < $(this)[0].files.length; i++) {
+            if(i==0){
+                var slider_active = 'active';
+            }
+            else{
+                var slider_active = '';
+            }
+            $(".carousel-inner").append('<div class="carousel-item '+slider_active+'"><img src="'+window.URL.createObjectURL(this.files[i])+'" class="d-block w-100"/></div>');
+        }
+    });
+
+    $(document).on('input','.social_item_in',function(){
+        var this_value = $(this).val();
+        var this_type = $(this).attr('data-type');
+        $("a.social-contact").each(function() {
+            var href = $(this).attr("href");
+            if (href == '' || !href) {
+                $(this).addClass('disabled');
+                $('.'+this_type).removeClass('disabled');
+                $('.'+this_type).attr("href",this_value);
+
+            }else{
+                $('.'+this_type).removeClass('disabled');
+                    if(this_type ='facebook'){
+                        var facebook = "https://www.facebook.com/"+this_value;
+                        $('.'+this_type).attr("href",facebook);
+                    }else if(this_type ='phone_number'){
+                        var facebook = "tel://"+this_value;
+                        $('.'+this_type).attr("href",facebook);
+                    }
+            };
+
+        });
+
+
+
+    })
+
+
+
+
+
 
     $(function() {
         var
