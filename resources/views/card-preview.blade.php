@@ -25,26 +25,16 @@ if (!empty($cardinfo->theme_color)) {
     $theme_bg = "$r, $g, $b,.1";
 ?>
     <style>
-        .card_template{
-            background-color:rgba({{ $theme_bg }});
-        }
-        .social_item i{
-            border-color:{{ $theme_color }}
-        }
-        .subscribe-btn,
-        .purchase_btn a,
-        .carousel-control-prev,
-        .carousel-control-next,
-        .purchase_btn a{
-            background-color: {{ $theme_color.'!important'}} ;
-        }
+        .card_template{background-color:rgba({{ $theme_bg }});}.social_item i{border-color:{{ $theme_color }}}.subscribe-btn,.purchase_btn a,.carousel-control-prev,
+        .carousel-control-next,.purchase_btn a{background-color: {{ $theme_color.'!important'}};}.card_template .card_title {padding: 9px 0px 9px 0px;
+            background: #eb8714;}
     </style>
 </head>
 <body>
     <div class="card_wrapper">
         <div class="card_template">
             <!-- title -->
-            <div class="card_title p-2 pt-3">
+            <div class="card_title">
                     @if (!empty($cardinfo->logo))
                     <h2>
                         <div class="text-center">
