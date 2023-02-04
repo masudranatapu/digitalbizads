@@ -87,11 +87,13 @@ a {
 .card_title h2 {
     font-size: 29px;
     font-family: "Poppins";
-    text-align: center;
     font-weight: 900;
-    color: #4D257E;
+    text-align: center;
+    color: #fff;
+    background: #eb8714;
     letter-spacing: 0.1px;
-    text-shadow: 2px 7px 5px rgb(0 0 0 / 30%), 0px -4px 10px rgb(255 255 255 / 30%);
+    padding: 0px;
+    margin: 0px;
 }
 
 .card_title h2 img {
