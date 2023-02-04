@@ -117,34 +117,34 @@ class HomeController extends Controller
 
     public function getPreview($cardurl)
     {
-            $cardinfo = BusinessCard::select('business_cards.*','plans.plan_name','plans.hide_branding')
+        $cardinfo = BusinessCard::select('business_cards.*', 'plans.plan_name', 'plans.hide_branding')
             ->where('business_cards.card_url', $cardurl)
-            ->leftJoin('users','users.id','business_cards.user_id')
-            ->leftJoin('plans','plans.id','users.plan_id')
+            ->leftJoin('users', 'users.id', 'business_cards.user_id')
+            ->leftJoin('plans', 'plans.id', 'users.plan_id')
             ->first();
-            if($cardinfo == null){
-                return redirect()->route('home-locale');
-            }
-        if($cardinfo){
-            $cardinfo->gallery = Gallery::where('card_id',$cardinfo->id)->get();
-            $cardinfo->contacts = BusinessField::where('card_id',$cardinfo->id)->get();
+        if ($cardinfo == null) {
+            return redirect()->route('home-locale');
+        }
+        if ($cardinfo) {
+            $cardinfo->gallery = Gallery::where('card_id', $cardinfo->id)->get();
+            $cardinfo->contacts = BusinessField::where('card_id', $cardinfo->id)->get();
             $user = User::find($cardinfo->user_id);
             $url = url($cardinfo->card_url);
 
 
 
-                if($cardinfo->card_status == 'deactive'){
-                    alert()->error(trans('This card is not active now'));
-                    return redirect()->route('home-locale');
-                }
-                if($cardinfo->card_status == 2){
-                    alert()->error(trans('This card is not available'));
-                    return redirect()->route('home-locale');
-                }
+            if ($cardinfo->card_status == 'deactive') {
+                alert()->error(trans('This card is not active now'));
+                return redirect()->route('home-locale');
+            }
+            if ($cardinfo->card_status == 2) {
+                alert()->error(trans('This card is not available'));
+                return redirect()->route('home-locale');
+            }
+            $settings = getSetting();
 
-
-            return view('card-preview', compact('cardinfo','user'));
-        }else{
+            return view('card-preview', compact('cardinfo', 'user', 'settings'));
+        } else {
 
             alert()->error(trans('This card is not available please create your desired card'));
             return redirect()->route('home-locale');
@@ -160,40 +160,38 @@ class HomeController extends Controller
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:subscribers,email,',
             'card_id' => 'required|integer',
-            ]);
-            if ($validator->fails())
-            {
-              return redirect()->back()->withErrors($validator)->withInput();
-            }
-                DB::beginTransaction();
-                try {
-                    $subscriber = new Subscriber();
-                    $subscriber->email = $request->email;
-                    $subscriber->card_id = $request->card_id;
-                    $subscriber->created_at = date('Y-m-d H:i:s');
-                    $subscriber->save();
+        ]);
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+        DB::beginTransaction();
+        try {
+            $subscriber = new Subscriber();
+            $subscriber->email = $request->email;
+            $subscriber->card_id = $request->card_id;
+            $subscriber->created_at = date('Y-m-d H:i:s');
+            $subscriber->save();
 
-                    $email = $request->email;
-                    // Mail::send('emails.subscriber',compact('email'), function($message)use($email) {
-                    //     $message->to($email, $email)
-                    //     // ->cc('asas@gmail.com')
-                    //     ->subject('Subscriber mail');
-                    //     });
-                    // Mail::send('emails.subcription',compact('email'), function($message)use($email) {
-                    //     $message->to('info@gmail.com')
-                    //     ->subject('Subscriber mail');
-                    //     });
+            $email = $request->email;
+            // Mail::send('emails.subscriber',compact('email'), function($message)use($email) {
+            //     $message->to($email, $email)
+            //     // ->cc('asas@gmail.com')
+            //     ->subject('Subscriber mail');
+            //     });
+            // Mail::send('emails.subcription',compact('email'), function($message)use($email) {
+            //     $message->to('info@gmail.com')
+            //     ->subject('Subscriber mail');
+            //     });
 
 
-                } catch (\Exception $e) {
-                    dd($e->getMessage());
-                    DB::rollback();
-                    alert()->error(trans('Unable to subscribe'));
-                    return redirect()->back();
-                }
-                DB::commit();
-                alert()->success(trans('Thank you You have successfully subscribed.'));
-                 return redirect()->back();
-            }
-
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            DB::rollback();
+            alert()->error(trans('Unable to subscribe'));
+            return redirect()->back();
+        }
+        DB::commit();
+        alert()->success(trans('Thank you You have successfully subscribed.'));
+        return redirect()->back();
+    }
 }
