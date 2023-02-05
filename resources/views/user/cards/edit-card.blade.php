@@ -14,7 +14,7 @@
     } else {
         $gallery_type = 'gallery';
     }
-
+    
     if (old('theme_coloe')) {
         $theme_color = old('theme_coloe');
     } elseif (!empty($card->theme_color)) {
@@ -24,9 +24,9 @@
     }
     [$r, $g, $b] = sscanf($theme_color, '#%02x%02x%02x');
     $theme_bg = "$r, $g, $b,.1";
-
+    
     // dd($card);
-
+    
     ?>
 @section('css')
     <style>
@@ -53,7 +53,7 @@
         }
 
         .card_title {
-            background-color: {{ $theme_color . '!important' }};
+            background-color: {{ $theme_color }};
 
         }
 
@@ -743,8 +743,8 @@
             $('.purchase_btn').find('a').css({
                 'background-color': 'rgba(' + rgb + ',.1' + ')'
             });
-            $('#titleDiv').css({
-                'background-color': 'rgba(' + rgb + ',.1' + ')'
+            $('.card_title').css({
+                'background-color': current_color
             });
             $('.card_template').css({
                 'background-color': 'rgba(' + rgb + ',.1' + ')'
