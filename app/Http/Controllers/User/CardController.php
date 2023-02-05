@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\User;
+
 use Str;
 use File;
 use App\Plan;
@@ -58,7 +59,7 @@ class CardController extends Controller
                 ->join('users', 'business_cards.user_id', '=', 'users.id')
                 ->select('users.user_id', 'users.plan_validity', 'business_cards.*')
                 ->where('business_cards.user_id', Auth::user()->id)
-                ->where('business_cards.card_status','activated')
+                ->where('business_cards.card_status', 'activated')
                 ->orderBy('business_cards.id', 'desc')
                 ->get();
 
@@ -80,7 +81,7 @@ class CardController extends Controller
         $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
         $plan_details = json_decode($plan->plan_details);
 
-	    if($plan_details->no_of_vcards == 999) {
+        if ($plan_details->no_of_vcards == 999) {
             $no_cards = 999999;
         } else {
             $no_cards = $plan_details->no_of_vcards;
@@ -109,14 +110,14 @@ class CardController extends Controller
         }
         $user_details = User::where('user_id', Auth::user()->user_id)->first();
         $plan_details = json_decode($user_details->plan_details, true);
-        if($request->gallery_type=='videosource'){
+        if ($request->gallery_type == 'videosource') {
             $validator = Validator::make($request->all(), [
-                   'video' => 'required|mimetypes:video/x-ms-asf,video/x-flv,video/mp4,application/x-mpegURL,video/MP2T,video/3gpp,video/quicktime,video/x-msvideo,video/x-ms-wmv,video/avi | max:50000'
-              ]);
-        }elseif($request->gallery_type=='videourl'){
+                'video' => 'required|mimetypes:video/x-ms-asf,video/x-flv,video/mp4,application/x-mpegURL,video/MP2T,video/3gpp,video/quicktime,video/x-msvideo,video/x-ms-wmv,video/avi | max:50000'
+            ]);
+        } elseif ($request->gallery_type == 'videourl') {
             $validator = Validator::make($request->all(), [
-                'video' =>'required|url',
-           ]);
+                'video' => 'required|url',
+            ]);
         }
         $validator = Validator::make($request->all(), [
             'adsname' => 'required',
@@ -131,21 +132,20 @@ class CardController extends Controller
             'cashapp' => 'nullable|string|max:191',
             'personalized_link' => 'nullable|string|max:191',
             'footer_text' => 'nullable|string|max:191',
-          ]);
+        ]);
 
-          if ($validator->fails())
-          {
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
-          }
+        }
         $cardId = uniqid();
 
-        if($plan_details['personalized_link']=='1'){
+        if ($plan_details['personalized_link'] == '1') {
             if ($request->personalized_link) {
                 $personalized_link = $request->personalized_link;
             } else {
                 $personalized_link = $cardId;
             }
-        }else{
+        } else {
             $personalized_link = $cardId;
         }
         $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
@@ -153,317 +153,306 @@ class CardController extends Controller
         $plan_details = json_decode($user_details->plan_details, true);
         $card_url = strtolower(preg_replace('/\s+/', '-', $personalized_link));
         $current_card = BusinessCard::where('card_url', $card_url)->count();
-	    if($plan_details['no_of_vcards'] == 999) {
+        if ($plan_details['no_of_vcards'] == 999) {
             $no_cards = 999999;
         } else {
             $no_cards = $plan_details['no_of_vcards'];
         }
-    //     if ($current_card == 0) {
-    //         // Checking, If the user plan allowed card creation is less than created card.
-    //         if ($cards < $no_cards) {
-                DB::beginTransaction();
-                try {
-                    $card = new BusinessCard();
-                    $card->adsname = $request->adsname;
-                    $card->card_id = $cardId;
-                    $card->user_id = Auth::user()->id;
-                    $card->theme_id= 1;
-                    $card->theme_color = $request->theme_color;
-                    $card->card_lang = 'en';
-                    if($request->headline=='text'){
-                        $card->title = $request->text;
-                    }else{
-                        if(!is_null($request->file('logo')))
-                        {
-                            $logo_ = $request->file('logo');
-                            $base_name = preg_replace('/\..+$/', '', $logo_->getClientOriginalName());
+        //     if ($current_card == 0) {
+        //         // Checking, If the user plan allowed card creation is less than created card.
+        //         if ($cards < $no_cards) {
+        DB::beginTransaction();
+        try {
+            $card = new BusinessCard();
+            $card->adsname = $request->adsname;
+            $card->card_id = $cardId;
+            $card->user_id = Auth::user()->id;
+            $card->theme_id = 1;
+            $card->theme_color = $request->theme_color;
+            $card->card_lang = 'en';
+            if ($request->headline == 'text') {
+                $card->title = $request->text;
+            } else {
+                if (!is_null($request->file('logo'))) {
+                    $logo_ = $request->file('logo');
+                    $base_name = preg_replace('/\..+$/', '', $logo_->getClientOriginalName());
+                    $base_name = explode(' ', $base_name);
+                    $base_name = implode('-', $base_name);
+                    $base_name = Str::lower($base_name);
+                    $image_name = $base_name . "-" . uniqid() . "." . $logo_->getClientOriginalExtension();
+                    $file_path = 'assets/uploads/logo/';
+                    if (!File::exists($file_path)) {
+                        File::makeDirectory($file_path, 777, true);
+                    }
+                    $logo_->move($file_path, $image_name);
+                    $card->logo = $file_path . $image_name;
+                }
+            }
+            $card->card_type = 'vcard';
+            $card->card_url = $card_url;
+            $card->phone_number = $request->phone_number;
+            $card->email = $request->email ?? Auth::user()->email;
+            $card->footer_text = $request->footer_text;
+            $card->cashapp = $request->cashapp;
+            $card->website = $request->website;
+            $card->card_status = 'activated';
+            $card->created_at = date('Y-m-d H:i:s');
+            $card->created_by = Auth::user()->id;
+            $card->status = 1;
+            $card->save();
+            if (!empty($request->video) && $request->gallery_type == 'videosource') {
+                $_video = $request->file('video');
+                $base_name = preg_replace('/\..+$/', '', $_video->getClientOriginalName());
+                $video_name = $base_name . "-" . uniqid() . "." . $_video->getClientOriginalExtension();
+                $file_path = 'assets/uploads/videos';
+                if (!File::exists($file_path)) {
+                    File::makeDirectory($file_path);
+                }
+                $_video->move($file_path, $video_name);
+                $video = asset($file_path . '/' . $video_name);
+
+                DB::table('card_gallery')->insert([
+                    'content' => $video,
+                    'card_id' => $card->id,
+                    'gallery_type' => $request->gallery_type,
+                ]);
+            } elseif (!empty($request->video) && $request->gallery_type == 'videourl') {
+                $video =  $this->getYoutubeEmbad($request->video);
+                DB::table('card_gallery')->insert([
+                    'content' => $video,
+                    'card_id' => $card->id,
+                    'gallery_type' => $request->gallery_type,
+                ]);
+            } elseif (!empty($request->gallery) && $request->gallery_type == 'gallery') {
+
+                if ($request->gallery) {
+                    foreach ($request->gallery as $key => $gallery) {
+                        if (!is_null($request->file('gallery')[$key])) {
+                            $gallery_image = $request->file('gallery')[$key];
+                            $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
                             $base_name = explode(' ', $base_name);
                             $base_name = implode('-', $base_name);
                             $base_name = Str::lower($base_name);
-                            $image_name = $base_name."-".uniqid().".".$logo_->getClientOriginalExtension();
-                            $file_path = 'assets/uploads/logo/';
+                            $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
+                            $file_path = 'assets/uploads/gallery/';
                             if (!File::exists($file_path)) {
                                 File::makeDirectory($file_path, 777, true);
                             }
-                            $logo_->move($file_path, $image_name);
-                            $card->logo = $file_path.$image_name;
+                            $gallery_image->move($file_path, $image_name);
+                            $_gallery = $file_path . $image_name;
+                            $gallery_photo = new Gallery();
+                            $gallery_photo->content = $_gallery;
+                            $gallery_photo->card_id = $card->id;
+                            $gallery_photo->gallery_type = $request->gallery_type;
+                            $gallery_photo->save();
                         }
                     }
-                    $card->card_type = 'vcard';
-                    $card->card_url = $card_url;
-                    $card->phone_number = $request->phone_number;
-                    $card->email = $request->email ?? Auth::user()->email;
-                    $card->footer_text = $request->footer_text;
-                    $card->cashapp = $request->cashapp;
-                    $card->website = $request->website;
-                    $card->card_status = 'activated';
-                    $card->created_at = date('Y-m-d H:i:s');
-                    $card->created_by = Auth::user()->id;
-                    $card->status = 1;
-                    $card->save();
-                    if(!empty($request->video) &&$request->gallery_type=='videosource'){
-                        $_video = $request->file('video');
-                        $base_name = preg_replace('/\..+$/', '', $_video->getClientOriginalName());
-                        $video_name = $base_name . "-" . uniqid() . "." .$_video->getClientOriginalExtension();
-                        $file_path = 'assets/uploads/videos';
-                        if (! File::exists($file_path)) {
-                            File::makeDirectory($file_path);
-                        }
-                        $_video->move($file_path, $video_name);
-                        $video = asset($file_path.'/'.$video_name);
-
-                        DB::table('card_gallery')->insert([
-                            'content'=>$video,
-                            'card_id' => $card->id,
-                            'gallery_type'=>$request->gallery_type,
-                        ]);
-
-                    }elseif (!empty($request->video) &&$request->gallery_type=='videourl') {
-                        $video =  $this->getYoutubeEmbad($request->video);
-                        DB::table('card_gallery')->insert([
-                            'content'=>$video,
-                            'card_id' => $card->id,
-                            'gallery_type'=>$request->gallery_type,
-                        ]);
-                    }
-                    elseif (!empty($request->gallery) &&$request->gallery_type=='gallery') {
-
-                        if($request->gallery){
-                            foreach ($request->gallery as $key => $gallery) {
-                                if(!is_null($request->file('gallery')[$key]))
-                                {
-                                    $gallery_image = $request->file('gallery')[$key];
-                                    $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
-                                    $base_name = explode(' ', $base_name);
-                                    $base_name = implode('-', $base_name);
-                                    $base_name = Str::lower($base_name);
-                                    $image_name = $base_name."-".uniqid().".".$gallery_image->getClientOriginalExtension();
-                                    $file_path = 'assets/uploads/gallery/';
-                                    if (!File::exists($file_path)) {
-                                        File::makeDirectory($file_path, 777, true);
-                                    }
-                                    $gallery_image->move($file_path, $image_name);
-                                    $_gallery = $file_path.$image_name;
-                                    $gallery_photo = new Gallery();
-                                    $gallery_photo->content = $_gallery;
-                                    $gallery_photo->card_id = $card->id;
-                                    $gallery_photo->gallery_type =$request->gallery_type;
-                                    $gallery_photo->save();
-                                }
-                            }
-                        }
-                    }
-                    if($request->facebook){
-                        DB::table('business_fields')->insert([
-                            'card_id'=> $card->id,
-                            'type' => 'facebook',
-                            'icon' => 'fab fa-facebook',
-                            'label' => 'facebook',
-                            'content' => $request->facebook,
-                            'status' => 1,
-                            'created_at' => date('Y-m-d H:i:s')
-                        ]);
-                    }
-                    if($request->instagram){
-                        DB::table('business_fields')->insert([
-                            'card_id'=> $card->id,
-                            'type' => 'instagram',
-                            'icon' => 'fab fa-instagram',
-                            'label' => 'instagram',
-                            'content' => $request->instagram,
-                            'status' => 1,
-                            'created_at' => date('Y-m-d H:i:s')
-                        ]);
-                    }
-                } catch (\Exception $e) {
-                    dd($e->getMessage());
-                    DB::rollback();
-                    alert()->error(trans('Unable to create card'));
-                    return redirect()->back();
                 }
-                DB::commit();
-                alert()->success(trans('Card successfully created'));
-                return redirect()->route('user.cards');
             }
+            if ($request->facebook) {
+                DB::table('business_fields')->insert([
+                    'card_id' => $card->id,
+                    'type' => 'facebook',
+                    'icon' => 'fab fa-facebook',
+                    'label' => 'facebook',
+                    'content' => $request->facebook,
+                    'status' => 1,
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
+            }
+            if ($request->instagram) {
+                DB::table('business_fields')->insert([
+                    'card_id' => $card->id,
+                    'type' => 'instagram',
+                    'icon' => 'fab fa-instagram',
+                    'label' => 'instagram',
+                    'content' => $request->instagram,
+                    'status' => 1,
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
+            }
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            DB::rollback();
+            alert()->error(trans('Unable to create card'));
+            return redirect()->back();
+        }
+        DB::commit();
+        alert()->success(trans('Card successfully created'));
+        return redirect()->route('user.cards');
+    }
 
 
-        public function editCard(Request $request,$id){
-            $card  = BusinessCard::where('card_id',$id)->first();
-            $card->contacts =BusinessField::where('card_id',$card->id)->get();
-            $card->gallery = Gallery::where('card_id',$card->id)->get();
-            $settings = Setting::where('status', 1)->first();
-            $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
-            $plan_details = json_decode($plan->plan_details);
-            return view('user.cards.edit-card',compact('card','settings', 'plan_details'));
+    public function editCard(Request $request, $id)
+    {
+        $card  = BusinessCard::where('card_id', $id)->first();
+        $card->contacts = BusinessField::where('card_id', $card->id)->get();
+        $card->gallery = Gallery::where('card_id', $card->id)->get();
+        $settings = Setting::where('status', 1)->first();
+        $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
+        $plan_details = json_decode($plan->plan_details);
+        return view('user.cards.edit-card', compact('card', 'settings', 'plan_details'));
+    }
 
+
+    public function postUpdate(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'adsname' => 'required',
+            'theme_color' => 'required|max:10',
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'text' => 'nullable|string|min:3|max:191',
+            'phone_number' => 'required',
+            'email' => 'required|email|max:191',
+            'website' => 'nullable|string|url|max:191',
+            'facebook' => 'nullable|string|max:191',
+            'instagram' => 'nullable|string|max:191',
+            'cashapp' => 'nullable|string|max:191',
+            'personalized_link' => 'nullable|string|max:191',
+            'footer_text' => 'nullable|string|max:191',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
-
-        public function postUpdate(Request $request,$id)
-        {
-            $validator = Validator::make($request->all(), [
-                'adsname' => 'required',
-                'theme_color' => 'required|max:10',
-                'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
-                'text' => 'nullable|string|min:3|max:191',
-                'phone_number' => 'required',
-                'email' => 'required|email|max:191',
-                'website' => 'nullable|string|url|max:191',
-                'facebook' => 'nullable|string|max:191',
-                'instagram' => 'nullable|string|max:191',
-                'cashapp' => 'nullable|string|max:191',
-                'personalized_link' => 'nullable|string|max:191',
-                'footer_text' => 'nullable|string|max:191',
-              ]);
-
-              if ($validator->fails())
-              {
-                return redirect()->back()->withErrors($validator)->withInput();
-              }
-
-            if (!empty($request->personalized_link)) {
-                $personalized_link = $request->personalized_link;
-                $card_url = strtolower(preg_replace('/\s+/', '-', $personalized_link));
-            }
-            $user_details = User::where('user_id', Auth::user()->user_id)->first();
-            $plan_details = json_decode($user_details->plan_details, true);
-            DB::beginTransaction();
-            try {
-                $card = BusinessCard::findOrFail($id);
-                $card->adsname = $request->adsname;
-                // $card->card_id = $cardId;
-                $card->theme_id= $request->theme_id;
-                $card->theme_color = $request->theme_color;
-                $card->card_lang = 'en';
-                if($plan_details['personalized_link']=='1' && !empty($card_url)){
-                    $card->card_url = $card_url;
-                }
-                if($request->headline=='text'){
-
-                    $card->title = $request->text;
-                    DB::table('business_cards')->where('id',$id)->update([
-                        'logo' => NULL
-                    ]);
-                }else{
-                    if(!is_null($request->file('logo')))
-                    {
-                        DB::table('business_cards')->where('id',$id)->update([
-                            'text' => NULL
-                        ]);
-                        $logo_ = $request->file('logo');
-                        $base_name = preg_replace('/\..+$/', '', $logo_->getClientOriginalName());
-                        $base_name = explode(' ', $base_name);
-                        $base_name = implode('-', $base_name);
-                        $base_name = Str::lower($base_name);
-                        $image_name = $base_name."-".uniqid().".".$logo_->getClientOriginalExtension();
-                        $file_path = 'assets/uploads/logo/';
-                        if (!File::exists($file_path)) {
-                            File::makeDirectory($file_path, 777, true);
-                        }
-                        $logo_->move($file_path, $image_name);
-                        $card->logo = $file_path.$image_name;
-                    }
-                }
-                $card->card_type = 'vcard';
-                $card->phone_number = $request->phone_number;
-                $card->email = $request->email;
-                $card->footer_text = $request->footer_text;
-                $card->cashapp = $request->cashapp;
-                $card->website = $request->website;
-                // $card->card_status = 'activated';
-                $card->updated_at = date('Y-m-d H:i:s');
-                $card->updated_by = Auth::user()->id;
-                $card->update();
-
-                if(!empty($request->video) && $request->gallery_type=='videosource'){
-                    $_video = $request->file('video');
-                    $base_name = preg_replace('/\..+$/', '', $_video->getClientOriginalName());
-                    $video_name = $base_name . "-" . uniqid() . "." .$_video->getClientOriginalExtension();
-                    $file_path = 'assets/uploads/videos';
-                    if (! File::exists($file_path)) {
-                        File::makeDirectory($file_path);
-                    }
-                    $_video->move($file_path, $video_name);
-                    $video = asset($file_path.'/'.$video_name);
-                    DB::table('card_gallery')->where('card_id',$card->id)->delete();
-                    DB::table('card_gallery')->insert([
-                        'content'=>$video,
-                        'card_id' => $card->id,
-                        'gallery_type'=>$request->gallery_type,
-                    ]);
-
-                }elseif (!empty($request->video) && $request->gallery_type=='videourl') {
-                    $video =  $this->getYoutubeEmbad($request->video);
-                    DB::table('card_gallery')->where('card_id',$card->id)->delete();
-                    DB::table('card_gallery')->insert([
-                        'content'=>$video,
-                        'card_id' => $card->id,
-                        'gallery_type'=>$request->gallery_type,
-                    ]);
-                }
-                elseif (!empty($request->gallery) && $request->gallery_type=='gallery') {
-                    if($request->gallery){
-                        DB::table('card_gallery')->where('card_id',$card->id)->delete();
-                        foreach ($request->gallery as $key => $gallery) {
-                            if(!is_null($request->file('gallery')[$key]))
-                            {
-                                $gallery_image = $request->file('gallery')[$key];
-                                $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
-                                $base_name = explode(' ', $base_name);
-                                $base_name = implode('-', $base_name);
-                                $base_name = Str::lower($base_name);
-                                $image_name = $base_name."-".uniqid().".".$gallery_image->getClientOriginalExtension();
-                                $file_path = 'assets/uploads/gallery/';
-                                if (!File::exists($file_path)) {
-                                    File::makeDirectory($file_path, 777, true);
-                                }
-                                $gallery_image->move($file_path, $image_name);
-                                $_gallery = $file_path.$image_name;
-                                $gallery_photo = new Gallery();
-                                $gallery_photo->content = $_gallery;
-                                $gallery_photo->card_id = $card->id;
-                                $gallery_photo->gallery_type =$request->gallery_type;
-                                $gallery_photo->save();
-                            }
-                        }
-                    }
-                }
-                if(!empty($request->facebook)){
-                    DB::table('business_fields')->where('card_id',$card->id)->where('type','facebook')->delete();
-                    DB::table('business_fields')->insert([
-                        'card_id'=> $card->id,
-                        'type' => 'facebook',
-                        'icon' => 'fab fa-facebook',
-                        'label' => 'facebook',
-                        'content' => $request->facebook,
-                        'status' => 1,
-                        'created_at' => date('Y-m-d H:i:s')
-                    ]);
-                }
-                if(!empty($request->instagram)){
-                    DB::table('business_fields')->where('card_id',$card->id)->where('type','instagram')->delete();
-                    DB::table('business_fields')->insert([
-                        'card_id'=> $card->id,
-                        'type' => 'instagram',
-                        'icon' => 'fab fa-instagram',
-                        'label' => 'instagram',
-                        'content' => $request->instagram,
-                        'status' => 1,
-                        'created_at' => date('Y-m-d H:i:s')
-                    ]);
-                }
-
-
-            } catch (\Exception $e) {
-                dd($e->getMessage());
-                DB::rollback();
-                alert()->error(trans('Unable to update cardd'));
-                return redirect()->back();
-            }
-            DB::commit();
-            alert()->success(trans('Card successfully updated'));
-            return redirect()->route('user.cards');
+        if (!empty($request->personalized_link)) {
+            $personalized_link = $request->personalized_link;
+            $card_url = strtolower(preg_replace('/\s+/', '-', $personalized_link));
         }
+        $user_details = User::where('user_id', Auth::user()->user_id)->first();
+        $plan_details = json_decode($user_details->plan_details, true);
+        DB::beginTransaction();
+        try {
+            $card = BusinessCard::findOrFail($id);
+            $card->adsname = $request->adsname;
+            // $card->card_id = $cardId;
+            $card->theme_id = $request->theme_id;
+            $card->theme_color = $request->theme_color;
+            $card->card_lang = 'en';
+            if ($plan_details['personalized_link'] == '1' && !empty($card_url)) {
+                $card->card_url = $card_url;
+            }
+            if ($request->headline == 'text') {
+
+                $card->title = $request->text;
+                DB::table('business_cards')->where('id', $id)->update([
+                    'logo' => NULL
+                ]);
+            } else {
+                if (!is_null($request->file('logo'))) {
+                    DB::table('business_cards')->where('id', $id)->update([
+                        'text' => NULL
+                    ]);
+                    $logo_ = $request->file('logo');
+                    $base_name = preg_replace('/\..+$/', '', $logo_->getClientOriginalName());
+                    $base_name = explode(' ', $base_name);
+                    $base_name = implode('-', $base_name);
+                    $base_name = Str::lower($base_name);
+                    $image_name = $base_name . "-" . uniqid() . "." . $logo_->getClientOriginalExtension();
+                    $file_path = 'assets/uploads/logo/';
+                    if (!File::exists($file_path)) {
+                        File::makeDirectory($file_path, 777, true);
+                    }
+                    $logo_->move($file_path, $image_name);
+                    $card->logo = $file_path . $image_name;
+                }
+            }
+            $card->card_type = 'vcard';
+            $card->phone_number = $request->phone_number;
+            $card->email = $request->email;
+            $card->footer_text = $request->footer_text;
+            $card->cashapp = $request->cashapp;
+            $card->website = $request->website;
+            // $card->card_status = 'activated';
+            $card->updated_at = date('Y-m-d H:i:s');
+            $card->updated_by = Auth::user()->id;
+            $card->update();
+
+            if (!empty($request->video) && $request->gallery_type == 'videosource') {
+                $_video = $request->file('video');
+                $base_name = preg_replace('/\..+$/', '', $_video->getClientOriginalName());
+                $video_name = $base_name . "-" . uniqid() . "." . $_video->getClientOriginalExtension();
+                $file_path = 'assets/uploads/videos';
+                if (!File::exists($file_path)) {
+                    File::makeDirectory($file_path);
+                }
+                $_video->move($file_path, $video_name);
+                $video = asset($file_path . '/' . $video_name);
+                DB::table('card_gallery')->where('card_id', $card->id)->delete();
+                DB::table('card_gallery')->insert([
+                    'content' => $video,
+                    'card_id' => $card->id,
+                    'gallery_type' => $request->gallery_type,
+                ]);
+            } elseif (!empty($request->video) && $request->gallery_type == 'videourl') {
+                $video =  $this->getYoutubeEmbad($request->video);
+                DB::table('card_gallery')->where('card_id', $card->id)->delete();
+                DB::table('card_gallery')->insert([
+                    'content' => $video,
+                    'card_id' => $card->id,
+                    'gallery_type' => $request->gallery_type,
+                ]);
+            } elseif (!empty($request->gallery) && $request->gallery_type == 'gallery') {
+                if ($request->gallery) {
+                    DB::table('card_gallery')->where('card_id', $card->id)->delete();
+                    foreach ($request->gallery as $key => $gallery) {
+                        if (!is_null($request->file('gallery')[$key])) {
+                            $gallery_image = $request->file('gallery')[$key];
+                            $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
+                            $base_name = explode(' ', $base_name);
+                            $base_name = implode('-', $base_name);
+                            $base_name = Str::lower($base_name);
+                            $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
+                            $file_path = 'assets/uploads/gallery/';
+                            if (!File::exists($file_path)) {
+                                File::makeDirectory($file_path, 777, true);
+                            }
+                            $gallery_image->move($file_path, $image_name);
+                            $_gallery = $file_path . $image_name;
+                            $gallery_photo = new Gallery();
+                            $gallery_photo->content = $_gallery;
+                            $gallery_photo->card_id = $card->id;
+                            $gallery_photo->gallery_type = $request->gallery_type;
+                            $gallery_photo->save();
+                        }
+                    }
+                }
+            }
+            if (!empty($request->facebook)) {
+                DB::table('business_fields')->where('card_id', $card->id)->where('type', 'facebook')->delete();
+                DB::table('business_fields')->insert([
+                    'card_id' => $card->id,
+                    'type' => 'facebook',
+                    'icon' => 'fab fa-facebook',
+                    'label' => 'facebook',
+                    'content' => $request->facebook,
+                    'status' => 1,
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
+            }
+            if (!empty($request->instagram)) {
+                DB::table('business_fields')->where('card_id', $card->id)->where('type', 'instagram')->delete();
+                DB::table('business_fields')->insert([
+                    'card_id' => $card->id,
+                    'type' => 'instagram',
+                    'icon' => 'fab fa-instagram',
+                    'label' => 'instagram',
+                    'content' => $request->instagram,
+                    'status' => 1,
+                    'created_at' => date('Y-m-d H:i:s')
+                ]);
+            }
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            DB::rollback();
+            alert()->error(trans('Unable to update cardd'));
+            return redirect()->back();
+        }
+        DB::commit();
+        alert()->success(trans('Card successfully updated'));
+        return redirect()->route('user.cards');
+    }
 
 
 
@@ -680,7 +669,7 @@ class CardController extends Controller
 
         $current_card = BusinessCard::where('card_url', $card_url)->count();
 
-	if($plan_details['no_of_vcards'] == 999) {
+        if ($plan_details['no_of_vcards'] == 999) {
             $no_cards = 999999;
         } else {
             $no_cards = $plan_details['no_of_vcards'];
@@ -753,19 +742,19 @@ class CardController extends Controller
                             $customContent = $request->value[$i];
 
 
-                            if($request->type[$i] == 'youtube') {
-                              $customContent = str_replace('https://www.youtube.com/watch?v=','', $request->value[$i]);
+                            if ($request->type[$i] == 'youtube') {
+                                $customContent = str_replace('https://www.youtube.com/watch?v=', '', $request->value[$i]);
                             }
 
-                            if($request->type[$i] == 'map') {
-			                  if(substr($request->value[$i], 0, 3) == 'pb=') {
-            				    $customContent = $request->value[$i];
-            			      } else {
-                              	$customContent = str_replace('<iframe src="','', $request->value[$i]);
-                              	$customContent = substr($customContent, 0, strpos($customContent, '" '));
-                              	$customContent = str_replace('https://www.google.com/maps/embed?', '', $customContent);
-                              }
-            			    }
+                            if ($request->type[$i] == 'map') {
+                                if (substr($request->value[$i], 0, 3) == 'pb=') {
+                                    $customContent = $request->value[$i];
+                                } else {
+                                    $customContent = str_replace('<iframe src="', '', $request->value[$i]);
+                                    $customContent = substr($customContent, 0, strpos($customContent, '" '));
+                                    $customContent = str_replace('https://www.google.com/maps/embed?', '', $customContent);
+                                }
+                            }
 
 
                             $field = new BusinessField();
@@ -776,7 +765,6 @@ class CardController extends Controller
                             $field->content = $customContent;
                             $field->position = $i + 1;
                             $field->save();
-
                         } else {
                             alert()->error(trans('Atleast add one feature.'));
                             return redirect()->route('user.social.links', $id);
@@ -1113,79 +1101,78 @@ class CardController extends Controller
             } else {
 
                 if ($selected_plan->plan_price == 0) {
-                    if(Auth::user()->billing_name == "") {
+                    if (Auth::user()->billing_name == "") {
                         return redirect()->route('user.billing', $id);
                     } else {
 
-                    $invoice_details = [];
+                        $invoice_details = [];
 
-                    $invoice_details['from_billing_name'] = $config[16]->config_value;
-                    $invoice_details['from_billing_address'] = $config[19]->config_value;
-                    $invoice_details['from_billing_city'] = $config[20]->config_value;
-                    $invoice_details['from_billing_state'] = $config[21]->config_value;
-                    $invoice_details['from_billing_zipcode'] = $config[22]->config_value;
-                    $invoice_details['from_billing_country'] = $config[23]->config_value;
-                    $invoice_details['from_vat_number'] = $config[26]->config_value;
-                    $invoice_details['from_billing_phone'] = $config[18]->config_value;
-                    $invoice_details['from_billing_email'] = $config[17]->config_value;
-                    $invoice_details['to_billing_name'] = $request->billing_name;
-                    $invoice_details['to_billing_address'] = $request->billing_address;
-                    $invoice_details['to_billing_city'] = $request->billing_city;
-                    $invoice_details['to_billing_state'] = $request->billing_state;
-                    $invoice_details['to_billing_zipcode'] = $request->billing_zipcode;
-                    $invoice_details['to_billing_country'] = $request->billing_country;
-                    $invoice_details['to_billing_phone'] = $request->billing_phone;
-                    $invoice_details['to_billing_email'] = $request->billing_email;
-                    $invoice_details['to_vat_number'] = $request->vat_number;
-                    $invoice_details['tax_name'] = $config[24]->config_value;
-                    $invoice_details['tax_type'] = $config[14]->config_value;
-                    $invoice_details['tax_value'] = $config[25]->config_value;
-                    $invoice_details['invoice_amount'] = 0;
-                    $invoice_details['subtotal'] = 0;
-                    $invoice_details['tax_amount'] = 0;
+                        $invoice_details['from_billing_name'] = $config[16]->config_value;
+                        $invoice_details['from_billing_address'] = $config[19]->config_value;
+                        $invoice_details['from_billing_city'] = $config[20]->config_value;
+                        $invoice_details['from_billing_state'] = $config[21]->config_value;
+                        $invoice_details['from_billing_zipcode'] = $config[22]->config_value;
+                        $invoice_details['from_billing_country'] = $config[23]->config_value;
+                        $invoice_details['from_vat_number'] = $config[26]->config_value;
+                        $invoice_details['from_billing_phone'] = $config[18]->config_value;
+                        $invoice_details['from_billing_email'] = $config[17]->config_value;
+                        $invoice_details['to_billing_name'] = $request->billing_name;
+                        $invoice_details['to_billing_address'] = $request->billing_address;
+                        $invoice_details['to_billing_city'] = $request->billing_city;
+                        $invoice_details['to_billing_state'] = $request->billing_state;
+                        $invoice_details['to_billing_zipcode'] = $request->billing_zipcode;
+                        $invoice_details['to_billing_country'] = $request->billing_country;
+                        $invoice_details['to_billing_phone'] = $request->billing_phone;
+                        $invoice_details['to_billing_email'] = $request->billing_email;
+                        $invoice_details['to_vat_number'] = $request->vat_number;
+                        $invoice_details['tax_name'] = $config[24]->config_value;
+                        $invoice_details['tax_type'] = $config[14]->config_value;
+                        $invoice_details['tax_value'] = $config[25]->config_value;
+                        $invoice_details['invoice_amount'] = 0;
+                        $invoice_details['subtotal'] = 0;
+                        $invoice_details['tax_amount'] = 0;
 
-                    $transaction = new Transaction();
-                    $transaction->gobiz_transaction_id = uniqid();
-                    $transaction->transaction_date = now();
-                    $transaction->transaction_id = uniqid();
-                    $transaction->user_id = Auth::user()->id;
-                    $transaction->plan_id = $selected_plan->plan_id;
-                    $transaction->desciption = $selected_plan->plan_name . " Plan";
-                    $transaction->payment_gateway_name = "FREE";
-                    $transaction->transaction_amount = $selected_plan->plan_price;
-                    $transaction->transaction_currency = $config[1]->config_value;
-                    $transaction->invoice_details = json_encode($invoice_details);
-                    $transaction->payment_status = "SUCCESS";
-                    $transaction->save();
+                        $transaction = new Transaction();
+                        $transaction->gobiz_transaction_id = uniqid();
+                        $transaction->transaction_date = now();
+                        $transaction->transaction_id = uniqid();
+                        $transaction->user_id = Auth::user()->id;
+                        $transaction->plan_id = $selected_plan->plan_id;
+                        $transaction->desciption = $selected_plan->plan_name . " Plan";
+                        $transaction->payment_gateway_name = "FREE";
+                        $transaction->transaction_amount = $selected_plan->plan_price;
+                        $transaction->transaction_currency = $config[1]->config_value;
+                        $transaction->invoice_details = json_encode($invoice_details);
+                        $transaction->payment_status = "SUCCESS";
+                        $transaction->save();
 
-                    $plan_validity = Carbon::now();
-                    $plan_validity->addDays($selected_plan->validity);
-                    User::where('user_id', Auth::user()->user_id)->update([
-                        'plan_id' => $id,
-                        'term' => "9999",
-                        'plan_validity' => $plan_validity,
-                        'plan_activation_date' => now(),
-                        'plan_details' => $selected_plan,
-                    ]);
-                    // Making all cards inactive, For Plan change
-                    BusinessCard::where('user_id', Auth::user()->user_id)->update([
-                        'card_status' => 'inactive',
-                    ]);
-                    alert()->success(trans("FREE Plan activated!"));
-                    return redirect()->back();
+                        $plan_validity = Carbon::now();
+                        $plan_validity->addDays($selected_plan->validity);
+                        User::where('user_id', Auth::user()->user_id)->update([
+                            'plan_id' => $id,
+                            'term' => "9999",
+                            'plan_validity' => $plan_validity,
+                            'plan_activation_date' => now(),
+                            'plan_details' => $selected_plan,
+                        ]);
+                        // Making all cards inactive, For Plan change
+                        BusinessCard::where('user_id', Auth::user()->user_id)->update([
+                            'card_status' => 'inactive',
+                        ]);
+                        alert()->success(trans("FREE Plan activated!"));
+                        return redirect()->back();
+                    }
+                } else {
+                    $settings = Setting::where('status', 1)->first();
+                    $config = DB::table('config')->get();
+                    $currency = Currency::where('iso_code', $config[1]->config_value)->first();
+                    $gateways = Gateway::where('is_status', 'enabled')->where('status', 1)->get();
+                    $plan_price = $selected_plan->plan_price;
+                    $tax = $config[25]->config_value;
+                    $total = ((int)($plan_price) * (int)($tax) / 100) + (int)($plan_price);
+                    return view('user.checkout.checkout', compact('settings', 'config', 'currency', 'selected_plan', 'gateways', 'total'));
                 }
             }
-            else {
-                $settings = Setting::where('status', 1)->first();
-                $config = DB::table('config')->get();
-                $currency = Currency::where('iso_code', $config[1]->config_value)->first();
-                $gateways = Gateway::where('is_status', 'enabled')->where('status', 1)->get();
-                $plan_price = $selected_plan->plan_price;
-                $tax = $config[25]->config_value;
-                $total = ((int)($plan_price) * (int)($tax) / 100) + (int)($plan_price);
-                return view('user.checkout.checkout', compact('settings', 'config', 'currency', 'selected_plan', 'gateways', 'total'));
-            }
-        }
         }
     }
 
@@ -1208,20 +1195,18 @@ class CardController extends Controller
     }
 
 
-    public function getYoutubeEmbad($url){
+    public function getYoutubeEmbad($url)
+    {
 
         $query = parse_url($url);
-        if(isset($query['query'])){
-           $remove_extra = substr($query['query'], 0, strpos($query['query'], "&"));
+        $video_id = '';
+        if (isset($query['query'])) {
+            $remove_extra = substr($query['query'], 0, strpos($query['query'], "&"));
 
             $_query = $remove_extra;
-            $video_id = trim($_query,'v=');
+            $video_id = trim($_query, 'v=');
         }
-        $video_file = 'https://www.youtube.com/embed/'.$video_id;
+        $video_file = 'https://www.youtube.com/embed/' . $video_id;
         return $video_file;
     }
-
-
-
-
 }
