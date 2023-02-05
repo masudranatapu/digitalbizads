@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\User;
 
-use Str;
-use File;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 use App\Plan;
 use App\User;
 use App\Theme;
