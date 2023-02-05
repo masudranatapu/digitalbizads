@@ -277,7 +277,11 @@
             <div class="bottom_content text-center pb-3">
                 <p>CashApp: {{ $cardinfo->cashapp }}</p>
             </div>
+            <div class="text-center text-light pb-3">
+                <p>Copyright © {{ $cardinfo->footer_text }}</p>
+            </div>
         </div>
+
     </div>
 
     <!-- Qrcode Modal -->
@@ -361,7 +365,8 @@
                                 <div class="col-12 col-sm-12">
                                     <ul class="text-center">
                                         <li class="list-inline-item">
-                                            <a href="javascript:void(0)" class="social_share"
+                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"
+                                                target="_blank" class="social_share"
                                                 data-url="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"
                                                 title="{{ __('Share on Facebook') }}">
                                                 <img class="img-fluid"
@@ -370,7 +375,8 @@
                                             </a>
                                         </li>
                                         <li class="list-inline-item">
-                                            <a href="javascript:void(0)" class="social_share"
+                                            <a href="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ Request::url() }}"
+                                                target="_blank" class="social_share"
                                                 data-url="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ Request::url() }}
                                             "
                                                 title="{{ __('Share on Twitter') }}">
@@ -380,7 +386,8 @@
                                             </a>
                                         </li>
                                         <li class="list-inline-item">
-                                            <a href="javascript:void(0)" class="social_share"
+                                            <a href="https://telegram.me/share/url?url={{ Request::url() }}&text="
+                                                target="_blank" class="social_share"
                                                 data-url="https://telegram.me/share/url?url={{ Request::url() }}&text="
                                                 title="{{ __('Share on Telegram') }}">
                                                 <img class="img-fluid"

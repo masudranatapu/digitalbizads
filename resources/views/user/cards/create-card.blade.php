@@ -764,8 +764,8 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
         },
         submitHandler: function(form) {
             $('.submitBtn').html(
-                '<div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>'
-                ).prop('disabled', true)
+                '<div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>&emsp;<span>Processing...</span>'
+            ).prop('disabled', true)
             form.submit();
         }
     });
@@ -912,7 +912,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
             };
         });
 
-    })
+    });
 
     $(function() {
         var
