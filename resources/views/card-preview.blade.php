@@ -342,14 +342,11 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content ">
                     <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
+                        <h5 class="modal-title">{{ __('Share Your Card') }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
-
-
-                    <div class="modal_body">
-                        <h5 class="mb-5 text-center">{{ __('Share Your Card') }}</h5>
+                   <div class="modal_body">
                         <div id="social-links">
                             <div class="row">
                                 <div class="col-12 col-sm-12">

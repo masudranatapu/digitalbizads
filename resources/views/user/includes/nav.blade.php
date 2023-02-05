@@ -36,7 +36,7 @@
                                 </svg>
                             </span>
                             <span class="nav-link-title">
-                                {{ __('DigitalBiz Ads') }}
+                                {{ __('Biz Ad') }}
                             </span>
                         </a>
                     </li>
