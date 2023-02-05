@@ -3,6 +3,9 @@
 
     <?php
     $tabindex = 1;
+    $android = stripos($_SERVER['HTTP_USER_AGENT'], 'android');
+    $iphone = stripos($_SERVER['HTTP_USER_AGENT'], 'iphone');
+    $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
     if (!empty($card->gallery[0])) {
         if ($card->gallery[0]['gallery_type'] == 'gallery') {
             $gallery_type = 'gallery';
@@ -14,7 +17,7 @@
     } else {
         $gallery_type = 'gallery';
     }
-    
+
     if (old('theme_coloe')) {
         $theme_color = old('theme_coloe');
     } elseif (!empty($card->theme_color)) {
@@ -24,9 +27,9 @@
     }
     [$r, $g, $b] = sscanf($theme_color, '#%02x%02x%02x');
     $theme_bg = "$r, $g, $b,.1";
-    
+
     // dd($card);
-    
+
     ?>
 @section('css')
     <style>
@@ -69,6 +72,20 @@
         .carousel-control-next {
             background-color: {{ $theme_color . '!important' }};
         }
+
+        .social_share {
+            margin-bottom: 20px;
+        }
+
+        .social_share img {
+            width: 75%;
+            height: 75%;
+        }
+
+        .modal-header .btn-close {
+            width: 25px;
+            height: 25px;
+        }
     </style>
 @endsection
 <div class="page-wrapper">
@@ -81,7 +98,7 @@
                         {{ __('Overview') }}
                     </div>
                     <h2 class="page-title">
-                        {{ __('Create New Biz Ad') }}
+                        {{ __('Edit Biz Ad') }}
                     </h2>
                 </div>
             </div>
@@ -430,6 +447,14 @@
                                                         </div>
                                                     @endif
                                                 @endforeach
+                                                <div class="col">
+                                                    <div class="social_item">
+                                                        <a href="javascript:void(0)" class="social-contact share"
+                                                            data-bs-toggle="modal" data-bs-target="#SocialModal">
+                                                            <i class="fas fa-share-nodes"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             @endif
                                         </div>
                                     </div>
@@ -465,7 +490,8 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="adsname" class="form-label">Biz Ad Name</label>
+                                            <label for="adsname" class="form-label">Biz Ads Name <span
+                                                    class="text-danger">*</span></label></label>
                                             <input type="text" placeholder="ads name" name="adsname"
                                                 id="adsname"
                                                 class="form-control @error('adsname') is-invalid @enderror"
@@ -495,7 +521,8 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="selectField1" class="form-label">Select Logo/Heading</label>
+                                            <label for="selectField1" class="form-label">Select Logo/Heading <span
+                                                    class="text-danger">*</span></label></label>
                                             <select id="selectField1" name="headline" class="form-control"
                                                 tabindex="{{ $tabindex++ }}" required>
                                                 <option value="text"
@@ -533,7 +560,8 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="selectField2" class="form-label">Gallery or Video</label>
+                                            <label for="selectField2" class="form-label">Gallery or Video <span
+                                                    class="text-danger">*</span></label></label>
                                             <select id="selectField2" name="gallery_type" class="form-control"
                                                 tabindex="{{ $tabindex++ }}" required>
                                                 <option value="gallery"
@@ -589,7 +617,8 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
-                                            <label for="phone_number" class="form-label">Phone</label>
+                                            <label for="phone_number" class="form-label">Phone <span
+                                                    class="text-danger">*</span></label></label>
                                             <input type="number" name="phone_number" data-type="phone_number"
                                                 data-preview="preview_phone_number" id="phone"
                                                 placeholder="your phone"
@@ -604,7 +633,8 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
-                                            <label for="email" class="form-label">Email</label>
+                                            <label for="email" class="form-label">Email <span
+                                                    class="text-danger">*</span></label></label>
                                             <input type="email" name="email" data-type="user_email"
                                                 data-type="email" placeholder="your email" id="email"
                                                 class="social_item_in form-control cin @error('email') is-invalid @enderror"
@@ -679,7 +709,7 @@
                                         <div class="col-6">
                                             <div class="mb-3 form-input">
                                                 <label for="personalized_link" class="form-label">Personalized
-                                                    Link</label>
+                                                    Link <span class="text-danger">*</span></label></label>
                                                 <input type="text" placeholder="Personalized Link"
                                                     name="personalized_link" id="personalized_link"
                                                     class="form-control @error('gallery_type') is-invalid @enderror"
@@ -706,7 +736,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary">Update Biz Ad</button>
+                                    <button type="submit" class="btn btn-primary submitBtn">Update Biz Ad</button>
                                 </div>
                             </form>
                         </div>
@@ -717,6 +747,83 @@
     </div>
     @include('user.includes.footer')
 </div>
+
+<!-- Social Modal modal -->
+<div class="share_modal email_modal">
+    <div class="modal animate__animated animate__fadeIn" id="SocialModal" tabindex="-1" data-bs-backdrop="static"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content ">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ __('Share Your Card') }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal_body">
+                    <div id="social-links">
+                        <div class="row">
+                            <div class="col-12 col-sm-12">
+                                <ul class="text-center">
+                                    <li class="list-inline-item">
+                                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ auth()->user()->user_id }}"
+                                            target="_blank" class="social_share"
+                                            data-url="https://www.facebook.com/sharer/sharer.php?u={{ auth()->user()->user_id }}"
+                                            title="{{ __('Share on Facebook') }}">
+                                            <img class="img-fluid"
+                                                src="{{ asset('images/icons/social/facebook.svg') }}"
+                                                alt="{{ __('Share on facebook') }}">
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ auth()->user()->user_id }}"
+                                            target="blank" class="social_share"
+                                            data-url="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ auth()->user()->user_id }}
+                                        "
+                                            title="{{ __('Share on Twitter') }}">
+                                            <img class="img-fluid"
+                                                src="{{ asset('images/icons/social/twitter.svg') }}" alt="">
+                                        </a>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <a href="javascript:void(0)" class="social_share"
+                                            data-url="https://telegram.me/share/url?url={{ auth()->user()->user_id }}&text="
+                                            title="{{ __('Share on Telegram') }}">
+                                            <img class="img-fluid"
+                                                src="{{ asset('images/icons/social/telegram.svg') }}" alt="">
+                                        </a>
+                                    </li>
+
+                                    @if ($android !== false || $ipad !== false || $iphone !== false || true)
+                                        <li class="list-inline-item">
+                                            <a href="whatsapp://send?text={{ auth()->user()->user_id }}"
+                                                class="social_share whatsapp" title="{{ __('Share on Whatsapp') }}"
+                                                data-action="share/whatsapp/share">
+                                                <img class="img-fluid"
+                                                    src="{{ asset('images/icons/social/whatsapp.svg') }}"
+                                                    alt="">
+                                            </a>
+                                        </li>
+                                    @else
+                                        <li class="list-inline-item">
+                                            <a href="https://web.whatsapp.com/send?text={{ auth()->user()->user_id }}"
+                                                target="__blank" class="whatsapp"
+                                                title="{{ __('Share on Whatsapp') }}"
+                                                data-action="share/whatsapp/share">
+                                                <img class="img-fluid"
+                                                    src="{{ asset('assets/img/icons/whatsapp.svg') }}"
+                                                    alt="">
+                                            </a>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @push('custom-js')
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
@@ -839,8 +946,20 @@
                 maxlength: 124,
                 minlength: 2,
             },
+            'headline': {
+                required: true,
+                maxlength: 124,
+                minlength: 0,
+
+            },
+            'gallery_type': {
+                required: true,
+                maxlength: 124,
+                minlength: 0,
+
+            },
             'email': {
-                required: false,
+                required: true,
                 maxlength: 124,
                 minlength: 2,
             },
@@ -848,6 +967,12 @@
                 required: true,
                 maxlength: 20,
                 minlength: 8,
+            },
+            'personalized_link': {
+                required: true,
+                maxlength: 255,
+                minlength: 4,
+
             },
             'footer_text': {
                 required: false,
@@ -858,6 +983,12 @@
         errorPlacement: function(error, element) {
             $(element).parents('.form-input').append(error)
         },
+        submitHandler: function(form) {
+            $('.submitBtn').html(
+                '<div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>'
+                ).prop('disabled', true)
+            form.submit();
+        }
     });
 
     $(document).on('change', '#selectField1', function() {

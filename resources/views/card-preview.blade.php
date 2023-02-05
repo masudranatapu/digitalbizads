@@ -54,6 +54,15 @@
             padding: 9px 0px 9px 0px;
             background: #eb8714;
         }
+
+        .social_share {
+            margin-bottom: 20px;
+        }
+
+        .social_share img {
+            width: 75%;
+            height: 75%;
+        }
     </style>
 </head>
 
@@ -346,7 +355,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
-                   <div class="modal_body">
+                    <div class="modal_body">
                         <div id="social-links">
                             <div class="row">
                                 <div class="col-12 col-sm-12">
@@ -356,7 +365,7 @@
                                                 data-url="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"
                                                 title="{{ __('Share on Facebook') }}">
                                                 <img class="img-fluid"
-                                                    src="{{ asset('frontend/assets/social/facebook.svg') }}"
+                                                    src="{{ asset('images/icons/social/facebook.svg') }}"
                                                     alt="{{ __('Share on facebook') }}">
                                             </a>
                                         </li>
@@ -366,7 +375,7 @@
                                             "
                                                 title="{{ __('Share on Twitter') }}">
                                                 <img class="img-fluid"
-                                                    src="{{ asset('frontend/assets/social/twitter.svg') }}"
+                                                    src="{{ asset('images/icons/social/twitter.svg') }}"
                                                     alt="">
                                             </a>
                                         </li>
@@ -375,18 +384,19 @@
                                                 data-url="https://telegram.me/share/url?url={{ Request::url() }}&text="
                                                 title="{{ __('Share on Telegram') }}">
                                                 <img class="img-fluid"
-                                                    src="{{ asset('frontend/assets/social/twitter.svg') }}"
+                                                    src="{{ asset('images/icons/social/telegram.svg') }}"
                                                     alt="">
                                             </a>
                                         </li>
 
-                                        @if ($android !== false || $ipad !== false || $iphone !== false)
+                                        @if ($android !== false || $ipad !== false || $iphone !== false || true)
                                             <li class="list-inline-item">
-                                                <a href="whatsapp://send?text={{ Request::url() }}" class="whatsapp"
+                                                <a href="whatsapp://send?text={{ Request::url() }}"
+                                                    class="social_share whatsapp"
                                                     title="{{ __('Share on Whatsapp') }}"
                                                     data-action="share/whatsapp/share">
                                                     <img class="img-fluid"
-                                                        src="{{ asset('frontend/whatsapp-store/artemis-assets/logos/artemis-logo-light.svg') }}"
+                                                        src="{{ asset('images/icons/social/whatsapp.svg') }}"
                                                         alt="">
                                                 </a>
                                             </li>
