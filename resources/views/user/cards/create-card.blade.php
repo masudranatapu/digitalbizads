@@ -254,7 +254,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
 
                                 <!-- subscribe -->
                                 <div class="subscribe mb-3">
-                                    <form action="#" method="post">
+                                    <form action="javascript:void(0)" method="">
                                         <div class="input-group">
                                             <input type="text" name="email" id="email" class="form-control"
                                                 placeholder="Enter your emaill..." required="">
