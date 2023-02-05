@@ -12,7 +12,7 @@
                             {{ __('Overview') }}
                         </div>
                         <h2 class="page-title">
-                            {{ __('DigitalBiz Ads') }}
+                            {{ __('Biz Ad') }}
                         </h2>
                     </div>
 
@@ -69,7 +69,7 @@
                                 </button>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="{{ route('user.create.card') }}">
-                                        {{ __('DigitalBiz Ads') }}
+                                        {{ __('Biz Ad') }}
                                     </a>
                                     {{-- <a class="dropdown-item" href="{{ route('user.create.store') }}">
                                 {{ __('WhatsApp Store') }}

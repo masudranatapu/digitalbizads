@@ -81,7 +81,7 @@
                         {{ __('Overview') }}
                     </div>
                     <h2 class="page-title">
-                        {{ __('Create New DigitalBiz Ads') }}
+                        {{ __('Create New Biz Ad') }}
                     </h2>
                 </div>
             </div>
