@@ -465,7 +465,7 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="adsname" class="form-label">DigitalBizAds Name</label>
+                                            <label for="adsname" class="form-label">Biz Ad Name</label>
                                             <input type="text" placeholder="ads name" name="adsname"
                                                 id="adsname"
                                                 class="form-control @error('adsname') is-invalid @enderror"
@@ -479,7 +479,7 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="textfield">
-                                            <label for="color" class="form-label">DigitalBizAds Color</label>
+                                            <label for="color" class="form-label">Biz Ad Color</label>
                                             <input type="color" placeholder="card color" name="theme_color"
                                                 id="theme_color"
                                                 class="form-control @error('theme_color') is-invalid @enderror"
@@ -706,7 +706,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary">Update Your DigitalBizAds</button>
+                                    <button type="submit" class="btn btn-primary">Update Biz Ad</button>
                                 </div>
                             </form>
                         </div>
