@@ -98,16 +98,18 @@ class CardController extends Controller
     // Save card
     public function postStore(Request $request)
     {
-        $validity = checkPackageValidity(Auth::id());
-        if ($validity == false) {
-            alert()->error(trans('Your package is expired please upgrade'));
-            return redirect()->route('user.plans');
-        }
-        $check = checkCardLimit(Auth::id());
-        if ($check == false) {
-            alert()->error(trans('Your card limit is over please upgrade your package for more card'));
-            return redirect()->back();
-        }
+
+        // dd($request->all());
+        // $validity = checkPackageValidity(Auth::id());
+        // if ($validity == false) {
+        //     alert()->error(trans('Your package is expired please upgrade'));
+        //     return redirect()->route('user.plans');
+        // }
+        // $check = checkCardLimit(Auth::id());
+        // if ($check == false) {
+        //     alert()->error(trans('Your card limit is over please upgrade your package for more card'));
+        //     return redirect()->back();
+        // }
         $user_details = User::where('user_id', Auth::user()->user_id)->first();
         $plan_details = json_decode($user_details->plan_details, true);
         if ($request->gallery_type == 'videosource') {
@@ -188,6 +190,41 @@ class CardController extends Controller
                     $card->logo = $file_path . $image_name;
                 }
             }
+            if (!empty($request->video) && $request->gallery_type == 'videosource') {
+                $card->banner_type =  $request->gallery_type;
+                $_video = $request->file('video');
+                $base_name = preg_replace('/\..+$/', '', $_video->getClientOriginalName());
+                $video_name = $base_name . "-" . uniqid() . "." . $_video->getClientOriginalExtension();
+                $file_path = 'assets/uploads/videos';
+                if (!File::exists($file_path)) {
+                    File::makeDirectory($file_path);
+                }
+                $_video->move($file_path, $video_name);
+                $card->banner_content = asset($file_path . '/' . $video_name);
+
+            } elseif (!empty($request->video) && $request->gallery_type == 'videourl') {
+                $card->banner_type =  $request->gallery_type;
+                $card->banner_content  =  $this->getYoutubeEmbad($request->video);
+
+            } elseif (!empty($request->banner) && $request->gallery_type == 'banner') {
+                if (!is_null($request->file('banner'))) {
+                    $gallery_image = $request->file('banner');
+                    $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
+                    $base_name = explode(' ', $base_name);
+                    $base_name = implode('-', $base_name);
+                    $base_name = Str::lower($base_name);
+                    $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
+                    $file_path = 'assets/uploads/gallery/';
+                    if (!File::exists($file_path)) {
+                        File::makeDirectory($file_path, 777, true);
+                    }
+                    $gallery_image->move($file_path, $image_name);
+                    $card->banner_content = asset($file_path . $image_name);
+                    $card->banner_type =  $request->gallery_type;
+                }
+            }
+            $card->header_text_color = $request->header_text_color;
+            $card->header_backgroung = $request->header_backgroung;
             $card->card_type = 'vcard';
             $card->card_url = $card_url;
             $card->phone_number = $request->phone_number;
@@ -200,55 +237,82 @@ class CardController extends Controller
             $card->created_by = Auth::user()->id;
             $card->status = 1;
             $card->save();
-            if (!empty($request->video) && $request->gallery_type == 'videosource') {
-                $_video = $request->file('video');
-                $base_name = preg_replace('/\..+$/', '', $_video->getClientOriginalName());
-                $video_name = $base_name . "-" . uniqid() . "." . $_video->getClientOriginalExtension();
-                $file_path = 'assets/uploads/videos';
-                if (!File::exists($file_path)) {
-                    File::makeDirectory($file_path);
-                }
-                $_video->move($file_path, $video_name);
-                $video = asset($file_path . '/' . $video_name);
 
-                DB::table('card_gallery')->insert([
-                    'content' => $video,
-                    'card_id' => $card->id,
-                    'gallery_type' => $request->gallery_type,
-                ]);
-            } elseif (!empty($request->video) && $request->gallery_type == 'videourl') {
-                $video =  $this->getYoutubeEmbad($request->video);
-                DB::table('card_gallery')->insert([
-                    'content' => $video,
-                    'card_id' => $card->id,
-                    'gallery_type' => $request->gallery_type,
-                ]);
-            } elseif (!empty($request->gallery) && $request->gallery_type == 'gallery') {
 
-                if ($request->gallery) {
-                    foreach ($request->gallery as $key => $gallery) {
-                        if (!is_null($request->file('gallery')[$key])) {
-                            $gallery_image = $request->file('gallery')[$key];
-                            $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
-                            $base_name = explode(' ', $base_name);
-                            $base_name = implode('-', $base_name);
-                            $base_name = Str::lower($base_name);
-                            $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
-                            $file_path = 'assets/uploads/gallery/';
-                            if (!File::exists($file_path)) {
-                                File::makeDirectory($file_path, 777, true);
-                            }
-                            $gallery_image->move($file_path, $image_name);
-                            $_gallery = $file_path . $image_name;
-                            $gallery_photo = new Gallery();
-                            $gallery_photo->content = $_gallery;
-                            $gallery_photo->card_id = $card->id;
-                            $gallery_photo->gallery_type = $request->gallery_type;
-                            $gallery_photo->save();
+            if (!empty($request->images)) {
+                // DB::table('card_gallery')->where('card_id', $card->id)->delete();
+                foreach ($request->images as $key => $gallery) {
+                    if (!is_null($request->file('images')[$key])) {
+                        $gallery_image = $request->file('images')[$key];
+                        $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
+                        $base_name = explode(' ', $base_name);
+                        $base_name = implode('-', $base_name);
+                        $base_name = Str::lower($base_name);
+                        $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
+                        $file_path = 'assets/uploads/gallery/';
+                        if (!File::exists($file_path)) {
+                            File::makeDirectory($file_path, 777, true);
                         }
+                        $gallery_image->move($file_path, $image_name);
+                        $_gallery = $file_path . $image_name;
+                        $gallery_photo = new Gallery();
+                        $gallery_photo->content = $_gallery;
+                        $gallery_photo->card_id = $card->id;
+                        $gallery_photo->gallery_type = 'gallery';
+                        $gallery_photo->save();
                     }
                 }
             }
+
+            // if (!empty($request->video) && $request->gallery_type == 'videosource') {
+            //     $_video = $request->file('video');
+            //     $base_name = preg_replace('/\..+$/', '', $_video->getClientOriginalName());
+            //     $video_name = $base_name . "-" . uniqid() . "." . $_video->getClientOriginalExtension();
+            //     $file_path = 'assets/uploads/videos';
+            //     if (!File::exists($file_path)) {
+            //         File::makeDirectory($file_path);
+            //     }
+            //     $_video->move($file_path, $video_name);
+            //     $video = asset($file_path . '/' . $video_name);
+
+            //     DB::table('card_gallery')->insert([
+            //         'content' => $video,
+            //         'card_id' => $card->id,
+            //         'gallery_type' => $request->gallery_type,
+            //     ]);
+            // } elseif (!empty($request->video) && $request->gallery_type == 'videourl') {
+            //     $video =  $this->getYoutubeEmbad($request->video);
+            //     DB::table('card_gallery')->insert([
+            //         'content' => $video,
+            //         'card_id' => $card->id,
+            //         'gallery_type' => $request->gallery_type,
+            //     ]);
+            // } elseif (!empty($request->gallery) && $request->gallery_type == 'gallery') {
+
+            //     if ($request->gallery) {
+            //         foreach ($request->gallery as $key => $gallery) {
+            //             if (!is_null($request->file('gallery')[$key])) {
+            //                 $gallery_image = $request->file('gallery')[$key];
+            //                 $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
+            //                 $base_name = explode(' ', $base_name);
+            //                 $base_name = implode('-', $base_name);
+            //                 $base_name = Str::lower($base_name);
+            //                 $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
+            //                 $file_path = 'assets/uploads/gallery/';
+            //                 if (!File::exists($file_path)) {
+            //                     File::makeDirectory($file_path, 777, true);
+            //                 }
+            //                 $gallery_image->move($file_path, $image_name);
+            //                 $_gallery = $file_path . $image_name;
+            //                 $gallery_photo = new Gallery();
+            //                 $gallery_photo->content = $_gallery;
+            //                 $gallery_photo->card_id = $card->id;
+            //                 $gallery_photo->gallery_type = $request->gallery_type;
+            //                 $gallery_photo->save();
+            //             }
+            //         }
+            //     }
+            // }
             if ($request->facebook) {
                 DB::table('business_fields')->insert([
                     'card_id' => $card->id,
@@ -334,11 +398,11 @@ class CardController extends Controller
                 $card->card_url = $card_url;
             }
             if ($request->headline == 'text') {
-
                 $card->title = $request->text;
                 DB::table('business_cards')->where('id', $id)->update([
                     'logo' => NULL
                 ]);
+
             } else {
                 if (!is_null($request->file('logo'))) {
                     DB::table('business_cards')->where('id', $id)->update([
@@ -358,18 +422,9 @@ class CardController extends Controller
                     $card->logo = $file_path . $image_name;
                 }
             }
-            $card->card_type = 'vcard';
-            $card->phone_number = $request->phone_number;
-            $card->email = $request->email;
-            $card->footer_text = $request->footer_text;
-            $card->cashapp = $request->cashapp;
-            $card->website = $request->website;
-            // $card->card_status = 'activated';
-            $card->updated_at = date('Y-m-d H:i:s');
-            $card->updated_by = Auth::user()->id;
-            $card->update();
 
             if (!empty($request->video) && $request->gallery_type == 'videosource') {
+                $card->banner_type =  $request->gallery_type;
                 $_video = $request->file('video');
                 $base_name = preg_replace('/\..+$/', '', $_video->getClientOriginalName());
                 $video_name = $base_name . "-" . uniqid() . "." . $_video->getClientOriginalExtension();
@@ -378,47 +433,69 @@ class CardController extends Controller
                     File::makeDirectory($file_path);
                 }
                 $_video->move($file_path, $video_name);
-                $video = asset($file_path . '/' . $video_name);
-                DB::table('card_gallery')->where('card_id', $card->id)->delete();
-                DB::table('card_gallery')->insert([
-                    'content' => $video,
-                    'card_id' => $card->id,
-                    'gallery_type' => $request->gallery_type,
-                ]);
+                $card->banner_content = asset($file_path . '/' . $video_name);
+
             } elseif (!empty($request->video) && $request->gallery_type == 'videourl') {
-                $video =  $this->getYoutubeEmbad($request->video);
+                $card->banner_type =  $request->gallery_type;
+                $card->banner_content  =  $this->getYoutubeEmbad($request->video);
+
+            } elseif (!empty($request->gallery) && $request->gallery_type == 'banner') {
+                if (!is_null($request->file('banner'))) {
+                    $gallery_image = $request->file('banner');
+                    $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
+                    $base_name = explode(' ', $base_name);
+                    $base_name = implode('-', $base_name);
+                    $base_name = Str::lower($base_name);
+                    $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
+                    $file_path = 'assets/uploads/gallery/';
+                    if (!File::exists($file_path)) {
+                        File::makeDirectory($file_path, 777, true);
+                    }
+                    $gallery_image->move($file_path, $image_name);
+                    $card->banner_content = $file_path . $image_name;
+                    $card->banner_type =  $request->gallery_type;
+                }
+            }
+
+            $card->card_type = 'vcard';
+            $card->phone_number = $request->phone_number;
+            $card->email = $request->email;
+            $card->footer_text = $request->footer_text;
+            $card->cashapp = $request->cashapp;
+            $card->website = $request->website;
+            $card->header_text_color = $request->header_text_color;
+            $card->header_backgroung = $request->header_backgroung;
+            // $card->card_status = 'activated';
+            $card->updated_at = date('Y-m-d H:i:s');
+            $card->updated_by = Auth::user()->id;
+            $card->update();
+
+
+            if (!empty($request->images)) {
                 DB::table('card_gallery')->where('card_id', $card->id)->delete();
-                DB::table('card_gallery')->insert([
-                    'content' => $video,
-                    'card_id' => $card->id,
-                    'gallery_type' => $request->gallery_type,
-                ]);
-            } elseif (!empty($request->gallery) && $request->gallery_type == 'gallery') {
-                if ($request->gallery) {
-                    DB::table('card_gallery')->where('card_id', $card->id)->delete();
-                    foreach ($request->gallery as $key => $gallery) {
-                        if (!is_null($request->file('gallery')[$key])) {
-                            $gallery_image = $request->file('gallery')[$key];
-                            $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
-                            $base_name = explode(' ', $base_name);
-                            $base_name = implode('-', $base_name);
-                            $base_name = Str::lower($base_name);
-                            $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
-                            $file_path = 'assets/uploads/gallery/';
-                            if (!File::exists($file_path)) {
-                                File::makeDirectory($file_path, 777, true);
-                            }
-                            $gallery_image->move($file_path, $image_name);
-                            $_gallery = $file_path . $image_name;
-                            $gallery_photo = new Gallery();
-                            $gallery_photo->content = $_gallery;
-                            $gallery_photo->card_id = $card->id;
-                            $gallery_photo->gallery_type = $request->gallery_type;
-                            $gallery_photo->save();
+                foreach ($request->images as $key => $gallery) {
+                    if (!is_null($request->file('images')[$key])) {
+                        $gallery_image = $request->file('images')[$key];
+                        $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
+                        $base_name = explode(' ', $base_name);
+                        $base_name = implode('-', $base_name);
+                        $base_name = Str::lower($base_name);
+                        $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
+                        $file_path = 'assets/uploads/gallery/';
+                        if (!File::exists($file_path)) {
+                            File::makeDirectory($file_path, 777, true);
                         }
+                        $gallery_image->move($file_path, $image_name);
+                        $_gallery = $file_path . $image_name;
+                        $gallery_photo = new Gallery();
+                        $gallery_photo->content = $_gallery;
+                        $gallery_photo->card_id = $card->id;
+                        $gallery_photo->gallery_type = 'gallery';
+                        $gallery_photo->save();
                     }
                 }
             }
+
             if (!empty($request->facebook)) {
                 DB::table('business_fields')->where('card_id', $card->id)->where('type', 'facebook')->delete();
                 DB::table('business_fields')->insert([
@@ -446,7 +523,7 @@ class CardController extends Controller
         } catch (\Exception $e) {
             dd($e->getMessage());
             DB::rollback();
-            alert()->error(trans('Unable to update cardd'));
+            alert()->error(trans('Unable to update card'));
             return redirect()->back();
         }
         DB::commit();
@@ -454,6 +531,23 @@ class CardController extends Controller
         return redirect()->route('user.cards');
     }
 
+    public function getDelete(Request $request,$id){
+
+        DB::beginTransaction();
+        try {
+            DB::table('business_fields')->where('card_id',$id)->delete();
+            DB::table('business_cards')->where('card_id',$id)->delete();
+
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            DB::rollback();
+            alert()->error(trans('Unable to delete'));
+            return redirect()->back();
+        }
+        DB::commit();
+        alert()->success(trans('Card successfully deleted'));
+        return redirect()->route('user.cards');
+    }
 
 
     public function plans()

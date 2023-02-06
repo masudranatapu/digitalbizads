@@ -57,7 +57,7 @@ class UserController extends Controller
         if ($user_details == null) {
             return view('errors.404');
         } else {
-            $user_cards = BusinessCard::where('user_id', $user_details->user_id)->where('status', 1)->get();
+            $user_cards = BusinessCard::where('user_id', $user_details->id)->where('card_status','activated')->get();
             $settings = Setting::where('status', 1)->first();
             return view('admin.users.view-user', compact('user_details', 'user_cards', 'settings'));
         }

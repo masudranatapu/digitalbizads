@@ -194,6 +194,7 @@ Route::group(['middleware' => 'Installer'], function () {
 
         Route::post('card/store', [CardController::class, 'postStore'])->name('card.store');
         Route::post('card/update/{id}', [CardController::class, 'postUpdate'])->name('card.update');
+        Route::get('card/delete/{id}', [CardController::class, 'getDelete'])->name('card.delete');
 
 
         Route::get('create-card', [CardController::class, 'CreateCard'])->name('create.card');

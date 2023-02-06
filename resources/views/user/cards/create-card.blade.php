@@ -5,6 +5,7 @@
 @endsection
 @section('content')
 @section('css')
+<link href="{{ asset('assets/css/image-uploader.min.css')}}" rel="stylesheet">
     <style>
         span.error {
             color: #E53935;
@@ -301,14 +302,27 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                 id="theme_color" value="{{ old('theme_color') }}"
                                                 class="form-control @error('theme_color') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}" required>
-                                            @if ($errors->has('color'))
+                                            @if ($errors->has('theme_color'))
                                                 <span
-                                                    class="help-block text-danger">{{ $errors->first('color') }}</span>
+                                                    class="help-block text-danger">{{ $errors->first('theme_color') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-6">
+                                        <div class="mb-3 form-input">
+                                            <label for="header_backgroung" class="form-label">Header background color</label>
+                                            <input type="color" placeholder="card color" name="header_backgroung"
+                                                id="header_backgroung" value="{{ old('header_backgroung') }}"
+                                                class="form-control @error('header_backgroung') is-invalid @enderror"
+                                                tabindex="{{ $tabindex++ }}" required>
+                                            @if ($errors->has('header_backgroung'))
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('header_backgroung') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="" class="form-label">Select Logo/Heading <span
@@ -320,8 +334,10 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                             </select>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row" id="headline">
                                     <div class="col-6">
-                                        <div class="mb-3 form-input" id="headline">
+                                        <div class="mb-3 form-input">
                                             <label for="text" class="form-label">Heading</label>
                                             <input type="text" placeholder="ads heading" name="text"
                                                 data-preview="preview_name" data-concat="preview_name" id="text"
@@ -329,10 +345,27 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                 class="form-control cin preview_name @error('text') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('text'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('text') }}</span>
+                                                <span class="help-block text-danger">{{ $errors->first('text') }}</span>
                                             @endif
                                         </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3 form-input" id="textfield">
+                                            <label for="header_text_color" class="form-label">Headline Color</label>
+                                            <input type="color" placeholder="card color" name="header_text_color"
+                                                id="header_text_color" value="{{ old('header_text_color') }}"
+                                                class="form-control @error('header_text_color') is-invalid @enderror"
+                                                tabindex="{{ $tabindex++ }}" required>
+                                            @if ($errors->has('header_text_color'))
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('header_text_color') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+
+                                    <div class="col-6">
                                         <div class="mb-3 d-none form-input" id="logofield">
                                             <label for="logo" class="form-label">Logo</label>
                                             <input type="file" name="logo" id="logo"
@@ -349,11 +382,12 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="selectField2" class="form-label">Gallery or Video <span
+                                            <label for="selectField2" class="form-label">Banner or Video <span
                                                     class="text-danger">*</span></label></label>
                                             <select id="selectField2" name="gallery_type" class="form-control"
                                                 tabindex="{{ $tabindex++ }}" required>
-                                                <option value="gallery">Gallery</option>
+                                                {{-- <option value="gallery">Gallery</option> --}}
+                                                <option value="banner">Banner</option>
                                                 <option value="videourl">Video Url</option>
                                                 <option value="videosource">Uplaod Video</option>
                                             </select>
@@ -361,14 +395,16 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="galleryfield">
-                                            <label for="gallery" class="form-label">Gallery (Select Multiple
-                                                Images)</label>
-                                            <input type="file" name="gallery[]" id="gallery"
+                                            <label for="banner" class="form-label">Banner</label>
+                                            <input type="file" name="banner" id="banner"
+                                                class="form-control @error('banner') is-invalid @enderror"
+                                                tabindex="{{ $tabindex++ }}" required>
+                                            {{-- <input type="file" name="gallery[]" id="gallery"
                                                 class="form-control @error('gallery') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" multiple>
-                                            @if ($errors->has('gallery'))
+                                                tabindex="{{ $tabindex++ }}" multiple> --}}
+                                            @if ($errors->has('banner'))
                                                 <span
-                                                    class="help-block text-danger">{{ $errors->first('gallery') }}</span>
+                                                    class="help-block text-danger">{{ $errors->first('banner') }}</span>
                                             @endif
                                         </div>
                                         <div class="mb-3 d-none form-input" id="videourl">
@@ -393,6 +429,19 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                     class="help-block text-danger">{{ $errors->first('video') }}</span>
                                             @endif
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <div class="input-field">
+                                                <label class="active">Gallery<span class="img-note d-inline-block">
+                                                    {{-- <i class="la la-bell" aria-hidden="true"></i>{{trans('form.image_size')}}  800 x 800 pixels</span> --}}
+                                                </label>
+                                                <div class="prod_def_photo_upload" style="padding-top: .5rem;" title="Click for photo upload"></div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="row">
@@ -608,7 +657,12 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
 @push('custom-js')
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/card.js') }}"></script>
+    <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
     <script>
+    $(function () {
+        $('.prod_def_photo_upload').imageUploader();
+    });
+
         function hexToRgb(hex) {
             const normal = hex.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
             if (normal) return normal.slice(1).map(e => parseInt(e, 16));
@@ -626,9 +680,9 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
             $('.subscribe-btn').css({
                 'background-color': current_color
             });
-            $('.card_title').css({
-                'background-color': current_color
-            });
+            // $('.card_title').css({
+            //     'background-color': current_color
+            // });
             $('.purchase_btn').find('a').css({
                 'background-color': 'rgba(' + rgb + ',.1' + ')'
             });
@@ -637,6 +691,20 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
             });
             $('.carousel-control-prev,.carousel-control-next').css({
                 'background-color': current_color
+            });
+        })
+
+        $(document).on('input', '#header_backgroung', function(e) {
+            var current_color = $("#header_backgroung").val();
+            $('.card_title').css({
+                'background-color': current_color
+            });
+        })
+
+        $(document).on('input', '#header_text_color', function(e) {
+            var current_color = $("#header_text_color").val();
+            $('#preview_name').css({
+                'color': current_color
             });
         })
 
@@ -712,12 +780,12 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
         function convertToLink(str) {
             "use strict";
             str = str.replace(/[`~!@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ')
-            .toLowerCase();
-        str = str.replace(/^\s+|\s+$/gm, '');
-        str = str.replace(/\s+/g, '-');
-        document.getElementById("plink").value = str;
-        //return str;
-    }
+                .toLowerCase();
+            str = str.replace(/^\s+|\s+$/gm, '');
+            str = str.replace(/\s+/g, '-');
+            document.getElementById("plink").value = str;
+            //return str;
+        }
     $('#card-form').validate({
         rules: {
             'adsname': {
