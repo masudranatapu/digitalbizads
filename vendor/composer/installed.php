@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-develop',
         'version' => 'dev-develop',
-        'reference' => '1e09d703f281a0107bfbdb18e12ec2140476bb7b',
+        'reference' => '6027d337aea42a0e664e6ce03f484f28b1936da6',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -167,9 +167,9 @@
             'dev_requirement' => false,
         ),
         'doctrine/persistence' => array(
-            'pretty_version' => '3.1.3',
-            'version' => '3.1.3.0',
-            'reference' => '920da294b4bb0bb527f2a91ed60c18213435880f',
+            'pretty_version' => '3.1.4',
+            'version' => '3.1.4.0',
+            'reference' => '8bf8ab15960787f1a49d405f6eb8c787b4841119',
             'type' => 'library',
             'install_path' => __DIR__ . '/../doctrine/persistence',
             'aliases' => array(),
@@ -579,16 +579,16 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-develop',
             'version' => 'dev-develop',
-            'reference' => '1e09d703f281a0107bfbdb18e12ec2140476bb7b',
+            'reference' => '6027d337aea42a0e664e6ce03f484f28b1936da6',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'laravel/serializable-closure' => array(
-            'pretty_version' => 'v1.2.2',
-            'version' => '1.2.2.0',
-            'reference' => '47afb7fae28ed29057fdca37e16a84f90cc62fae',
+            'pretty_version' => 'v1.3.0',
+            'version' => '1.3.0.0',
+            'reference' => 'f23fe9d4e95255dacee1bf3525e0810d1a1b0f37',
             'type' => 'library',
             'install_path' => __DIR__ . '/../laravel/serializable-closure',
             'aliases' => array(),
@@ -730,9 +730,9 @@
             'dev_requirement' => true,
         ),
         'monolog/monolog' => array(
-            'pretty_version' => '2.8.0',
-            'version' => '2.8.0.0',
-            'reference' => '720488632c590286b88b80e62aa3d3d551ad4a50',
+            'pretty_version' => '2.9.1',
+            'version' => '2.9.1.0',
+            'reference' => 'f259e2b15fb95494c83f52d3caad003bbf5ffaa1',
             'type' => 'library',
             'install_path' => __DIR__ . '/../monolog/monolog',
             'aliases' => array(),
@@ -772,9 +772,9 @@
             'dev_requirement' => false,
         ),
         'nette/utils' => array(
-            'pretty_version' => 'v3.2.9',
-            'version' => '3.2.9.0',
-            'reference' => 'c91bac3470c34b2ecd5400f6e6fdf0b64a836a5c',
+            'pretty_version' => 'v4.0.0',
+            'version' => '4.0.0.0',
+            'reference' => 'cacdbf5a91a657ede665c541eda28941d4b09c1e',
             'type' => 'library',
             'install_path' => __DIR__ . '/../nette/utils',
             'aliases' => array(),
@@ -916,9 +916,9 @@
             'dev_requirement' => true,
         ),
         'phpunit/phpunit' => array(
-            'pretty_version' => '9.5.28',
-            'version' => '9.5.28.0',
-            'reference' => '954ca3113a03bf780d22f07bf055d883ee04b65e',
+            'pretty_version' => '9.6.3',
+            'version' => '9.6.3.0',
+            'reference' => 'e7b1615e3e887d6c719121c6d4a44b0ab9645555',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpunit/phpunit',
             'aliases' => array(),
@@ -1185,9 +1185,9 @@
             'dev_requirement' => true,
         ),
         'sebastian/environment' => array(
-            'pretty_version' => '5.1.4',
-            'version' => '5.1.4.0',
-            'reference' => '1b5dff7bb151a4db11d49d90e5408e4e938270f7',
+            'pretty_version' => '5.1.5',
+            'version' => '5.1.5.0',
+            'reference' => '830c43a844f1f8d5b7a1f6d6076b784454d8b7ed',
             'type' => 'library',
             'install_path' => __DIR__ . '/../sebastian/environment',
             'aliases' => array(),
@@ -1239,9 +1239,9 @@
             'dev_requirement' => true,
         ),
         'sebastian/recursion-context' => array(
-            'pretty_version' => '4.0.4',
-            'version' => '4.0.4.0',
-            'reference' => 'cd9d8cf3c5804de4341c283ed787f099f5506172',
+            'pretty_version' => '4.0.5',
+            'version' => '4.0.5.0',
+            'reference' => 'e75bd0f07204fec2a0af9b0f3cfe97d05f92efc1',
             'type' => 'library',
             'install_path' => __DIR__ . '/../sebastian/recursion-context',
             'aliases' => array(),
@@ -1257,9 +1257,9 @@
             'dev_requirement' => true,
         ),
         'sebastian/type' => array(
-            'pretty_version' => '3.2.0',
-            'version' => '3.2.0.0',
-            'reference' => 'fb3fe09c5f0bae6bc27ef3ce933a1e0ed9464b6e',
+            'pretty_version' => '3.2.1',
+            'version' => '3.2.1.0',
+            'reference' => '75e2c2a32f5e0b3aef905b9ed0b179b953b3d7c7',
             'type' => 'library',
             'install_path' => __DIR__ . '/../sebastian/type',
             'aliases' => array(),
@@ -1385,19 +1385,19 @@
         'symfony/asset' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/browser-kit' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/cache' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/cache-contracts' => array(
@@ -1415,13 +1415,13 @@
         'symfony/config' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/console' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/contracts' => array(
@@ -1436,19 +1436,19 @@
         'symfony/css-selector' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/debug-bundle' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/dependency-injection' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/deprecation-contracts' => array(
@@ -1460,31 +1460,31 @@
         'symfony/doctrine-bridge' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/dom-crawler' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/dotenv' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/error-handler' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/event-dispatcher' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/event-dispatcher-contracts' => array(
@@ -1502,37 +1502,37 @@
         'symfony/expression-language' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/filesystem' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/finder' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/form' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/framework-bundle' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/http-client' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/http-client-contracts' => array(
@@ -1550,79 +1550,79 @@
         'symfony/http-foundation' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/http-kernel' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/inflector' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/intl' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/ldap' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/lock' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/mailer' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/messenger' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/mime' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/monolog-bridge' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/notifier' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/options-resolver' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/password-hasher' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/polyfill-ctype' => array(
@@ -1736,79 +1736,79 @@
         'symfony/process' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/property-access' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/property-info' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/proxy-manager-bridge' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/rate-limiter' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/routing' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/security-bundle' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/security-core' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/security-csrf' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/security-guard' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/security-http' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/semaphore' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/serializer' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/service-contracts' => array(
@@ -1826,19 +1826,19 @@
         'symfony/stopwatch' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/string' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/symfony' => array(
-            'pretty_version' => 'v5.4.19',
-            'version' => '5.4.19.0',
-            'reference' => '6c934e638b9b8cf22faf2cbf0855d8f0a219e385',
+            'pretty_version' => 'v5.4.20',
+            'version' => '5.4.20.0',
+            'reference' => '7f9c726f539739637a7ffcbc6bf1062e2a432160',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/symfony',
             'aliases' => array(),
@@ -1847,13 +1847,13 @@
         'symfony/templating' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/translation' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/translation-contracts' => array(
@@ -1871,61 +1871,61 @@
         'symfony/twig-bridge' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/twig-bundle' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/uid' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/validator' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/var-dumper' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/var-exporter' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/web-link' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/web-profiler-bundle' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/workflow' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'symfony/yaml' => array(
             'dev_requirement' => false,
             'replaced' => array(
-                0 => 'v5.4.19',
+                0 => 'v5.4.20',
             ),
         ),
         'theseer/tokenizer' => array(

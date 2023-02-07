@@ -8,7 +8,8 @@
     <meta name="Designer" content="Rabin Mia" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
-    {{-- <link rel="icon" type="image/png" sizes="32x32" href="{{ asset($cardinfo->logo) }}"> --}}
+    {{--
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset($cardinfo->logo) }}"> --}}
     <link rel="icon" href="{{ $settings->favicon }}" sizes="96x96" type="image/png" />
 
     <!-- css file -->
@@ -35,11 +36,21 @@
     ?>
     <style>
         .card_template {
-            background-color: rgba({{ $theme_bg }});
+            background-color: rgba( {
+                        {
+                        $theme_bg
+                    }
+                }
+
+            );
         }
 
         .social_item i {
-            border-color: {{ $theme_color }}
+            border-color: {
+                    {
+                    $theme_color
+                }
+            }
         }
 
         /* .card_title, */
@@ -48,7 +59,13 @@
         .carousel-control-prev,
         .carousel-control-next,
         .purchase_btn a {
-            background-color: {{ $theme_color . '!important' }};
+            background-color: {
+                    {
+                    $theme_color . '!important'
+                }
+            }
+
+            ;
         }
 
         .card_template .card_title {
@@ -61,11 +78,7 @@
         }
 
         .social_share img {
-            width: 75%;
-            height: 75%;
-        }
-        .single_product {
-            margin-top: 24px;
+            width: 56px !important;
         }
 
         .single_product .single_item img {
@@ -149,6 +162,7 @@
         .single_product .swiper-button-next {
             right: 24px;
         }
+
         a.gallery-btn {
             position: absolute;
             top: 15px;
@@ -164,32 +178,31 @@
             <!-- title -->
             <div class="card_title" style="background-color: {{ $cardinfo->header_backgroung ?? '#000000' }};">
                 @if (!empty($cardinfo->logo))
-                    <h2>
-                        <div class="text-center">
-                            <img src="{{ asset($cardinfo->logo) }}" alt="logo">
-                        </div>
-                    </h2>
+                <h2>
+                    <div class="text-center">
+                        <img src="{{ asset($cardinfo->logo) }}" alt="logo">
+                    </div>
+                </h2>
                 @else
-                    <h2 style="color: {{ $cardinfo->header_text_color ?? '#ffffff' }};">
-                        <span>{{ $cardinfo->title }}</span>
-                    </h2>
+                <h2 style="color: {{ $cardinfo->header_text_color ?? '#ffffff' }};">
+                    <span>{{ $cardinfo->title }}</span>
+                </h2>
 
                 @endif
-                    <div class="float-end">
-                        <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal" data-bs-target="#galleryModal">
-                            <i class="fas fa-images"></i>
-                        </a>
-                        <a href="javascript:void(0)" class="login_btn" data-bs-toggle="modal"
-                            data-bs-target="#loginModal">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"
-                                fill="none" stroke="#000000" stroke-width="1" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <line x1="3" y1="12" x2="21" y2="12"></line>
-                                <line x1="3" y1="6" x2="21" y2="6"></line>
-                                <line x1="3" y1="18" x2="21" y2="18"></line>
-                            </svg>
-                        </a>
-                    </div>
+                <div class="float-end">
+                    <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
+                        data-bs-target="#galleryModal">
+                        <i class="fas fa-images"></i>
+                    </a>
+                    <a href="javascript:void(0)" class="login_btn" data-bs-toggle="modal" data-bs-target="#loginModal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none"
+                            stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </a>
+                </div>
 
             </div>
 
@@ -197,42 +210,41 @@
 
 
             @if (!empty($cardinfo->banner_content))
-                @if ($cardinfo->banner_type == 'videourl')
-                    <div class="video_wrapper">
-                        <div class="ratio ratio-1x1">
-                            <iframe width="100%" src="{{ $cardinfo->banner_content}}" frameborder="0"
-                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                allowfullscreen></iframe>
-                        </div>
-                    </div>
-                @elseif ($cardinfo->banner_type == 'videosource')
-                    <!-- Video -->
-                    <div class="video_wrapper">
-                        <div class="ratio ratio-1x1">
-                            <video autoplay="" loop="" muted="" playsinline="" data-wf-ignore="true"
-                                data-object-fit="cover" controls>
-                                <source src="{{ $cardinfo->banner_content}}" type="video/mp4">
-                                <source src="{{ $cardinfo->banner_content}}" type="video/ogg">
-                            </video>
-                        </div>
-                    </div>
-                @elseif ($cardinfo->banner_type == 'banner')
+            @if ($cardinfo->banner_type == 'videourl')
+            <div class="video_wrapper">
+                <div class="ratio ratio-1x1">
+                    <iframe width="100%" src="{{ $cardinfo->banner_content}}" frameborder="0"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+                </div>
+            </div>
+            @elseif ($cardinfo->banner_type == 'videosource')
+            <!-- Video -->
+            <div class="video_wrapper">
+                <div class="ratio ratio-1x1">
+                    <video autoplay="" loop="" muted="" playsinline="" data-wf-ignore="true" data-object-fit="cover"
+                        controls>
+                        <source src="{{ $cardinfo->banner_content}}" type="video/mp4">
+                        <source src="{{ $cardinfo->banner_content}}" type="video/ogg">
+                    </video>
+                </div>
+            </div>
+            @elseif ($cardinfo->banner_type == 'banner')
 
-                    <div class="carousel-inner">
-                        @foreach ($cardinfo->gallery as $key => $gallery)
-                        <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                        <img src="{{ $cardinfo->banner_content }}" class="d-block w-100"
-                                            alt="image">
-                        </div>
-                        @endforeach
-                    </div>
+            <div class="carousel-inner">
+                @foreach ($cardinfo->gallery as $key => $gallery)
+                <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                    <img src="{{ $cardinfo->banner_content }}" class="d-block w-100" alt="image">
+                </div>
+                @endforeach
+            </div>
 
-                @endif
+            @endif
             @endif
             <!-- purchase button -->
             <div class="purchase_btn text-center mb-4">
                 @if (!empty($cardinfo->website))
-                    <a href="{{ $cardinfo->website }}">SHOP</a>
+                <a href="{{ $cardinfo->website }}">SHOP</a>
                 @endif
             </div>
 
@@ -246,30 +258,30 @@
                     <div class="row row-cols-4 row-cols-sm-5 g-3">
                         <!-- social icon -->
                         @if (!empty($cardinfo->phone_number))
-                            <div class="col">
-                                <div class="social_item">
-                                    <a href="tel:{{ $cardinfo->phone_number }}">
-                                        <i class="fa fa-phone"></i>
-                                    </a>
-                                </div>
+                        <div class="col">
+                            <div class="social_item">
+                                <a href="tel:{{ $cardinfo->phone_number }}">
+                                    <i class="fa fa-phone"></i>
+                                </a>
                             </div>
-                            <div class="col">
-                                <div class="social_item">
-                                    <a href="sms://{{ $cardinfo->phone_number }}">
-                                        <i class="fa fa-comment"></i>
-                                    </a>
-                                </div>
+                        </div>
+                        <div class="col">
+                            <div class="social_item">
+                                <a href="sms://{{ $cardinfo->phone_number }}">
+                                    <i class="fa fa-comment"></i>
+                                </a>
                             </div>
+                        </div>
                         @endif
                         @if (!empty($cardinfo->email))
-                            <!-- social icon -->
-                            <div class="col">
-                                <div class="social_item">
-                                    <a href="mailto:{{ $cardinfo->email }}">
-                                        <i class="fa fa-envelope"></i>
-                                    </a>
-                                </div>
+                        <!-- social icon -->
+                        <div class="col">
+                            <div class="social_item">
+                                <a href="mailto:{{ $cardinfo->email }}">
+                                    <i class="fa fa-envelope"></i>
+                                </a>
                             </div>
+                        </div>
                         @endif
                         <!-- Qr code icon -->
                         <div class="col">
@@ -282,20 +294,20 @@
                         </div>
 
                         @if (!empty($cardinfo->website))
-                            <div class="col">
-                                <div class="social_item">
-                                    <a href="{{ $cardinfo->website }}" target="_blank">
-                                        <i class="fa fa-globe"></i>
-                                    </a>
-                                </div>
+                        <div class="col">
+                            <div class="social_item">
+                                <a href="{{ $cardinfo->website }}" target="_blank">
+                                    <i class="fa fa-globe"></i>
+                                </a>
                             </div>
+                        </div>
                         @endif
                         <!-- social icon -->
 
                         <!-- social icon -->
                         @if (!empty($cardinfo->contacts))
-                            @foreach ($cardinfo->contacts as $contact)
-                                {{--
+                        @foreach ($cardinfo->contacts as $contact)
+                        {{--
                         <div class="col">
                             <div class="social_item">
                                 <a href="{{ $cardinfo->contacts }}" target="_blank">
@@ -304,27 +316,25 @@
                             </div>
                         </div> --}}
 
-                                @if ($contact->label == 'facebook')
-                                    <!-- social icon -->
-                                    <div class="col">
-                                        <div class="social_item">
-                                            <a href="https://www.facebook.com/{{ $contact->content }}"
-                                                target="_blank">
-                                                <i class="fab fa-facebook"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                @elseif ($contact->label == 'instagram')
-                                    <div class="col">
-                                        <div class="social_item">
-                                            <a href="https://www.instagram.com/{{ $contact->content }}"
-                                                target="_blank">
-                                                <i class="fab fa-instagram"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                @endif
-                            @endforeach
+                        @if ($contact->label == 'facebook')
+                        <!-- social icon -->
+                        <div class="col">
+                            <div class="social_item">
+                                <a href="https://www.facebook.com/{{ $contact->content }}" target="_blank">
+                                    <i class="fab fa-facebook"></i>
+                                </a>
+                            </div>
+                        </div>
+                        @elseif ($contact->label == 'instagram')
+                        <div class="col">
+                            <div class="social_item">
+                                <a href="https://www.instagram.com/{{ $contact->content }}" target="_blank">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </div>
+                        </div>
+                        @endif
+                        @endforeach
                         @endif
 
                         <div class="col">
@@ -344,15 +354,14 @@
                     @csrf
                     <input type="hidden" id="" name="card_id" value="{{ $cardinfo->id }}">
                     <div class="input-group">
-                        <input type="text" name="email" id="email"
-                            class="form-control @error('email') is-invalid @enderror"
-                            placeholder="Enter your emaill..." required>
-                        @if ($errors->has('email'))
-                            <span class="help-block text-danger d-block">{{ $errors->first('email') }}</span>
-                        @endif
-                        <button type="submit"
-                            class="input-group-text btn btn-primary subscribe-btn">Subscribe</button>
+                        <input type="email" name="email" id="email"
+                            class="form-control @error('email') is-invalid @enderror" placeholder="Enter your emaill..."
+                            required>
+                        <button type="submit" class="input-group-text btn btn-primary subscribe-btn">Subscribe</button>
                     </div>
+                    {{-- @if ($errors->has('email'))
+                    <span class="help-block text-danger d-block">{{ $errors->first('email') }}</span>
+                    @endif --}}
                 </form>
             </div>
 
@@ -402,7 +411,7 @@
                                 class="form-control @error('email') is-invalid @enderror"
                                 placeholder="Username or Email Address" required>
                             @if ($errors->has('username'))
-                                <span class="help-block text-danger">{{ $errors->first('username') }}</span>
+                            <span class="help-block text-danger">{{ $errors->first('username') }}</span>
                             @endif
                         </div>
                         <div class="mb-3">
@@ -411,7 +420,7 @@
                                 class="form-control @error('password') is-invalid @enderror" placeholder="Password"
                                 required>
                             @if ($errors->has('password'))
-                                <span class="help-block text-danger">{{ $errors->first('password') }}</span>
+                            <span class="help-block text-danger">{{ $errors->first('password') }}</span>
                             @endif
                         </div>
                         <div class="text-center mb-3">
@@ -433,94 +442,72 @@
 
     <!-- Social Modal modal -->
     <div class="share_modal email_modal">
-        <div class="modal animate__animated animate__fadeIn" id="SocialModal" tabindex="-1"
-            data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal animate__animated animate__fadeIn" id="SocialModal" tabindex="-1" data-bs-backdrop="static"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content ">
                     <div class="modal-header">
                         <h5 class="modal-title">{{ __('Share your Ad') }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal_body">
-                        <div id="social-links">
-                            <div class="row">
-                                <div class="col-12 col-sm-12">
-                                    <ul class="text-center">
-                                        <li class="list-inline-item">
-                                            <a href="sms://"
-                                                class="social_share"
-                                                title="{{ __('Text Message') }}">
-                                                <img class="img-fluid"
-                                                    src="{{ asset('images/icons/social/message.svg') }}"
-                                                    alt="{{ __('Text Message') }}">
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a href="mailto:{{ $cardinfo->email }}"
-                                                class="social_share"
-                                                title="{{ __('Send mail') }}">
-                                                <img class="img-fluid"
-                                                    src="{{ asset('images/icons/social/email.svg') }}"
-                                                    alt="{{ __('Send mail') }}">
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"
-                                                target="_blank" class="social_share"
-                                                data-url="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"
-                                                title="{{ __('Share on Facebook') }}">
-                                                <img class="img-fluid"
-                                                    src="{{ asset('images/icons/social/facebook.svg') }}"
-                                                    alt="{{ __('Share on facebook') }}">
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a href="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ Request::url() }}"
-                                                target="_blank" class="social_share"
-                                                data-url="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ Request::url() }}
-                                            "
-                                                title="{{ __('Share on Twitter') }}">
-                                                <img class="img-fluid"
-                                                    src="{{ asset('images/icons/social/twitter.svg') }}"
-                                                    alt="">
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a href="https://telegram.me/share/url?url={{ Request::url() }}&text="
-                                                target="_blank" class="social_share"
-                                                data-url="https://telegram.me/share/url?url={{ Request::url() }}&text="
-                                                title="{{ __('Share on Telegram') }}">
-                                                <img class="img-fluid"
-                                                    src="{{ asset('images/icons/social/telegram.svg') }}"
-                                                    alt="">
-                                            </a>
-                                        </li>
+                        <div id="social-links" class="text-center">
+                            <div class="row row-cols-4 row-cols-sm-5">
+                                <div class="col mb-3">
+                                    <a href="sms://" class="social_share" title="{{ __('Text Message') }}">
+                                        <img class="img-fluid" src="{{ asset('images/icons/social/message.svg') }}"
+                                            alt="{{ __('Text Message') }}">
+                                    </a>
+                                </div>
+                                <div class="col mb-3">
+                                    <a href="mailto:{{ $cardinfo->email }}" class="social_share"
+                                        title="{{ __('Send mail') }}">
+                                        <img class="img-fluid" src="{{ asset('images/icons/social/email.svg') }}"
+                                            alt="{{ __('Send mail') }}">
+                                    </a>
+                                </div>
+                                <div class="col mb-3">
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"
+                                        target="_blank" class="social_share"
+                                        data-url="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"
+                                        title="{{ __('Share on Facebook') }}">
+                                        <img class="img-fluid" src="{{ asset('images/icons/social/facebook.svg') }}"
+                                            alt="{{ __('Share on facebook') }}">
+                                    </a>
+                                </div>
+                                <div class="col mb-3">
+                                    <a href="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ Request::url() }}"
+                                        target="_blank" class="social_share" data-url="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ Request::url() }}
+                                " title="{{ __('Share on Twitter') }}">
+                                        <img class="img-fluid" src="{{ asset('images/icons/social/twitter.svg') }}"
+                                            alt="">
+                                    </a>
 
-                                        @if ($android !== false || $ipad !== false || $iphone !== false || true)
-                                            <li class="list-inline-item">
-                                                <a href="whatsapp://send?text={{ Request::url() }}"
-                                                    class="social_share whatsapp"
-                                                    title="{{ __('Share on Whatsapp') }}"
-                                                    data-action="share/whatsapp/share">
-                                                    <img class="img-fluid"
-                                                        src="{{ asset('images/icons/social/whatsapp.svg') }}"
-                                                        alt="">
-                                                </a>
-                                            </li>
-                                        @else
-                                            <li class="list-inline-item">
-                                                <a href="https://web.whatsapp.com/send?text={{ Request::url() }}"
-                                                    target="__blank" class="whatsapp"
-                                                    title="{{ __('Share on Whatsapp') }}"
-                                                    data-action="share/whatsapp/share">
-                                                    <img class="img-fluid"
-                                                        src="{{ asset('assets/img/icons/whatsapp.svg') }}"
-                                                        alt="">
-                                                </a>
-                                            </li>
-                                        @endif
-                                    </ul>
+                                </div>
+                                <div class="col mb-3">
+                                    <a href="https://telegram.me/share/url?url={{ Request::url() }}&text="
+                                        target="_blank" class="social_share"
+                                        data-url="https://telegram.me/share/url?url={{ Request::url() }}&text="
+                                        title="{{ __('Share on Telegram') }}">
+                                        <img class="img-fluid" src="{{ asset('images/icons/social/telegram.svg') }}"
+                                            alt="">
+                                    </a>
+                                </div>
+                                <div class="col mb-3">
+                                    @if ($android !== false || $ipad !== false || $iphone !== false || true)
+                                    <a href="whatsapp://send?text={{ Request::url() }}" class="social_share whatsapp"
+                                        title="{{ __('Share on Whatsapp') }}" data-action="share/whatsapp/share">
+                                        <img class="img-fluid" src="{{ asset('images/icons/social/whatsapp.svg') }}"
+                                            alt="">
+                                    </a>
+                                    @else
+                                    <a href="https://web.whatsapp.com/send?text={{ Request::url() }}" target="__blank"
+                                        class="whatsapp" title="{{ __('Share on Whatsapp') }}"
+                                        data-action="share/whatsapp/share">
+                                        <img class="img-fluid" src="{{ asset('assets/img/icons/whatsapp.svg') }}"
+                                            alt="">
+                                    </a>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -552,7 +539,7 @@
                                 class="form-control @error('email') is-invalid @enderror" placeholder="Username"
                                 required>
                             @if ($errors->has('username'))
-                                <span class="help-block text-danger">{{ $errors->first('username') }}</span>
+                            <span class="help-block text-danger">{{ $errors->first('username') }}</span>
                             @endif
                         </div>
                         <div class="mb-3">
@@ -561,7 +548,7 @@
                                 class="form-control @error('email') is-invalid @enderror" placeholder="Email Address"
                                 required>
                             @if ($errors->has('email'))
-                                <span class="help-block text-danger">{{ $errors->first('email') }}</span>
+                            <span class="help-block text-danger">{{ $errors->first('email') }}</span>
                             @endif
                         </div>
                         <div class="mb-3">
@@ -570,18 +557,17 @@
                                 class="form-control @error('password') is-invalid @enderror" placeholder="Password"
                                 required>
                             @if ($errors->has('password'))
-                                <span class="help-block text-danger">{{ $errors->first('password') }}</span>
+                            <span class="help-block text-danger">{{ $errors->first('password') }}</span>
                             @endif
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="confimation_password">Confirm Password</label>
-                            <input type="password" name="confimation_password"
-                                value="{{ old('confimation_password') }}" id="confimation_password"
+                            <input type="password" name="confimation_password" value="{{ old('confimation_password') }}"
+                                id="confimation_password"
                                 class="form-control @error('confimation_password') is-invalid @enderror"
                                 placeholder="Password" required>
                             @if ($errors->has('confimation_password'))
-                                <span
-                                    class="help-block text-danger">{{ $errors->first('confimation_password') }}</span>
+                            <span class="help-block text-danger">{{ $errors->first('confimation_password') }}</span>
                             @endif
                         </div>
                         <div class="text-center mb-3">
@@ -599,49 +585,51 @@
 
 
     <!-- Modal -->
-<div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="galleryModalLabel">Gallery</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-             <div class="product-item__gallery single_product">
-                <div class="swiper mySwiper2">
-                    <div class="swiper-wrapper single_item">
-                        @if (!empty($cardinfo->gallery))
-                        @foreach ($cardinfo->gallery as $key=> $gallery)
-                        <div class="swiper-slide {{ $key==0 ? 'swiper-slide-active' :'' }}">
-                            <img src="{{asset($gallery->content)}}" alt="product-img" />
-                        </div>
-                        @endforeach
-                        @endif
-                    </div>
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
+    <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content pb-0">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="galleryModalLabel">Gallery</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div thumbsSlider="" class="swiper mySwiper" style="height: 125px">
-                    <div class="swiper-wrapper">
-                        @if (!empty($cardinfo->gallery))
-                        @foreach ($cardinfo->gallery as $key=> $gallery)
-                        <div class="swiper-slide {{ $key==0 ? 'swiper-slide-thumb-active' :'' }}">
-                            <img src="{{asset($gallery->content)}}" alt="product-img" />
+                <div class="product-item__gallery single_product">
+                    <div class="swiper mySwiper2">
+                        <div class="swiper-wrapper single_item">
+                            @if (!empty($cardinfo->gallery))
+                            @foreach ($cardinfo->gallery as $key=> $gallery)
+                            <div class="swiper-slide {{ $key==0 ? 'swiper-slide-active' : '' }}">
+                                <img src="{{asset($gallery->content)}}" alt="product-img" />
+                            </div>
+                            @endforeach
+                            @endif
                         </div>
-                        @endforeach
-                        @endif
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                    <div thumbsSlider="" class="swiper mySwiper" style="height: 125px">
+                        <div class="swiper-wrapper">
+                            @if (!empty($cardinfo->gallery))
+                            @foreach ($cardinfo->gallery as $key=> $gallery)
+                            <div class="swiper-slide {{ $key==0 ? 'swiper-slide-thumb-active' : '' }}">
+                                <img src="{{asset($gallery->content)}}" alt="product-img" />
+                            </div>
+                            @endforeach
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-      </div>
     </div>
-  </div>
+
+
+
     <!-- js file -->
-@include('sweet::alert')
+    @include('sweet::alert')
     {{-- <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('assets/js/swiper-bundle.min.js') }}"></script>
+
     <script>
         "use strict";
         var swiper = new Swiper(".mySwiper", {

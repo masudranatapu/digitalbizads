@@ -1,7 +1,7 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
 @section('content')
 
-    <?php
+<?php
     $tabindex = 1;
     $android = stripos($_SERVER['HTTP_USER_AGENT'], 'android');
     $iphone = stripos($_SERVER['HTTP_USER_AGENT'], 'iphone');
@@ -31,66 +31,93 @@
 @section('css')
 <link href="{{ asset('assets/css/image-uploader.min.css')}}" rel="stylesheet">
 
-    <style>
-        span.error {
-            color: #E53935;
-            padding: 2px 0px;
+<style>
+    span.error {
+        color: #E53935;
+        padding: 2px 0px;
+    }
+
+    .purchase_btn a {
+        padding: 10px 27px;
+        font-size: 20px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        color: #ffffff;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        display: block;
+        background: #ffc107;
+        transition: all 0.3s ease-in-out;
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        -ms-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+    }
+
+    .card_title {
+        background-color: {
+                {
+                $theme_color
+            }
         }
 
-        .purchase_btn a {
-            padding: 10px 27px;
-            font-size: 20px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 500;
-            color: #ffffff;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            display: block;
-            background: #ffc107;
-            transition: all 0.3s ease-in-out;
-            -webkit-transition: all 0.3s ease-in-out;
-            -moz-transition: all 0.3s ease-in-out;
-            -ms-transition: all 0.3s ease-in-out;
-            -o-transition: all 0.3s ease-in-out;
+        ;
+
+    }
+
+    a.social-contact.disabled {
+        opacity: .3;
+    }
+
+    .social_item i {
+        border-color: {
+                {
+                $theme_color
+            }
+        }
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        background-color: {
+                {
+                $theme_color . '!important'
+            }
         }
 
-        .card_title {
-            background-color: {{ $theme_color }};
+        ;
+    }
 
-        }
+    .social_share {
+        margin-bottom: 20px;
+    }
 
-        a.social-contact.disabled {
-            opacity: .3;
-        }
+    .social_share img {
+        width: 75%;
+        height: 75%;
+    }
 
-        .social_item i {
-            border-color: {{ $theme_color }}
-        }
+    .modal-header .btn-close {
+        width: 25px;
+        height: 25px;
+    }
 
-        .carousel-control-prev,
-        .carousel-control-next {
-            background-color: {{ $theme_color . '!important' }};
-        }
+    .delete-image.photo-delete {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 22px;
+        height: 22px;
+        border-radius: 50px;
+        border: none !important;
+    }
 
-        .social_share {
-            margin-bottom: 20px;
-        }
-
-        .social_share img {
-            width: 75%;
-            height: 75%;
-        }
-
-        .modal-header .btn-close {
-            width: 25px;
-            height: 25px;
-        }
-        button.delete-image.photo-delete {
-            position: absolute;
-            top: 0;
-            right: 0;
-        }
-    </style>
+    .gallery_image img {
+        width: 100%;
+        height: 111px;
+        margin-bottom: 12px;
+    }
+</style>
 @endsection
 <div class="page-wrapper">
     <div class="container-xl">
@@ -117,123 +144,121 @@
                             <div class="card_template" style="background-color: rgba({{ $theme_bg }})">
                                 <!-- title -->
                                 @if (!empty($card->logo))
-                                    <div class="card_title p-2 pt-3" id="logoDiv" style="background-color: {{ $card->header_backgroung ?? '#000000' }};">
-                                        <h2>
-                                            <div class="text-center">
-                                                <img src="{{ asset($card->logo) }}" id="previewLogo" alt="logo">
-                                            </div>
-                                            <a href="javascript:void(0)" class="float-end login_btn"
-                                                data-bs-toggle="modal" data-bs-target="#loginModal">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                    viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
-                                                    stroke-linecap="round" stroke-linejoin="round">
-                                                    <line x1="3" y1="12" x2="21" y2="12">
-                                                    </line>
-                                                    <line x1="3" y1="6" x2="21" y2="6">
-                                                    </line>
-                                                    <line x1="3" y1="18" x2="21" y2="18">
-                                                    </line>
-                                                </svg>
-                                            </a>
-                                        </h2>
-                                    </div>
-                                    <div class="card_title p-2 pt-3 d-none" id="titleDiv" style="background-color: {{ $card->header_backgroung ?? '#000000' }}">
-                                        <h2 class="">
-                                            <span id="preview_name" style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">Express T-Shirts</span>
-                                            <a href="javascript:void(0)" class="float-end login_btn">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                    viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
-                                                    stroke-linecap="round" stroke-linejoin="round">
-                                                    <line x1="3" y1="12" x2="21" y2="12">
-                                                    </line>
-                                                    <line x1="3" y1="6" x2="21" y2="6">
-                                                    </line>
-                                                    <line x1="3" y1="18" x2="21" y2="18">
-                                                    </line>
-                                                </svg>
-                                            </a>
-                                        </h2>
-                                    </div>
+                                <div class="card_title p-2 pt-3" id="logoDiv"
+                                    style="background-color: {{ $card->header_backgroung ?? '#000000' }};">
+                                    <h2>
+                                        <div class="text-center">
+                                            <img src="{{ asset($card->logo) }}" id="previewLogo" alt="logo">
+                                        </div>
+                                        <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
+                                            data-bs-target="#loginModal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                                viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="3" y1="12" x2="21" y2="12">
+                                                </line>
+                                                <line x1="3" y1="6" x2="21" y2="6">
+                                                </line>
+                                                <line x1="3" y1="18" x2="21" y2="18">
+                                                </line>
+                                            </svg>
+                                        </a>
+                                    </h2>
+                                </div>
+                                <div class="card_title p-2 pt-3 d-none" id="titleDiv"
+                                    style="background-color: {{ $card->header_backgroung ?? '#000000' }}">
+                                    <h2 class="">
+                                        <span id="preview_name"
+                                            style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">Express
+                                            T-Shirts</span>
+                                        <a href="javascript:void(0)" class="float-end login_btn">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                                viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="3" y1="12" x2="21" y2="12">
+                                                </line>
+                                                <line x1="3" y1="6" x2="21" y2="6">
+                                                </line>
+                                                <line x1="3" y1="18" x2="21" y2="18">
+                                                </line>
+                                            </svg>
+                                        </a>
+                                    </h2>
+                                </div>
                                 @else
-                                    <div class="card_title p-2 pt-3 d-none" id="logoDiv" style="background-color: {{ $card->header_backgroung ?? '#000000' }}">
-                                        <h2>
-                                            <div class="text-center">
-                                                <img src="{{ asset('assets/images/bizads.png') }}" width="140"
-                                                    id="previewLogo" alt="logo">
-                                            </div>
-                                            <a href="javascript:void(0)" class="float-end login_btn"
-                                                data-bs-toggle="modal" data-bs-target="#loginModal">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                    viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
-                                                    stroke-linecap="round" stroke-linejoin="round">
-                                                    <line x1="3" y1="12" x2="21" y2="12">
-                                                    </line>
-                                                    <line x1="3" y1="6" x2="21" y2="6">
-                                                    </line>
-                                                    <line x1="3" y1="18" x2="21"
-                                                        y2="18"></line>
-                                                </svg>
-                                            </a>
-                                        </h2>
-                                    </div>
-                                    <div class="card_title p-2 pt-3" id="titleDiv" style="background-color: {{ $card->header_backgroung ?? '#000000' }}">
-                                        <h2>
-                                            <span id="preview_name" style="color:{{ $card->header_text_color ?? '#ffffff' }};">{{ $card->title }}</span>
-                                            <a href="javascript:void(0)" class="float-end login_btn"
-                                                data-bs-toggle="modal" data-bs-target="#loginModal">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                    viewBox="0 0 24 24" fill="none" stroke="#000000"
-                                                    stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                                                    <line x1="3" y1="12" x2="21"
-                                                        y2="12"></line>
-                                                    <line x1="3" y1="6" x2="21"
-                                                        y2="6"></line>
-                                                    <line x1="3" y1="18" x2="21"
-                                                        y2="18"></line>
-                                                </svg>
-                                            </a>
-                                        </h2>
-                                    </div>
+                                <div class="card_title p-2 pt-3 d-none" id="logoDiv"
+                                    style="background-color: {{ $card->header_backgroung ?? '#000000' }}">
+                                    <h2>
+                                        <div class="text-center">
+                                            <img src="{{ asset('assets/images/bizads.png') }}" width="140"
+                                                id="previewLogo" alt="logo">
+                                        </div>
+                                        <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
+                                            data-bs-target="#loginModal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                                viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="3" y1="12" x2="21" y2="12">
+                                                </line>
+                                                <line x1="3" y1="6" x2="21" y2="6">
+                                                </line>
+                                                <line x1="3" y1="18" x2="21" y2="18"></line>
+                                            </svg>
+                                        </a>
+                                    </h2>
+                                </div>
+                                <div class="card_title p-2 pt-3" id="titleDiv"
+                                    style="background-color: {{ $card->header_backgroung ?? '#000000' }}">
+                                    <h2>
+                                        <span id="preview_name"
+                                            style="color:{{ $card->header_text_color ?? '#ffffff' }};">{{ $card->title
+                                            }}</span>
+                                        <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
+                                            data-bs-target="#loginModal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                                viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
+                                                stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="3" y1="12" x2="21" y2="12"></line>
+                                                <line x1="3" y1="6" x2="21" y2="6"></line>
+                                                <line x1="3" y1="18" x2="21" y2="18"></line>
+                                            </svg>
+                                        </a>
+                                    </h2>
+                                </div>
                                 @endif
 
 
                                 <div class="slider-box" id="slider-box">
 
                                     @if (!empty($card->banner_content))
-                                        @if ($card->banner_type == 'videourl')
-                                            <div class="video_wrapper" id="digitalBizEmbad">
-                                                <div class="ratio ratio-1x1">
-                                                    <iframe width="100%" src="{{ $card->banner_content }}"
-                                                        frameborder="0"
-                                                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                                        allowfullscreen></iframe>
-                                                </div>
-                                            </div>
-                                        @elseif ($card->banner_type == 'videosource')
-                                            <!-- Video -->
-                                            <div class="video_wrapper" id="digitaBizSourc">
-                                                <div class="ratio ratio-1x1">
-                                                    <video autoplay="" loop="" muted=""
-                                                        playsinline="" data-wf-ignore="true" data-object-fit="cover"
-                                                        controls>
-                                                        <source src="{{ $card->banner_content }}"
-                                                            type="video/mp4">
-                                                        <source src="{{ $card->banner_content }}"
-                                                            type="video/ogg">
-                                                    </video>
-                                                </div>
-                                            </div>
-                                        @elseif ($card->banner_type == 'banner')
-
-                                        {{-- @dd($card->banner_content); --}}
-                                            <div class="" id="digitalbizSlider">
-                                                <img src="{{ $card->banner_content }}" class="d-block w-100" alt="image">
-                                            </div>
-                                        @endif
-                                    @else
-                                        <div id="digitalbizSlider">
-                                            <img src="{{ asset('backend/img') }}/1.jpg" class="d-block w-100" alt="image">
+                                    @if ($card->banner_type == 'videourl')
+                                    <div class="video_wrapper" id="digitalBizEmbad">
+                                        <div class="ratio ratio-1x1">
+                                            <iframe width="100%" src="{{ $card->banner_content }}" frameborder="0"
+                                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen></iframe>
                                         </div>
+                                    </div>
+                                    @elseif ($card->banner_type == 'videosource')
+                                    <!-- Video -->
+                                    <div class="video_wrapper" id="digitaBizSourc">
+                                        <div class="ratio ratio-1x1">
+                                            <video autoplay="" loop="" muted="" playsinline="" data-wf-ignore="true"
+                                                data-object-fit="cover" controls>
+                                                <source src="{{ $card->banner_content }}" type="video/mp4">
+                                                <source src="{{ $card->banner_content }}" type="video/ogg">
+                                            </video>
+                                        </div>
+                                    </div>
+                                    @elseif ($card->banner_type == 'banner')
+                                    <div class="" id="digitalbizSlider">
+                                        <img src="{{ $card->banner_content }}" class="d-block w-100" alt="image">
+                                    </div>
+                                    @endif
+                                    @else
+                                    <div id="digitalbizSlider">
+                                        <img src="{{ asset('backend/img') }}/1.jpg" class="d-block w-100" alt="image">
+                                    </div>
                                     @endif
                                     <div class="video_wrapper d-none" id="digitalBizEmbad">
                                         <div class="ratio ratio-1x1">
@@ -246,9 +271,8 @@
                                     </div>
                                     <div class="video_wrapper d-none" id="digitaBizSourc">
                                         <div class="ratio ratio-1x1">
-                                            <video autoplay="" loop="" muted="" playsinline=""
-                                                id="video_preview" data-wf-ignore="true" data-object-fit="cover"
-                                                controls>
+                                            <video autoplay="" loop="" muted="" playsinline="" id="video_preview"
+                                                data-wf-ignore="true" data-object-fit="cover" controls>
                                                 <source src="{{ asset('assets/video.mp4') }}" type="video/mp4">
                                                 <source src="{{ asset('assets/video.mp4') }}" type="video/ogg">
                                             </video>
@@ -257,7 +281,7 @@
                                     <div class="d-none" id="digitalbizSlider">
                                         <img src="{{ asset('backend/img') }}/1.jpg" class="d-block w-100" alt="image">
                                     </div>
-                               </div>
+                                </div>
                                 <!-- purchase button -->
                                 <div class="purchase_btn text-center mb-4">
                                     <a href="{{ $card->website }}"
@@ -274,38 +298,38 @@
                                         <div class="row row-cols-4 row-cols-sm-5 g-3">
                                             <!-- social icon -->
                                             @if (!empty($card->phone_number))
-                                                <div class="col">
-                                                    <div class="social_item">
-                                                        <a class="social-contact phone_number"
-                                                            href="tel:{{ $card->phone_number }}">
-                                                            <i class="fa fa-phone"></i>
-                                                        </a>
-                                                    </div>
+                                            <div class="col">
+                                                <div class="social_item">
+                                                    <a class="social-contact phone_number"
+                                                        href="tel:{{ $card->phone_number }}">
+                                                        <i class="fa fa-phone"></i>
+                                                    </a>
                                                 </div>
-                                                <div class="col">
-                                                    <div class="social_item">
-                                                        <a href="sms://{{ $card->phone_number }}">
-                                                            <i class="fa fa-comment"></i>
-                                                        </a>
-                                                    </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="social_item">
+                                                    <a href="sms://{{ $card->phone_number }}">
+                                                        <i class="fa fa-comment"></i>
+                                                    </a>
                                                 </div>
+                                            </div>
                                             @endif
                                             @if (!empty($card->email))
-                                                <!-- social icon -->
-                                                <div class="col">
-                                                    <div class="social_item">
-                                                        <a class="social-contact user_email"
-                                                            href="mailto:{{ $card->email }}">
-                                                            <i class="fa fa-envelope"></i>
-                                                        </a>
-                                                    </div>
+                                            <!-- social icon -->
+                                            <div class="col">
+                                                <div class="social_item">
+                                                    <a class="social-contact user_email"
+                                                        href="mailto:{{ $card->email }}">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </a>
                                                 </div>
+                                            </div>
                                             @endif
                                             <!-- Qr code icon -->
                                             <div class="col">
                                                 <div class="social_item qrcode_icon">
-                                                    <a href="javascript:void(0)" target="_blank"
-                                                        data-bs-toggle="modal" data-bs-target="#qrcodeModal">
+                                                    <a href="javascript:void(0)" target="_blank" data-bs-toggle="modal"
+                                                        data-bs-target="#qrcodeModal">
                                                         <img src="{{ asset('assets/images/icon/qr-code.svg') }}"
                                                             alt="qr-code">
                                                     </a>
@@ -313,21 +337,21 @@
                                             </div>
 
                                             @if (!empty($card->website))
-                                                <div class="col">
-                                                    <div class="social_item">
-                                                        <a class="social-contact website" href="{{ $card->website }}"
-                                                            target="_blank">
-                                                            <i class="fa fa-globe"></i>
-                                                        </a>
-                                                    </div>
+                                            <div class="col">
+                                                <div class="social_item">
+                                                    <a class="social-contact website" href="{{ $card->website }}"
+                                                        target="_blank">
+                                                        <i class="fa fa-globe"></i>
+                                                    </a>
                                                 </div>
+                                            </div>
                                             @endif
                                             <!-- social icon -->
 
                                             <!-- social icon -->
                                             @if (!empty($card->contacts))
-                                                @foreach ($card->contacts as $contact)
-                                                    {{--
+                                            @foreach ($card->contacts as $contact)
+                                            {{--
                                             <div class="col">
                                                 <div class="social_item">
                                                     <a href="{{ $card->contacts }}" target="_blank">
@@ -336,37 +360,37 @@
                                                 </div>
                                             </div> --}}
 
-                                                    @if ($contact->label == 'facebook')
-                                                        <!-- social icon -->
-                                                        <div class="col">
-                                                            <div class="social_item">
-                                                                <a class="social-contact facebook"
-                                                                    href="https://www.facebook.com/{{ $contact->content }}"
-                                                                    target="_blank">
-                                                                    <i class="fab fa-facebook"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    @elseif ($contact->label == 'instagram')
-                                                        <div class="col">
-                                                            <div class="social_item">
-                                                                <a class="social-contact instagram"
-                                                                    href="https://www.instagram.com/{{ $contact->content }}"
-                                                                    target="_blank">
-                                                                    <i class="fab fa-instagram"></i>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    @endif
-                                                @endforeach
-                                                <div class="col">
-                                                    <div class="social_item">
-                                                        <a href="javascript:void(0)" class="social-contact share"
-                                                            data-bs-toggle="modal" data-bs-target="#SocialModal">
-                                                            <i class="fas fa-share-nodes"></i>
-                                                        </a>
-                                                    </div>
+                                            @if ($contact->label == 'facebook')
+                                            <!-- social icon -->
+                                            <div class="col">
+                                                <div class="social_item">
+                                                    <a class="social-contact facebook"
+                                                        href="https://www.facebook.com/{{ $contact->content }}"
+                                                        target="_blank">
+                                                        <i class="fab fa-facebook"></i>
+                                                    </a>
                                                 </div>
+                                            </div>
+                                            @elseif ($contact->label == 'instagram')
+                                            <div class="col">
+                                                <div class="social_item">
+                                                    <a class="social-contact instagram"
+                                                        href="https://www.instagram.com/{{ $contact->content }}"
+                                                        target="_blank">
+                                                        <i class="fab fa-instagram"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            @endif
+                                            @endforeach
+                                            <div class="col">
+                                                <div class="social_item">
+                                                    <a href="javascript:void(0)" class="social-contact share"
+                                                        data-bs-toggle="modal" data-bs-target="#SocialModal">
+                                                        <i class="fas fa-share-nodes"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
                                             @endif
                                         </div>
                                     </div>
@@ -378,8 +402,7 @@
                                         <div class="input-group">
                                             <input type="text" name="email" id="email" class="form-control"
                                                 placeholder="Enter your emaill..." required="">
-                                            <button type="submit"
-                                                class="input-group-text btn btn-primary subscribe-btn"
+                                            <button type="submit" class="input-group-text btn btn-primary subscribe-btn"
                                                 style="background-color: {{ $theme_color }}">Subscribe</button>
                                         </div>
                                     </form>
@@ -404,28 +427,32 @@
                                         <div class="mb-3 form-input">
                                             <label for="adsname" class="form-label">Biz Ads Name <span
                                                     class="text-danger">*</span></label></label>
-                                            <input type="text" placeholder="ads name" name="adsname"
-                                                id="adsname"
+                                            <input type="text" placeholder="ads name" name="adsname" id="adsname"
                                                 class="form-control @error('adsname') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" value="{{ $card->adsname }}"
-                                                required>
+                                                tabindex="{{ $tabindex++ }}" value="{{ $card->adsname }}" required>
                                             @if ($errors->has('adsname'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('adsname') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('adsname') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="textfield">
                                             <label for="color" class="form-label">Biz Ad Color</label>
-                                            <input type="color" placeholder="card color" name="theme_color"
-                                                id="theme_color"
-                                                class="form-control @error('theme_color') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" value="{{ $card->theme_color }}"
-                                                required>
+                                            <div class="input-group custome_color">
+                                                <label for="theme_color" class="input-group-text">
+                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
+                                                        alt="color picker">
+                                                    <input type="color" placeholder="card color" name="theme_color"
+                                                        id="theme_color"
+                                                        class="form-control @error('theme_color') is-invalid @enderror"
+                                                        tabindex="{{ $tabindex++ }}" value="{{ $card->theme_color }}"
+                                                        required>
+                                                </label>
+                                                <input type="text" id="theme_clr_code" class="form-control"
+                                                    value="{{ $card->theme_color }}">
+                                            </div>
                                             @if ($errors->has('color'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('color') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('color') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -433,14 +460,25 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="header_backgroung" class="form-label">Header background color</label>
-                                            <input type="color" placeholder="card color" name="header_backgroung"
-                                                id="header_backgroung" value="{{ $card->header_backgroung }}"
-                                                class="form-control @error('header_backgroung') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" required>
+                                            <label for="header_backgroung" class="form-label">Header background
+                                                color</label>
+                                            <div class="input-group custome_color">
+                                                <label for="header_backgroung" class="input-group-text">
+                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
+                                                        alt="color picker">
+                                                    <input type="color" placeholder="card color"
+                                                        name="header_backgroung" id="header_backgroung"
+                                                        value="{{ $card->header_backgroung }}"
+                                                        class="form-control @error('header_backgroung') is-invalid @enderror"
+                                                        tabindex="{{ $tabindex++ }}" required>
+                                                </label>
+                                                <input type="text" id="theme_back_code" class="form-control"
+                                                    value="{{ $card->header_backgroung }}">
+                                            </div>
+
                                             @if ($errors->has('header_backgroung'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('header_backgroung') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('header_backgroung')
+                                                }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -450,10 +488,10 @@
                                                     class="text-danger">*</span></label></label>
                                             <select id="selectField1" name="headline" class="form-control"
                                                 tabindex="{{ $tabindex++ }}" required>
-                                                <option value="text"
-                                                    @if (!empty($card->title)) selected @endif>Heading</option>
-                                                <option value="logo"
-                                                    @if (!empty($card->logo)) selected @endif>Logo</option>
+                                                <option value="text" @if (!empty($card->title)) selected @endif>Heading
+                                                </option>
+                                                <option value="logo" @if (!empty($card->logo)) selected @endif>Logo
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
@@ -464,44 +502,50 @@
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="header_text_color" class="form-label">Headline Color</label>
-                                            <input type="color" placeholder="card color" name="header_text_color"
-                                                id="header_text_color" value="{{ $card->header_text_color }}"
-                                                class="form-control @error('header_text_color') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" required>
+
+                                            <div class="input-group custome_color">
+                                                <label for="header_backgroung" class="input-group-text">
+                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
+                                                        alt="color picker">
+                                                    <input type="color" placeholder="card color"
+                                                        name="header_text_color" id="header_text_color"
+                                                        value="{{ $card->header_text_color }}"
+                                                        class="form-control @error('header_text_color') is-invalid @enderror"
+                                                        tabindex="{{ $tabindex++ }}" required>
+                                                </label>
+                                                <input type="text" id="header_clr_code" class="form-control"
+                                                    value="{{ $card->header_text_color }}">
+                                            </div>
+
                                             @if ($errors->has('header_text_color'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('header_text_color') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('header_text_color')
+                                                }}</span>
                                             @endif
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="mb-3 form-input" >
+                                        <div class="mb-3 form-input">
                                             <label for="text" class="form-label">Heading</label>
-                                            <input type="text" placeholder="ads heading" name="text"
-                                                id="text" data-preview="preview_name" data-concat="preview_name"
+                                            <input type="text" placeholder="ads heading" name="text" id="text"
+                                                data-preview="preview_name" data-concat="preview_name"
                                                 class="form-control cin preview_name  @error('text') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}" value="{{ $card->title }}">
                                             @if ($errors->has('text'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('text') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('text') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="row @if (!empty($card->log)) d-block @else d-none @endif"  id="logofield">
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="logo" class="form-label">Logo</label>
-                                            <input type="file" name="logo" id="logo"
-                                                onchange="readURL(this);"
-                                                class="form-control @error('logo') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}">
-                                            @if ($errors->has('logo'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('logo') }}</span>
-                                            @endif
-                                        </div>
+                                <div class="row">
+                                    <div class="mb-3 d-none form-input" id="logofield">
+                                        <label for="logo" class="form-label">Logo</label>
+                                        <input type="file" name="logo" id="logo" onchange="readURL(this);"
+                                            class="form-control @error('logo') is-invalid @enderror"
+                                            tabindex="{{ $tabindex++ }}">
+                                        @if ($errors->has('logo'))
+                                        <span class="help-block text-danger">{{ $errors->first('logo') }}</span>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -515,13 +559,13 @@
                                                     class="text-danger">*</span></label></label>
                                             <select id="selectField2" name="gallery_type" class="form-control"
                                                 tabindex="{{ $tabindex++ }}" required>
-                                                <option value="banner"
-                                                    @if ($banner_type == 'banner') selected @endif>Banner</option>
-                                                <option value="videourl"
-                                                    @if ($banner_type == 'videourl') selected @endif>Video Url
+                                                <option value="banner" @if ($banner_type=='banner' ) selected @endif>
+                                                    Banner</option>
+                                                <option value="videourl" @if ($banner_type=='videourl' ) selected
+                                                    @endif>Video Url
                                                 </option>
-                                                <option value="videosource"
-                                                    @if ($banner_type == 'videosource') selected @endif>Uplaod Video
+                                                <option value="videosource" @if ($banner_type=='videosource' ) selected
+                                                    @endif>Uplaod Video
                                                 </option>
                                             </select>
                                         </div>
@@ -534,20 +578,17 @@
                                                 class="form-control @error('banner') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('gallery'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('gallery') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('gallery') }}</span>
                                             @endif
                                         </div>
                                         <div class="mb-3 form-input {{ $banner_type == 'videourl' ? 'd-block' : 'd-none' }}"
                                             id="videourl">
                                             <label for="video" class="form-label">Video Url</label>
-                                            <input type="url" name="video" placeholder="your video url"
-                                                id="video_url"
+                                            <input type="url" name="video" placeholder="your video url" id="video_url"
                                                 class="form-control @error('video') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}" value="">
                                             @if ($errors->has('video'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('video') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('video') }}</span>
                                             @endif
                                         </div>
                                         <div class="mb-3 form-input {{ $banner_type == 'videosource' ? 'd-block' : 'd-none' }}"
@@ -558,130 +599,138 @@
                                                 class="form-control @error('video') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('video'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('video') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('video') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row mb-3">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <div class="input-field">
+                                            <div class="input-field gallery_image">
                                                 <label class="active">Gallery<span class="img-note d-inline-block">
-                                                    {{-- <i class="la la-bell" aria-hidden="true"></i>{{trans('form.image_size')}}  800 x 800 pixels</span> --}}
+                                                        {{-- <i class="la la-bell"
+                                                            aria-hidden="true"></i>{{trans('form.image_size')}} 800 x
+                                                        800 pixels</span> --}}
                                                 </label>
-                                                <div class="row">
+                                                <div
+                                                    class="row row-cols-3 row-cols-sm-3 row-cols-md-4 row-cols-xl-5 mt-2">
+
                                                     @if($card->gallery && $card->gallery->count() > 0)
                                                     @foreach($card->gallery as $photo)
-                                                    <div class="col-2 position-relative" id="photo_div_{{$photo->id}}">
-                                                        <img src="{{asset($photo->content)}}" class="img-fluid" width="150px">
-                                                        <button type="button" class="delete-image btn btn-sm btn-danger photo-delete" data-id="{{$photo->id}}">
-                                                            <i class="iui-close"></i>
-                                                        </button>
+                                                    <div class="col">
+                                                        <div class="position-relative" id="photo_div_{{$photo->id}}">
+                                                            <img src="{{asset($photo->content)}}" class="img-fluid"
+                                                                width="150px">
+                                                            <button type="button"
+                                                                class="delete-image btn btn-sm btn-danger photo-delete"
+                                                                data-id="{{$photo->id}}">
+                                                                <i class="iui-close"></i>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                     @endforeach
                                                 </div>
-                                                <div class="prod_def_photo_upload" style="padding-top: .5rem;" title="Click for photo upload">
-                                                   @endif
+                                                <div class="prod_def_photo_upload" style="padding-top: .5rem;"
+                                                    title="Click for photo upload">
+                                                    @endif
                                                 </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3 form-input">
+                                                <label for="phone_number" class="form-label">Phone <span
+                                                        class="text-danger">*</span></label></label>
+                                                <input type="number" name="phone_number" data-type="phone_number"
+                                                    data-preview="preview_phone_number" id="phone"
+                                                    placeholder="your phone"
+                                                    class="social_item_in form-control cin @error('phone') is-invalid @enderror"
+                                                    tabindex="{{ $tabindex++ }}" value="{{ $card->phone_number }}"
+                                                    required>
+                                                @if ($errors->has('phone_number'))
+                                                <span class="help-block text-danger">{{ $errors->first('phone_number')
+                                                    }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3 form-input">
+                                                <label for="email" class="form-label">Email <span
+                                                        class="text-danger">*</span></label></label>
+                                                <input type="email" name="email" data-type="user_email"
+                                                    data-type="email" placeholder="your email" id="email"
+                                                    class="social_item_in form-control cin @error('email') is-invalid @enderror"
+                                                    data-preview="preview_email" tabindex="{{ $tabindex++ }}"
+                                                    value="{{ $card->email }}" required>
+                                                @if ($errors->has('email'))
+                                                <span class="help-block text-danger">{{ $errors->first('email')
+                                                    }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3 form-input">
+                                                <label for="website" class="form-label">Website</label>
+                                                <input type="url" name="website" data-type="website"
+                                                    placeholder="your website" id="website"
+                                                    class="social_item_in form-control cin @error('website') is-invalid @enderror cin"
+                                                    tabindex="{{ $tabindex++ }}" value="{{ $card->website }}">
+                                                @if ($errors->has('website'))
+                                                <span class="help-block text-danger">{{ $errors->first('website')
+                                                    }}</span>
+                                                @endif
                                             </div>
                                         </div>
 
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="phone_number" class="form-label">Phone <span
-                                                    class="text-danger">*</span></label></label>
-                                            <input type="number" name="phone_number" data-type="phone_number"
-                                                data-preview="preview_phone_number" id="phone"
-                                                placeholder="your phone"
-                                                class="social_item_in form-control cin @error('phone') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" value="{{ $card->phone_number }}"
-                                                required>
-                                            @if ($errors->has('phone_number'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('phone_number') }}</span>
-                                            @endif
+                                        <div class="col-md-6">
+                                            <div class="mb-3 form-input">
+                                                <label for="facebook" class="form-label">Facebook</label>
+                                                <input type="text" name="facebook" data-type="facebook"
+                                                    placeholder="facebook username" id="facebook"
+                                                    class="social_item_in form-control @error('facebook') is-invalid @enderror"
+                                                    tabindex="{{ $tabindex++ }}"
+                                                    value="{{ getInputValue($card->id, 'facebook') }}">
+                                                @if ($errors->has('facebook'))
+                                                <span class="help-block text-danger">{{ $errors->first('facebook')
+                                                    }}</span>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="email" class="form-label">Email <span
-                                                    class="text-danger">*</span></label></label>
-                                            <input type="email" name="email" data-type="user_email"
-                                                data-type="email" placeholder="your email" id="email"
-                                                class="social_item_in form-control cin @error('email') is-invalid @enderror"
-                                                data-preview="preview_email" tabindex="{{ $tabindex++ }}"
-                                                value="{{ $card->email }}" required>
-                                            @if ($errors->has('email'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('email') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="website" class="form-label">Website</label>
-                                            <input type="url" name="website" data-type="website"
-                                                placeholder="your website" id="website"
-                                                class="social_item_in form-control cin @error('website') is-invalid @enderror cin"
-                                                tabindex="{{ $tabindex++ }}" value="{{ $card->website }}">
-                                            @if ($errors->has('website'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('website') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
 
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="facebook" class="form-label">Facebook</label>
-                                            <input type="text" name="facebook" data-type="facebook"
-                                                placeholder="facebook username" id="facebook"
-                                                class="social_item_in form-control @error('facebook') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}"
-                                                value="{{ getInputValue($card->id, 'facebook') }}">
-                                            @if ($errors->has('facebook'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('facebook') }}</span>
-                                            @endif
+                                        <div class="col-md-6">
+                                            <div class="mb-3 form-input">
+                                                <label for="instagram" class="form-label">Instagram</label>
+                                                <input type="text" name="instagram" id="instagram" data-type="instagram"
+                                                    placeholder="instagram username"
+                                                    class="social_item_in form-control @error('instagram') is-invalid @enderror"
+                                                    tabindex="{{ $tabindex++ }}"
+                                                    value="{{ getInputValue($card->id, 'instagram') }}">
+                                                @if ($errors->has('instagram'))
+                                                <span class="help-block text-danger">{{ $errors->first('instagram')
+                                                    }}</span>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="instagram" class="form-label">Instagram</label>
-                                            <input type="text" name="instagram" id="instagram"
-                                                data-type="instagram" placeholder="instagram username"
-                                                class="social_item_in form-control @error('instagram') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}"
-                                                value="{{ getInputValue($card->id, 'instagram') }}">
-                                            @if ($errors->has('instagram'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('instagram') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
 
 
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="cashapp" class="form-label">CashApp</label>
-                                            <input type="text" name="cashapp" data-preview="preview_cashapp"
-                                                id="cashapp" placeholder="cashapp username"
-                                                value="{{ $card->cashapp }}"
-                                                class="form-control cin  @error('cashapp') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}">
-                                            @if ($errors->has('cashapp'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('cashapp') }}</span>
-                                            @endif
+                                        <div class="col-md-6">
+                                            <div class="mb-3 form-input">
+                                                <label for="cashapp" class="form-label">CashApp</label>
+                                                <input type="text" name="cashapp" data-preview="preview_cashapp"
+                                                    id="cashapp" placeholder="cashapp username"
+                                                    value="{{ $card->cashapp }}"
+                                                    class="form-control cin  @error('cashapp') is-invalid @enderror"
+                                                    tabindex="{{ $tabindex++ }}">
+                                                @if ($errors->has('cashapp'))
+                                                <span class="help-block text-danger">{{ $errors->first('cashapp')
+                                                    }}</span>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
-                                    @if ($plan_details->personalized_link == '1')
+                                        @if ($plan_details->personalized_link == '1')
                                         <div class="col-6">
                                             <div class="mb-3 form-input">
                                                 <label for="personalized_link" class="form-label">Personalized
@@ -691,29 +740,30 @@
                                                     class="form-control @error('personalized_link') is-invalid @enderror"
                                                     value="{{ $card->card_url }}" tabindex="{{ $tabindex++ }}">
                                                 @if ($errors->has('personalized_link'))
-                                                    <span
-                                                        class="help-block text-danger">{{ $errors->first('personalized_link') }}</span>
+                                                <span class="help-block text-danger">{{
+                                                    $errors->first('personalized_link')
+                                                    }}</span>
                                                 @endif
                                             </div>
                                         </div>
-                                    @endif
-                                    <div class="col-12">
-                                        <div class="mb-3 form-input">
-                                            <label for="footer_text" class="form-label">Copyright</label>
-                                            <input type="text" name="footer_text" placeholder="copyright"
-                                                id="footer_text"
-                                                class="form-control @error('footer_text') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" value="{{ $card->footer_text }}">
-                                            @if ($errors->has('footer_text'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('footer_text') }}</span>
-                                            @endif
+                                        @endif
+                                        <div class="col-12">
+                                            <div class="mb-3 form-input">
+                                                <label for="footer_text" class="form-label">Copyright</label>
+                                                <input type="text" name="footer_text" placeholder="copyright"
+                                                    id="footer_text"
+                                                    class="form-control @error('footer_text') is-invalid @enderror"
+                                                    tabindex="{{ $tabindex++ }}" value="{{ $card->footer_text }}">
+                                                @if ($errors->has('footer_text'))
+                                                <span class="help-block text-danger">{{ $errors->first('footer_text')
+                                                    }}</span>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary submitBtn">Update Biz Ad</button>
-                                </div>
+                                    <div class="mb-3">
+                                        <button type="submit" class="btn btn-primary submitBtn">Update Biz Ad</button>
+                                    </div>
                             </form>
                         </div>
                     </div>
@@ -744,51 +794,45 @@
                                             target="_blank" class="social_share"
                                             data-url="https://www.facebook.com/sharer/sharer.php?u={{ auth()->user()->user_id }}"
                                             title="{{ __('Share on Facebook') }}">
-                                            <img class="img-fluid"
-                                                src="{{ asset('images/icons/social/facebook.svg') }}"
+                                            <img class="img-fluid" src="{{ asset('images/icons/social/facebook.svg') }}"
                                                 alt="{{ __('Share on facebook') }}">
                                         </a>
                                     </li>
                                     <li class="list-inline-item">
                                         <a href="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ auth()->user()->user_id }}"
-                                            target="blank" class="social_share"
-                                            data-url="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ auth()->user()->user_id }}
-                                        "
-                                            title="{{ __('Share on Twitter') }}">
-                                            <img class="img-fluid"
-                                                src="{{ asset('images/icons/social/twitter.svg') }}" alt="">
+                                            target="blank" class="social_share" data-url="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ auth()->user()->user_id }}
+                                        " title="{{ __('Share on Twitter') }}">
+                                            <img class="img-fluid" src="{{ asset('images/icons/social/twitter.svg') }}"
+                                                alt="">
                                         </a>
                                     </li>
                                     <li class="list-inline-item">
                                         <a href="javascript:void(0)" class="social_share"
                                             data-url="https://telegram.me/share/url?url={{ auth()->user()->user_id }}&text="
                                             title="{{ __('Share on Telegram') }}">
-                                            <img class="img-fluid"
-                                                src="{{ asset('images/icons/social/telegram.svg') }}" alt="">
+                                            <img class="img-fluid" src="{{ asset('images/icons/social/telegram.svg') }}"
+                                                alt="">
                                         </a>
                                     </li>
 
                                     @if ($android !== false || $ipad !== false || $iphone !== false || true)
-                                        <li class="list-inline-item">
-                                            <a href="whatsapp://send?text={{ auth()->user()->user_id }}"
-                                                class="social_share whatsapp" title="{{ __('Share on Whatsapp') }}"
-                                                data-action="share/whatsapp/share">
-                                                <img class="img-fluid"
-                                                    src="{{ asset('images/icons/social/whatsapp.svg') }}"
-                                                    alt="">
-                                            </a>
-                                        </li>
+                                    <li class="list-inline-item">
+                                        <a href="whatsapp://send?text={{ auth()->user()->user_id }}"
+                                            class="social_share whatsapp" title="{{ __('Share on Whatsapp') }}"
+                                            data-action="share/whatsapp/share">
+                                            <img class="img-fluid" src="{{ asset('images/icons/social/whatsapp.svg') }}"
+                                                alt="">
+                                        </a>
+                                    </li>
                                     @else
-                                        <li class="list-inline-item">
-                                            <a href="https://web.whatsapp.com/send?text={{ auth()->user()->user_id }}"
-                                                target="__blank" class="whatsapp"
-                                                title="{{ __('Share on Whatsapp') }}"
-                                                data-action="share/whatsapp/share">
-                                                <img class="img-fluid"
-                                                    src="{{ asset('assets/img/icons/whatsapp.svg') }}"
-                                                    alt="">
-                                            </a>
-                                        </li>
+                                    <li class="list-inline-item">
+                                        <a href="https://web.whatsapp.com/send?text={{ auth()->user()->user_id }}"
+                                            target="__blank" class="whatsapp" title="{{ __('Share on Whatsapp') }}"
+                                            data-action="share/whatsapp/share">
+                                            <img class="img-fluid" src="{{ asset('assets/img/icons/whatsapp.svg') }}"
+                                                alt="">
+                                        </a>
+                                    </li>
                                     @endif
                                 </ul>
                             </div>
@@ -802,11 +846,30 @@
 
 
 @push('custom-js')
-    <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('assets/js/card.js') }}"></script>
-    <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
-    <script>
-        $(function () {
+<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('assets/js/card.js') }}"></script>
+<script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
+<script>
+    $(function () {
+
+        // show color code
+        $('#theme_color').on('input', function() {
+            $('#theme_clr_code').val(this.value);
+        });
+        $('#header_backgroung').on('input', function() {
+            $('#theme_back_code').val(this.value);
+        });
+        $('#header_text_color').on('input', function() {
+            $('#header_clr_code').val(this.value);
+        });
+
+
+
+
+
+
+
+
             $('.prod_def_photo_upload').imageUploader();
         });
         function hexToRgb(hex) {
@@ -1170,6 +1233,6 @@
                 }
             });
         });
-    </script>
+</script>
 @endpush
 @endsection

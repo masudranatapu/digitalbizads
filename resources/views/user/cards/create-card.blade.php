@@ -1,50 +1,52 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
 @section('card-create', 'active')
 @section('title')
-    Create New DigitalBizAds Card
+Create New DigitalBizAds Card
 @endsection
 @section('content')
 @section('css')
 <link href="{{ asset('assets/css/image-uploader.min.css')}}" rel="stylesheet">
-    <style>
-        span.error {
-            color: #E53935;
-            padding: 2px 0px;
-        }
-        a.social-contact.disabled {
-            opacity: .3;
-        }
-        .purchase_btn a {
-            padding: 10px 27px;
-            font-size: 20px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 500;
-            color: #ffffff;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            display: block;
-            background: #ffc107;
-            transition: all 0.3s ease-in-out;
-            -webkit-transition: all 0.3s ease-in-out;
-            -moz-transition: all 0.3s ease-in-out;
-            -ms-transition: all 0.3s ease-in-out;
-            -o-transition: all 0.3s ease-in-out;
-        }
+<style>
+    span.error {
+        color: #E53935;
+        padding: 2px 0px;
+    }
 
-        .social_share {
-            margin-bottom: 20px;
-        }
+    a.social-contact.disabled {
+        opacity: .3;
+    }
 
-        .social_share img {
-            width: 75%;
-            height: 75%;
-        }
+    .purchase_btn a {
+        padding: 10px 27px;
+        font-size: 20px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        color: #ffffff;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        display: block;
+        background: #ffc107;
+        transition: all 0.3s ease-in-out;
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        -ms-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+    }
 
-        .modal-header .btn-close {
-            width: 25px;
-            height: 25px;
-        }
-    </style>
+    .social_share {
+        margin-bottom: 20px;
+    }
+
+    .social_share img {
+        width: 75%;
+        height: 75%;
+    }
+
+    .modal-header .btn-close {
+        width: 25px;
+        height: 25px;
+    }
+</style>
 @endsection
 <?php
 $tabindex = 1;
@@ -122,8 +124,8 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                 <!-- Video -->
                                 <div class="video_wrapper d-none" id="digitaBizSourc">
                                     <div class="ratio ratio-1x1">
-                                        <video autoplay="" loop="" muted="" id="video_preview"
-                                            playsinline="" data-wf-ignore="true" data-object-fit="cover" controls>
+                                        <video autoplay="" loop="" muted="" id="video_preview" playsinline=""
+                                            data-wf-ignore="true" data-object-fit="cover" controls>
                                             <source src="{{ asset('assets/video.mp4') }}" type="video/mp4">
                                             <source src="{{ asset('assets/video.mp4') }}" type="video/ogg">
                                         </video>
@@ -133,8 +135,8 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                 <div class="video_wrapper d-none" id="digitalBizEmbad">
                                     <div class="ratio ratio-1x1">
                                         <iframe width="100%" height="315" id="youtube_video_preview"
-                                            src="https://www.youtube.com/embed/Fhskvloj1gE"
-                                            title="YouTube video player" frameborder="0"
+                                            src="https://www.youtube.com/embed/Fhskvloj1gE" title="YouTube video player"
+                                            frameborder="0"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                             allowfullscreen></iframe>
                                     </div>
@@ -156,8 +158,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                             <!-- social icon -->
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="" class="social-contact phone_number"
-                                                        target="_blank">
+                                                    <a href="" class="social-contact phone_number" target="_blank">
                                                         <i class="fa fa-phone"></i>
                                                     </a>
                                                 </div>
@@ -165,8 +166,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                             <!-- social icon -->
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="" class="social-contact user_email"
-                                                        target="_blank">
+                                                    <a href="" class="social-contact user_email" target="_blank">
                                                         <i class="fa fa-envelope"></i>
                                                     </a>
                                                 </div>
@@ -191,8 +191,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                             <!-- social icon -->
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="" class="social-contact facebook"
-                                                        target="_blank">
+                                                    <a href="" class="social-contact facebook" target="_blank">
                                                         <i class="fab fa-facebook"></i>
                                                     </a>
                                                 </div>
@@ -200,8 +199,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                             <!-- social icon -->
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="" class="social-contact instagram"
-                                                        target="_blank">
+                                                    <a href="" class="social-contact instagram" target="_blank">
                                                         <i class="fab fa-instagram"></i>
                                                     </a>
                                                 </div>
@@ -249,27 +247,33 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                         <div class="mb-3 form-input">
                                             <label for="adsname" class="form-label">Biz Ad Name <span
                                                     class="text-danger">*</span></label>
-                                            <input type="text" placeholder="ads name" name="adsname"
-                                                id="adsname"
+                                            <input type="text" placeholder="ads name" name="adsname" id="adsname"
                                                 class="form-control @error('adsname') is-invalid @enderror"
                                                 value="{{ old('adsname') }}" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('adsname'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('adsname') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('adsname') }}</span>
                                             @endif
                                         </div>
                                     </div>
 
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="textfield">
-                                            <label for="theme_color" class="form-label">Biz Ad Color</label>
-                                            <input type="color" placeholder="card color" name="theme_color"
-                                                id="theme_color" value="{{ old('theme_color') }}"
-                                                class="form-control @error('theme_color') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" required>
+                                            <label class="form-label">Biz Ad Color</label>
+                                            <div class="input-group custome_color">
+                                                <label for="theme_color" class="input-group-text">
+                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
+                                                        alt="color picker">
+                                                    <input type="color" placeholder="card color" name="theme_color"
+                                                        id="theme_color" value="{{ old('theme_color') }}"
+                                                        class="form-control @error('theme_color') is-invalid @enderror"
+                                                        tabindex="{{ $tabindex++ }}" required>
+                                                </label>
+                                                <input type="text" id="theme_clr_code" class="form-control"
+                                                    value="#ffc107">
+                                            </div>
                                             @if ($errors->has('theme_color'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('theme_color') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('theme_color')
+                                                }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -277,14 +281,25 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="header_backgroung" class="form-label">Header background color</label>
-                                            <input type="color" placeholder="card color" name="header_backgroung"
-                                                id="header_backgroung" value="{{ old('header_backgroung') }}"
-                                                class="form-control @error('header_backgroung') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" required>
+                                            <label for="header_backgroung" class="form-label">Header background
+                                                color</label>
+                                            <div class="input-group custome_color">
+                                                <label for="header_backgroung" class="input-group-text">
+                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
+                                                        alt="color picker">
+                                                    <input type="color" placeholder="card color"
+                                                        name="header_backgroung" id="header_backgroung"
+                                                        value="{{ old('header_backgroung') }}"
+                                                        class="form-control @error('header_backgroung') is-invalid @enderror"
+                                                        tabindex="{{ $tabindex++ }}" required>
+                                                </label>
+                                                <input type="text" id="theme_back_code" class="form-control"
+                                                    value="#ffc107">
+                                            </div>
                                             @if ($errors->has('header_backgroung'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('header_backgroung') }}</span>
+                                            <span class="help-block text-danger">{{
+                                                $errors->first('header_backgroung')
+                                                }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -310,20 +325,29 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                 class="form-control cin preview_name @error('text') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('text'))
-                                                <span class="help-block text-danger">{{ $errors->first('text') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('text') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="textfield">
                                             <label for="header_text_color" class="form-label">Headline Color</label>
-                                            <input type="color" placeholder="card color" name="header_text_color"
-                                                id="header_text_color" value="{{ old('header_text_color') }}"
-                                                class="form-control @error('header_text_color') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" required>
+                                            <div class="input-group custome_color">
+                                                <label for="header_backgroung" class="input-group-text">
+                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
+                                                        alt="color picker">
+                                                    <input type="color" placeholder="card color"
+                                                        name="header_text_color" id="header_text_color"
+                                                        value="{{ old('header_text_color') }}"
+                                                        class="form-control @error('header_text_color') is-invalid @enderror"
+                                                        tabindex="{{ $tabindex++ }}" required>
+                                                </label>
+                                                <input type="text" id="header_clr_code" class="form-control"
+                                                    value="#ffffff">
+                                            </div>
                                             @if ($errors->has('header_text_color'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('header_text_color') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('header_text_color')
+                                                }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -332,13 +356,11 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                     <div class="col-6">
                                         <div class="mb-3 d-none form-input" id="logofield">
                                             <label for="logo" class="form-label">Logo</label>
-                                            <input type="file" name="logo" id="logo"
-                                                onchange="readURL(this);"
+                                            <input type="file" name="logo" id="logo" onchange="readURL(this);"
                                                 class="form-control @error('logo') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('logo'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('logo') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('logo') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -368,8 +390,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                 class="form-control @error('gallery') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}" multiple> --}}
                                             @if ($errors->has('banner'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('banner') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('banner') }}</span>
                                             @endif
                                         </div>
                                         <div class="mb-3 d-none form-input" id="videourl">
@@ -379,8 +400,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                 class="form-control @error('video') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('video'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('video') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('video') }}</span>
                                             @endif
                                         </div>
                                         <div class="mb-3 form-input d-none" id="videosource">
@@ -390,20 +410,22 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                 class="form-control @error('video') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('video'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('video') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('video') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row mb-3">
                                     <div class="col-12">
                                         <div class="form-group">
                                             <div class="input-field">
                                                 <label class="active">Gallery<span class="img-note d-inline-block">
-                                                    {{-- <i class="la la-bell" aria-hidden="true"></i>{{trans('form.image_size')}}  800 x 800 pixels</span> --}}
+                                                        {{-- <i class="la la-bell"
+                                                            aria-hidden="true"></i>{{trans('form.image_size')}} 800 x
+                                                        800 pixels</span> --}}
                                                 </label>
-                                                <div class="prod_def_photo_upload" style="padding-top: .5rem;" title="Click for photo upload"></div>
+                                                <div class="prod_def_photo_upload" style="padding-top: .5rem;"
+                                                    title="Click for photo upload"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -414,14 +436,14 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                         <div class="mb-3 form-input">
                                             <label for="phone_number" class="form-label">Phone <span
                                                     class="text-danger">*</span></label></label>
-                                            <input type="number" name="phone_number" id="phone"
-                                                data-attr="tel:" data-type="phone_number" placeholder="your phone"
+                                            <input type="number" name="phone_number" id="phone" data-attr="tel:"
+                                                data-type="phone_number" placeholder="your phone"
                                                 value="{{ old('phone_number') }}" data-preview="preview_phone_number"
                                                 class="social_item_in form-control cin @error('phone') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}" required>
                                             @if ($errors->has('phone_number'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('phone_number') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('phone_number')
+                                                }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -435,37 +457,33 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                 class="social_item_in form-control cin @error('email') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}" data-preview="preview_email" required>
                                             @if ($errors->has('email'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('email') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('email') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="website" class="form-label">Website</label>
-                                            <input type="url" name="website" data-attr=""
-                                                placeholder="your website" data-type="website"
-                                                value="{{ old('website') }}" id="website"
+                                            <input type="url" name="website" data-attr="" placeholder="your website"
+                                                data-type="website" value="{{ old('website') }}" id="website"
                                                 class="social_item_in form-control cin  @error('website') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}"
-                                                data-preview="preview_company_websitelink" id="company_websitelink">
+                                                tabindex="{{ $tabindex++ }}" data-preview="preview_company_websitelink"
+                                                id="company_websitelink">
                                             @if ($errors->has('website'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('website') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('website') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="facebook" class="form-label">Facebook</label>
-                                            <input type="text" name="facebook"
-                                                data-attr="https://www.facebook.com/" placeholder="facebook username"
-                                                data-type="facebook" value="{{ old('facebook') }}" id="facebook"
+                                            <input type="text" name="facebook" data-attr="https://www.facebook.com/"
+                                                placeholder="facebook username" data-type="facebook"
+                                                value="{{ old('facebook') }}" id="facebook"
                                                 class="social_item_in form-control @error('facebook') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('facebook'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('facebook') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('facebook') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -478,8 +496,8 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                 class="social_item_in form-control @error('instagram') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('instagram'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('instagram') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('instagram')
+                                                }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -492,28 +510,26 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                 class="form-control cin @error('cashapp') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('cashapp'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('cashapp') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('cashapp') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                     @if ($plan_details->personalized_link == '1')
-                                        <div class="col-6">
-                                            <div class="mb-3 form-input">
-                                                <label for="personalized_link" class="form-label">Personalized
-                                                    Link <span class="text-danger">*</span></label></label>
-                                                <input type="text" placeholder="Personalized Link"
-                                                    name="personalized_link" id="personalized_link"
-                                                    class="form-control @error('personalized_link') is-invalid @enderror"
-                                                    value="{{ old('personalized_link') }}"
-                                                    tabindex="{{ $tabindex++ }}">
-                                                @if ($errors->has('personalized_link'))
-                                                    <span
-                                                        class="help-block text-danger">{{ $errors->first('personalized_link') }}</span>
-                                                @endif
-                                                <span id="status"></span>
-                                            </div>
+                                    <div class="col-6">
+                                        <div class="mb-3 form-input">
+                                            <label for="personalized_link" class="form-label">Personalized
+                                                Link <span class="text-danger">*</span></label></label>
+                                            <input type="text" placeholder="Personalized Link" name="personalized_link"
+                                                id="personalized_link"
+                                                class="form-control @error('personalized_link') is-invalid @enderror"
+                                                value="{{ old('personalized_link') }}" tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('personalized_link'))
+                                            <span class="help-block text-danger">{{ $errors->first('personalized_link')
+                                                }}</span>
+                                            @endif
+                                            <span id="status"></span>
                                         </div>
+                                    </div>
                                     @endif
                                     <div class="col-12">
                                         <div class="mb-3 form-input">
@@ -523,8 +539,8 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                 class="form-control @error('footer_text') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('footer_text'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('footer_text') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('footer_text')
+                                                }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -562,51 +578,45 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                             target="_blank" class="social_share"
                                             data-url="https://www.facebook.com/sharer/sharer.php?u={{ auth()->user()->user_id }}"
                                             title="{{ __('Share on Facebook') }}">
-                                            <img class="img-fluid"
-                                                src="{{ asset('images/icons/social/facebook.svg') }}"
+                                            <img class="img-fluid" src="{{ asset('images/icons/social/facebook.svg') }}"
                                                 alt="{{ __('Share on facebook') }}">
                                         </a>
                                     </li>
                                     <li class="list-inline-item">
                                         <a href="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ auth()->user()->user_id }}"
-                                            target="blank" class="social_share"
-                                            data-url="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ auth()->user()->user_id }}
-                                        "
-                                            title="{{ __('Share on Twitter') }}">
-                                            <img class="img-fluid"
-                                                src="{{ asset('images/icons/social/twitter.svg') }}" alt="">
+                                            target="blank" class="social_share" data-url="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ auth()->user()->user_id }}
+                                        " title="{{ __('Share on Twitter') }}">
+                                            <img class="img-fluid" src="{{ asset('images/icons/social/twitter.svg') }}"
+                                                alt="">
                                         </a>
                                     </li>
                                     <li class="list-inline-item">
                                         <a href="javascript:void(0)" class="social_share"
                                             data-url="https://telegram.me/share/url?url={{ auth()->user()->user_id }}&text="
                                             title="{{ __('Share on Telegram') }}">
-                                            <img class="img-fluid"
-                                                src="{{ asset('images/icons/social/telegram.svg') }}" alt="">
+                                            <img class="img-fluid" src="{{ asset('images/icons/social/telegram.svg') }}"
+                                                alt="">
                                         </a>
                                     </li>
 
                                     @if ($android !== false || $ipad !== false || $iphone !== false)
-                                        <li class="list-inline-item">
-                                            <a href="whatsapp://send?text={{ auth()->user()->user_id }}"
-                                                class="social_share whatsapp" title="{{ __('Share on Whatsapp') }}"
-                                                data-action="share/whatsapp/share">
-                                                <img class="img-fluid"
-                                                    src="{{ asset('images/icons/social/whatsapp.svg') }}"
-                                                    alt="">
-                                            </a>
-                                        </li>
+                                    <li class="list-inline-item">
+                                        <a href="whatsapp://send?text={{ auth()->user()->user_id }}"
+                                            class="social_share whatsapp" title="{{ __('Share on Whatsapp') }}"
+                                            data-action="share/whatsapp/share">
+                                            <img class="img-fluid" src="{{ asset('images/icons/social/whatsapp.svg') }}"
+                                                alt="">
+                                        </a>
+                                    </li>
                                     @else
-                                        <li class="list-inline-item">
-                                            <a href="https://web.whatsapp.com/send?text={{ auth()->user()->user_id }}"
-                                                target="__blank" class="whatsapp"
-                                                title="{{ __('Share on Whatsapp') }}"
-                                                data-action="share/whatsapp/share">
-                                                <img class="img-fluid"
-                                                    src="{{ asset('assets/img/icons/whatsapp.svg') }}"
-                                                    alt="">
-                                            </a>
-                                        </li>
+                                    <li class="list-inline-item">
+                                        <a href="https://web.whatsapp.com/send?text={{ auth()->user()->user_id }}"
+                                            target="__blank" class="whatsapp" title="{{ __('Share on Whatsapp') }}"
+                                            data-action="share/whatsapp/share">
+                                            <img class="img-fluid" src="{{ asset('assets/img/icons/whatsapp.svg') }}"
+                                                alt="">
+                                        </a>
+                                    </li>
                                     @endif
                                 </ul>
                             </div>
@@ -620,11 +630,28 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
 
 
 @push('custom-js')
-    <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('assets/js/card.js') }}"></script>
-    <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
-    <script>
-        $(function () {
+<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('assets/js/card.js') }}"></script>
+<script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
+<script>
+    $(function () {
+
+        // show color code
+        $('#theme_color').on('input', function() {
+            $('#theme_clr_code').val(this.value);
+        });
+        $('#header_backgroung').on('input', function() {
+            $('#theme_back_code').val(this.value);
+        });
+        $('#header_text_color').on('input', function() {
+            $('#header_clr_code').val(this.value);
+        });
+
+
+
+
+
+
             $('.prod_def_photo_upload').imageUploader();
         });
         function hexToRgb(hex) {
@@ -945,6 +972,6 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                 }
             });
         });
-    </script>
+</script>
 @endpush
 @endsection

@@ -358,3 +358,21 @@ a {
         width: 65%;
     }
 }
+
+.custome_color #theme_color,
+.custome_color #header_backgroung,
+.custome_color #header_text_color {
+    position: absolute;
+    top: 6px;
+    left: 0px;
+    opacity: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 100px;
+}
+
+.form-control {
+    outline: none !important;
+    box-shadow: none !important;
+    height: 45px;
+}
