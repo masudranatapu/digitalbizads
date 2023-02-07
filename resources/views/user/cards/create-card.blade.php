@@ -11,11 +11,9 @@
             color: #E53935;
             padding: 2px 0px;
         }
-
         a.social-contact.disabled {
             opacity: .3;
         }
-
         .purchase_btn a {
             padding: 10px 27px;
             font-size: 20px;
@@ -117,43 +115,10 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                         </a>
                                     </h2>
                                 </div>
-
                                 <!-- slider -->
                                 <div class="carousel_slider" id="digitalbizSlider">
-                                    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                                        <div class="carousel-inner" id="gallery_preview">
-                                            <div class="carousel-item active">
-                                                <img src="{{ asset('backend/img') }}/1.jpg" class="d-block w-100"
-                                                    alt="image">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img src="{{ asset('backend/img') }}/2.jpg" class="d-block w-100"
-                                                    alt="image">
-                                            </div>
-                                            <div class="carousel-item">
-                                                <img src="{{ asset('backend/img') }}/3.jpg" class="d-block w-100"
-                                                    alt="image">
-                                            </div>
-                                        </div>
-                                        <button class="carousel-control-prev" type="button"
-                                            data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                                viewBox="0 0 24 24" fill="none" stroke="#212121" stroke-width="1"
-                                                stroke-linecap="butt" stroke-linejoin="bevel">
-                                                <path d="M19 12H6M12 5l-7 7 7 7"></path>
-                                            </svg>
-                                        </button>
-                                        <button class="carousel-control-next" type="button"
-                                            data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                                viewBox="0 0 24 24" fill="none" stroke="#212121" stroke-width="1"
-                                                stroke-linecap="butt" stroke-linejoin="bevel">
-                                                <path d="M5 12h13M12 5l7 7-7 7"></path>
-                                            </svg>
-                                        </button>
-                                    </div>
+                                    <img src="{{ asset('backend/img') }}/3.jpg" class="d-block w-100" alt="image">
                                 </div>
-
                                 <!-- Video -->
                                 <div class="video_wrapper d-none" id="digitaBizSourc">
                                     <div class="ratio ratio-1x1">
@@ -364,7 +329,6 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                     </div>
                                 </div>
                                 <div class="row">
-
                                     <div class="col-6">
                                         <div class="mb-3 d-none form-input" id="logofield">
                                             <label for="logo" class="form-label">Logo</label>
@@ -379,6 +343,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
@@ -441,9 +406,9 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                 <div class="prod_def_photo_upload" style="padding-top: .5rem;" title="Click for photo upload"></div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
@@ -659,10 +624,9 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
     <script src="{{ asset('assets/js/card.js') }}"></script>
     <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
     <script>
-    $(function () {
-        $('.prod_def_photo_upload').imageUploader();
-    });
-
+        $(function () {
+            $('.prod_def_photo_upload').imageUploader();
+        });
         function hexToRgb(hex) {
             const normal = hex.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
             if (normal) return normal.slice(1).map(e => parseInt(e, 16));
@@ -673,16 +637,12 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
         $(document).on('input', '#theme_color', function(e) {
             var current_color = $("#theme_color").val();
             console.log(current_color);
-            // $( "#theme_color_input").val(current_color);
             let hex2rgb = hexToRgb(current_color);
             let rgb = hex2rgb.toString();
             $('.social_item').find('i').css('border-color', current_color);
             $('.subscribe-btn').css({
                 'background-color': current_color
             });
-            // $('.card_title').css({
-            //     'background-color': current_color
-            // });
             $('.purchase_btn').find('a').css({
                 'background-color': 'rgba(' + rgb + ',.1' + ')'
             });
@@ -866,18 +826,11 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
     }
 
     $(document).ready(function() {
-        $('#gallery').change(function() {
-            $(".carousel-inner").html('');
-            for (var i = 0; i < $(this)[0].files.length; i++) {
-                if (i == 0) {
-                    var slider_active = 'active';
-                } else {
-                    var slider_active = '';
-                }
-                $(".carousel-inner").append('<div class="carousel-item ' + slider_active +
-                    '"><img src="' + window.URL.createObjectURL(this.files[i]) +
-                    '" class="d-block w-100"/></div>');
-            }
+        $('#banner').change(function() {
+            $('#digitalbizSlider').html('');
+                $("#digitalbizSlider").append('<img src="' + window.URL.createObjectURL(this.files[0]) +
+                    '" class="d-block w-100"/>');
+
         });
     });
 
@@ -969,14 +922,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
 
             } else {
                 $('.' + this_type).removeClass('disabled');
-                // if(this_type ='facebook'){
-                //     var facebook = "https://www.facebook.com/"+this_value;
-                //     $('.'+this_type).attr("href",facebook);
-                // }else if(this_type ='phone_number'){
-                //     var facebook = "tel://"+this_value;
-                //     $('.'+this_type).attr("href",facebook);
-                // }else{}
-                $('.' + this_type).attr("href", data_attr + this_value);
+                  $('.' + this_type).attr("href", data_attr + this_value);
             };
         });
 
@@ -988,8 +934,6 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
             $form = $('form'),
             $file_upload = $('#gallery', $form),
             $button = $('.submit', $form);
-        // Disable submit button on page ready.
-        // $button.prop('disabled', 'disabled');
         $file_upload.on('change', function() {
             var number_of_images = $(this)[0].files.length;
             if (number_of_images > max_file_number) {

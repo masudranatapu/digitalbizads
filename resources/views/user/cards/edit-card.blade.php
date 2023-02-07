@@ -6,16 +6,16 @@
     $android = stripos($_SERVER['HTTP_USER_AGENT'], 'android');
     $iphone = stripos($_SERVER['HTTP_USER_AGENT'], 'iphone');
     $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
-    if (!empty($card->gallery[0])) {
-        if ($card->gallery[0]['gallery_type'] == 'gallery') {
-            $gallery_type = 'gallery';
-        } elseif ($card->gallery[0]['gallery_type'] == 'videourl') {
-            $gallery_type = 'videourl';
-        } elseif ($card->gallery[0]['gallery_type'] == 'videosource') {
-            $gallery_type = 'videosource';
+    if (!empty($card->banner_content)) {
+        if ($card->banner_type == 'banner') {
+            $banner_type = 'banner';
+        } elseif ($card->banner_type == 'videourl') {
+            $banner_type = 'videourl';
+        } elseif ($card->banner_type == 'videosource') {
+            $banner_type = 'videosource';
         }
     } else {
-        $gallery_type = 'gallery';
+        $banner_type = 'banner';
     }
 
     if (old('theme_coloe')) {
@@ -27,11 +27,10 @@
     }
     [$r, $g, $b] = sscanf($theme_color, '#%02x%02x%02x');
     $theme_bg = "$r, $g, $b,.1";
-
-    // dd($card);
-
     ?>
 @section('css')
+<link href="{{ asset('assets/css/image-uploader.min.css')}}" rel="stylesheet">
+
     <style>
         span.error {
             color: #E53935;
@@ -86,6 +85,11 @@
             width: 25px;
             height: 25px;
         }
+        button.delete-image.photo-delete {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
     </style>
 @endsection
 <div class="page-wrapper">
@@ -113,7 +117,7 @@
                             <div class="card_template" style="background-color: rgba({{ $theme_bg }})">
                                 <!-- title -->
                                 @if (!empty($card->logo))
-                                    <div class="card_title p-2 pt-3" id="logoDiv">
+                                    <div class="card_title p-2 pt-3" id="logoDiv" style="background-color: {{ $card->header_backgroung ?? '#000000' }};">
                                         <h2>
                                             <div class="text-center">
                                                 <img src="{{ asset($card->logo) }}" id="previewLogo" alt="logo">
@@ -133,9 +137,9 @@
                                             </a>
                                         </h2>
                                     </div>
-                                    <div class="card_title p-2 pt-3 d-none" id="titleDiv">
+                                    <div class="card_title p-2 pt-3 d-none" id="titleDiv" style="background-color: {{ $card->header_backgroung ?? '#000000' }}">
                                         <h2 class="">
-                                            <span id="preview_name">Express T-Shirts</span>
+                                            <span id="preview_name" style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">Express T-Shirts</span>
                                             <a href="javascript:void(0)" class="float-end login_btn">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
                                                     viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
@@ -151,7 +155,7 @@
                                         </h2>
                                     </div>
                                 @else
-                                    <div class="card_title p-2 pt-3 d-none" id="logoDiv">
+                                    <div class="card_title p-2 pt-3 d-none" id="logoDiv" style="background-color: {{ $card->header_backgroung ?? '#000000' }}">
                                         <h2>
                                             <div class="text-center">
                                                 <img src="{{ asset('assets/images/bizads.png') }}" width="140"
@@ -172,9 +176,9 @@
                                             </a>
                                         </h2>
                                     </div>
-                                    <div class="card_title p-2 pt-3" id="titleDiv">
+                                    <div class="card_title p-2 pt-3" id="titleDiv" style="background-color: {{ $card->header_backgroung ?? '#000000' }}">
                                         <h2>
-                                            <span id="preview_name">{{ $card->title }}</span>
+                                            <span id="preview_name" style="color:{{ $card->header_text_color ?? '#ffffff' }};">{{ $card->title }}</span>
                                             <a href="javascript:void(0)" class="float-end login_btn"
                                                 data-bs-toggle="modal" data-bs-target="#loginModal">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
@@ -195,99 +199,40 @@
 
                                 <div class="slider-box" id="slider-box">
 
-                                    @if (!empty($card->gallery[0]))
-                                        @if ($card->gallery[0]->gallery_type == 'videourl')
+                                    @if (!empty($card->banner_content))
+                                        @if ($card->banner_type == 'videourl')
                                             <div class="video_wrapper" id="digitalBizEmbad">
                                                 <div class="ratio ratio-1x1">
-                                                    <iframe width="100%" src="{{ $card->gallery[0]->content }}"
+                                                    <iframe width="100%" src="{{ $card->banner_content }}"
                                                         frameborder="0"
                                                         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                                         allowfullscreen></iframe>
                                                 </div>
                                             </div>
-                                        @elseif ($card->gallery[0]->gallery_type == 'videosource')
+                                        @elseif ($card->banner_type == 'videosource')
                                             <!-- Video -->
                                             <div class="video_wrapper" id="digitaBizSourc">
                                                 <div class="ratio ratio-1x1">
                                                     <video autoplay="" loop="" muted=""
                                                         playsinline="" data-wf-ignore="true" data-object-fit="cover"
                                                         controls>
-                                                        <source src="{{ $card->gallery[0]->content }}"
+                                                        <source src="{{ $card->banner_content }}"
                                                             type="video/mp4">
-                                                        <source src="{{ $card->gallery[0]->content }}"
+                                                        <source src="{{ $card->banner_content }}"
                                                             type="video/ogg">
                                                     </video>
                                                 </div>
                                             </div>
-                                        @elseif ($card->gallery[0]->gallery_type == 'gallery')
-                                            <div class="carousel_slider" id="digitalbizSlider">
-                                                <div id="carouselExampleControls" class="carousel slide"
-                                                    data-bs-ride="carousel">
-                                                    <div class="carousel-inner">
-                                                        @foreach ($card->gallery as $key => $gallery)
-                                                            <div
-                                                                class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                                                                <img src="{{ asset($gallery->content) }}"
-                                                                    class="d-block w-100" alt="image">
-                                                            </div>
-                                                        @endforeach
-                                                    </div>
-                                                    <button class="carousel-control-prev" type="button"
-                                                        data-bs-target="#carouselExampleControls"
-                                                        data-bs-slide="prev">
-                                                        <span class="carousel-control-prev-icon"
-                                                            aria-hidden="true"></span>
-                                                    </button>
-                                                    <button class="carousel-control-next" type="button"
-                                                        data-bs-target="#carouselExampleControls"
-                                                        data-bs-slide="next">
-                                                        <span class="carousel-control-next-icon"
-                                                            aria-hidden="true"></span>
-                                                    </button>
-                                                </div>
+                                        @elseif ($card->banner_type == 'banner')
+                                            <div class="" id="digitalbizSlider">
+                                                <img src="{{ $card->banner_content }}" class="d-block w-100" alt="image">
                                             </div>
                                         @endif
                                     @else
-                                        <!-- slider -->
-                                        <div class="carousel_slider" id="digitalbizSlider">
-                                            <div id="carouselExampleControls" class="carousel slide"
-                                                data-bs-ride="carousel">
-                                                <div class="carousel-inner">
-                                                    <div class="carousel-item active">
-                                                        <img src="{{ asset('backend/img') }}/1.jpg"
-                                                            class="d-block w-100" alt="image">
-                                                    </div>
-                                                    <div class="carousel-item">
-                                                        <img src="{{ asset('backend/img') }}/2.jpg"
-                                                            class="d-block w-100" alt="image">
-                                                    </div>
-                                                    <div class="carousel-item">
-                                                        <img src="{{ asset('backend/img') }}/3.jpg"
-                                                            class="d-block w-100" alt="image">
-                                                    </div>
-                                                </div>
-                                                <button class="carousel-control-prev" type="button"
-                                                    data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25"
-                                                        height="25" viewBox="0 0 24 24" fill="none"
-                                                        stroke="#212121" stroke-width="1" stroke-linecap="butt"
-                                                        stroke-linejoin="bevel">
-                                                        <path d="M19 12H6M12 5l-7 7 7 7"></path>
-                                                    </svg>
-                                                </button>
-                                                <button class="carousel-control-next" type="button"
-                                                    data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25"
-                                                        height="25" viewBox="0 0 24 24" fill="none"
-                                                        stroke="#212121" stroke-width="1" stroke-linecap="butt"
-                                                        stroke-linejoin="bevel">
-                                                        <path d="M5 12h13M12 5l7 7-7 7"></path>
-                                                    </svg>
-                                                </button>
-                                            </div>
+                                        <div id="digitalbizSlider">
+                                            <img src="{{ asset('backend/img') }}/1.jpg" class="d-block w-100" alt="image">
                                         </div>
                                     @endif
-
                                     <div class="video_wrapper d-none" id="digitalBizEmbad">
                                         <div class="ratio ratio-1x1">
                                             <iframe width="100%" height="315" id="youtube_video_preview"
@@ -307,45 +252,10 @@
                                             </video>
                                         </div>
                                     </div>
-                                    <div class="carousel_slider d-none" id="digitalbizSlider">
-                                        <div id="carouselExampleControls" class="carousel slide"
-                                            data-bs-ride="carousel">
-                                            <div class="carousel-inner">
-                                                <div class="carousel-item active">
-                                                    <img src="{{ asset('backend/img') }}/1.jpg" class="d-block w-100"
-                                                        alt="image">
-                                                </div>
-                                                <div class="carousel-item">
-                                                    <img src="{{ asset('backend/img') }}/2.jpg" class="d-block w-100"
-                                                        alt="image">
-                                                </div>
-                                                <div class="carousel-item">
-                                                    <img src="{{ asset('backend/img') }}/3.jpg" class="d-block w-100"
-                                                        alt="image">
-                                                </div>
-                                            </div>
-                                            <button class="carousel-control-prev" type="button"
-                                                data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                                    viewBox="0 0 24 24" fill="none" stroke="#212121"
-                                                    stroke-width="1" stroke-linecap="butt" stroke-linejoin="bevel">
-                                                    <path d="M19 12H6M12 5l-7 7 7 7"></path>
-                                                </svg>
-                                            </button>
-                                            <button class="carousel-control-next" type="button"
-                                                data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                                                    viewBox="0 0 24 24" fill="none" stroke="#212121"
-                                                    stroke-width="1" stroke-linecap="butt" stroke-linejoin="bevel">
-                                                    <path d="M5 12h13M12 5l7 7-7 7"></path>
-                                                </svg>
-                                            </button>
-                                        </div>
+                                    <div class="d-none" id="digitalbizSlider">
+                                        <img src="{{ asset('backend/img') }}/1.jpg" class="d-block w-100" alt="image">
                                     </div>
-
-
-                                </div>
-
+                               </div>
                                 <!-- purchase button -->
                                 <div class="purchase_btn text-center mb-4">
                                     <a href="{{ $card->website }}"
@@ -521,6 +431,19 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
+                                            <label for="header_backgroung" class="form-label">Header background color</label>
+                                            <input type="color" placeholder="card color" name="header_backgroung"
+                                                id="header_backgroung" value="{{ $card->header_backgroung }}"
+                                                class="form-control @error('header_backgroung') is-invalid @enderror"
+                                                tabindex="{{ $tabindex++ }}" required>
+                                            @if ($errors->has('header_backgroung'))
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('header_backgroung') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3 form-input">
                                             <label for="selectField1" class="form-label">Select Logo/Heading <span
                                                     class="text-danger">*</span></label></label>
                                             <select id="selectField1" name="headline" class="form-control"
@@ -530,6 +453,23 @@
                                                 <option value="logo"
                                                     @if (!empty($card->logo)) selected @endif>Logo</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row" id="headline">
+
+                                    <div class="col-6">
+                                        <div class="mb-3 form-input" id="textfield">
+                                            <label for="header_text_color" class="form-label">Headline Color</label>
+                                            <input type="color" placeholder="card color" name="header_text_color"
+                                                id="header_text_color" value="{{ $card->header_text_color }}"
+                                                class="form-control @error('header_text_color') is-invalid @enderror"
+                                                tabindex="{{ $tabindex++ }}" required>
+                                            @if ($errors->has('header_text_color'))
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('header_text_color') }}</span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="col-6">
@@ -544,51 +484,59 @@
                                                     class="help-block text-danger">{{ $errors->first('text') }}</span>
                                             @endif
                                         </div>
-                                        <div class="mb-3 d-none form-input" id="logofield">
-                                            <label for="logo" class="form-label">Logo</label>
-                                            <input type="file" name="logo" id="logo"
-                                                onchange="readURL(this);"
-                                                class="form-control @error('logo') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}">
-                                            @if ($errors->has('logo'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('logo') }}</span>
-                                            @endif
-                                        </div>
+
+
                                     </div>
                                 </div>
+
+                                <div class="row">
+                                    <div class="mb-3 d-none form-input" id="logofield">
+                                        <label for="logo" class="form-label">Logo</label>
+                                        <input type="file" name="logo" id="logo"
+                                            onchange="readURL(this);"
+                                            class="form-control @error('logo') is-invalid @enderror"
+                                            tabindex="{{ $tabindex++ }}">
+                                        @if ($errors->has('logo'))
+                                            <span
+                                                class="help-block text-danger">{{ $errors->first('logo') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+
+
+
+
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="selectField2" class="form-label">Gallery or Video <span
+                                            <label for="selectField2" class="form-label">Banner or Video <span
                                                     class="text-danger">*</span></label></label>
                                             <select id="selectField2" name="gallery_type" class="form-control"
                                                 tabindex="{{ $tabindex++ }}" required>
-                                                <option value="gallery"
-                                                    @if ($gallery_type == 'gallery') selected @endif>Gallery</option>
+                                                <option value="banner"
+                                                    @if ($banner_type == 'banner') selected @endif>Banner</option>
                                                 <option value="videourl"
-                                                    @if ($gallery_type == 'videourl') selected @endif>Video Url
+                                                    @if ($banner_type == 'videourl') selected @endif>Video Url
                                                 </option>
                                                 <option value="videosource"
-                                                    @if ($gallery_type == 'videosource') selected @endif>Uplaod Video
+                                                    @if ($banner_type == 'videosource') selected @endif>Uplaod Video
                                                 </option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="mb-3 form-input {{ $gallery_type == 'gallery' ? 'd-block' : 'd-none' }}"
+                                        <div class="mb-3 form-input {{ $banner_type == 'banner' ? 'd-block' : 'd-none' }}"
                                             id="galleryfield">
-                                            <label for="gallery" class="form-label">Gallery (Select Multiple
-                                                Images)</label>
-                                            <input type="file" name="gallery[]" id="gallery"
-                                                class="form-control @error('gallery') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" multiple>
+                                            <label for="banner" class="form-label">Banner</label>
+                                            <input type="file" name="banner" id="banner"
+                                                class="form-control @error('banner') is-invalid @enderror"
+                                                tabindex="{{ $tabindex++ }}" required>
                                             @if ($errors->has('gallery'))
                                                 <span
                                                     class="help-block text-danger">{{ $errors->first('gallery') }}</span>
                                             @endif
                                         </div>
-                                        <div class="mb-3 form-input {{ $gallery_type == 'videourl' ? 'd-block' : 'd-none' }}"
+                                        <div class="mb-3 form-input {{ $banner_type == 'videourl' ? 'd-block' : 'd-none' }}"
                                             id="videourl">
                                             <label for="video" class="form-label">Video Url</label>
                                             <input type="url" name="video" placeholder="your video url"
@@ -600,7 +548,7 @@
                                                     class="help-block text-danger">{{ $errors->first('video') }}</span>
                                             @endif
                                         </div>
-                                        <div class="mb-3 form-input {{ $gallery_type == 'videosource' ? 'd-block' : 'd-none' }}"
+                                        <div class="mb-3 form-input {{ $banner_type == 'videosource' ? 'd-block' : 'd-none' }}"
                                             id="videosource">
                                             <label for="video" class="form-label">Uplaod Video</label>
                                             <input type="file" name="video" placeholder="upload your video"
@@ -612,6 +560,32 @@
                                                     class="help-block text-danger">{{ $errors->first('video') }}</span>
                                             @endif
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <div class="input-field">
+                                                <label class="active">Gallery<span class="img-note d-inline-block">
+                                                    {{-- <i class="la la-bell" aria-hidden="true"></i>{{trans('form.image_size')}}  800 x 800 pixels</span> --}}
+                                                </label>
+                                                <div class="row">
+                                                    @if($card->gallery && $card->gallery->count() > 0)
+                                                    @foreach($card->gallery as $photo)
+                                                    <div class="col-2 position-relative" id="photo_div_{{$photo->id}}">
+                                                        <img src="{{asset($photo->content)}}" class="img-fluid" width="150px">
+                                                        <button type="button" class="delete-image btn btn-sm btn-danger photo-delete" data-id="{{$photo->id}}">
+                                                            <i class="iui-close"></i>
+                                                        </button>
+                                                    </div>
+                                                    @endforeach
+                                                </div>
+                                                <div class="prod_def_photo_upload" style="padding-top: .5rem;" title="Click for photo upload">
+                                                   @endif
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                                 <div class="row">
@@ -828,8 +802,11 @@
 @push('custom-js')
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/card.js') }}"></script>
-
+    <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
     <script>
+        $(function () {
+            $('.prod_def_photo_upload').imageUploader();
+        });
         function hexToRgb(hex) {
             const normal = hex.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
             if (normal) return normal.slice(1).map(e => parseInt(e, 16));
@@ -850,14 +827,27 @@
             $('.purchase_btn').find('a').css({
                 'background-color': 'rgba(' + rgb + ',.1' + ')'
             });
-            $('.card_title').css({
-                'background-color': current_color
-            });
+            // $('.card_title').css({
+            //     'background-color': current_color
+            // });
             $('.card_template').css({
                 'background-color': 'rgba(' + rgb + ',.1' + ')'
             });
             $('.carousel-control-prev,.carousel-control-next').css({
                 'background-color': current_color
+            });
+        })
+        $(document).on('input', '#header_backgroung', function(e) {
+            var current_color = $("#header_backgroung").val();
+            $('.card_title').css({
+                'background-color': current_color
+            });
+        })
+
+        $(document).on('input', '#header_text_color', function(e) {
+            var current_color = $("#header_text_color").val();
+            $('#preview_name').css({
+                'color': current_color
             });
         })
 
@@ -1017,6 +1007,14 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
+    $(document).ready(function() {
+        $('#banner').change(function() {
+            $('#digitalbizSlider').html('');
+                $("#digitalbizSlider").append('<img src="' + window.URL.createObjectURL(this.files[0]) +
+                    '" class="d-block w-100"/>');
+
+        });
+    });
 
     $(document).ready(function() {
         $('#gallery').change(function() {
@@ -1116,13 +1114,39 @@
                 $(this).addClass('disabled');
                 $('.' + this_type).removeClass('disabled');
                 $('.' + this_type).attr("href", this_value);
-
             } else {
                 $('.' + this_type).removeClass('disabled');
                 $('.' + this_type).attr("href", this_value);
             };
         });
 
+    })
+    $(document).on('click','.photo-delete', function(e){
+        var id = $(this).attr('data-id');
+        if (!confirm('Are you sure you want to delete the photo')) {
+            return false;
+        }
+        if ('' != id) {
+            var pageurl = `{{ URL::to('user/card/gallery-delete')}}/`+id;
+            $.ajax({
+                type:'get',
+                url:pageurl,
+                async :true,
+                beforeSend: function () {
+                    $("body").css("cursor", "progress");
+                },
+                success: function (response) {
+                    if(response.status == true ){
+                        $('#photo_div_'+id).hide();
+                    } else {
+                        alert('something wrong please you should reload the page');
+                    }
+                },
+                complete: function (data) {
+                    $("body").css("cursor", "default");
+                }
+            });
+        }
     })
 
     $(function() {

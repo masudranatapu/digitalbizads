@@ -37,7 +37,7 @@ html{
 
 .card_title {
     background: #fff;
-    border-radius: 15px 15px 0px 0px;
+    /* border-radius: 15px 15px 0px 0px; */
 }
 
 .card_title h2 {

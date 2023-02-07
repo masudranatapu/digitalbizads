@@ -100,16 +100,16 @@ class CardController extends Controller
     {
 
         // dd($request->all());
-        // $validity = checkPackageValidity(Auth::id());
-        // if ($validity == false) {
-        //     alert()->error(trans('Your package is expired please upgrade'));
-        //     return redirect()->route('user.plans');
-        // }
-        // $check = checkCardLimit(Auth::id());
-        // if ($check == false) {
-        //     alert()->error(trans('Your card limit is over please upgrade your package for more card'));
-        //     return redirect()->back();
-        // }
+        $validity = checkPackageValidity(Auth::id());
+        if ($validity == false) {
+            alert()->error(trans('Your package is expired please upgrade'));
+            return redirect()->route('user.plans');
+        }
+        $check = checkCardLimit(Auth::id());
+        if ($check == false) {
+            alert()->error(trans('Your card limit is over please upgrade your package for more card'));
+            return redirect()->back();
+        }
         $user_details = User::where('user_id', Auth::user()->user_id)->first();
         $plan_details = json_decode($user_details->plan_details, true);
         if ($request->gallery_type == 'videosource') {
@@ -424,6 +424,9 @@ class CardController extends Controller
             }
 
             if (!empty($request->video) && $request->gallery_type == 'videosource') {
+                if(File::exists(public_path($card->banner_content))){
+                    File::delete(public_path($card->banner_content));
+                }
                 $card->banner_type =  $request->gallery_type;
                 $_video = $request->file('video');
                 $base_name = preg_replace('/\..+$/', '', $_video->getClientOriginalName());
@@ -434,13 +437,15 @@ class CardController extends Controller
                 }
                 $_video->move($file_path, $video_name);
                 $card->banner_content = asset($file_path . '/' . $video_name);
-
             } elseif (!empty($request->video) && $request->gallery_type == 'videourl') {
                 $card->banner_type =  $request->gallery_type;
                 $card->banner_content  =  $this->getYoutubeEmbad($request->video);
 
             } elseif (!empty($request->gallery) && $request->gallery_type == 'banner') {
                 if (!is_null($request->file('banner'))) {
+                    if(File::exists(public_path($card->banner_content))){
+                        File::delete(public_path($card->banner_content));
+                    }
                     $gallery_image = $request->file('banner');
                     $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
                     $base_name = explode(' ', $base_name);
@@ -456,7 +461,6 @@ class CardController extends Controller
                     $card->banner_type =  $request->gallery_type;
                 }
             }
-
             $card->card_type = 'vcard';
             $card->phone_number = $request->phone_number;
             $card->email = $request->email;
@@ -472,7 +476,7 @@ class CardController extends Controller
 
 
             if (!empty($request->images)) {
-                DB::table('card_gallery')->where('card_id', $card->id)->delete();
+                // DB::table('card_gallery')->where('card_id', $card->id)->delete();
                 foreach ($request->images as $key => $gallery) {
                     if (!is_null($request->file('images')[$key])) {
                         $gallery_image = $request->file('images')[$key];
@@ -535,6 +539,13 @@ class CardController extends Controller
 
         DB::beginTransaction();
         try {
+
+            $gallery =  DB::table('card_gallery')->where('card_id',$id)->first();
+            if(!empty($gallery)){
+                if(File::exists(public_path($gallery->content))){
+                    File::delete(public_path($gallery->content));
+                }
+            }
             DB::table('business_fields')->where('card_id',$id)->delete();
             DB::table('business_cards')->where('card_id',$id)->delete();
 
@@ -547,6 +558,32 @@ class CardController extends Controller
         DB::commit();
         alert()->success(trans('Card successfully deleted'));
         return redirect()->route('user.cards');
+    }
+
+
+    public function getDeleteGallery(Request $request,$id){
+
+        DB::beginTransaction();
+        try {
+
+            $gallery =  DB::table('card_gallery')->where('id',$id)->first();
+            if(File::exists(public_path($gallery->content))){
+                File::delete(public_path($gallery->content));
+            }
+            DB::table('card_gallery')->where('id',$id)->delete();
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            DB::rollback();
+            return response()->json([
+                'status' => 0,
+                'msg' => 'Unable to delete'
+            ]);
+        }
+        DB::commit();
+        return response()->json([
+            'status' => 1,
+            'msg' => 'Card gallery image successfully deleted'
+        ]);
     }
 
 

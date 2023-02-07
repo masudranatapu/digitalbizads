@@ -14,6 +14,7 @@
     <!-- css file -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="{{ asset('assets/css/swiper-bundle.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/sweetalert.min.js') }}"></script>
@@ -41,7 +42,7 @@
             border-color: {{ $theme_color }}
         }
 
-        .card_title,
+        /* .card_title, */
         .subscribe-btn,
         .purchase_btn a,
         .carousel-control-prev,
@@ -63,6 +64,97 @@
             width: 75%;
             height: 75%;
         }
+        .single_product {
+            margin-top: 24px;
+        }
+
+        .single_product .single_item img {
+            height: 350px !important;
+            width: 100% !important;
+        }
+
+        .single_product .mySwiper2 {
+            position: relative;
+            width: 100%;
+            margin-bottom: 4px;
+            overflow: hidden;
+            background-color: #ebeef7;
+        }
+
+        .single_product .mySwiper2 .swiper-slide {
+            display: flex;
+            justify-content: center;
+        }
+
+        .single_product .mySwiper2 .swiper-slide img {
+            width: 100%;
+            margin: 0px auto;
+        }
+
+        .single_product .mySwiper .swiper-slide {
+            opacity: 0.4;
+            border: 4px solid transparent;
+            transition: all 0.3s ease-in;
+            width: 76px !important;
+            height: 76px;
+            margin: 0 !important;
+        }
+
+        .single_product .mySwiper .swiper-slide-thumb-active {
+            opacity: 1;
+            border: 3px solid #2196f3;
+        }
+
+        .single_product .swiper {
+            width: 100%;
+            height: 100%;
+        }
+
+        .single_product .swiper-slide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .single_product .swiper-slide img {
+            display: block;
+            width: 70px;
+            height: 70px;
+            -o-object-fit: cover;
+            object-fit: cover;
+        }
+
+        .single_product .swiper-button-prev {
+            left: 24px;
+        }
+
+        .single_pro_content h3 {
+            margin: 0;
+            font-size: 17px;
+            color: #555;
+        }
+
+        .single_product .swiper-button-prev,
+        .single_product .swiper-button-next {
+            color: #002233;
+        }
+
+        .single_product .swiper-button-prev::after,
+        .single_product .swiper-button-next::after {
+            font-size: 36px;
+        }
+
+        .single_product .swiper-button-next {
+            right: 24px;
+        }
+        a.gallery-btn {
+            position: absolute;
+            top: 15px;
+            right: 56px;
+            font-size: 20px;
+        }
     </style>
 </head>
 
@@ -70,27 +162,24 @@
     <div class="card_wrapper">
         <div class="card_template">
             <!-- title -->
-            <div class="card_title">
+            <div class="card_title" style="background-color: {{ $cardinfo->header_backgroung ?? '#000000' }};">
                 @if (!empty($cardinfo->logo))
                     <h2>
                         <div class="text-center">
                             <img src="{{ asset($cardinfo->logo) }}" alt="logo">
                         </div>
-                        <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
-                            data-bs-target="#loginModal">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"
-                                fill="none" stroke="#000000" stroke-width="1" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <line x1="3" y1="12" x2="21" y2="12"></line>
-                                <line x1="3" y1="6" x2="21" y2="6"></line>
-                                <line x1="3" y1="18" x2="21" y2="18"></line>
-                            </svg>
-                        </a>
                     </h2>
                 @else
-                    <h2>
+                    <h2 style="color: {{ $cardinfo->header_text_color ?? '#ffffff' }};">
                         <span>{{ $cardinfo->title }}</span>
-                        <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
+                    </h2>
+
+                @endif
+                    <div class="float-end">
+                        <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal" data-bs-target="#galleryModal">
+                            <i class="fas fa-images"></i>
+                        </a>
+                        <a href="javascript:void(0)" class="login_btn" data-bs-toggle="modal"
                             data-bs-target="#loginModal">
                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"
                                 fill="none" stroke="#000000" stroke-width="1" stroke-linecap="round"
@@ -100,50 +189,44 @@
                                 <line x1="3" y1="18" x2="21" y2="18"></line>
                             </svg>
                         </a>
-                    </h2>
-                @endif
+                    </div>
+
             </div>
-            @if (!empty($cardinfo->gallery[0]))
-                @if ($cardinfo->gallery[0]->gallery_type == 'videourl')
+
+
+
+
+            @if (!empty($cardinfo->banner_content))
+                @if ($cardinfo->banner_type == 'videourl')
                     <div class="video_wrapper">
                         <div class="ratio ratio-1x1">
-                            <iframe width="100%" src="{{ $cardinfo->gallery[0]->content }}" frameborder="0"
+                            <iframe width="100%" src="{{ $cardinfo->banner_content}}" frameborder="0"
                                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen></iframe>
                         </div>
                     </div>
-                @elseif ($cardinfo->gallery[0]->gallery_type == 'videosource')
+                @elseif ($cardinfo->banner_type == 'videosource')
                     <!-- Video -->
                     <div class="video_wrapper">
                         <div class="ratio ratio-1x1">
                             <video autoplay="" loop="" muted="" playsinline="" data-wf-ignore="true"
                                 data-object-fit="cover" controls>
-                                <source src="{{ $cardinfo->gallery[0]->content }}" type="video/mp4">
-                                <source src="{{ $cardinfo->gallery[0]->content }}" type="video/ogg">
+                                <source src="{{ $cardinfo->banner_content}}" type="video/mp4">
+                                <source src="{{ $cardinfo->banner_content}}" type="video/ogg">
                             </video>
                         </div>
                     </div>
-                @elseif ($cardinfo->gallery[0]->gallery_type == 'gallery')
-                    <div class="carousel_slider">
-                        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-inner">
-                                @foreach ($cardinfo->gallery as $key => $gallery)
-                                    <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                                        <img src="{{ asset($gallery->content) }}" class="d-block w-100"
+                @elseif ($cardinfo->banner_type == 'banner')
+
+                    <div class="carousel-inner">
+                        @foreach ($cardinfo->gallery as $key => $gallery)
+                        <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
+                        <img src="{{ $cardinfo->banner_content }}" class="d-block w-100"
                                             alt="image">
-                                    </div>
-                                @endforeach
-                            </div>
-                            <button class="carousel-control-prev" type="button"
-                                data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            </button>
-                            <button class="carousel-control-next" type="button"
-                                data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            </button>
                         </div>
+                        @endforeach
                     </div>
+
                 @endif
             @endif
             <!-- purchase button -->
@@ -365,6 +448,24 @@
                                 <div class="col-12 col-sm-12">
                                     <ul class="text-center">
                                         <li class="list-inline-item">
+                                            <a href="sms://"
+                                                class="social_share"
+                                                title="{{ __('Text Message') }}">
+                                                <img class="img-fluid"
+                                                    src="{{ asset('images/icons/social/message.svg') }}"
+                                                    alt="{{ __('Text Message') }}">
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <a href="mailto:{{ $cardinfo->email }}"
+                                                class="social_share"
+                                                title="{{ __('Send mail') }}">
+                                                <img class="img-fluid"
+                                                    src="{{ asset('images/icons/social/email.svg') }}"
+                                                    alt="{{ __('Send mail') }}">
+                                            </a>
+                                        </li>
+                                        <li class="list-inline-item">
                                             <a href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"
                                                 target="_blank" class="social_share"
                                                 data-url="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"
@@ -495,10 +596,79 @@
             </div>
         </div>
     </div>
-    <!-- js file -->
-    @include('sweet::alert')
 
-    <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+
+    <!-- Modal -->
+<div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="galleryModalLabel">Gallery</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+             <div class="product-item__gallery single_product">
+                <div class="swiper mySwiper2">
+                    <div class="swiper-wrapper single_item">
+                        @if (!empty($cardinfo->gallery))
+                        @foreach ($cardinfo->gallery as $key=> $gallery)
+                        <div class="swiper-slide {{ $key==0 ? 'swiper-slide-active' :'' }}">
+                            <img src="{{asset($gallery->content)}}" alt="product-img" />
+                        </div>
+                        @endforeach
+                        @endif
+                    </div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+                <div thumbsSlider="" class="swiper mySwiper" style="height: 125px">
+                    <div class="swiper-wrapper">
+                        @if (!empty($cardinfo->gallery))
+                        @foreach ($cardinfo->gallery as $key=> $gallery)
+                        <div class="swiper-slide {{ $key==0 ? 'swiper-slide-thumb-active' :'' }}">
+                            <img src="{{asset($gallery->content)}}" alt="product-img" />
+                        </div>
+                        @endforeach
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <!-- js file -->
+@include('sweet::alert')
+    {{-- <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('assets/js/swiper-bundle.min.js') }}"></script>
+    <script>
+        "use strict";
+        var swiper = new Swiper(".mySwiper", {
+            spaceBetween: 12,
+            freeMode: true,
+            watchSlidesProgress: true,
+            breakpoints: {
+                1024: {
+                    slidesPerView: 6,
+                },
+                1: {
+                    slidesPerView: 3,
+                },
+            },
+        });
+
+        var swiper2 = new Swiper(".mySwiper2", {
+            spaceBetween: 10,
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            thumbs: {
+                swiper: swiper,
+            },
+        });
+    </script>
 </body>
 
 </html>

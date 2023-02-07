@@ -199,7 +199,7 @@ Route::group(['middleware' => 'Installer'], function () {
 
         Route::get('create-card', [CardController::class, 'CreateCard'])->name('create.card');
         Route::get('edit-card/{id}', [CardController::class, 'editCard'])->name('edit.card');
-
+        Route::get('card/gallery-delete/{id}', [CardController::class, 'getDeleteGallery'])->name('card.gallery-delete');
 
         if (env('APP_TYPE') == 'VCARD' || env('APP_TYPE') == 'BOTH') {
             // Create Business Card
