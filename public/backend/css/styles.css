@@ -376,3 +376,8 @@ a {
     box-shadow: none !important;
     height: 45px;
 }
+
+.form-control[type="file"] {
+    cursor: pointer;
+    line-height: 29px;
+}
