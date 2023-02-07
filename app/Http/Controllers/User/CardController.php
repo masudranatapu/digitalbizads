@@ -1282,40 +1282,14 @@ class CardController extends Controller
 
     public function getYoutubeEmbad($url)
     {
-
-        // $query = parse_url($url);
-        // $video_id = '';
-        // if (isset($query['query'])) {
-
-        //     $remove_extra = substr($query['query'], 0);
-        //     $remove_extra = parse_str($remove_extra, $query);
-
-        //     dd($remove_extra);
-
-        //     $_query = $remove_extra;
-        //     $video_id = trim($_query, 'v=');
-        //     dd($video_id);
-        // }
-        // else{
-        //     dd(2);
-        //     $video_id = explode('/', $url);
-        //     $video_id = end($video_id);
-        // }
-
         $shortUrlRegex = '/youtu.be\/([a-zA-Z0-9_-]+)\??/i';
         $longUrlRegex = '/youtube.com\/((?:embed)|(?:watch))((?:\?v\=)|(?:\/))([a-zA-Z0-9_-]+)/i';
-
        if (preg_match($longUrlRegex, $url, $matches)) {
            $youtube_id = $matches[count($matches) - 1];
        }
-
        if (preg_match($shortUrlRegex, $url, $matches)) {
            $youtube_id = $matches[count($matches) - 1];
        }
-
-
-
-
         $video_file = 'https://www.youtube.com/embed/' . $youtube_id;
         return $video_file;
     }

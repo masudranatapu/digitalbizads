@@ -70,7 +70,7 @@
         top: 23px;
         right: 52px;
         font-size: 20px;
-        color: #0d6efd !important;
+        /* color: #0d6efd !important; */
     }
 
     a.social-contact.disabled {
@@ -642,10 +642,10 @@
 
                                                     @if($card->gallery && $card->gallery->count() > 0)
                                                     @foreach($card->gallery as $photo)
-                                                    <div class="col">
-                                                        <div class="position-relative" id="photo_div_{{$photo->id}}">
+                                                    <div class="col" id="photo_div_{{$photo->id}}">
+                                                        <div class="position-relative">
                                                             <img src="{{asset($photo->content)}}" class="img-fluid"
-                                                                width="150px">
+                                                                width="100%" height="auto">
                                                             <button type="button"
                                                                 class="delete-image btn btn-sm btn-danger photo-delete"
                                                                 data-id="{{$photo->id}}">

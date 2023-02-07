@@ -52,7 +52,7 @@ Create New DigitalBizAds Card
         top: 23px;
         right: 52px;
         font-size: 20px;
-        color: #0d6efd !important;
+        /* color: #0d6efd !important; */
     }
 </style>
 @endsection
