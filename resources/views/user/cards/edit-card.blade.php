@@ -497,10 +497,10 @@
                                     </div>
                                 </div>
 
-                                <div class="row @if (!empty($card->title)) d-flex @else d-none @endif " id="headline">
+                                <div class="row" id="headline">
 
                                     <div class="col-6">
-                                        <div class="mb-3 form-input">
+                                        <div class="mb-3 form-input" id="textfield">
                                             <label for="header_text_color" class="form-label">Headline Color</label>
 
                                             <div class="input-group custome_color">
@@ -524,7 +524,7 @@
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="mb-3 form-input">
+                                        <div class="mb-3 form-input" id="headline">
                                             <label for="text" class="form-label">Heading</label>
                                             <input type="text" placeholder="ads heading" name="text" id="text"
                                                 data-preview="preview_name" data-concat="preview_name"
@@ -534,6 +534,8 @@
                                             <span class="help-block text-danger">{{ $errors->first('text') }}</span>
                                             @endif
                                         </div>
+
+
                                     </div>
                                 </div>
 
@@ -576,7 +578,7 @@
                                             <label for="banner" class="form-label">Banner</label>
                                             <input type="file" name="banner" id="banner"
                                                 class="form-control @error('banner') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}">
+                                                tabindex="{{ $tabindex++ }}" required>
                                             @if ($errors->has('gallery'))
                                             <span class="help-block text-danger">{{ $errors->first('gallery') }}</span>
                                             @endif
@@ -737,7 +739,7 @@
                                                     Link <span class="text-danger">*</span></label></label>
                                                 <input type="text" placeholder="Personalized Link"
                                                     name="personalized_link" id="personalized_link"
-                                                    class="form-control @error('personalized_link') is-invalid @enderror"
+                                                    class="form-control @error('gallery_type') is-invalid @enderror"
                                                     value="{{ $card->card_url }}" tabindex="{{ $tabindex++ }}">
                                                 @if ($errors->has('personalized_link'))
                                                 <span class="help-block text-danger">{{

@@ -349,15 +349,6 @@ a {
     overflow: hidden;
 }
 
-@media screen and (max-width:420px) {
-    .card_title h2 {
-        font-size: 23px;
-    }
-
-    .section_heading:before {
-        width: 65%;
-    }
-}
 
 .custome_color #theme_color,
 .custome_color #header_backgroung,
@@ -380,4 +371,19 @@ a {
 .form-control[type="file"] {
     cursor: pointer;
     line-height: 29px;
+}
+
+
+
+
+
+
+@media screen and (max-width:420px) {
+    .card_title h2 {
+        font-size: 23px;
+    }
+
+    .section_heading:before {
+        width: 65%;
+    }
 }
