@@ -461,7 +461,7 @@ class CardController extends Controller
                         File::makeDirectory($file_path, 777, true);
                     }
                     $gallery_image->move($file_path, $image_name);
-                    $card->banner_content = $file_path . $image_name;
+                    $card->banner_content = asset($file_path . $image_name);
                     $card->banner_type =  $request->gallery_type;
                 }
             }

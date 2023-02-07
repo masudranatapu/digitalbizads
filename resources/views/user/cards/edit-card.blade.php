@@ -224,6 +224,8 @@
                                                 </div>
                                             </div>
                                         @elseif ($card->banner_type == 'banner')
+
+                                        {{-- @dd($card->banner_content); --}}
                                             <div class="" id="digitalbizSlider">
                                                 <img src="{{ $card->banner_content }}" class="d-block w-100" alt="image">
                                             </div>
