@@ -182,9 +182,8 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                             <!-- Qr code icon -->
                                             <div class="col">
                                                 <div class="social_item qrcode_icon">
-                                                    <a href="javascript:void(0)" target="_blank">
-                                                        <img src="{{ asset('backend/img') }}/icon/qr-code.svg"
-                                                            alt="qr-code">
+                                                    <a href="javascript:void(0)">
+                                                        <img src="{{ asset('backend/img') }}/icon/qr-code.svg" alt="qr-code">
                                                     </a>
                                                 </div>
                                             </div>
@@ -574,25 +573,24 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                             <div class="col-12 col-sm-12">
                                 <ul class="text-center">
                                     <li class="list-inline-item">
-                                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ auth()->user()->user_id }}"
+                                        <a href="javascript:void(0)"
                                             target="_blank" class="social_share"
-                                            data-url="https://www.facebook.com/sharer/sharer.php?u={{ auth()->user()->user_id }}"
+                                            data-url=""
                                             title="{{ __('Share on Facebook') }}">
                                             <img class="img-fluid" src="{{ asset('images/icons/social/facebook.svg') }}"
                                                 alt="{{ __('Share on facebook') }}">
                                         </a>
                                     </li>
                                     <li class="list-inline-item">
-                                        <a href="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ auth()->user()->user_id }}"
-                                            target="blank" class="social_share" data-url="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ auth()->user()->user_id }}
-                                        " title="{{ __('Share on Twitter') }}">
+                                        <a href="javascript:void(0)"
+                                            target="blank" class="social_share" data-url="" title="{{ __('Share on Twitter') }}">
                                             <img class="img-fluid" src="{{ asset('images/icons/social/twitter.svg') }}"
                                                 alt="">
                                         </a>
                                     </li>
                                     <li class="list-inline-item">
                                         <a href="javascript:void(0)" class="social_share"
-                                            data-url="https://telegram.me/share/url?url={{ auth()->user()->user_id }}&text="
+                                            data-url=""
                                             title="{{ __('Share on Telegram') }}">
                                             <img class="img-fluid" src="{{ asset('images/icons/social/telegram.svg') }}"
                                                 alt="">
