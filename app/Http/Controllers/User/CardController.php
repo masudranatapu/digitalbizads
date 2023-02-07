@@ -265,55 +265,6 @@ class CardController extends Controller
                 }
             }
 
-            // if (!empty($request->video) && $request->gallery_type == 'videosource') {
-            //     $_video = $request->file('video');
-            //     $base_name = preg_replace('/\..+$/', '', $_video->getClientOriginalName());
-            //     $video_name = $base_name . "-" . uniqid() . "." . $_video->getClientOriginalExtension();
-            //     $file_path = 'assets/uploads/videos';
-            //     if (!File::exists($file_path)) {
-            //         File::makeDirectory($file_path);
-            //     }
-            //     $_video->move($file_path, $video_name);
-            //     $video = asset($file_path . '/' . $video_name);
-
-            //     DB::table('card_gallery')->insert([
-            //         'content' => $video,
-            //         'card_id' => $card->id,
-            //         'gallery_type' => $request->gallery_type,
-            //     ]);
-            // } elseif (!empty($request->video) && $request->gallery_type == 'videourl') {
-            //     $video =  $this->getYoutubeEmbad($request->video);
-            //     DB::table('card_gallery')->insert([
-            //         'content' => $video,
-            //         'card_id' => $card->id,
-            //         'gallery_type' => $request->gallery_type,
-            //     ]);
-            // } elseif (!empty($request->gallery) && $request->gallery_type == 'gallery') {
-
-            //     if ($request->gallery) {
-            //         foreach ($request->gallery as $key => $gallery) {
-            //             if (!is_null($request->file('gallery')[$key])) {
-            //                 $gallery_image = $request->file('gallery')[$key];
-            //                 $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
-            //                 $base_name = explode(' ', $base_name);
-            //                 $base_name = implode('-', $base_name);
-            //                 $base_name = Str::lower($base_name);
-            //                 $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
-            //                 $file_path = 'assets/uploads/gallery/';
-            //                 if (!File::exists($file_path)) {
-            //                     File::makeDirectory($file_path, 777, true);
-            //                 }
-            //                 $gallery_image->move($file_path, $image_name);
-            //                 $_gallery = $file_path . $image_name;
-            //                 $gallery_photo = new Gallery();
-            //                 $gallery_photo->content = $_gallery;
-            //                 $gallery_photo->card_id = $card->id;
-            //                 $gallery_photo->gallery_type = $request->gallery_type;
-            //                 $gallery_photo->save();
-            //             }
-            //         }
-            //     }
-            // }
             if ($request->facebook) {
                 DB::table('business_fields')->insert([
                     'card_id' => $card->id,
@@ -376,7 +327,7 @@ class CardController extends Controller
             'cashapp' => 'nullable|string|max:191',
             'personalized_link' => 'nullable|string|max:191',
             'footer_text' => 'nullable|string|max:191',
-            // 'banner' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
         if ($validator->fails()) {
