@@ -361,6 +361,7 @@ class CardController extends Controller
 
     public function postUpdate(Request $request, $id)
     {
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'adsname' => 'required',
             'theme_color' => 'required|max:10',
@@ -441,7 +442,9 @@ class CardController extends Controller
                 $card->banner_type =  $request->gallery_type;
                 $card->banner_content  =  $this->getYoutubeEmbad($request->video);
 
-            } elseif (!empty($request->gallery) && $request->gallery_type == 'banner') {
+            } elseif (!empty($request->banner) && $request->gallery_type == 'banner') {
+
+                // dd($request->gallery_type);
                 if (!is_null($request->file('banner'))) {
                     if(File::exists(public_path($card->banner_content))){
                         File::delete(public_path($card->banner_content));

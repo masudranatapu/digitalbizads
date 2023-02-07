@@ -686,7 +686,7 @@
                                                     Link <span class="text-danger">*</span></label></label>
                                                 <input type="text" placeholder="Personalized Link"
                                                     name="personalized_link" id="personalized_link"
-                                                    class="form-control @error('gallery_type') is-invalid @enderror"
+                                                    class="form-control @error('personalized_link') is-invalid @enderror"
                                                     value="{{ $card->card_url }}" tabindex="{{ $tabindex++ }}">
                                                 @if ($errors->has('personalized_link'))
                                                     <span
