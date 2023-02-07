@@ -532,7 +532,7 @@
                                             <label for="banner" class="form-label">Banner</label>
                                             <input type="file" name="banner" id="banner"
                                                 class="form-control @error('banner') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" required>
+                                                tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('gallery'))
                                                 <span
                                                     class="help-block text-danger">{{ $errors->first('gallery') }}</span>

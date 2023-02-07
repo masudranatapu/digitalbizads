@@ -134,6 +134,7 @@ class CardController extends Controller
             'cashapp' => 'nullable|string|max:191',
             'personalized_link' => 'nullable|string|max:191',
             'footer_text' => 'nullable|string|max:191',
+            'banner' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
         if ($validator->fails()) {
@@ -375,7 +376,7 @@ class CardController extends Controller
             'cashapp' => 'nullable|string|max:191',
             'personalized_link' => 'nullable|string|max:191',
             'footer_text' => 'nullable|string|max:191',
-            'banner' => 'required',
+            // 'banner' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
         if ($validator->fails()) {
@@ -408,7 +409,7 @@ class CardController extends Controller
             } else {
                 if (!is_null($request->file('logo'))) {
                     DB::table('business_cards')->where('id', $id)->update([
-                        'text' => NULL
+                        'title' => NULL
                     ]);
                     $logo_ = $request->file('logo');
                     $base_name = preg_replace('/\..+$/', '', $logo_->getClientOriginalName());
@@ -444,8 +445,6 @@ class CardController extends Controller
                 $card->banner_content  =  $this->getYoutubeEmbad($request->video);
 
             } elseif (!empty($request->banner) && $request->gallery_type == 'banner') {
-
-                // dd($request->gallery_type);
                 if (!is_null($request->file('banner'))) {
                     if(File::exists(public_path($card->banner_content))){
                         File::delete(public_path($card->banner_content));
