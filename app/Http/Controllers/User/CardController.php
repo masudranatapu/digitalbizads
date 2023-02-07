@@ -375,7 +375,7 @@ class CardController extends Controller
             'cashapp' => 'nullable|string|max:191',
             'personalized_link' => 'nullable|string|max:191',
             'footer_text' => 'nullable|string|max:191',
-            'banner' => 'required|string|max:191',
+            'banner' => 'required',
         ]);
 
         if ($validator->fails()) {
