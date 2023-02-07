@@ -459,10 +459,10 @@
                                     </div>
                                 </div>
 
-                                <div class="row" id="headline">
+                                <div class="row @if (!empty($card->title)) d-flex @else d-none @endif " id="headline">
 
                                     <div class="col-6">
-                                        <div class="mb-3 form-input" id="textfield">
+                                        <div class="mb-3 form-input">
                                             <label for="header_text_color" class="form-label">Headline Color</label>
                                             <input type="color" placeholder="card color" name="header_text_color"
                                                 id="header_text_color" value="{{ $card->header_text_color }}"
@@ -475,7 +475,7 @@
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="mb-3 form-input" id="headline">
+                                        <div class="mb-3 form-input" >
                                             <label for="text" class="form-label">Heading</label>
                                             <input type="text" placeholder="ads heading" name="text"
                                                 id="text" data-preview="preview_name" data-concat="preview_name"
@@ -486,22 +486,22 @@
                                                     class="help-block text-danger">{{ $errors->first('text') }}</span>
                                             @endif
                                         </div>
-
-
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="mb-3 d-none form-input" id="logofield">
-                                        <label for="logo" class="form-label">Logo</label>
-                                        <input type="file" name="logo" id="logo"
-                                            onchange="readURL(this);"
-                                            class="form-control @error('logo') is-invalid @enderror"
-                                            tabindex="{{ $tabindex++ }}">
-                                        @if ($errors->has('logo'))
-                                            <span
-                                                class="help-block text-danger">{{ $errors->first('logo') }}</span>
-                                        @endif
+                                <div class="row @if (!empty($card->log)) d-block @else d-none @endif"  id="logofield">
+                                    <div class="col-6">
+                                        <div class="mb-3 form-input">
+                                            <label for="logo" class="form-label">Logo</label>
+                                            <input type="file" name="logo" id="logo"
+                                                onchange="readURL(this);"
+                                                class="form-control @error('logo') is-invalid @enderror"
+                                                tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('logo'))
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('logo') }}</span>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
 
