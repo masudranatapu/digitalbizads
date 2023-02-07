@@ -46,6 +46,14 @@ Create New DigitalBizAds Card
         width: 25px;
         height: 25px;
     }
+
+    .gallery-btn {
+        position: absolute;
+        top: 23px;
+        right: 52px;
+        font-size: 20px;
+        color: #0d6efd !important;
+    }
 </style>
 @endsection
 <?php
@@ -82,6 +90,10 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                 <div class="card_title p-2 pt-3" id="titleDiv">
                                     <h2 class="">
                                         <span id="preview_name">Express T-Shirts</span>
+                                        <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
+                                            data-bs-target="#galleryModal">
+                                            <i class="fas fa-images"></i>
+                                        </a>
                                         <a href="javascript:void(0)" class="float-end login_btn">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
                                                 viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
@@ -102,6 +114,11 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                             <img src="{{ asset('assets/images/bizads.png') }}" width="140"
                                                 id="previewLogo" alt="logo">
                                         </div>
+                                        <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
+                                            data-bs-target="#galleryModal">
+                                            <i class="fas fa-images"></i>
+                                        </a>
+
                                         <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
                                             data-bs-target="#loginModal">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
@@ -231,6 +248,9 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                 <!-- copyright -->
                                 <div class="bottom_content text-center pb-3">
                                     <p>CashApp: <span id="preview_cashapp">$SBOWEN2005</span> </p>
+                                </div>
+                                <div class="text-center text-light pb-3">
+                                    <p>Copyright © Copyright</p>
                                 </div>
                             </div>
                         </div>

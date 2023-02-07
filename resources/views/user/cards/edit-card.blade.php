@@ -65,6 +65,14 @@
 
     }
 
+    .gallery-btn {
+        position: absolute;
+        top: 23px;
+        right: 52px;
+        font-size: 20px;
+        color: #0d6efd !important;
+    }
+
     a.social-contact.disabled {
         opacity: .3;
     }
@@ -167,6 +175,7 @@
                                 </div>
                                 <div class="card_title p-2 pt-3 d-none" id="titleDiv"
                                     style="background-color: {{ $card->header_backgroung ?? '#000000' }}">
+
                                     <h2 class="">
                                         <span id="preview_name"
                                             style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">Express
@@ -193,6 +202,10 @@
                                             <img src="{{ asset('assets/images/bizads.png') }}" width="140"
                                                 id="previewLogo" alt="logo">
                                         </div>
+                                        <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
+                                            data-bs-target="#galleryModal">
+                                            <i class="fas fa-images"></i>
+                                        </a>
                                         <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
                                             data-bs-target="#loginModal">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
@@ -213,6 +226,10 @@
                                         <span id="preview_name"
                                             style="color:{{ $card->header_text_color ?? '#ffffff' }};">{{ $card->title
                                             }}</span>
+                                        <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
+                                            data-bs-target="#galleryModal">
+                                            <i class="fas fa-images"></i>
+                                        </a>
                                         <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
                                             data-bs-target="#loginModal">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
@@ -412,6 +429,11 @@
                                 <div class="bottom_content text-center pb-3">
                                     <p>CashApp: <span id="preview_cashapp">{{ $card->cashapp }}</span></p>
                                 </div>
+
+                                <div class="text-center text-light pb-3">
+                                    <p>Copyright © Copyright1</p>
+                                </div>
+
                             </div>
                         </div>
                     </div>

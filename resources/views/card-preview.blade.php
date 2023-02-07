@@ -82,7 +82,7 @@
         }
 
         .single_product .single_item img {
-            height: 350px !important;
+            height: auto !important;
             width: 100% !important;
         }
 
