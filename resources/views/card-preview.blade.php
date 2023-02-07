@@ -196,7 +196,7 @@
                     </a>
                     <a style="color: {{ $cardinfo->header_text_color ?? '#ffffff' }};" href="javascript:void(0)" class="login_btn" data-bs-toggle="modal" data-bs-target="#loginModal">
                         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none"
-                            stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            stroke="{{ $cardinfo->header_text_color ?? '#ffffff' }}" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="3" y1="12" x2="21" y2="12"></line>
                             <line x1="3" y1="6" x2="21" y2="6"></line>
                             <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -441,7 +441,7 @@
                     <div class="modal_body">
                         <div id="social-links" class="text-center">
                             <div class="row row-cols-4 row-cols-sm-5">
-                                <div class="col mb-3">
+                                {{-- <div class="col mb-3">
                                     <a href="sms://" class="social_share" title="{{ __('Text Message') }}">
                                         <img class="img-fluid" src="{{ asset('images/icons/social/message.svg') }}"
                                             alt="{{ __('Text Message') }}">
@@ -453,7 +453,7 @@
                                         <img class="img-fluid" src="{{ asset('images/icons/social/email.svg') }}"
                                             alt="{{ __('Send mail') }}">
                                     </a>
-                                </div>
+                                </div> --}}
                                 <div class="col mb-3">
                                     <a href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"
                                         target="_blank" class="social_share"

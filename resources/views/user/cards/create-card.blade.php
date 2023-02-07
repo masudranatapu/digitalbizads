@@ -706,8 +706,18 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
             });
         })
 
+
+        // $(document).on('input', '#header_text_color', function(e) {
+        //     var current_color = $("#header_text_color").val();
+        //     $('#preview_name').css({
+        //         'color': current_color
+        //     });
+        // })
+
         $(document).on('input', '#header_text_color', function(e) {
             var current_color = $("#header_text_color").val();
+            $('.gallery-btn').find('i').css('color',current_color);
+            $('.login_btn').find('svg').attr('stroke',current_color);
             $('#preview_name').css({
                 'color': current_color
             });

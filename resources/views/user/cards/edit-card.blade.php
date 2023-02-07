@@ -204,12 +204,12 @@
                                         </div>
                                         <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
                                             data-bs-target="#galleryModal">
-                                            <i class="fas fa-images"></i>
+                                            <i class="fas fa-images" style="color:{{ $card->header_text_color }};"></i>
                                         </a>
                                         <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
                                             data-bs-target="#loginModal">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
+                                                viewBox="0 0 24 24" fill="none" stroke="{{ $card->header_text_color }}" stroke-width="1"
                                                 stroke-linecap="round" stroke-linejoin="round">
                                                 <line x1="3" y1="12" x2="21" y2="12">
                                                 </line>
@@ -228,12 +228,12 @@
                                             }}</span>
                                         <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
                                             data-bs-target="#galleryModal">
-                                            <i class="fas fa-images"></i>
+                                            <i class="fas fa-images" style="color:{{ $card->header_text_color }};"></i>
                                         </a>
                                         <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
                                             data-bs-target="#loginModal">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
+                                                viewBox="0 0 24 24" fill="none" stroke="{{ $card->header_text_color }}" stroke-width="1"
                                                 stroke-linecap="round" stroke-linejoin="round">
                                                 <line x1="3" y1="12" x2="21" y2="12"></line>
                                                 <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -600,7 +600,7 @@
                                             <label for="banner" class="form-label">Banner</label>
                                             <input type="file" name="banner" id="banner"
                                                 class="form-control @error('banner') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" required>
+                                                tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('gallery'))
                                             <span class="help-block text-danger">{{ $errors->first('gallery') }}</span>
                                             @endif
@@ -888,12 +888,6 @@
         });
 
 
-
-
-
-
-
-
             $('.prod_def_photo_upload').imageUploader();
         });
         function hexToRgb(hex) {
@@ -935,6 +929,8 @@
 
         $(document).on('input', '#header_text_color', function(e) {
             var current_color = $("#header_text_color").val();
+            $('.gallery-btn').find('i').css('color',current_color);
+            $('.login_btn').find('svg').attr('stroke',current_color);
             $('#preview_name').css({
                 'color': current_color
             });
