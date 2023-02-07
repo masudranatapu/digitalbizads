@@ -165,7 +165,7 @@
 
         a.gallery-btn {
             position: absolute;
-            top: 15px;
+            top: 13px;
             right: 56px;
             font-size: 20px;
         }
