@@ -439,8 +439,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal_body">
-                        <div id="social-links" class="text-center">
-                            <div class="row row-cols-4 row-cols-sm-5">
+                        <div id="social-links">
+                            <div class="row row-cols-4 row-cols-sm-5 justify-content-center">
                                 {{-- <div class="col mb-3">
                                     <a href="sms://" class="social_share" title="{{ __('Text Message') }}">
                                         <img class="img-fluid" src="{{ asset('images/icons/social/message.svg') }}"
