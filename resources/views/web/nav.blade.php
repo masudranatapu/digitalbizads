@@ -49,7 +49,7 @@
             <a class="text-lg font-bold hover:text-dark text-dark" href="{{ route('home-locale') }}#features">{{
                 __('Features') }}</a>
             @endif
-        </li> 
+        </li>
 
         <li class="text-gray-800">
             <svg class="w-4 h-4 current-fill" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24"
@@ -114,7 +114,7 @@
                 <a class="block px-4 py-2 mt-2 text-lg font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="{{ route('web.whois.lookup') }}">{{ __('WHOIS Lookup') }}</a>
               </div>
             </div>
-        </div> 
+        </div>
         @endif --}}
     </ul>
 
@@ -281,9 +281,9 @@
                             <a class="block px-4 py-2 mt-2 text-lg font-semibold bg-transparent rounded-lg dark-mode:bg-transparent dark-mode:hover:bg-gray-600 dark-mode:focus:bg-gray-600 dark-mode:focus:text-white dark-mode:hover:text-white dark-mode:text-gray-200 md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="{{ route('web.whois.lookup') }}">{{ __('WHOIS Lookup') }}</a>
                           </div>
                         </div>
-                    </div> 
+                    </div>
                     @endif --}}
-
+{{--
                     @if(count(config('app.languages')) > 1)
 
                     <div @click.away="open = false" @click="open = !open"
@@ -310,7 +310,7 @@
                             </div>
                         </div>
                     </div>
-                    @endif
+                    @endif --}}
 
                 </ul>
             </div>

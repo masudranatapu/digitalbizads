@@ -55,6 +55,7 @@ Route::group(['middleware' => 'Installer'], function () {
     Route::get('privacy-policy', [HomeController::class, 'privacyPolicy'])->name('privacy.policy');
     Route::get('terms-and-conditions', [HomeController::class, 'termsAndConditions'])->name('terms.and.conditions');
     Route::get('refund-policy', [HomeController::class, 'refundPolicy'])->name('refund.policy');
+    Route::post('card/subscriber', [HomeController::class, 'postSubscriber'])->name('card.subscriber');
 
     // Web Tools
     // HTML
@@ -192,9 +193,13 @@ Route::group(['middleware' => 'Installer'], function () {
         Route::post('multiple', [MediaController::class, 'multipleImages'])->name('multiple');
 
         Route::post('card/store', [CardController::class, 'postStore'])->name('card.store');
+        Route::post('card/update/{id}', [CardController::class, 'postUpdate'])->name('card.update');
+        Route::get('card/delete/{id}', [CardController::class, 'getDelete'])->name('card.delete');
+
+
         Route::get('create-card', [CardController::class, 'CreateCard'])->name('create.card');
         Route::get('edit-card/{id}', [CardController::class, 'editCard'])->name('edit.card');
-
+        Route::get('card/gallery-delete/{id}', [CardController::class, 'getDeleteGallery'])->name('card.gallery-delete');
 
         if (env('APP_TYPE') == 'VCARD' || env('APP_TYPE') == 'BOTH') {
             // Create Business Card

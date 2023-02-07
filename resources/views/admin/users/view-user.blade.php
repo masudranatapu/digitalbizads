@@ -75,13 +75,17 @@
                                                         <th>{{ __('Status') }}</th>
                                                         <th class="w-1">{{ __('Actions') }}</th>
                                                     </tr>
-                                                </thead> 
+                                                </thead>
                                                 <tbody>
                                                     @if (count($user_cards) != 0)
                                                     @foreach ($user_cards as $user_card)
-                                                    <tr> 
-                                                        <td><a href="{{ route('profile', $user_card->card_url) }}"
+                                                    <tr>
+                                                        {{-- <td><a href="{{ route('profile', $user_card->card_url) }}"
+                                                                target="_blank">{{ $user_card->card_id }}</a></td> --}}
+                                                        <td><a href="#"
                                                                 target="_blank">{{ $user_card->card_id }}</a></td>
+
+
                                                         <td class="text-muted">
                                                             {{ $user_card->title }}
                                                         </td>
