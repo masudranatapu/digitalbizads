@@ -167,12 +167,11 @@ class HomeController extends Controller
         DB::beginTransaction();
         try {
             $subscriber = new Subscriber();
-            $subscriber->email = $request->email;
+            $subscriber->email = $request->subscriber_email;
             $subscriber->card_id = $request->card_id;
             $subscriber->created_at = date('Y-m-d H:i:s');
             $subscriber->save();
-
-            $email = $request->email;
+            $email = $request->subscriber_email;
             // Mail::send('emails.subscriber',compact('email'), function($message)use($email) {
             //     $message->to($email, $email)
             //     // ->cc('asas@gmail.com')

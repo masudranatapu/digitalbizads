@@ -190,11 +190,11 @@
 
                 @endif
                 <div class="float-end">
-                    <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
+                    <a href="javascript:void(0)" style="color: {{ $cardinfo->header_text_color ?? '#ffffff' }};" class="gallery-btn" data-bs-toggle="modal"
                         data-bs-target="#galleryModal">
                         <i class="fas fa-images"></i>
                     </a>
-                    <a href="javascript:void(0)" class="login_btn" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <a style="color: {{ $cardinfo->header_text_color ?? '#ffffff' }};" href="javascript:void(0)" class="login_btn" data-bs-toggle="modal" data-bs-target="#loginModal">
                         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none"
                             stroke="#000000" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -203,10 +203,7 @@
                         </svg>
                     </a>
                 </div>
-
             </div>
-
-
 
 
             @if (!empty($cardinfo->banner_content))
@@ -307,15 +304,6 @@
                         <!-- social icon -->
                         @if (!empty($cardinfo->contacts))
                         @foreach ($cardinfo->contacts as $contact)
-                        {{--
-                        <div class="col">
-                            <div class="social_item">
-                                <a href="{{ $cardinfo->contacts }}" target="_blank">
-                                    <i class="fa fa-comment"></i>
-                                </a>
-                            </div>
-                        </div> --}}
-
                         @if ($contact->label == 'facebook')
                         <!-- social icon -->
                         <div class="col">
@@ -354,13 +342,13 @@
                     @csrf
                     <input type="hidden" id="" name="card_id" value="{{ $cardinfo->id }}">
                     <div class="input-group">
-                        <input type="email" name="email" id="email"
-                            class="form-control @error('email') is-invalid @enderror" placeholder="Enter your emaill..."
+                        <input type="email" name="subscriber_email" id="subscriber_email"
+                            class="form-control @error('subscriber_email') is-invalid @enderror" placeholder="Enter your emaill..."
                             required>
                         <button type="submit" class="input-group-text btn btn-primary subscribe-btn">Subscribe</button>
                     </div>
-                    {{-- @if ($errors->has('email'))
-                    <span class="help-block text-danger d-block">{{ $errors->first('email') }}</span>
+                    {{-- @if ($errors->has('subscriber_email'))
+                    <span class="help-block text-danger d-block">{{ $errors->first('subscriber_email') }}</span>
                     @endif --}}
                 </form>
             </div>
@@ -406,12 +394,12 @@
                     <form action="{{ route('login') }}" method="post">
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label" for="username">Username or Email</label>
-                            <input type="text" name="username" id="username" value="{{ old('username') }}"
+                            <label class="form-label" for="username">Email</label>
+                            <input type="text" name="email" id="username" value="{{ old('email') }}"
                                 class="form-control @error('email') is-invalid @enderror"
-                                placeholder="Username or Email Address" required>
-                            @if ($errors->has('username'))
-                            <span class="help-block text-danger">{{ $errors->first('username') }}</span>
+                                placeholder="Email Address" required>
+                            @if ($errors->has('email'))
+                            <span class="help-block text-danger">{{ $errors->first('email') }}</span>
                             @endif
                         </div>
                         <div class="mb-3">
@@ -531,20 +519,20 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('register') }}" method="post">
+                    <form method="POST" action="{{ route('register') }}">
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label" for="username">Username</label>
-                            <input type="text" name="username" id="username" value="{{ old('username') }}"
-                                class="form-control @error('email') is-invalid @enderror" placeholder="Username"
+                            <label class="form-label" for="full_name">Full Name</label>
+                            <input type="text" name="name" id="full_name" value="{{ old('name') }}"
+                                class="form-control @error('email') is-invalid @enderror" placeholder="Full Name"
                                 required>
-                            @if ($errors->has('username'))
-                            <span class="help-block text-danger">{{ $errors->first('username') }}</span>
+                            @if ($errors->has('name'))
+                            <span class="help-block text-danger">{{ $errors->first('name') }}</span>
                             @endif
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="email">Email</label>
-                            <input type="email" name="email" id="email" value="{{ old('email') }}"
+                            <label class="form-label" for="user_email">Email</label>
+                            <input type="email" name="email" id="user_email" value="{{ old('email') }}"
                                 class="form-control @error('email') is-invalid @enderror" placeholder="Email Address"
                                 required>
                             @if ($errors->has('email'))
@@ -552,8 +540,8 @@
                             @endif
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="password">Password</label>
-                            <input type="password" name="password" value="{{ old('password') }}" id="password"
+                            <label class="form-label" for="user_password">Password</label>
+                            <input type="password" name="password" value="{{ old('password') }}" id="user_password"
                                 class="form-control @error('password') is-invalid @enderror" placeholder="Password"
                                 required>
                             @if ($errors->has('password'))
@@ -562,7 +550,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="confimation_password">Confirm Password</label>
-                            <input type="password" name="confimation_password" value="{{ old('confimation_password') }}"
+                            <input type="password" name="password_confirmation" value="{{ old('confimation_password') }}"
                                 id="confimation_password"
                                 class="form-control @error('confimation_password') is-invalid @enderror"
                                 placeholder="Password" required>
