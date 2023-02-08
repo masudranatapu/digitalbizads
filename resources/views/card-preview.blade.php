@@ -436,7 +436,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal_body">
-                        <div id="social-links">
+                        <div class="pb-4" id="social-links">
                             <div>
                                 @if ($android !== false || $ipad !== false || $iphone !== false)
                                 @php
@@ -447,12 +447,12 @@
                                 $sms_attr ="sms:;body=".URL::to('/');
                                 @endphp
                                 @endif
-                                <label for="send_to">Send To</label>
+                                <label class="py-2" for="send_to">Send To</label>
                                 <div class="input-group">
                                     <input type="text" name="send_to" id="send_to"
-                                            class="form-control @error('send_to') is-invalid @enderror" data-url="{{ URL::to('/') }}" placeholder="Send to phone no"
+                                            class="form-control @error('send_to') is-invalid @enderror" placeholder="Send to phone no"
                                             required>
-                                    <a href="{{ $sms_attr }}"  class="input-group-text btn btn-primary subscribe-btn">Send</a>
+                                    <a href="{{ $sms_attr }}"  class="input-group-text btn btn-info sendto-btn">Send</a>
                                 </div>
                             </div>
                         </div>
@@ -598,19 +598,15 @@
             },
         });
         $(document).on('input','#send_to',function(e){
-
             var value = $(this).val();
-
-            var ua = navigator.userAgent.toLowerCase();
+            var CurrentBrowseurl = document.location.href;
+            var user_agent = navigator.userAgent.toLowerCase();
             var url;
-
-            if (ua.indexOf("iphone") > -1 || ua.indexOf("ipad") > -1)
-            url = "sms:;body=" + encodeURIComponent("I'm at " + mapUrl + " @ " + pos.Address);
+            if (user_agent.indexOf("iphone") > -1 || user_agent.indexOf("ipad") > -1)
+            url = "sms:"+value+";body=" + encodeURIComponent(CurrentBrowseurl);
             else
-            url = "sms:?body=" + encodeURIComponent("I'm at " + mapUrl + " @ " + pos.Address);
-
-            location.href = url;
-
+            url = "sms:"+value+"?body=" + encodeURIComponent(CurrentBrowseurl);
+            $('.sendto-btn').attr('href',url);
         })
     </script>
 </body>
