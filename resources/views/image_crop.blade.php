@@ -63,8 +63,8 @@ $(document).ready(function(){
         enableExif: true,
         showZoomer: true,
         viewport: {
-            width:200,
-            height:200,
+            width:350,
+            height:120,
             type:'square' //circle
         },
         boundary:{
@@ -72,24 +72,38 @@ $(document).ready(function(){
             height:250
         }
     });
+
+
+
     @if(isMobile())
-    var boundaryWidth = 380;
+
+    var boundaryWidth = 700;
+
     @else
-    var boundaryWidth = 600;
+
+    var boundaryWidth = 500;
+
     @endif
+
     var boundaryHeight = boundaryWidth / 1;
     var viewportWidth = boundaryWidth - (boundaryWidth/100*25);
     var viewportHeight = boundaryHeight - (boundaryHeight/100*25);
+
     $image_crop = $('#image_demo').croppie({
+
         enableExif: true,
-        viewport: {
-            width: viewportWidth, height: viewportHeight,
+
+        showZoomer: true,
+
+         viewport: {
+            width:300,
+            height:500,
             type:'square' //circle
         },
         boundary:{
-            width: boundaryWidth, height: boundaryHeight
-        },
-        enableOrientation: true,
+            width:350,
+            height:350
+        }
     });
 
 });
@@ -131,7 +145,8 @@ $(document).on('click', '.crop_logo', function(event){
                 $(_this).attr("disabled", false);
                 $(_this).children(".loading-spinner").removeClass('active');
                 $(_this).children(".btn-txt").text("Crop & Upload logo");
-                $('#logofield').html(data.html);
+                $('#logofield1').html(data.html);
+                $('#previewLogo').attr('src', data.logo);
                 $('#uploadlogoModal').modal('hide');
                 $('#upload_logo').val(1);
             },
@@ -148,22 +163,21 @@ $(document).on('click', '.crop_logo', function(event){
                 $("body").css("cursor", "default");
             }
         });
-        // $(_this).attr("disabled", false);
     })
 });
 
 
 $(document).on('change', '#banner', function(){
-var reader = new FileReader();
-reader.onload = function (event) {
-    $image_crop.croppie('bind', {
-        url: event.target.result
-    }).then(function(){
-        console.log('jQuery bind complete');
-    });
-}
-reader.readAsDataURL(this.files[0]);
-$('#uploadimageModal').modal('show');
+    var reader = new FileReader();
+    reader.onload = function (event) {
+        $image_crop.croppie('bind', {
+            url: event.target.result
+        }).then(function(){
+            console.log('jQuery bind complete');
+        });
+    }
+    reader.readAsDataURL(this.files[0]);
+    $('#uploadimageModal').modal('show');
 });
 
 $(document).on('click', '.crop_image', function(event){
@@ -171,7 +185,7 @@ $(document).on('click', '.crop_image', function(event){
     var _this = this;
     $image_crop.croppie('result', {
         type: 'canvas',
-        size: { width: 600, height: 600 }
+        size: { width: 500, height: 700 }
     }).then(function(response){
         $.ajax({
             url: upload_image_url,
@@ -192,7 +206,9 @@ $(document).on('click', '.crop_image', function(event){
                 $(_this).children(".loading-spinner").removeClass('active');
                 $(_this).children(".btn-txt").text("Crop & Upload image");
                 $('#uploadimageModal').modal('hide');
-                $('#galleryfield').html(data);
+                $('#galleryfield1').html(data.html);
+                $('#digitalbizSlider').html('');
+                $("#digitalbizSlider").append('<img src="' + data.banner +'" class="d-block w-100"/>');
                 $('#upload_image').val(1);
 
             },

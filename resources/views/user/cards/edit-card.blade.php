@@ -3,8 +3,17 @@
 @section('css')
 <link href="{{ asset('assets/css/image-uploader.min.css')}}" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" />
-<link rel="stylesheet" href="{{ asset('assets/css/croppie.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/croppie.css') }}" />
 
+<style>
+    .loading-spinner {
+    display: none;
+}
+
+.loading-spinner.active {
+    display: inline-block;
+}
+</style>
 @endsection
 
 @section('content')
@@ -456,6 +465,10 @@
                             <form action="{{ route('user.card.update', $card->id) }}" method="post" id="card-form"
                                 novalidate="novalidate" enctype="multipart/form-data">
                                 @csrf
+                                <input type="hidden" name="upload_image_url" id="upload_image_url"
+                                value="{{ route('user.card.upload_image') }}" />
+                                <input type="hidden" name="upload_logo_url" id="upload_logo_url"
+                                    value="{{ route('user.card.upload_logo') }}" />
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
@@ -558,7 +571,7 @@
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="mb-3 form-input" id="headline">
+                                        <div class="mb-3 form-input">
                                             <label for="text" class="form-label">Heading</label>
                                             <input type="text" placeholder="ads heading" name="text" id="text"
                                                 data-preview="preview_name" data-concat="preview_name"
@@ -574,24 +587,13 @@
                                 </div>
 
                                 <div class="row @if(!empty($card->logo)) d-flex @else d-none @endif" id="logofield">
+                                    <div id="logofield1"></div>
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="logo" class="form-label">Logo</label>
-
-                                            <div class="slim logo-slim"
-                                                    data-min-size="1,1"
-                                                    data-ratio="35:12"
-                                                    data-size="350,120" data-max-file-size="100"
-                                                    data-min-file-size="1"
-                                                    >
-                                                    <img src="{{ asset($card->logo) }}" alt=""/>
-                                                    <input type="file" name="logo" id="logo" onchange="readURL(this);"
+                                            <input type="file" name="logo" id="logo" onchange="readURL(this);"
                                                 class="form-control @error('logo') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
-                                            </div>
-                                            {{-- <input type="file" name="logo" id="logo" onchange="readURL(this);"
-                                                class="form-control @error('logo') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}"> --}}
                                             @if ($errors->has('logo'))
                                             <span class="help-block text-danger">{{ $errors->first('logo') }}</span>
                                             @endif
@@ -623,19 +625,11 @@
                                     <div class="col-6">
                                         <div class="mb-3 form-input {{ $banner_type == 'banner' ? 'd-block' : 'd-none' }}"
                                             id="galleryfield">
+                                            <div id="galleryfield1"></div>
                                             <label for="banner" class="form-label">Banner</label>
-                                            <div class="slim banner-slim"
-                                                data-ratio="5:7"
-                                                data-size="500,700"
-                                                data-max-file-size="2">
-                                                <img src="{{ asset($card->banner_content) }}" alt=""/>
-                                                <input type="file" name="banner" id="banner"
+                                            <input type="file" name="banner" id="banner"
                                                 class="form-control @error('banner') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
-                                            </div>
-                                            {{-- <input type="file" name="banner" id="banner"
-                                                class="form-control @error('banner') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}"> --}}
                                             @if ($errors->has('gallery'))
                                             <span class="help-block text-danger">{{ $errors->first('gallery') }}</span>
                                             @endif
@@ -877,7 +871,7 @@
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('assets/js/card.js') }}"></script>
 <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
-<script src="{{ asset('assets/js/croppie.js') }}"></script>
+<script src="{{ asset('js/croppie.js') }}"></script>
 @include('image_crop')
 
 <script>

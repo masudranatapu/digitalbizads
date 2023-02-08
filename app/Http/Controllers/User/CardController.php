@@ -177,18 +177,19 @@ class CardController extends Controller
             if ($request->headline == 'text') {
                 $card->title = $request->text;
             } else {
-                if ($request->has('logo') && !empty($request->logo[0])) {
-                    $file_name = $this->formatName($request->adsname);
-                    $output = $request->logo;
-                    $output = json_decode($output, TRUE);
-                    if (isset($output) && isset($output['output']) && isset($output['output']['image'])) {
-                        $image = $output['output']['image'];
-                        if (isset($image)) {
-                            $image_name =  $this->uploadBase64ToImage($image, $file_name, 'png');
-                        }
-                    }
-                    $card->logo  = $image_name;
-                }
+                $card->logo         = $request->logo_path;
+                // if ($request->has('logo') && !empty($request->logo[0])) {
+                //     $file_name = $this->formatName($request->adsname);
+                //     $output = $request->logo;
+                //     $output = json_decode($output, TRUE);
+                //     if (isset($output) && isset($output['output']) && isset($output['output']['image'])) {
+                //         $image = $output['output']['image'];
+                //         if (isset($image)) {
+                //             $image_name =  $this->uploadBase64ToImage($image, $file_name, 'png');
+                //         }
+                //     }
+                //     $card->logo  = $image_name;
+                // }
             }
 
             if (!empty($request->video) && $request->gallery_type == 'videosource') {
@@ -208,19 +209,23 @@ class CardController extends Controller
                 $card->banner_content  =  $this->getYoutubeEmbad($request->video);
 
             } elseif (!empty($request->banner) && $request->gallery_type == 'banner') {
-                if ($request->has('banner') && !empty($request->banner[0])) {
-                    $file_name = $this->formatName($request->adsname);
-                    $output = $request->banner;
-                    $output = json_decode($output, TRUE);
-                    if (isset($output) && isset($output['output']) && isset($output['output']['image'])) {
-                        $image = $output['output']['image'];
-                        if (isset($image)) {
-                            $image_name =  $this->uploadBase64ToImage($image, $file_name, 'png');
-                        }
-                    }
-                    $card->banner_content  = $image_name;
-                    $card->banner_type =  $request->gallery_type;
-                }
+
+                $card->banner_content      = $request->profile_image_path ?? null;
+                // if ($request->has('banner') && !empty($request->banner[0])) {
+                //     $file_name = $this->formatName($request->adsname);
+                //     $output = $request->banner;
+                //     $output = json_decode($output, TRUE);
+                //     if (isset($output) && isset($output['output']) && isset($output['output']['image'])) {
+                //         $image = $output['output']['image'];
+                //         if (isset($image)) {
+                //             $image_name =  $this->uploadBase64ToImage($image, $file_name, 'png');
+                //         }
+                //     }
+                //     $card->banner_content  = $image_name;
+                //     $card->banner_type =  $request->gallery_type;
+                // }
+                $card->banner_type =  $request->gallery_type;
+
             }
             $card->header_text_color = $request->header_text_color;
             $card->header_backgroung = $request->header_backgroung;
@@ -303,7 +308,7 @@ class CardController extends Controller
         $validator = Validator::make($request->all(), [
             'adsname' => 'required',
             'theme_color' => 'required|max:10',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            // 'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
             'text' => 'nullable|string|min:3|max:191',
             'phone_number' => 'required',
             'email' => 'required|email|max:191',
@@ -313,7 +318,7 @@ class CardController extends Controller
             'cashapp' => 'nullable|string|max:191',
             'personalized_link' => 'nullable|string|max:191',
             'footer_text' => 'nullable|string|max:191',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'banner' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -345,18 +350,20 @@ class CardController extends Controller
 
             } else {
 
-                if ($request->has('logo') && !empty($request->logo[0])) {
-                    $file_name = $this->formatName($request->adsname);
-                    $output = $request->logo;
-                    $output = json_decode($output, TRUE);
-                    if (isset($output) && isset($output['output']) && isset($output['output']['image'])) {
-                        $image = $output['output']['image'];
-                        if (isset($image)) {
-                            $image_name =  $this->uploadBase64ToImage($image, $file_name, 'png');
-                        }
-                    }
-                    $card->logo  = $image_name;
-                }
+                $card->logo         = $request->logo_path;
+
+                // if ($request->has('logo') && !empty($request->logo[0])) {
+                //     $file_name = $this->formatName($request->adsname);
+                //     $output = $request->logo;
+                //     $output = json_decode($output, TRUE);
+                //     if (isset($output) && isset($output['output']) && isset($output['output']['image'])) {
+                //         $image = $output['output']['image'];
+                //         if (isset($image)) {
+                //             $image_name =  $this->uploadBase64ToImage($image, $file_name, 'png');
+                //         }
+                //     }
+                //     $card->logo  = $image_name;
+                // }
             }
 
             if (!empty($request->video) && $request->gallery_type == 'videosource') {
@@ -378,22 +385,23 @@ class CardController extends Controller
                 $card->banner_content  =  $this->getYoutubeEmbad($request->video);
 
             } elseif (!empty($request->banner) && $request->gallery_type == 'banner') {
-                  if ($request->has('banner') && !empty($request->banner[0])) {
-                    $file_name = $this->formatName($request->adsname);
-                    $output = $request->banner;
-                    $output = json_decode($output, TRUE);
-                    if (isset($output) && isset($output['output']) && isset($output['output']['image'])) {
-                        $image = $output['output']['image'];
-                        if (isset($image)) {
-                            if(File::exists(public_path($card->banner_content))){
-                                File::delete(public_path($card->banner_content));
-                            }
-                            $image_name =  $this->uploadBase64ToImage($image, $file_name, 'png');
-                        }
-                    }
-                    $card->banner_content  = $image_name;
-                    $card->banner_type =  $request->gallery_type;
-                }
+                //   if ($request->has('banner') && !empty($request->banner[0])) {
+                //     $file_name = $this->formatName($request->adsname);
+                //     $output = $request->banner;
+                //     $output = json_decode($output, TRUE);
+                //     if (isset($output) && isset($output['output']) && isset($output['output']['image'])) {
+                //         $image = $output['output']['image'];
+                //         if (isset($image)) {
+                //             if(File::exists(public_path($card->banner_content))){
+                //                 File::delete(public_path($card->banner_content));
+                //             }
+                //             $image_name =  $this->uploadBase64ToImage($image, $file_name, 'png');
+                //         }
+                //     }
+                //     $card->banner_content  = $image_name; }
+                $card->banner_content      = $request->profile_image_path ?? null;
+                $card->banner_type =  $request->gallery_type;
+
             }
             $card->card_type = 'vcard';
             $card->phone_number = $request->phone_number;

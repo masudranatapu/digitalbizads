@@ -58,6 +58,13 @@ Create New DigitalBizAds Card
         font-size: 20px;
         /* color: #0d6efd !important; */
     }
+    .loading-spinner {
+    display: none;
+    }
+
+    .loading-spinner.active {
+        display: inline-block;
+    }
 </style>
 @endsection
 <?php
@@ -382,6 +389,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 d-none form-input" id="logofield">
+                                            <div id="logofield1"></div>
                                             <label for="logo" class="form-label">Logo</label>
                                             <input type="file" name="logo" id="logo" onchange="readURL(this);"
                                                 class="form-control @error('logo') is-invalid @enderror"
@@ -408,7 +416,8 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="mb-3 form-input" id="galleryfield">
+                                        <div class="mb-3 form-input" id="galleryfield" >
+                                            <div id="galleryfield1"></div>
                                             <label for="banner" class="form-label">Banner</label>
                                             <input type="file" name="banner" id="banner"
                                                 class="form-control @error('banner') is-invalid @enderror"
@@ -893,14 +902,9 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
-
             reader.onload = function(e) {
-                $('#previewLogo')
-                    .attr('src', e.target.result);
-                // .width(150)
-                // .height(200);
+                $('#previewLogo').attr('src', e.target.result);
             };
-
             reader.readAsDataURL(input.files[0]);
         }
     }
