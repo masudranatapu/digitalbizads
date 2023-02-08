@@ -158,7 +158,7 @@ class HomeController extends Controller
     public function postSubscriber(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email|unique:subscribers,email,',
+            'subscriber_email' => 'required|email|unique:subscribers,email,',
             'card_id' => 'required|integer',
         ]);
         if ($validator->fails()) {
