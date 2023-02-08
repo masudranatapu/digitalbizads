@@ -6,6 +6,8 @@ Create New DigitalBizAds Card
 @section('content')
 @section('css')
 <link href="{{ asset('assets/css/image-uploader.min.css')}}" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" />
+
 <style>
     span.error {
         color: #E53935;
@@ -249,7 +251,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                     <p>CashApp: <span id="preview_cashapp">$SBOWEN2005</span> </p>
                                 </div>
                                 <div class="text-center text-light pb-3">
-                                    <p>Copyright © Copyright</p>
+                                    <p id="preview_copyright">Copyright © Copyright</p>
                                 </div>
                             </div>
                         </div>
@@ -554,8 +556,8 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                         <div class="mb-3 form-input">
                                             <label for="footer_text" class="form-label">Copyright</label>
                                             <input type="text" name="footer_text" placeholder="copyright"
-                                                id="footer_text" value="{{ old('footer_text') }}"
-                                                class="form-control @error('footer_text') is-invalid @enderror"
+                                                id="footer_text" data-preview="preview_copyright" value="{{ old('footer_text') }}"
+                                                class="form-control cin @error('footer_text') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('footer_text'))
                                             <span class="help-block text-danger">{{ $errors->first('footer_text')
@@ -648,10 +650,75 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
 
 
 @push('custom-js')
+<script type="text/javascript" src="{{ asset('assets/js/slim.kickstart.min.js') }}"></script>
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('assets/js/card.js') }}"></script>
 <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
 <script>
+    var cropper = new Slim(document.getElementById('logo'), {
+        ratio: '1:1',
+        minSize: {
+            width: 50,
+            height: 50,
+        },
+        size: {
+            width: 440,
+            height: 440,
+        },
+        willSave: function(data, ready) {
+            $('#showlogo_2').attr('src', data.output.image);
+            // console.log(data);
+            ready(data);
+        },
+        meta: {
+            viewid: 1
+        },
+        download: false,
+        instantEdit: true,
+        // label: 'Upload: Click here or drag an image file onto it',
+        buttonConfirmLabel: 'Crop',
+        buttonConfirmTitle: 'Crop',
+        buttonCancelLabel: 'Cancel',
+        buttonCancelTitle: 'Cancel',
+        buttonEditTitle: 'Edit',
+        buttonRemoveTitle: 'Remove',
+        buttonDownloadTitle: 'Download',
+        buttonRotateTitle: 'Rotate',
+        buttonUploadTitle: 'Upload',
+        statusImageTooSmall: 'This photo is too small. The minimum size is 360 * 240 pixels.'
+    });
+var cropper = new Slim(document.getElementById('banner'), {
+        ratio: '1:1',
+        minSize: {
+            width: 50,
+            height: 50,
+        },
+        size: {
+            width: 440,
+            height: 440,
+        },
+        willSave: function(data, ready) {
+            $('#showlogo_2').attr('src', data.output.image);
+            ready(data);
+        },
+        meta: {
+            viewid: 1
+        },
+        download: false,
+        instantEdit: true,
+        // label: 'Upload: Click here or drag an image file onto it',
+        buttonConfirmLabel: 'Crop',
+        buttonConfirmTitle: 'Crop',
+        buttonCancelLabel: 'Cancel',
+        buttonCancelTitle: 'Cancel',
+        buttonEditTitle: 'Edit',
+        buttonRemoveTitle: 'Remove',
+        buttonDownloadTitle: 'Download',
+        buttonRotateTitle: 'Rotate',
+        buttonUploadTitle: 'Upload',
+        statusImageTooSmall: 'This photo is too small. The minimum size is 360 * 240 pixels.'
+    });
+
     $(function () {
 
         // show color code
@@ -664,11 +731,6 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
         $('#header_text_color').on('input', function() {
             $('#header_clr_code').val(this.value);
         });
-
-
-
-
-
 
             $('.prod_def_photo_upload').imageUploader();
         });

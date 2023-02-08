@@ -124,7 +124,7 @@ class CardController extends Controller
         $validator = Validator::make($request->all(), [
             'adsname' => 'required',
             'theme_color' => 'required|max:10',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+            'logo' => 'nullable|string',
             'text' => 'nullable|string|min:3|max:191',
             'phone_number' => 'required',
             'email' => 'required|email|max:191',
@@ -134,7 +134,7 @@ class CardController extends Controller
             'cashapp' => 'nullable|string|max:191',
             'personalized_link' => 'nullable|string|max:191',
             'footer_text' => 'nullable|string|max:191',
-            'banner' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            'banner' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -177,20 +177,34 @@ class CardController extends Controller
             if ($request->headline == 'text') {
                 $card->title = $request->text;
             } else {
-                if (!is_null($request->file('logo'))) {
-                    $logo_ = $request->file('logo');
-                    $base_name = preg_replace('/\..+$/', '', $logo_->getClientOriginalName());
-                    $base_name = explode(' ', $base_name);
-                    $base_name = implode('-', $base_name);
-                    $base_name = Str::lower($base_name);
-                    $image_name = $base_name . "-" . uniqid() . "." . $logo_->getClientOriginalExtension();
-                    $file_path = 'assets/uploads/logo/';
-                    if (!File::exists($file_path)) {
-                        File::makeDirectory($file_path, 777, true);
+                // if (!is_null($request->file('logo'))) {
+                //     $logo_ = $request->file('logo');
+                //     $base_name = preg_replace('/\..+$/', '', $logo_->getClientOriginalName());
+                //     $base_name = explode(' ', $base_name);
+                //     $base_name = implode('-', $base_name);
+                //     $base_name = Str::lower($base_name);
+                //     $image_name = $base_name . "-" . uniqid() . "." . $logo_->getClientOriginalExtension();
+                //     $file_path = 'assets/uploads/logo/';
+                //     if (!File::exists($file_path)) {
+                //         File::makeDirectory($file_path, 777, true);
+                //     }
+                //     $logo_->move($file_path, $image_name);
+                //     $card->logo = $file_path . $image_name;
+                // }
+                if ($request->has('logo') && !empty($request->logo[0])) {
+                    $file_name = $this->formatName($request->adsname);
+                    $output = $request->logo;
+                    $output = json_decode($output, TRUE);
+                    if (isset($output) && isset($output['output']) && isset($output['output']['image'])) {
+                        $image = $output['output']['image'];
+                        if (isset($image)) {
+                            $image_name =  $this->uploadBase64ToImage($image, $file_name, 'png');
+                        }
                     }
-                    $logo_->move($file_path, $image_name);
-                    $card->logo = $file_path . $image_name;
+                    $card->logo  = $image_name;
                 }
+
+
             }
 
             if (!empty($request->video) && $request->gallery_type == 'videosource') {
@@ -210,21 +224,35 @@ class CardController extends Controller
                 $card->banner_content  =  $this->getYoutubeEmbad($request->video);
 
             } elseif (!empty($request->banner) && $request->gallery_type == 'banner') {
-                if (!is_null($request->file('banner'))) {
-                    $gallery_image = $request->file('banner');
-                    $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
-                    $base_name = explode(' ', $base_name);
-                    $base_name = implode('-', $base_name);
-                    $base_name = Str::lower($base_name);
-                    $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
-                    $file_path = 'assets/uploads/gallery/';
-                    if (!File::exists($file_path)) {
-                        File::makeDirectory($file_path, 777, true);
+                // if (!is_null($request->file('banner'))) {
+                //     $gallery_image = $request->file('banner');
+                //     $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
+                //     $base_name = explode(' ', $base_name);
+                //     $base_name = implode('-', $base_name);
+                //     $base_name = Str::lower($base_name);
+                //     $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
+                //     $file_path = 'assets/uploads/gallery/';
+                //     if (!File::exists($file_path)) {
+                //         File::makeDirectory($file_path, 777, true);
+                //     }
+                //     $gallery_image->move($file_path, $image_name);
+                //     $card->banner_content = asset($file_path . $image_name);
+                //     $card->banner_type =  $request->gallery_type;
+                // }
+                if ($request->has('banner') && !empty($request->banner[0])) {
+                    $file_name = $this->formatName($request->adsname);
+                    $output = $request->banner;
+                    $output = json_decode($output, TRUE);
+                    if (isset($output) && isset($output['output']) && isset($output['output']['image'])) {
+                        $image = $output['output']['image'];
+                        if (isset($image)) {
+                            $image_name =  $this->uploadBase64ToImage($image, $file_name, 'png');
+                        }
                     }
-                    $gallery_image->move($file_path, $image_name);
-                    $card->banner_content = asset($file_path . $image_name);
+                    $card->banner_content  = $image_name;
                     $card->banner_type =  $request->gallery_type;
                 }
+
             }
             $card->header_text_color = $request->header_text_color;
             $card->header_backgroung = $request->header_backgroung;
@@ -360,22 +388,34 @@ class CardController extends Controller
                 ]);
 
             } else {
-                if (!is_null($request->file('logo'))) {
-                    DB::table('business_cards')->where('id', $id)->update([
-                        'title' => NULL
-                    ]);
-                    $logo_ = $request->file('logo');
-                    $base_name = preg_replace('/\..+$/', '', $logo_->getClientOriginalName());
-                    $base_name = explode(' ', $base_name);
-                    $base_name = implode('-', $base_name);
-                    $base_name = Str::lower($base_name);
-                    $image_name = $base_name . "-" . uniqid() . "." . $logo_->getClientOriginalExtension();
-                    $file_path = 'assets/uploads/logo/';
-                    if (!File::exists($file_path)) {
-                        File::makeDirectory($file_path, 777, true);
+                // if (!is_null($request->file('logo'))) {
+                //     DB::table('business_cards')->where('id', $id)->update([
+                //         'title' => NULL
+                //     ]);
+                //     $logo_ = $request->file('logo');
+                //     $base_name = preg_replace('/\..+$/', '', $logo_->getClientOriginalName());
+                //     $base_name = explode(' ', $base_name);
+                //     $base_name = implode('-', $base_name);
+                //     $base_name = Str::lower($base_name);
+                //     $image_name = $base_name . "-" . uniqid() . "." . $logo_->getClientOriginalExtension();
+                //     $file_path = 'assets/uploads/logo/';
+                //     if (!File::exists($file_path)) {
+                //         File::makeDirectory($file_path, 777, true);
+                //     }
+                //     $logo_->move($file_path, $image_name);
+                //     $card->logo = $file_path . $image_name;
+                // }
+                if ($request->has('logo') && !empty($request->logo[0])) {
+                    $file_name = $this->formatName($request->adsname);
+                    $output = $request->logo;
+                    $output = json_decode($output, TRUE);
+                    if (isset($output) && isset($output['output']) && isset($output['output']['image'])) {
+                        $image = $output['output']['image'];
+                        if (isset($image)) {
+                            $image_name =  $this->uploadBase64ToImage($image, $file_name, 'png');
+                        }
                     }
-                    $logo_->move($file_path, $image_name);
-                    $card->logo = $file_path . $image_name;
+                    $card->logo  = $image_name;
                 }
             }
 
@@ -398,22 +438,39 @@ class CardController extends Controller
                 $card->banner_content  =  $this->getYoutubeEmbad($request->video);
 
             } elseif (!empty($request->banner) && $request->gallery_type == 'banner') {
-                if (!is_null($request->file('banner'))) {
-                    if(File::exists(public_path($card->banner_content))){
-                        File::delete(public_path($card->banner_content));
+                // if (!is_null($request->file('banner'))) {
+                //     if(File::exists(public_path($card->banner_content))){
+                //         File::delete(public_path($card->banner_content));
+                //     }
+                //     $gallery_image = $request->file('banner');
+                //     $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
+                //     $base_name = explode(' ', $base_name);
+                //     $base_name = implode('-', $base_name);
+                //     $base_name = Str::lower($base_name);
+                //     $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
+                //     $file_path = 'assets/uploads/gallery/';
+                //     if (!File::exists($file_path)) {
+                //         File::makeDirectory($file_path, 777, true);
+                //     }
+                //     $gallery_image->move($file_path, $image_name);
+                //     $card->banner_content = asset($file_path . $image_name);
+                //     $card->banner_type =  $request->gallery_type;
+                // }
+
+                if ($request->has('banner') && !empty($request->banner[0])) {
+                    $file_name = $this->formatName($request->adsname);
+                    $output = $request->banner;
+                    $output = json_decode($output, TRUE);
+                    if (isset($output) && isset($output['output']) && isset($output['output']['image'])) {
+                        $image = $output['output']['image'];
+                        if (isset($image)) {
+                            if(File::exists(public_path($card->banner_content))){
+                                File::delete(public_path($card->banner_content));
+                            }
+                            $image_name =  $this->uploadBase64ToImage($image, $file_name, 'png');
+                        }
                     }
-                    $gallery_image = $request->file('banner');
-                    $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
-                    $base_name = explode(' ', $base_name);
-                    $base_name = implode('-', $base_name);
-                    $base_name = Str::lower($base_name);
-                    $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
-                    $file_path = 'assets/uploads/gallery/';
-                    if (!File::exists($file_path)) {
-                        File::makeDirectory($file_path, 777, true);
-                    }
-                    $gallery_image->move($file_path, $image_name);
-                    $card->banner_content = asset($file_path . $image_name);
+                    $card->banner_content  = $image_name;
                     $card->banner_type =  $request->gallery_type;
                 }
             }
@@ -1295,4 +1352,35 @@ class CardController extends Controller
         $video_file = 'https://www.youtube.com/embed/' . $youtube_id;
         return $video_file;
     }
+
+    public function formatName($name)
+    {
+        $base_name = preg_replace('/\..+$/', '', $name);
+        $base_name = explode(' ', $base_name);
+        $base_name = implode('-', $base_name);
+        $base_name = Str::lower($base_name);
+        $name = $base_name . "-" . uniqid();
+        return $name;
+    }
+
+    public function uploadBase64ToImage($file, $file_name, $file_prefix)
+    {
+        $file_path = sprintf("assets/images/banner/");
+        if (!File::exists($file_path)) {
+            File::makeDirectory($file_path);
+        }
+        $file_name = sprintf('%s.%s', $file_name, $file_prefix);
+        $upload_path = public_path() . '/' . $file_path;
+        if (stripos($file, 'data:image/jpeg;base64,') === 0) {
+            $img = base64_decode(str_replace('data:image/jpeg;base64,', '', $file));
+        } else if (stripos($file, 'data:image/png;base64,') === 0) {
+            $img = base64_decode(str_replace('data:image/png;base64,', '', $file));
+        } else {
+            return false;
+        }
+        $result = file_put_contents($upload_path . $file_name, $img);
+        return $file_path . $file_name;
+    }
+
+
 }

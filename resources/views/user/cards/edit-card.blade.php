@@ -1,4 +1,9 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
+
+@section('css')
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" />
+@endsection
+
 @section('content')
 
 <?php
@@ -431,7 +436,7 @@
                                 </div>
 
                                 <div class="text-center text-light pb-3">
-                                    <p>Copyright © Copyright1</p>
+                                    <p id="preview_copyright">Copyright © Copyright1</p>
                                 </div>
 
                             </div>
@@ -774,9 +779,9 @@
                                         <div class="col-12">
                                             <div class="mb-3 form-input">
                                                 <label for="footer_text" class="form-label">Copyright</label>
-                                                <input type="text" name="footer_text" placeholder="copyright"
+                                                <input type="text" data-preview="preview_copyright" name="footer_text" placeholder="copyright"
                                                     id="footer_text"
-                                                    class="form-control @error('footer_text') is-invalid @enderror"
+                                                    class="form-control cin @error('footer_text') is-invalid @enderror"
                                                     tabindex="{{ $tabindex++ }}" value="{{ $card->footer_text }}">
                                                 @if ($errors->has('footer_text'))
                                                 <span class="help-block text-danger">{{ $errors->first('footer_text')
@@ -870,10 +875,77 @@
 
 
 @push('custom-js')
+<script type="text/javascript" src="{{ asset('assets/js/slim.kickstart.min.js') }}"></script>
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('assets/js/card.js') }}"></script>
 <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
 <script>
+
+var cropper = new Slim(document.getElementById('logo'), {
+        ratio: '1:1',
+        minSize: {
+            width: 50,
+            height: 50,
+        },
+        size: {
+            width: 440,
+            height: 440,
+        },
+        willSave: function(data, ready) {
+            $('#showlogo_2').attr('src', data.output.image);
+            // console.log(data);
+            ready(data);
+        },
+        meta: {
+            viewid: 1
+        },
+        download: false,
+        instantEdit: true,
+        // label: 'Upload: Click here or drag an image file onto it',
+        buttonConfirmLabel: 'Crop',
+        buttonConfirmTitle: 'Crop',
+        buttonCancelLabel: 'Cancel',
+        buttonCancelTitle: 'Cancel',
+        buttonEditTitle: 'Edit',
+        buttonRemoveTitle: 'Remove',
+        buttonDownloadTitle: 'Download',
+        buttonRotateTitle: 'Rotate',
+        buttonUploadTitle: 'Upload',
+        statusImageTooSmall: 'This photo is too small. The minimum size is 360 * 240 pixels.'
+    });
+var cropper = new Slim(document.getElementById('banner'), {
+        ratio: '1:1',
+        minSize: {
+            width: 50,
+            height: 50,
+        },
+        size: {
+            width: 440,
+            height: 440,
+        },
+        willSave: function(data, ready) {
+            $('#showlogo_2').attr('src', data.output.image);
+            ready(data);
+        },
+        meta: {
+            viewid: 1
+        },
+        download: false,
+        instantEdit: true,
+        // label: 'Upload: Click here or drag an image file onto it',
+        buttonConfirmLabel: 'Crop',
+        buttonConfirmTitle: 'Crop',
+        buttonCancelLabel: 'Cancel',
+        buttonCancelTitle: 'Cancel',
+        buttonEditTitle: 'Edit',
+        buttonRemoveTitle: 'Remove',
+        buttonDownloadTitle: 'Download',
+        buttonRotateTitle: 'Rotate',
+        buttonUploadTitle: 'Upload',
+        statusImageTooSmall: 'This photo is too small. The minimum size is 360 * 240 pixels.'
+    });
+
+
     $(function () {
 
         // show color code
@@ -900,7 +972,6 @@
         $(document).on('input', '#theme_color', function(e) {
             var current_color = $("#theme_color").val();
             console.log(current_color);
-            // $( "#theme_color_input").val(current_color);
             let hex2rgb = hexToRgb(current_color);
             let rgb = hex2rgb.toString();
             $('.social_item').find('i').css('border-color', current_color);
@@ -910,9 +981,6 @@
             $('.purchase_btn').find('a').css({
                 'background-color': 'rgba(' + rgb + ',.1' + ')'
             });
-            // $('.card_title').css({
-            //     'background-color': current_color
-            // });
             $('.card_template').css({
                 'background-color': 'rgba(' + rgb + ',.1' + ')'
             });
