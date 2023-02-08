@@ -60,6 +60,7 @@ Route::group(['middleware' => 'Installer'], function () {
 
     Route::post('post-register', [AuthController::class, 'postRegister'])->name('post-register');
 
+
     // Web Tools
     // HTML
     Route::get('html-beautifier', [WebToolsController::class, 'htmlBeautifier'])->name('web.html.beautifier');
@@ -198,6 +199,10 @@ Route::group(['middleware' => 'Installer'], function () {
         Route::post('card/store', [CardController::class, 'postStore'])->name('card.store');
         Route::post('card/update/{id}', [CardController::class, 'postUpdate'])->name('card.update');
         Route::get('card/delete/{id}', [CardController::class, 'getDelete'])->name('card.delete');
+
+        Route::post('card/upload_image',['as'=>'card.upload_image','uses'=>'CardController@uploadImage']);
+        Route::post('card/upload_logo',['as'=>'card.upload_logo','uses'=>'CardController@uploadLogo']);
+
 
 
         Route::get('create-card', [CardController::class, 'CreateCard'])->name('create.card');

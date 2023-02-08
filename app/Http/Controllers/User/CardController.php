@@ -100,17 +100,16 @@ class CardController extends Controller
     public function postStore(Request $request)
     {
 
-        // dd($request->all());
-        // $validity = checkPackageValidity(Auth::id());
-        // if ($validity == false) {
-        //     alert()->error(trans('Your package is expired please upgrade'));
-        //     return redirect()->route('user.plans');
-        // }
-        // $check = checkCardLimit(Auth::id());
-        // if ($check == false) {
-        //     alert()->error(trans('Your card limit is over please upgrade your package for more card'));
-        //     return redirect()->back();
-        // }
+        $validity = checkPackageValidity(Auth::id());
+        if ($validity == false) {
+            alert()->error(trans('Your package is expired please upgrade'));
+            return redirect()->route('user.plans');
+        }
+        $check = checkCardLimit(Auth::id());
+        if ($check == false) {
+            alert()->error(trans('Your card limit is over please upgrade your package for more card'));
+            return redirect()->back();
+        }
         $user_details = User::where('user_id', Auth::user()->user_id)->first();
         $plan_details = json_decode($user_details->plan_details, true);
         if ($request->gallery_type == 'videosource') {
@@ -222,7 +221,6 @@ class CardController extends Controller
                     $card->banner_content  = $image_name;
                     $card->banner_type =  $request->gallery_type;
                 }
-
             }
             $card->header_text_color = $request->header_text_color;
             $card->header_backgroung = $request->header_backgroung;
@@ -1324,6 +1322,46 @@ class CardController extends Controller
             $blank_img->save($path.'/'. $fileName);
             return $_path. $fileName;
         }
+
+        public function uploadImage(Request $request){
+
+            $data = $request->image;
+            $image_array_1 = explode(";", $data);
+            $image_array_2 = explode(",", $image_array_1[1]);
+            $data = base64_decode($image_array_2[1]);
+            $imageName = time() . '.png';
+            if (!File::isDirectory('assets/uploads/logo/')) {
+                File::makeDirectory('assets/uploads/logo/', 0777, true, true);
+            }
+            Image::make($data)->save('assets/uploads/banner/' . $imageName);
+            $imagePath = asset('assets/uploads/banner/' . $imageName);
+            $imagePath2 = 'assets/uploads/banner/' . $imageName;
+            return response()->json([
+                'html'=>'<input type="hidden" name="profile_image_path" value="'.$imagePath2.'">',
+                'banner'=>$imagePath
+            ]);
+        }
+
+        public function uploadLogo(Request $request){
+            $data = $request->image;
+            $image_array_1 = explode(";", $data);
+            $image_array_2 = explode(",", $image_array_1[1]);
+            $data = base64_decode($image_array_2[1]);
+            $imageName = time() . '.png';
+            if (!File::isDirectory('assets/uploads/logo/')) {
+                File::makeDirectory('assets/uploads/logo/', 0777, true, true);
+            }
+           Image::make($data)->save('assets/uploads/logo/' . $imageName);
+            $imagePath = asset('assets/uploads/logo/' . $imageName);
+            $imagePath2 = 'assets/uploads/logo/' . $imageName;
+            return response()->json(
+                [
+                    'html'=>'<input type="hidden" name="logo_path" value="'.$imagePath2.'">',
+                    'logo'=>$imagePath
+                ]);
+
+        }
+
 
 
 }

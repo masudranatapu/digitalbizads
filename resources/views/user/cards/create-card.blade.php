@@ -6,7 +6,9 @@ Create New DigitalBizAds Card
 @section('content')
 @section('css')
 <link href="{{ asset('assets/css/image-uploader.min.css')}}" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" />
+{{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" /> --}}
+<link rel="stylesheet" href="{{ asset('css/croppie.css') }}" />
+
 
 <style>
     span.error {
@@ -263,6 +265,10 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                             <form action="{{ route('user.card.store') }}" method="post" id="card-form"
                                 novalidate="novalidate" enctype="multipart/form-data">
                                 @csrf
+                                <input type="hidden" name="upload_image_url" id="upload_image_url"
+                                value="{{ route('user.card.upload_image') }}" />
+                                <input type="hidden" name="upload_logo_url" id="upload_logo_url"
+                                    value="{{ route('user.card.upload_logo') }}" />
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
@@ -407,9 +413,6 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                             <input type="file" name="banner" id="banner"
                                                 class="form-control @error('banner') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}" required>
-                                            {{-- <input type="file" name="gallery[]" id="gallery"
-                                                class="form-control @error('gallery') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" multiple> --}}
                                             @if ($errors->has('banner'))
                                             <span class="help-block text-danger">{{ $errors->first('banner') }}</span>
                                             @endif
@@ -607,75 +610,77 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
     </div>
 </div>
 
-
 @push('custom-js')
-<script type="text/javascript" src="{{ asset('assets/js/slim.kickstart.min.js') }}"></script>
+{{-- <script type="text/javascript" src="{{ asset('assets/js/slim.kickstart.min.js') }}"></script> --}}
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('assets/js/card.js') }}"></script>
 <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
+<script src="{{ asset('js/croppie.js') }}"></script>
+@include('image_crop')
+
 <script>
-    var cropper = new Slim(document.getElementById('logo'), {
-        ratio: '35:12',
-        minSize: {
-            width: 125,
-            height: 60,
-        },
-        size: {
-            width: 350,
-            height: 120,
-        },
-        willSave: function(data, ready) {
-            $('#previewLogo').attr('src', data.output.image);
-            ready(data);
-        },
-        meta: {
-            viewid: 1
-        },
-        download: false,
-        instantEdit: true,
-        // label: 'Upload: Click here or drag an image file onto it',
-        buttonConfirmLabel: 'Crop',
-        buttonConfirmTitle: 'Crop',
-        buttonCancelLabel: 'Cancel',
-        buttonCancelTitle: 'Cancel',
-        buttonEditTitle: 'Edit',
-        buttonRemoveTitle: 'Remove',
-        buttonDownloadTitle: 'Download',
-        buttonRotateTitle: 'Rotate',
-        buttonUploadTitle: 'Upload',
-        statusImageTooSmall: 'This photo is too small. The minimum size is 360 * 240 pixels.'
-    });
-var cropper = new Slim(document.getElementById('banner'), {
-        ratio: '5:7',
-        minSize: {
-            width: 500,
-            height: 700,
-        },
-        size: {
-            width: 500,
-            height: 700,
-        },
-        willSave: function(data, ready) {
-            $('#digitalbizSlider').find('img').attr('src', data.output.image);
-            ready(data);
-        },
-        meta: {
-            viewid: 1
-        },
-        download: false,
-        instantEdit: true,
-        // label: 'Upload: Click here or drag an image file onto it',
-        buttonConfirmLabel: 'Crop',
-        buttonConfirmTitle: 'Crop',
-        buttonCancelLabel: 'Cancel',
-        buttonCancelTitle: 'Cancel',
-        buttonEditTitle: 'Edit',
-        buttonRemoveTitle: 'Remove',
-        buttonDownloadTitle: 'Download',
-        buttonRotateTitle: 'Rotate',
-        buttonUploadTitle: 'Upload',
-        statusImageTooSmall: 'This photo is too small. The minimum size is 360 * 240 pixels.'
-    });
+//     var cropper = new Slim(document.getElementById('logo'), {
+//         ratio: '35:12',
+//         minSize: {
+//             width: 125,
+//             height: 60,
+//         },
+//         size: {
+//             width: 350,
+//             height: 120,
+//         },
+//         willSave: function(data, ready) {
+//             $('#previewLogo').attr('src', data.output.image);
+//             ready(data);
+//         },
+//         meta: {
+//             viewid: 1
+//         },
+//         download: false,
+//         instantEdit: true,
+//         // label: 'Upload: Click here or drag an image file onto it',
+//         buttonConfirmLabel: 'Crop',
+//         buttonConfirmTitle: 'Crop',
+//         buttonCancelLabel: 'Cancel',
+//         buttonCancelTitle: 'Cancel',
+//         buttonEditTitle: 'Edit',
+//         buttonRemoveTitle: 'Remove',
+//         buttonDownloadTitle: 'Download',
+//         buttonRotateTitle: 'Rotate',
+//         buttonUploadTitle: 'Upload',
+//         statusImageTooSmall: 'This photo is too small. The minimum size is 360 * 240 pixels.'
+//     });
+// var cropper = new Slim(document.getElementById('banner'), {
+//         ratio: '5:7',
+//         minSize: {
+//             width: 500,
+//             height: 700,
+//         },
+//         size: {
+//             width: 500,
+//             height: 700,
+//         },
+//         willSave: function(data, ready) {
+//             $('#digitalbizSlider').find('img').attr('src', data.output.image);
+//             ready(data);
+//         },
+//         meta: {
+//             viewid: 1
+//         },
+//         download: false,
+//         instantEdit: true,
+//         // label: 'Upload: Click here or drag an image file onto it',
+//         buttonConfirmLabel: 'Crop',
+//         buttonConfirmTitle: 'Crop',
+//         buttonCancelLabel: 'Cancel',
+//         buttonCancelTitle: 'Cancel',
+//         buttonEditTitle: 'Edit',
+//         buttonRemoveTitle: 'Remove',
+//         buttonDownloadTitle: 'Download',
+//         buttonRotateTitle: 'Rotate',
+//         buttonUploadTitle: 'Upload',
+//         statusImageTooSmall: 'This photo is too small. The minimum size is 360 * 240 pixels.'
+//     });
 
     $(function () {
 

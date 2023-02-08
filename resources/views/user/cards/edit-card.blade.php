@@ -2,8 +2,9 @@
 
 @section('css')
 <link href="{{ asset('assets/css/image-uploader.min.css')}}" rel="stylesheet">
-
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/css/croppie.css') }}" />
+
 @endsection
 
 @section('content')
@@ -876,6 +877,9 @@
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('assets/js/card.js') }}"></script>
 <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
+<script src="{{ asset('assets/js/croppie.js') }}"></script>
+@include('image_crop')
+
 <script>
     $(function () {
         // show color code

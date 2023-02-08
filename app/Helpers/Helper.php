@@ -8,7 +8,16 @@ if (!function_exists('getSetting')) {
         return DB::table('settings')->orderBy('id','DESC')->first();
     }
 }
-
+if (!function_exists('isMobile')) {
+    function isMobile(){
+        if(stristr($_SERVER['HTTP_USER_AGENT'],'Mobile')){
+            return true;
+        }else{
+            return false;
+        }
+        // return true;
+    }
+}
 
 /*Print Validation Error List*/
 if (!function_exists('vError')) {

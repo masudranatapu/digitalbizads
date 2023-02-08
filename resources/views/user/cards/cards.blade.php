@@ -241,6 +241,9 @@
         </div>
     </div>
 
+
+
+
     <script>
 
     $(document).on('click','.delete-card',function(e){
