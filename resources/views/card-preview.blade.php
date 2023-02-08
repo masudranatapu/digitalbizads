@@ -440,7 +440,7 @@
                             <div>
                                 @if ($android !== false || $ipad !== false || $iphone !== false)
                                 @php
-                                    $sms_attr ="sms:;body=".URL::to('/');
+                                    $sms_attr ="sms:?body=".URL::to('/');
                                 @endphp
                                 @else
                                 @php
@@ -452,7 +452,7 @@
                                     <input type="text" name="send_to" id="send_to"
                                             class="form-control @error('send_to') is-invalid @enderror" placeholder="Send to phone no"
                                             required>
-                                    <a href="{{ $sms_attr }}"  class="input-group-text btn btn-info sendto-btn">Send</a>
+                                    <a href="{{ $sms_attr }}"  class="input-group-text btn btn-dark sendto-btn">Send</a>
                                 </div>
                             </div>
                         </div>
