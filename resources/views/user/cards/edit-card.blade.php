@@ -1,6 +1,8 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
 
 @section('css')
+<link href="{{ asset('assets/css/image-uploader.min.css')}}" rel="stylesheet">
+
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" />
 @endsection
 
@@ -129,6 +131,12 @@
         width: 100%;
         height: 111px;
         margin-bottom: 12px;
+    }
+    .gallery-btn {
+        position: absolute;
+        top: 23px;
+        right: 52px;
+        font-size: 20px;
     }
 </style>
 @endsection
@@ -273,8 +281,9 @@
                                         </div>
                                     </div>
                                     @elseif ($card->banner_type == 'banner')
+
                                     <div class="" id="digitalbizSlider">
-                                        <img src="{{ $card->banner_content }}" class="d-block w-100" alt="image">
+                                        <img src="{{ asset($card->banner_content) }}" class="d-block w-100" alt="image">
                                     </div>
                                     @endif
                                     @else
@@ -476,7 +485,7 @@
                                                         required>
                                                 </label>
                                                 <input type="text" id="theme_clr_code" class="form-control"
-                                                    value="{{ $card->theme_color }}">
+                                                    value="{{ $card->theme_color }}" disabled>
                                             </div>
                                             @if ($errors->has('color'))
                                             <span class="help-block text-danger">{{ $errors->first('color') }}</span>
@@ -500,7 +509,7 @@
                                                         tabindex="{{ $tabindex++ }}" required>
                                                 </label>
                                                 <input type="text" id="theme_back_code" class="form-control"
-                                                    value="{{ $card->header_backgroung }}">
+                                                    value="{{ $card->header_backgroung }}" disabled>
                                             </div>
 
                                             @if ($errors->has('header_backgroung'))
@@ -524,7 +533,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row" id="headline">
+                                <div class="row @if(!empty($card->title)) d-block @else d-none @endif" id="headline">
 
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="textfield">
@@ -541,7 +550,7 @@
                                                         tabindex="{{ $tabindex++ }}" required>
                                                 </label>
                                                 <input type="text" id="header_clr_code" class="form-control"
-                                                    value="{{ $card->header_text_color }}">
+                                                    value="{{ $card->header_text_color }}" disabled>
                                             </div>
 
                                             @if ($errors->has('header_text_color'))
@@ -566,15 +575,29 @@
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="mb-3 d-none form-input" id="logofield">
-                                        <label for="logo" class="form-label">Logo</label>
-                                        <input type="file" name="logo" id="logo" onchange="readURL(this);"
-                                            class="form-control @error('logo') is-invalid @enderror"
-                                            tabindex="{{ $tabindex++ }}">
-                                        @if ($errors->has('logo'))
-                                        <span class="help-block text-danger">{{ $errors->first('logo') }}</span>
-                                        @endif
+                                <div class="row @if(!empty($card->logo)) d-block @else d-none @endif" id="logofield">
+                                    <div class="col-6">
+                                        <div class="mb-3 form-input">
+                                            <label for="logo" class="form-label">Logo</label>
+
+                                            <div class="slim"
+                                                    data-min-size="1,1"
+                                                    data-ratio="1:1"
+                                                    data-size="400,400" data-max-file-size="100"
+                                                    data-min-file-size="1"
+                                                    >
+                                                    <img src="{{ asset($card->logo) }}" alt=""/>
+                                                    <input type="file" name="logo" id="logo" onchange="readURL(this);"
+                                                class="form-control @error('logo') is-invalid @enderror"
+                                                tabindex="{{ $tabindex++ }}">
+                                            </div>
+                                            {{-- <input type="file" name="logo" id="logo" onchange="readURL(this);"
+                                                class="form-control @error('logo') is-invalid @enderror"
+                                                tabindex="{{ $tabindex++ }}"> --}}
+                                            @if ($errors->has('logo'))
+                                            <span class="help-block text-danger">{{ $errors->first('logo') }}</span>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
 
@@ -603,9 +626,18 @@
                                         <div class="mb-3 form-input {{ $banner_type == 'banner' ? 'd-block' : 'd-none' }}"
                                             id="galleryfield">
                                             <label for="banner" class="form-label">Banner</label>
-                                            <input type="file" name="banner" id="banner"
+                                            <div class="slim"
+                                                data-ratio="5:7"
+                                                data-size="500,700"
+                                                data-max-file-size="2">
+                                                <img src="{{ asset($card->banner_content) }}" alt=""/>
+                                                <input type="file" name="banner" id="banner"
                                                 class="form-control @error('banner') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
+                                            </div>
+                                            {{-- <input type="file" name="banner" id="banner"
+                                                class="form-control @error('banner') is-invalid @enderror"
+                                                tabindex="{{ $tabindex++ }}"> --}}
                                             @if ($errors->has('gallery'))
                                             <span class="help-block text-danger">{{ $errors->first('gallery') }}</span>
                                             @endif
@@ -815,55 +847,22 @@
                 </div>
                 <div class="modal_body">
                     <div id="social-links">
-                        <div class="row">
-                            <div class="col-12 col-sm-12">
-                                <ul class="text-center">
-                                    <li class="list-inline-item">
-                                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ auth()->user()->user_id }}"
-                                            target="_blank" class="social_share"
-                                            data-url="https://www.facebook.com/sharer/sharer.php?u={{ auth()->user()->user_id }}"
-                                            title="{{ __('Share on Facebook') }}">
-                                            <img class="img-fluid" src="{{ asset('images/icons/social/facebook.svg') }}"
-                                                alt="{{ __('Share on facebook') }}">
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ auth()->user()->user_id }}"
-                                            target="blank" class="social_share" data-url="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ auth()->user()->user_id }}
-                                        " title="{{ __('Share on Twitter') }}">
-                                            <img class="img-fluid" src="{{ asset('images/icons/social/twitter.svg') }}"
-                                                alt="">
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="javascript:void(0)" class="social_share"
-                                            data-url="https://telegram.me/share/url?url={{ auth()->user()->user_id }}&text="
-                                            title="{{ __('Share on Telegram') }}">
-                                            <img class="img-fluid" src="{{ asset('images/icons/social/telegram.svg') }}"
-                                                alt="">
-                                        </a>
-                                    </li>
-
-                                    @if ($android !== false || $ipad !== false || $iphone !== false || true)
-                                    <li class="list-inline-item">
-                                        <a href="whatsapp://send?text={{ auth()->user()->user_id }}"
-                                            class="social_share whatsapp" title="{{ __('Share on Whatsapp') }}"
-                                            data-action="share/whatsapp/share">
-                                            <img class="img-fluid" src="{{ asset('images/icons/social/whatsapp.svg') }}"
-                                                alt="">
-                                        </a>
-                                    </li>
-                                    @else
-                                    <li class="list-inline-item">
-                                        <a href="https://web.whatsapp.com/send?text={{ auth()->user()->user_id }}"
-                                            target="__blank" class="whatsapp" title="{{ __('Share on Whatsapp') }}"
-                                            data-action="share/whatsapp/share">
-                                            <img class="img-fluid" src="{{ asset('assets/img/icons/whatsapp.svg') }}"
-                                                alt="">
-                                        </a>
-                                    </li>
-                                    @endif
-                                </ul>
+                        <div>
+                            @if ($android !== false || $ipad !== false || $iphone !== false)
+                                @php
+                                    $sms_attr ="sms:?body=".URL::to('/');
+                                @endphp
+                            @else
+                                @php
+                                    $sms_attr ="sms:;body=".URL::to('/');
+                                @endphp
+                            @endif
+                            <label class="py-2" for="send_to">Send To</label>
+                            <div class="input-group">
+                                <input type="text" name="send_to" id="send_to"
+                                        class="form-control @error('send_to') is-invalid @enderror" placeholder="Send to phone no"
+                                        required>
+                                <a href="{{ $sms_attr }}"  class="input-group-text btn btn-dark sendto-btn">Send</a>
                             </div>
                         </div>
                     </div>
@@ -880,74 +879,8 @@
 <script src="{{ asset('assets/js/card.js') }}"></script>
 <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
 <script>
-
-var cropper = new Slim(document.getElementById('logo'), {
-        ratio: '1:1',
-        minSize: {
-            width: 50,
-            height: 50,
-        },
-        size: {
-            width: 440,
-            height: 440,
-        },
-        willSave: function(data, ready) {
-            $('#showlogo_2').attr('src', data.output.image);
-            // console.log(data);
-            ready(data);
-        },
-        meta: {
-            viewid: 1
-        },
-        download: false,
-        instantEdit: true,
-        // label: 'Upload: Click here or drag an image file onto it',
-        buttonConfirmLabel: 'Crop',
-        buttonConfirmTitle: 'Crop',
-        buttonCancelLabel: 'Cancel',
-        buttonCancelTitle: 'Cancel',
-        buttonEditTitle: 'Edit',
-        buttonRemoveTitle: 'Remove',
-        buttonDownloadTitle: 'Download',
-        buttonRotateTitle: 'Rotate',
-        buttonUploadTitle: 'Upload',
-        statusImageTooSmall: 'This photo is too small. The minimum size is 360 * 240 pixels.'
-    });
-var cropper = new Slim(document.getElementById('banner'), {
-        ratio: '1:1',
-        minSize: {
-            width: 50,
-            height: 50,
-        },
-        size: {
-            width: 440,
-            height: 440,
-        },
-        willSave: function(data, ready) {
-            $('#showlogo_2').attr('src', data.output.image);
-            ready(data);
-        },
-        meta: {
-            viewid: 1
-        },
-        download: false,
-        instantEdit: true,
-        // label: 'Upload: Click here or drag an image file onto it',
-        buttonConfirmLabel: 'Crop',
-        buttonConfirmTitle: 'Crop',
-        buttonCancelLabel: 'Cancel',
-        buttonCancelTitle: 'Cancel',
-        buttonEditTitle: 'Edit',
-        buttonRemoveTitle: 'Remove',
-        buttonDownloadTitle: 'Download',
-        buttonRotateTitle: 'Rotate',
-        buttonUploadTitle: 'Upload',
-        statusImageTooSmall: 'This photo is too small. The minimum size is 360 * 240 pixels.'
-    });
-
-
+    $('.prod_def_photo_upload').imageUploader();
     $(function () {
-
         // show color code
         $('#theme_color').on('input', function() {
             $('#theme_clr_code').val(this.value);
@@ -959,9 +892,7 @@ var cropper = new Slim(document.getElementById('banner'), {
             $('#header_clr_code').val(this.value);
         });
 
-
-            $('.prod_def_photo_upload').imageUploader();
-        });
+    });
         function hexToRgb(hex) {
             const normal = hex.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
             if (normal) return normal.slice(1).map(e => parseInt(e, 16));
@@ -969,7 +900,7 @@ var cropper = new Slim(document.getElementById('banner'), {
             if (shorthand) return shorthand.slice(1).map(e => 0x11 * parseInt(e, 16));
             return null;
         }
-        $(document).on('input', '#theme_color', function(e) {
+        $(document).on('input', '#theme_color,#theme_clr_code', function(e) {
             var current_color = $("#theme_color").val();
             console.log(current_color);
             let hex2rgb = hexToRgb(current_color);
@@ -988,8 +919,18 @@ var cropper = new Slim(document.getElementById('banner'), {
                 'background-color': current_color
             });
         })
+
+
         $(document).on('input', '#header_backgroung', function(e) {
             var current_color = $("#header_backgroung").val();
+            $('.card_title').css({
+                'background-color': current_color
+            });
+        })
+
+        $(document).on('input', '#theme_back_code', function(e) {
+            var current_color = $("#theme_back_code").val();
+            $("#header_backgroung").val(current_color);
             $('.card_title').css({
                 'background-color': current_color
             });

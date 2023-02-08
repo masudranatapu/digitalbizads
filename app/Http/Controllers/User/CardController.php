@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\User;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\File;
 use App\Plan;
 use App\User;
 use App\Theme;
@@ -20,6 +18,7 @@ use App\BusinessCard;
 use App\BusinessHour;
 use App\StoreProduct;
 use App\BusinessField;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\App;
@@ -27,6 +26,8 @@ use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -177,20 +178,6 @@ class CardController extends Controller
             if ($request->headline == 'text') {
                 $card->title = $request->text;
             } else {
-                // if (!is_null($request->file('logo'))) {
-                //     $logo_ = $request->file('logo');
-                //     $base_name = preg_replace('/\..+$/', '', $logo_->getClientOriginalName());
-                //     $base_name = explode(' ', $base_name);
-                //     $base_name = implode('-', $base_name);
-                //     $base_name = Str::lower($base_name);
-                //     $image_name = $base_name . "-" . uniqid() . "." . $logo_->getClientOriginalExtension();
-                //     $file_path = 'assets/uploads/logo/';
-                //     if (!File::exists($file_path)) {
-                //         File::makeDirectory($file_path, 777, true);
-                //     }
-                //     $logo_->move($file_path, $image_name);
-                //     $card->logo = $file_path . $image_name;
-                // }
                 if ($request->has('logo') && !empty($request->logo[0])) {
                     $file_name = $this->formatName($request->adsname);
                     $output = $request->logo;
@@ -203,8 +190,6 @@ class CardController extends Controller
                     }
                     $card->logo  = $image_name;
                 }
-
-
             }
 
             if (!empty($request->video) && $request->gallery_type == 'videosource') {
@@ -224,21 +209,6 @@ class CardController extends Controller
                 $card->banner_content  =  $this->getYoutubeEmbad($request->video);
 
             } elseif (!empty($request->banner) && $request->gallery_type == 'banner') {
-                // if (!is_null($request->file('banner'))) {
-                //     $gallery_image = $request->file('banner');
-                //     $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
-                //     $base_name = explode(' ', $base_name);
-                //     $base_name = implode('-', $base_name);
-                //     $base_name = Str::lower($base_name);
-                //     $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
-                //     $file_path = 'assets/uploads/gallery/';
-                //     if (!File::exists($file_path)) {
-                //         File::makeDirectory($file_path, 777, true);
-                //     }
-                //     $gallery_image->move($file_path, $image_name);
-                //     $card->banner_content = asset($file_path . $image_name);
-                //     $card->banner_type =  $request->gallery_type;
-                // }
                 if ($request->has('banner') && !empty($request->banner[0])) {
                     $file_name = $this->formatName($request->adsname);
                     $output = $request->banner;
@@ -268,26 +238,14 @@ class CardController extends Controller
             $card->created_by = Auth::user()->id;
             $card->status = 1;
             $card->save();
-
-
             if (!empty($request->images)) {
-                // DB::table('card_gallery')->where('card_id', $card->id)->delete();
                 foreach ($request->images as $key => $gallery) {
                     if (!is_null($request->file('images')[$key])) {
                         $gallery_image = $request->file('images')[$key];
-                        $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
-                        $base_name = explode(' ', $base_name);
-                        $base_name = implode('-', $base_name);
-                        $base_name = Str::lower($base_name);
-                        $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
-                        $file_path = 'assets/uploads/gallery/';
-                        if (!File::exists($file_path)) {
-                            File::makeDirectory($file_path, 777, true);
-                        }
-                        $gallery_image->move($file_path, $image_name);
-                        $_gallery = $file_path . $image_name;
+                        $file_path = 'assets/images/banner/';
+                        $image_name = $this->uploadAndResize($gallery_image, $file_path, 850, 650);
                         $gallery_photo = new Gallery();
-                        $gallery_photo->content = $_gallery;
+                        $gallery_photo->content = $image_name;
                         $gallery_photo->card_id = $card->id;
                         $gallery_photo->gallery_type = 'gallery';
                         $gallery_photo->save();
@@ -388,23 +346,7 @@ class CardController extends Controller
                 ]);
 
             } else {
-                // if (!is_null($request->file('logo'))) {
-                //     DB::table('business_cards')->where('id', $id)->update([
-                //         'title' => NULL
-                //     ]);
-                //     $logo_ = $request->file('logo');
-                //     $base_name = preg_replace('/\..+$/', '', $logo_->getClientOriginalName());
-                //     $base_name = explode(' ', $base_name);
-                //     $base_name = implode('-', $base_name);
-                //     $base_name = Str::lower($base_name);
-                //     $image_name = $base_name . "-" . uniqid() . "." . $logo_->getClientOriginalExtension();
-                //     $file_path = 'assets/uploads/logo/';
-                //     if (!File::exists($file_path)) {
-                //         File::makeDirectory($file_path, 777, true);
-                //     }
-                //     $logo_->move($file_path, $image_name);
-                //     $card->logo = $file_path . $image_name;
-                // }
+
                 if ($request->has('logo') && !empty($request->logo[0])) {
                     $file_name = $this->formatName($request->adsname);
                     $output = $request->logo;
@@ -438,26 +380,7 @@ class CardController extends Controller
                 $card->banner_content  =  $this->getYoutubeEmbad($request->video);
 
             } elseif (!empty($request->banner) && $request->gallery_type == 'banner') {
-                // if (!is_null($request->file('banner'))) {
-                //     if(File::exists(public_path($card->banner_content))){
-                //         File::delete(public_path($card->banner_content));
-                //     }
-                //     $gallery_image = $request->file('banner');
-                //     $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
-                //     $base_name = explode(' ', $base_name);
-                //     $base_name = implode('-', $base_name);
-                //     $base_name = Str::lower($base_name);
-                //     $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
-                //     $file_path = 'assets/uploads/gallery/';
-                //     if (!File::exists($file_path)) {
-                //         File::makeDirectory($file_path, 777, true);
-                //     }
-                //     $gallery_image->move($file_path, $image_name);
-                //     $card->banner_content = asset($file_path . $image_name);
-                //     $card->banner_type =  $request->gallery_type;
-                // }
-
-                if ($request->has('banner') && !empty($request->banner[0])) {
+                  if ($request->has('banner') && !empty($request->banner[0])) {
                     $file_name = $this->formatName($request->adsname);
                     $output = $request->banner;
                     $output = json_decode($output, TRUE);
@@ -482,30 +405,18 @@ class CardController extends Controller
             $card->website = $request->website;
             $card->header_text_color = $request->header_text_color;
             $card->header_backgroung = $request->header_backgroung;
-            // $card->card_status = 'activated';
             $card->updated_at = date('Y-m-d H:i:s');
             $card->updated_by = Auth::user()->id;
             $card->update();
 
-
             if (!empty($request->images)) {
-                // DB::table('card_gallery')->where('card_id', $card->id)->delete();
                 foreach ($request->images as $key => $gallery) {
                     if (!is_null($request->file('images')[$key])) {
                         $gallery_image = $request->file('images')[$key];
-                        $base_name = preg_replace('/\..+$/', '', $gallery_image->getClientOriginalName());
-                        $base_name = explode(' ', $base_name);
-                        $base_name = implode('-', $base_name);
-                        $base_name = Str::lower($base_name);
-                        $image_name = $base_name . "-" . uniqid() . "." . $gallery_image->getClientOriginalExtension();
-                        $file_path = 'assets/uploads/gallery/';
-                        if (!File::exists($file_path)) {
-                            File::makeDirectory($file_path, 777, true);
-                        }
-                        $gallery_image->move($file_path, $image_name);
-                        $_gallery = $file_path . $image_name;
+                        $file_path = 'assets/images/banner/';
+                        $image_name = $this->uploadAndResize($gallery_image, $file_path, 850, 650);
                         $gallery_photo = new Gallery();
-                        $gallery_photo->content = $_gallery;
+                        $gallery_photo->content = $image_name;
                         $gallery_photo->card_id = $card->id;
                         $gallery_photo->gallery_type = 'gallery';
                         $gallery_photo->save();
@@ -1381,6 +1292,38 @@ class CardController extends Controller
         $result = file_put_contents($upload_path . $file_name, $img);
         return $file_path . $file_name;
     }
+
+
+
+        function uploadAndResize($file, $_path, $width, $height)
+        {
+            $blank_img =  Image::canvas($width, $height, '#EBEEF7');
+            $path = public_path($_path);
+            if (!File::isDirectory($path)) {
+                    File::makeDirectory($path, 0777, true, true);
+            }
+            $fileName = preg_replace('/\..+$/', '', $file->getClientOriginalName());
+            $fileName = explode(' ', $fileName);
+            $fileName = implode('-', $fileName);
+            $fileName = Str::lower($fileName);
+            $fileName = $fileName . "-" . uniqid() . "." . $file->getClientOriginalExtension();
+            $image = Image::make($file);
+            $imageWidth = $image->width();
+            $imageHeight = $image->height();
+            if ($imageWidth > $width) {
+                $image->resize($width, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            }
+            if ($imageHeight > $height) {
+                 $image->resize(null, $height, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+            }
+            $blank_img->insert($image, 'center');
+            $blank_img->save($path.'/'. $fileName);
+            return $_path. $fileName;
+        }
 
 
 }

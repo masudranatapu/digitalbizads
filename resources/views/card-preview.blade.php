@@ -433,21 +433,12 @@
                     <div class="modal_body">
                         <div class="pb-4" id="social-links">
                             <div>
-                                @if ($android !== false || $ipad !== false || $iphone !== false)
-                                    @php
-                                        $sms_attr ="sms:?body=".URL::to('/');
-                                    @endphp
-                                @else
-                                    @php
-                                        $sms_attr ="sms:;body=".URL::to('/');
-                                    @endphp
-                                @endif
                                 <label class="py-2" for="send_to">Send To</label>
                                 <div class="input-group">
                                     <input type="text" name="send_to" id="send_to"
                                             class="form-control @error('send_to') is-invalid @enderror" placeholder="Send to phone no"
                                             required>
-                                    <a href="{{ $sms_attr }}"  class="input-group-text btn btn-dark sendto-btn">Send</a>
+                                    <a href="javascript:void(0)"  class="input-group-text btn btn-dark sendto-btn">Send</a>
                                 </div>
                             </div>
                         </div>

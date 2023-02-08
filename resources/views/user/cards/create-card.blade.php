@@ -290,7 +290,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                         tabindex="{{ $tabindex++ }}" required>
                                                 </label>
                                                 <input type="text" id="theme_clr_code" class="form-control"
-                                                    value="#ffc107">
+                                                    value="#ffc107" disabled>
                                             </div>
                                             @if ($errors->has('theme_color'))
                                             <span class="help-block text-danger">{{ $errors->first('theme_color')
@@ -315,7 +315,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                         tabindex="{{ $tabindex++ }}" required>
                                                 </label>
                                                 <input type="text" id="theme_back_code" class="form-control"
-                                                    value="#ffc107">
+                                                    value="#ffc107" disabled>
                                             </div>
                                             @if ($errors->has('header_backgroung'))
                                             <span class="help-block text-danger">{{
@@ -486,7 +486,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                         <div class="mb-3 form-input">
                                             <label for="website" class="form-label">Website</label>
                                             <input type="url" name="website" data-attr="" placeholder="your website"
-                                                data-type="website" value="{{ old('website') }}" id="website"
+                                                data-type="website" value="https://stackoverflow.com/" id="website"
                                                 class="social_item_in form-control cin  @error('website') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}" data-preview="preview_company_websitelink"
                                                 id="company_websitelink">
@@ -591,54 +591,13 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                 </div>
                 <div class="modal_body">
                     <div id="social-links">
-                        <div class="row">
-                            <div class="col-12 col-sm-12">
-                                <ul class="text-center">
-                                    <li class="list-inline-item">
-                                        <a href="javascript:void(0)"
-                                            target="_blank" class="social_share"
-                                            data-url=""
-                                            title="{{ __('Share on Facebook') }}">
-                                            <img class="img-fluid" src="{{ asset('images/icons/social/facebook.svg') }}"
-                                                alt="{{ __('Share on facebook') }}">
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="javascript:void(0)"
-                                            target="blank" class="social_share" data-url="" title="{{ __('Share on Twitter') }}">
-                                            <img class="img-fluid" src="{{ asset('images/icons/social/twitter.svg') }}"
-                                                alt="">
-                                        </a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a href="javascript:void(0)" class="social_share"
-                                            data-url=""
-                                            title="{{ __('Share on Telegram') }}">
-                                            <img class="img-fluid" src="{{ asset('images/icons/social/telegram.svg') }}"
-                                                alt="">
-                                        </a>
-                                    </li>
-
-                                    @if ($android !== false || $ipad !== false || $iphone !== false)
-                                    <li class="list-inline-item">
-                                        <a href="whatsapp://send?text={{ auth()->user()->user_id }}"
-                                            class="social_share whatsapp" title="{{ __('Share on Whatsapp') }}"
-                                            data-action="share/whatsapp/share">
-                                            <img class="img-fluid" src="{{ asset('images/icons/social/whatsapp.svg') }}"
-                                                alt="">
-                                        </a>
-                                    </li>
-                                    @else
-                                    <li class="list-inline-item">
-                                        <a href="https://web.whatsapp.com/send?text={{ auth()->user()->user_id }}"
-                                            target="__blank" class="whatsapp" title="{{ __('Share on Whatsapp') }}"
-                                            data-action="share/whatsapp/share">
-                                            <img class="img-fluid" src="{{ asset('assets/img/icons/whatsapp.svg') }}"
-                                                alt="">
-                                        </a>
-                                    </li>
-                                    @endif
-                                </ul>
+                        <div>
+                            <label class="py-2" for="send_to">Send To</label>
+                            <div class="input-group">
+                                <input type="text" name="send_to" id="send_to"
+                                        class="form-control @error('send_to') is-invalid @enderror" placeholder="Send to phone no"
+                                        required>
+                                <a href="javascript:void(0)"  class="input-group-text btn btn-dark sendto-btn">Send</a>
                             </div>
                         </div>
                     </div>
@@ -688,14 +647,14 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
         statusImageTooSmall: 'This photo is too small. The minimum size is 360 * 240 pixels.'
     });
 var cropper = new Slim(document.getElementById('banner'), {
-        ratio: '1:1',
+        ratio: '5:7',
         minSize: {
-            width: 50,
-            height: 50,
+            width: 500,
+            height: 700,
         },
         size: {
-            width: 440,
-            height: 440,
+            width: 500,
+            height: 700,
         },
         willSave: function(data, ready) {
             $('#showlogo_2').attr('src', data.output.image);
