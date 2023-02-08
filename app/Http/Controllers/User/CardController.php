@@ -242,7 +242,7 @@ class CardController extends Controller
                 foreach ($request->images as $key => $gallery) {
                     if (!is_null($request->file('images')[$key])) {
                         $gallery_image = $request->file('images')[$key];
-                        $file_path = 'assets/images/banner/';
+                        $file_path = 'assets/uploads/banner/';
                         $image_name = $this->uploadAndResize($gallery_image, $file_path, 850, 650);
                         $gallery_photo = new Gallery();
                         $gallery_photo->content = $image_name;
@@ -413,7 +413,7 @@ class CardController extends Controller
                 foreach ($request->images as $key => $gallery) {
                     if (!is_null($request->file('images')[$key])) {
                         $gallery_image = $request->file('images')[$key];
-                        $file_path = 'assets/images/banner/';
+                        $file_path = 'assets/uploads/banner/';
                         $image_name = $this->uploadAndResize($gallery_image, $file_path, 850, 650);
                         $gallery_photo = new Gallery();
                         $gallery_photo->content = $image_name;
@@ -1276,7 +1276,7 @@ class CardController extends Controller
 
     public function uploadBase64ToImage($file, $file_name, $file_prefix)
     {
-        $file_path = sprintf("assets/images/banner/");
+        $file_path = sprintf("assets/uploads/banner/");
         if (!File::exists($file_path)) {
             File::makeDirectory($file_path);
         }
