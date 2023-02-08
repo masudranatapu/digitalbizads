@@ -174,7 +174,7 @@
                                         <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
                                             data-bs-target="#loginModal">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
+                                                viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1"
                                                 stroke-linecap="round" stroke-linejoin="round">
                                                 <line x1="3" y1="12" x2="21" y2="12">
                                                 </line>
@@ -195,7 +195,7 @@
                                             T-Shirts</span>
                                         <a href="javascript:void(0)" class="float-end login_btn">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
+                                                viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1"
                                                 stroke-linecap="round" stroke-linejoin="round">
                                                 <line x1="3" y1="12" x2="21" y2="12">
                                                 </line>
@@ -438,16 +438,13 @@
                                         </div>
                                     </form>
                                 </div>
-
                                 <!-- copyright -->
                                 <div class="bottom_content text-center pb-3">
                                     <p>CashApp: <span id="preview_cashapp">{{ $card->cashapp }}</span></p>
                                 </div>
-
                                 <div class="text-center text-light pb-3">
-                                    <p id="preview_copyright">Copyright © Copyright1</p>
+                                    <p id="preview_copyright">{{ $card->footer_text }}</p>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -575,15 +572,15 @@
                                     </div>
                                 </div>
 
-                                <div class="row @if(!empty($card->logo)) d-block @else d-none @endif" id="logofield">
+                                <div class="row @if(!empty($card->logo)) d-flex @else d-none @endif" id="logofield">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="logo" class="form-label">Logo</label>
 
-                                            <div class="slim"
+                                            <div class="slim logo-slim"
                                                     data-min-size="1,1"
-                                                    data-ratio="1:1"
-                                                    data-size="400,400" data-max-file-size="100"
+                                                    data-ratio="35:12"
+                                                    data-size="350,120" data-max-file-size="100"
                                                     data-min-file-size="1"
                                                     >
                                                     <img src="{{ asset($card->logo) }}" alt=""/>
@@ -626,7 +623,7 @@
                                         <div class="mb-3 form-input {{ $banner_type == 'banner' ? 'd-block' : 'd-none' }}"
                                             id="galleryfield">
                                             <label for="banner" class="form-label">Banner</label>
-                                            <div class="slim"
+                                            <div class="slim banner-slim"
                                                 data-ratio="5:7"
                                                 data-size="500,700"
                                                 data-max-file-size="2">
@@ -691,10 +688,11 @@
                                                         </div>
                                                     </div>
                                                     @endforeach
+                                                    @endif
                                                 </div>
                                                 <div class="prod_def_photo_upload" style="padding-top: .5rem;"
                                                     title="Click for photo upload">
-                                                    @endif
+
                                                 </div>
                                             </div>
 
@@ -879,7 +877,6 @@
 <script src="{{ asset('assets/js/card.js') }}"></script>
 <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
 <script>
-    $('.prod_def_photo_upload').imageUploader();
     $(function () {
         // show color code
         $('#theme_color').on('input', function() {
@@ -891,6 +888,7 @@
         $('#header_text_color').on('input', function() {
             $('#header_clr_code').val(this.value);
         });
+        $('.prod_def_photo_upload').imageUploader();
 
     });
         function hexToRgb(hex) {

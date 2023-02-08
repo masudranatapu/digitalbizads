@@ -98,7 +98,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                         </a>
                                         <a href="javascript:void(0)" class="float-end login_btn">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
+                                                viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1"
                                                 stroke-linecap="round" stroke-linejoin="round">
                                                 <line x1="3" y1="12" x2="21" y2="12">
                                                 </line>
@@ -124,7 +124,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                         <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
                                             data-bs-target="#loginModal">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1"
+                                                viewBox="0 0 24 24" fill="none" stroke="#ffff" stroke-width="1"
                                                 stroke-linecap="round" stroke-linejoin="round">
                                                 <line x1="3" y1="12" x2="21" y2="12">
                                                 </line>
@@ -354,7 +354,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                         <div class="mb-3 form-input" id="textfield">
                                             <label for="header_text_color" class="form-label">Headline Color</label>
                                             <div class="input-group custome_color">
-                                                <label for="header_backgroung" class="input-group-text">
+                                                <label for="header_text_color" class="input-group-text">
                                                     <img src="{{ asset('images/color-picker.png') }}" width="25"
                                                         alt="color picker">
                                                     <input type="color" placeholder="card color"
@@ -615,18 +615,17 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
 <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
 <script>
     var cropper = new Slim(document.getElementById('logo'), {
-        ratio: '1:1',
+        ratio: '35:12',
         minSize: {
-            width: 50,
-            height: 50,
+            width: 125,
+            height: 60,
         },
         size: {
-            width: 440,
-            height: 440,
+            width: 350,
+            height: 120,
         },
         willSave: function(data, ready) {
-            $('#showlogo_2').attr('src', data.output.image);
-            // console.log(data);
+            $('#previewLogo').attr('src', data.output.image);
             ready(data);
         },
         meta: {
@@ -657,7 +656,7 @@ var cropper = new Slim(document.getElementById('banner'), {
             height: 700,
         },
         willSave: function(data, ready) {
-            $('#showlogo_2').attr('src', data.output.image);
+            $('#digitalbizSlider').find('img').attr('src', data.output.image);
             ready(data);
         },
         meta: {
@@ -710,7 +709,7 @@ var cropper = new Slim(document.getElementById('banner'), {
                 'background-color': current_color
             });
             $('.purchase_btn').find('a').css({
-                'background-color': 'rgba(' + rgb + ',.1' + ')'
+                'background-color': current_color
             });
             $('.card_template').css({
                 'background-color': 'rgba(' + rgb + ',.1' + ')'
