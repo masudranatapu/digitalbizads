@@ -439,13 +439,13 @@
                         <div class="pb-4" id="social-links">
                             <div>
                                 @if ($android !== false || $ipad !== false || $iphone !== false)
-                                @php
-                                    $sms_attr ="sms:?body=".URL::to('/');
-                                @endphp
+                                    @php
+                                        $sms_attr ="sms:?body=".URL::to('/');
+                                    @endphp
                                 @else
-                                @php
-                                $sms_attr ="sms:;body=".URL::to('/');
-                                @endphp
+                                    @php
+                                        $sms_attr ="sms:;body=".URL::to('/');
+                                    @endphp
                                 @endif
                                 <label class="py-2" for="send_to">Send To</label>
                                 <div class="input-group">
