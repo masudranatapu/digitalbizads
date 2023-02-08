@@ -11,7 +11,6 @@
     {{--
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset($cardinfo->logo) }}"> --}}
     <link rel="icon" href="{{ $settings->favicon }}" sizes="96x96" type="image/png" />
-
     <!-- css file -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -28,11 +27,9 @@
     }
     [$r, $g, $b] = sscanf($theme_color, '#%02x%02x%02x');
     $theme_bg = "$r, $g, $b,.1";
-
     $android = stripos($_SERVER['HTTP_USER_AGENT'], 'android');
     $iphone = stripos($_SERVER['HTTP_USER_AGENT'], 'iphone');
     $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
-
     ?>
     <style>
         .card_template {
@@ -435,67 +432,27 @@
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content ">
                     <div class="modal-header">
-                        <h5 class="modal-title">{{ __('Share your Ad') }}</h5>
+                        <h5 class="modal-title text-uppercase">{{ __('Share my biz Ad') }}</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal_body">
                         <div id="social-links">
-                            <div class="row row-cols-4 row-cols-sm-5 justify-content-center">
-                                {{-- <div class="col mb-3">
-                                    <a href="sms://" class="social_share" title="{{ __('Text Message') }}">
-                                        <img class="img-fluid" src="{{ asset('images/icons/social/message.svg') }}"
-                                            alt="{{ __('Text Message') }}">
-                                    </a>
-                                </div>
-                                <div class="col mb-3">
-                                    <a href="mailto:{{ $cardinfo->email }}" class="social_share"
-                                        title="{{ __('Send mail') }}">
-                                        <img class="img-fluid" src="{{ asset('images/icons/social/email.svg') }}"
-                                            alt="{{ __('Send mail') }}">
-                                    </a>
-                                </div> --}}
-                                <div class="col mb-3">
-                                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"
-                                        target="_blank" class="social_share"
-                                        data-url="https://www.facebook.com/sharer/sharer.php?u={{ Request::url() }}"
-                                        title="{{ __('Share on Facebook') }}">
-                                        <img class="img-fluid" src="{{ asset('images/icons/social/facebook.svg') }}"
-                                            alt="{{ __('Share on facebook') }}">
-                                    </a>
-                                </div>
-                                <div class="col mb-3">
-                                    <a href="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ Request::url() }}"
-                                        target="_blank" class="social_share" data-url="https://twitter.com/intent/tweet?text=Hello%21+This+is+my+vCard.&amp;url={{ Request::url() }}
-                                " title="{{ __('Share on Twitter') }}">
-                                        <img class="img-fluid" src="{{ asset('images/icons/social/twitter.svg') }}"
-                                            alt="">
-                                    </a>
-
-                                </div>
-                                <div class="col mb-3">
-                                    <a href="https://telegram.me/share/url?url={{ Request::url() }}&text="
-                                        target="_blank" class="social_share"
-                                        data-url="https://telegram.me/share/url?url={{ Request::url() }}&text="
-                                        title="{{ __('Share on Telegram') }}">
-                                        <img class="img-fluid" src="{{ asset('images/icons/social/telegram.svg') }}"
-                                            alt="">
-                                    </a>
-                                </div>
-                                <div class="col mb-3">
-                                    @if ($android !== false || $ipad !== false || $iphone !== false || true)
-                                    <a href="whatsapp://send?text={{ Request::url() }}" class="social_share whatsapp"
-                                        title="{{ __('Share on Whatsapp') }}" data-action="share/whatsapp/share">
-                                        <img class="img-fluid" src="{{ asset('images/icons/social/whatsapp.svg') }}"
-                                            alt="">
-                                    </a>
-                                    @else
-                                    <a href="https://web.whatsapp.com/send?text={{ Request::url() }}" target="__blank"
-                                        class="whatsapp" title="{{ __('Share on Whatsapp') }}"
-                                        data-action="share/whatsapp/share">
-                                        <img class="img-fluid" src="{{ asset('assets/img/icons/whatsapp.svg') }}"
-                                            alt="">
-                                    </a>
-                                    @endif
+                            <div>
+                                @if ($android !== false || $ipad !== false || $iphone !== false)
+                                @php
+                                    $sms_attr ="sms:;body=".URL::to('/');
+                                @endphp
+                                @else
+                                @php
+                                $sms_attr ="sms:;body=".URL::to('/');
+                                @endphp
+                                @endif
+                                <label for="send_to">Send To</label>
+                                <div class="input-group">
+                                    <input type="text" name="send_to" id="send_to"
+                                            class="form-control @error('send_to') is-invalid @enderror" data-url="{{ URL::to('/') }}" placeholder="Send to phone no"
+                                            required>
+                                    <a href="{{ $sms_attr }}"  class="input-group-text btn btn-primary subscribe-btn">Send</a>
                                 </div>
                             </div>
                         </div>
@@ -640,6 +597,21 @@
                 swiper: swiper,
             },
         });
+        $(document).on('input','#send_to',function(e){
+
+            var value = $(this).val();
+
+            var ua = navigator.userAgent.toLowerCase();
+            var url;
+
+            if (ua.indexOf("iphone") > -1 || ua.indexOf("ipad") > -1)
+            url = "sms:;body=" + encodeURIComponent("I'm at " + mapUrl + " @ " + pos.Address);
+            else
+            url = "sms:?body=" + encodeURIComponent("I'm at " + mapUrl + " @ " + pos.Address);
+
+            location.href = url;
+
+        })
     </script>
 </body>
 
