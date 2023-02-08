@@ -38,7 +38,7 @@ class AuthController extends Controller
         $checkExist = User::where('email', $request->reg_email)->whereNotNull('email')->first();
             if (!empty($checkExist)) {
                 alert()->error(trans('Cannot create account an identical account already exists!'));
-                return redirect()->back()->with('error', 'Already exist account')->withInput();
+                return redirect()->back()->with('error', 'Cannot create account an identical account already exists!')->withInput();
             }
             $user = User::create([
                 'user_id' => uniqid(),

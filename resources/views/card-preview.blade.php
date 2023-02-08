@@ -30,6 +30,7 @@
     $android = stripos($_SERVER['HTTP_USER_AGENT'], 'android');
     $iphone = stripos($_SERVER['HTTP_USER_AGENT'], 'iphone');
     $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
+
     ?>
     <style>
         .card_template {
@@ -224,15 +225,9 @@
                 </div>
             </div>
             @elseif ($cardinfo->banner_type == 'banner')
-
             <div class="carousel-inner">
-                @foreach ($cardinfo->gallery as $key => $gallery)
-                <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
-                    <img src="{{ $cardinfo->banner_content }}" class="d-block w-100" alt="image">
-                </div>
-                @endforeach
+                <img src="{{ $cardinfo->banner_content }}" class="d-block w-100" alt="image">
             </div>
-
             @endif
             @endif
             <!-- purchase button -->

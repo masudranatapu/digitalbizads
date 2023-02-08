@@ -283,7 +283,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                     <img src="{{ asset('images/color-picker.png') }}" width="25"
                                                         alt="color picker">
                                                     <input type="color" placeholder="card color" name="theme_color"
-                                                        id="theme_color" value="{{ old('theme_color') }}"
+                                                        id="theme_color" value="{{ old('theme_color') ?? '#ffc107' }}"
                                                         class="form-control @error('theme_color') is-invalid @enderror"
                                                         tabindex="{{ $tabindex++ }}" required>
                                                 </label>
@@ -308,7 +308,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                         alt="color picker">
                                                     <input type="color" placeholder="card color"
                                                         name="header_backgroung" id="header_backgroung"
-                                                        value="{{ old('header_backgroung') }}"
+                                                        value="{{ old('header_backgroung') ?? "#ffc107" }}"
                                                         class="form-control @error('header_backgroung') is-invalid @enderror"
                                                         tabindex="{{ $tabindex++ }}" required>
                                                 </label>
@@ -357,7 +357,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                         alt="color picker">
                                                     <input type="color" placeholder="card color"
                                                         name="header_text_color" id="header_text_color"
-                                                        value="{{ old('header_text_color') }}"
+                                                        value="{{ old('header_text_color') ?? '#ffffff' }}"
                                                         class="form-control @error('header_text_color') is-invalid @enderror"
                                                         tabindex="{{ $tabindex++ }}" required>
                                                 </label>

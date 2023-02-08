@@ -100,16 +100,16 @@ class CardController extends Controller
     {
 
         // dd($request->all());
-        $validity = checkPackageValidity(Auth::id());
-        if ($validity == false) {
-            alert()->error(trans('Your package is expired please upgrade'));
-            return redirect()->route('user.plans');
-        }
-        $check = checkCardLimit(Auth::id());
-        if ($check == false) {
-            alert()->error(trans('Your card limit is over please upgrade your package for more card'));
-            return redirect()->back();
-        }
+        // $validity = checkPackageValidity(Auth::id());
+        // if ($validity == false) {
+        //     alert()->error(trans('Your package is expired please upgrade'));
+        //     return redirect()->route('user.plans');
+        // }
+        // $check = checkCardLimit(Auth::id());
+        // if ($check == false) {
+        //     alert()->error(trans('Your card limit is over please upgrade your package for more card'));
+        //     return redirect()->back();
+        // }
         $user_details = User::where('user_id', Auth::user()->user_id)->first();
         $plan_details = json_decode($user_details->plan_details, true);
         if ($request->gallery_type == 'videosource') {
@@ -173,6 +173,7 @@ class CardController extends Controller
             $card->theme_id = 1;
             $card->theme_color = $request->theme_color;
             $card->card_lang = 'en';
+
             if ($request->headline == 'text') {
                 $card->title = $request->text;
             } else {
@@ -191,6 +192,7 @@ class CardController extends Controller
                     $card->logo = $file_path . $image_name;
                 }
             }
+
             if (!empty($request->video) && $request->gallery_type == 'videosource') {
                 $card->banner_type =  $request->gallery_type;
                 $_video = $request->file('video');
