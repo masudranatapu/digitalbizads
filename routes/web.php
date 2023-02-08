@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WebToolsController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\User\CardController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\UserController;
@@ -56,6 +57,8 @@ Route::group(['middleware' => 'Installer'], function () {
     Route::get('terms-and-conditions', [HomeController::class, 'termsAndConditions'])->name('terms.and.conditions');
     Route::get('refund-policy', [HomeController::class, 'refundPolicy'])->name('refund.policy');
     Route::post('card/subscriber', [HomeController::class, 'postSubscriber'])->name('card.subscriber');
+
+    Route::post('post-register', [AuthController::class, 'postRegister'])->name('post-register');
 
     // Web Tools
     // HTML

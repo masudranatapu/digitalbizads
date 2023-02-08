@@ -394,8 +394,8 @@
                     <form action="{{ route('login') }}" method="post">
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label" for="username">Email</label>
-                            <input type="text" name="email" id="username" value="{{ old('email') }}"
+                            <label class="form-label" for="email">Email</label>
+                            <input type="text" name="email" id="email" value="{{ old('email') }}"
                                 class="form-control @error('email') is-invalid @enderror"
                                 placeholder="Email Address" required>
                             @if ($errors->has('email'))
@@ -505,10 +505,6 @@
         </div>
     </div>
 
-
-
-
-
     <!-- Signup Modal -->
     <div class="login_modal modal fade" id="signupModal" tabindex="-1" aria-labelledby="loginModalLabel"
         aria-hidden="true">
@@ -519,43 +515,43 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('post-register') }}">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label" for="full_name">Full Name</label>
-                            <input type="text" name="name" id="full_name" value="{{ old('name') }}"
-                                class="form-control @error('email') is-invalid @enderror" placeholder="Full Name"
+                            <input type="text" name="reg_name" id="full_name" value="{{ old('reg_name') }}"
+                                class="form-control @error('reg_name') is-invalid @enderror" placeholder="Full Name"
                                 required>
-                            @if ($errors->has('name'))
-                            <span class="help-block text-danger">{{ $errors->first('name') }}</span>
+                            @if ($errors->has('reg_name'))
+                            <span class="help-block text-danger">{{ $errors->first('reg_name') }}</span>
                             @endif
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="user_email">Email</label>
-                            <input type="email" name="email" id="user_email" value="{{ old('email') }}"
-                                class="form-control @error('email') is-invalid @enderror" placeholder="Email Address"
+                            <input type="email" name="reg_email" id="user_email" value="{{ old('user_email') }}"
+                                class="form-control @error('user_email') is-invalid @enderror" placeholder="Email Address"
                                 required>
-                            @if ($errors->has('email'))
-                            <span class="help-block text-danger">{{ $errors->first('email') }}</span>
+                            @if ($errors->has('reg_email'))
+                            <span class="help-block text-danger">{{ $errors->first('reg_email') }}</span>
                             @endif
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="user_password">Password</label>
-                            <input type="password" name="password" value="{{ old('password') }}" id="user_password"
-                                class="form-control @error('password') is-invalid @enderror" placeholder="Password"
+                            <label class="form-label" for="reg_password">Password</label>
+                            <input type="password" name="reg_password" value="{{ old('reg_password') }}" id="reg_password"
+                                class="form-control @error('reg_password') is-invalid @enderror" placeholder="Password"
                                 required>
-                            @if ($errors->has('password'))
-                            <span class="help-block text-danger">{{ $errors->first('password') }}</span>
+                            @if ($errors->has('reg_password'))
+                            <span class="help-block text-danger">{{ $errors->first('reg_password') }}</span>
                             @endif
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="confimation_password">Confirm Password</label>
-                            <input type="password" name="password_confirmation" value="{{ old('confimation_password') }}"
-                                id="confimation_password"
-                                class="form-control @error('confimation_password') is-invalid @enderror"
+                            <label class="form-label" for="reg_password_confirmation">Confirm Password</label>
+                            <input type="password" name="reg_password_confirmation" value="{{ old('reg_password_confirmation') }}"
+                                id="reg_password_confirmation"
+                                class="form-control @error('reg_password_confirmation') is-invalid @enderror"
                                 placeholder="Password" required>
-                            @if ($errors->has('confimation_password'))
-                            <span class="help-block text-danger">{{ $errors->first('confimation_password') }}</span>
+                            @if ($errors->has('reg_password_confirmation'))
+                            <span class="help-block text-danger">{{ $errors->first('reg_password_confirmation') }}</span>
                             @endif
                         </div>
                         <div class="text-center mb-3">
