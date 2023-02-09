@@ -178,11 +178,11 @@ button.delete-image.btn-danger.photo-delete {
                                             style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">{{ $card->title }}</span>
                                         </div>
                                         <div class="d-none text-center" id="logoDiv">
-                                            <img src="{{ asset('assets/images/bizads.png') }}" width="140" alt="logo">
+                                            <img src="{{ asset('assets/images/bizads.png') }}" id="previewLogo" width="140" alt="logo">
                                         </div>
                                         @else
                                         <div class="d-block text-center" id="logoDiv">
-                                            <img src="{{ asset('assets/images/bizads.png') }}" width="140" alt="logo">
+                                            <img src="{{ asset('assets/images/bizads.png') }}" id="previewLogo" width="140" alt="logo">
                                         </div>
                                         <div class="d-none" id="titleDiv">
                                             <span id="preview_name"
