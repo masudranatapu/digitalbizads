@@ -8,8 +8,6 @@ Create New DigitalBizAds Card
 <link href="{{ asset('assets/css/image-uploader.min.css')}}" rel="stylesheet">
 {{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" /> --}}
 <link rel="stylesheet" href="{{ asset('css/croppie.css') }}" />
-
-
 <style>
     span.error {
         color: #E53935;
@@ -65,6 +63,11 @@ Create New DigitalBizAds Card
     .loading-spinner.active {
         display: inline-block;
     }
+    button.delete-image.btn-danger.photo-delete {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+}
 </style>
 @endsection
 <?php
@@ -498,7 +501,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                         <div class="mb-3 form-input">
                                             <label for="website" class="form-label">Website</label>
                                             <input type="url" name="website" data-attr="" placeholder="your website"
-                                                data-type="website" value="https://stackoverflow.com/" id="website"
+                                                data-type="website" value="{{ old('website') }}" id="website"
                                                 class="social_item_in form-control cin  @error('website') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}" data-preview="preview_company_websitelink"
                                                 id="company_websitelink">

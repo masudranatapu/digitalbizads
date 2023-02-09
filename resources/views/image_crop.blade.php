@@ -20,7 +20,7 @@
     <div class="modal-dialog modal-dialog-centered img-crop-modal">
         <div class="modal-content">
             <div class="modal-body img-crop-modal-body">
-                <div id="image_demo" style="margin-top:30px"></div>
+                <div id="image_demo" class="getHeight"></div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-success crop_image">
@@ -74,41 +74,42 @@ $(document).ready(function(){
     });
 
 
+    // $(".getHeight").css("height", $(".getHeight").parent().height());
+    // $(".getHeight").css("width", $(".getHeight").parent().width());
 
-    @if(isMobile())
-
-    var boundaryWidth = 700;
-
-    @else
-
-    var boundaryWidth = 500;
-
-    @endif
-
-    var boundaryHeight = boundaryWidth / 1;
-    var viewportWidth = boundaryWidth - (boundaryWidth/100*25);
-    var viewportHeight = boundaryHeight - (boundaryHeight/100*25);
+    // @if(isMobile())
+    // var boundaryWidth = 400;
+    // @else
+    // var boundaryWidth = 500;
+    // @endif
+    // var boundaryHeight = boundaryWidth / 1;
+    // var viewportWidth = boundaryWidth - (boundaryWidth/100*25);
+    // var viewportHeight = boundaryHeight - (boundaryHeight/100*25);
 
     $image_crop = $('#image_demo').croppie({
-
-        enableExif: true,
-
-        showZoomer: true,
-
-         viewport: {
-            width:300,
-            height:500,
-            type:'square' //circle
+        // enableExif: true,
+        // showZoomer: true,
+        @if(isMobile())
+        viewport: {
+            width:187,
+            height:250,
         },
         boundary:{
-            width:350,
-            height:350
+            width:240,
+            height:320
         }
+        @else
+         viewport: {
+            width:412,
+            height:550,
+        },
+        boundary:{
+            width:450,
+            height:600
+        }
+        @endif
     });
-
 });
-
-
 $(document).on('change', '#logo', function(){
     var reader = new FileReader();
     reader.onload = function (event) {

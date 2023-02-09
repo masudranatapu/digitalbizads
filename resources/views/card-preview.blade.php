@@ -22,9 +22,12 @@
     <?php
     if (!empty($cardinfo->theme_color)) {
         $theme_color = $cardinfo->theme_color;
+
     } else {
         $theme_color = '#ffc107';
     }
+
+
     [$r, $g, $b] = sscanf($theme_color, '#%02x%02x%02x');
     $theme_bg = "$r, $g, $b,.1";
     $android = stripos($_SERVER['HTTP_USER_AGENT'], 'android');
@@ -44,11 +47,7 @@
         }
 
         .social_item i {
-            border-color: {
-                    {
-                    $theme_color
-                }
-            }
+            border-color: {{$theme_color}};
         }
 
         /* .card_title, */
@@ -57,13 +56,7 @@
         .carousel-control-prev,
         .carousel-control-next,
         .purchase_btn a {
-            background-color: {
-                    {
-                    $theme_color . '!important'
-                }
-            }
-
-            ;
+            background-color: {{ $theme_color }}!important;
         }
 
         .card_template .card_title {
@@ -350,7 +343,7 @@
                 <p>CashApp: {{ $cardinfo->cashapp }}</p>
             </div>
             <div class="text-center text-light pb-3">
-                <p>Copyright © {{ $cardinfo->footer_text }}</p>
+                <p>{{ $cardinfo->footer_text }} </p>
             </div>
         </div>
 

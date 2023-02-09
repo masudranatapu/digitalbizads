@@ -1,23 +1,26 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
-
 @section('css')
 <link href="{{ asset('assets/css/image-uploader.min.css')}}" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('css/croppie.css') }}" />
-
 <style>
     .loading-spinner {
     display: none;
 }
-
 .loading-spinner.active {
     display: inline-block;
 }
+img#previewLogo {
+    max-width: 140px;
+}
+button.delete-image.btn-danger.photo-delete {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+}
 </style>
 @endsection
-
 @section('content')
-
 <?php
     $tabindex = 1;
     $android = stripos($_SERVER['HTTP_USER_AGENT'], 'android');
@@ -34,7 +37,6 @@
     } else {
         $banner_type = 'banner';
     }
-
     if (old('theme_coloe')) {
         $theme_color = old('theme_coloe');
     } elseif (!empty($card->theme_color)) {
@@ -44,8 +46,9 @@
     }
     [$r, $g, $b] = sscanf($theme_color, '#%02x%02x%02x');
     $theme_bg = "$r, $g, $b,.1";
+
     ?>
-@section('css')
+
 <link href="{{ asset('assets/css/image-uploader.min.css')}}" rel="stylesheet">
 
 <style>
@@ -53,7 +56,6 @@
         color: #E53935;
         padding: 2px 0px;
     }
-
     .purchase_btn a {
         padding: 10px 27px;
         font-size: 20px;
@@ -72,14 +74,7 @@
     }
 
     .card_title {
-        background-color: {
-                {
-                $theme_color
-            }
-        }
-
-        ;
-
+        background-color: {{$theme_color}};
     }
 
     .gallery-btn {
@@ -95,22 +90,12 @@
     }
 
     .social_item i {
-        border-color: {
-                {
-                $theme_color
-            }
-        }
+        border-color: {{$theme_color}}!important;
     }
 
     .carousel-control-prev,
     .carousel-control-next {
-        background-color: {
-                {
-                $theme_color . '!important'
-            }
-        }
-
-        ;
+        background-color: {{$theme_color.'!important'}};
     }
 
     .social_share {
@@ -149,7 +134,7 @@
         font-size: 20px;
     }
 </style>
-@endsection
+
 <div class="page-wrapper">
     <div class="container-xl">
         <!-- Page title -->
@@ -174,99 +159,50 @@
                         <div class="card_wrapper">
                             <div class="card_template" style="background-color: rgba({{ $theme_bg }})">
                                 <!-- title -->
-                                @if (!empty($card->logo))
-                                <div class="card_title p-2 pt-3" id="logoDiv"
-                                    style="background-color: {{ $card->header_backgroung ?? '#000000' }};">
+
+                                <div class="card_title p-2 pt-3 d-block" style="background-color: {{ $card->header_backgroung ?? '#000000' }};">
                                     <h2>
-                                        <div class="text-center">
+                                        @if (!empty($card->logo))
+                                        <div class="text-center" id="logoDiv">
                                             <img src="{{ asset($card->logo) }}" id="previewLogo" alt="logo">
                                         </div>
-                                        <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <line x1="3" y1="12" x2="21" y2="12">
-                                                </line>
-                                                <line x1="3" y1="6" x2="21" y2="6">
-                                                </line>
-                                                <line x1="3" y1="18" x2="21" y2="18">
-                                                </line>
-                                            </svg>
-                                        </a>
-                                    </h2>
-                                </div>
-                                <div class="card_title p-2 pt-3 d-none" id="titleDiv"
-                                    style="background-color: {{ $card->header_backgroung ?? '#000000' }}">
-
-                                    <h2 class="">
-                                        <span id="preview_name"
-                                            style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">Express
-                                            T-Shirts</span>
-                                        <a href="javascript:void(0)" class="float-end login_btn">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <line x1="3" y1="12" x2="21" y2="12">
-                                                </line>
-                                                <line x1="3" y1="6" x2="21" y2="6">
-                                                </line>
-                                                <line x1="3" y1="18" x2="21" y2="18">
-                                                </line>
-                                            </svg>
-                                        </a>
-                                    </h2>
-                                </div>
-                                @else
-                                <div class="card_title p-2 pt-3 d-none" id="logoDiv"
-                                    style="background-color: {{ $card->header_backgroung ?? '#000000' }}">
-                                    <h2>
-                                        <div class="text-center">
-                                            <img src="{{ asset('assets/images/bizads.png') }}" width="140"
-                                                id="previewLogo" alt="logo">
+                                        @elseif ($card->title)
+                                        <div id="titleDiv">
+                                            <span id="preview_name"
+                                            style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">{{ $card->title }}</span>
                                         </div>
+                                        @else
+                                        <div class="d-block text-center" id="logoDiv">
+                                            <img src="{{ asset('assets/images/bizads.png') }}" width="140" alt="logo">
+                                        </div>
+                                        <div class="d-none" id="titleDiv">
+                                            <span id="preview_name"
+                                            style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">
+                                            <span>Express T-Shirts</span>
+                                        </span>
+                                        </div>
+
+                                        @endif
                                         <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
-                                            data-bs-target="#galleryModal">
-                                            <i class="fas fa-images" style="color:{{ $card->header_text_color }};"></i>
-                                        </a>
+                                        data-bs-target="#galleryModal">
+                                        <i class="fas fa-images" style="color:{{ $card->header_text_color }};"></i>
+                                    </a>
+
                                         <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
                                             data-bs-target="#loginModal">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                viewBox="0 0 24 24" fill="none" stroke="{{ $card->header_text_color }}" stroke-width="1"
+                                                viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1"
                                                 stroke-linecap="round" stroke-linejoin="round">
                                                 <line x1="3" y1="12" x2="21" y2="12">
                                                 </line>
                                                 <line x1="3" y1="6" x2="21" y2="6">
                                                 </line>
-                                                <line x1="3" y1="18" x2="21" y2="18"></line>
+                                                <line x1="3" y1="18" x2="21" y2="18">
+                                                </line>
                                             </svg>
                                         </a>
                                     </h2>
                                 </div>
-                                <div class="card_title p-2 pt-3" id="titleDiv"
-                                    style="background-color: {{ $card->header_backgroung ?? '#000000' }}">
-                                    <h2>
-                                        <span id="preview_name"
-                                            style="color:{{ $card->header_text_color ?? '#ffffff' }};">{{ $card->title
-                                            }}</span>
-                                        <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
-                                            data-bs-target="#galleryModal">
-                                            <i class="fas fa-images" style="color:{{ $card->header_text_color }};"></i>
-                                        </a>
-                                        <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                viewBox="0 0 24 24" fill="none" stroke="{{ $card->header_text_color }}" stroke-width="1"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <line x1="3" y1="12" x2="21" y2="12"></line>
-                                                <line x1="3" y1="6" x2="21" y2="6"></line>
-                                                <line x1="3" y1="18" x2="21" y2="18"></line>
-                                            </svg>
-                                        </a>
-                                    </h2>
-                                </div>
-                                @endif
-
 
                                 <div class="slider-box" id="slider-box">
 
@@ -544,7 +480,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row @if(!empty($card->title)) d-block @else d-none @endif" id="headline">
+                                <div class="row @if(!empty($card->title)) d-flex @else d-none @endif" id="headline">
 
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="textfield">
@@ -600,10 +536,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
-
                                 <div class="row">
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
@@ -661,14 +593,8 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <div class="input-field gallery_image">
-                                                <label class="active">Gallery<span class="img-note d-inline-block">
-                                                        {{-- <i class="la la-bell"
-                                                            aria-hidden="true"></i>{{trans('form.image_size')}} 800 x
-                                                        800 pixels</span> --}}
-                                                </label>
-                                                <div
-                                                    class="row row-cols-3 row-cols-sm-3 row-cols-md-4 row-cols-xl-5 mt-2">
-
+                                                <label class="active">Gallery<span class="img-note d-inline-block"></label>
+                                                <div class="row row-cols-3 row-cols-sm-3 row-cols-md-4 row-cols-xl-5 mt-2">
                                                     @if($card->gallery && $card->gallery->count() > 0)
                                                     @foreach($card->gallery as $photo)
                                                     <div class="col" id="photo_div_{{$photo->id}}">
@@ -685,10 +611,7 @@
                                                     @endforeach
                                                     @endif
                                                 </div>
-                                                <div class="prod_def_photo_upload" style="padding-top: .5rem;"
-                                                    title="Click for photo upload">
-
-                                                </div>
+                                                <div class="prod_def_photo_upload py-2" title="Click for photo upload"></div>
                                             </div>
 
                                         </div>
