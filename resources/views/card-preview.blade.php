@@ -431,7 +431,7 @@
                                     <input type="text" name="send_to" id="send_to"
                                             class="form-control @error('send_to') is-invalid @enderror" placeholder="Send to phone no"
                                             required>
-                                    <a href="javascript:void(0)"  class="input-group-text btn btn-dark sendto-btn">Send</a>
+                                    <a href="sms:;"  class="input-group-text btn btn-dark sendto-btn">Send</a>
                                 </div>
                             </div>
                         </div>
