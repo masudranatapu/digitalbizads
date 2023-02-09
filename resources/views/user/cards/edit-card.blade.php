@@ -487,7 +487,7 @@ button.delete-image.btn-danger.photo-delete {
                                             <label for="header_text_color" class="form-label">Headline Color</label>
 
                                             <div class="input-group custome_color">
-                                                <label for="header_backgroung" class="input-group-text">
+                                                <label for="header_text_color" class="input-group-text">
                                                     <img src="{{ asset('images/color-picker.png') }}" width="25"
                                                         alt="color picker">
                                                     <input type="color" placeholder="card color"

@@ -177,10 +177,8 @@ class CardController extends Controller
             if ($request->headline == 'text') {
                 $card->logo = NULL;
                 $card->title = $request->text;
-                $card->header_text_color = $request->header_text_color;
             } else {
                 $card->title        = NULL;
-                $card->header_text_color = NULL;
                 $card->logo         = $request->logo_path;
             }
 
@@ -205,6 +203,7 @@ class CardController extends Controller
                 $card->banner_type =  $request->gallery_type;
 
             }
+            $card->header_text_color = $request->header_text_color;
             $card->header_backgroung = $request->header_backgroung;
             $card->card_type = 'vcard';
             $card->card_url = $card_url;
@@ -359,7 +358,7 @@ class CardController extends Controller
             $card->footer_text = $request->footer_text;
             $card->cashapp = $request->cashapp;
             $card->website = $request->website;
-            // $card->header_text_color = $request->header_text_color;
+            $card->header_text_color = $request->header_text_color;
             $card->header_backgroung = $request->header_backgroung;
             $card->updated_at = date('Y-m-d H:i:s');
             $card->updated_by = Auth::user()->id;
