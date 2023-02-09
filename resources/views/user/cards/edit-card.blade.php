@@ -163,13 +163,22 @@ button.delete-image.btn-danger.photo-delete {
                                 <div class="card_title p-2 pt-3 d-block" style="background-color: {{ $card->header_backgroung ?? '#000000' }};">
                                     <h2>
                                         @if (!empty($card->logo))
-                                        <div class="text-center" id="logoDiv">
+                                        <div class="d-block text-center" id="logoDiv">
                                             <img src="{{ asset($card->logo) }}" id="previewLogo" alt="logo">
                                         </div>
+                                        <div class="d-none" id="titleDiv">
+                                            <span id="preview_name"
+                                            style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">
+                                            <span>Express T-Shirts</span>
+                                            </span>
+                                        </div>
                                         @elseif ($card->title)
-                                        <div id="titleDiv">
+                                        <div class="d-block" id="titleDiv">
                                             <span id="preview_name"
                                             style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">{{ $card->title }}</span>
+                                        </div>
+                                        <div class="d-none text-center" id="logoDiv">
+                                            <img src="{{ asset('assets/images/bizads.png') }}" width="140" alt="logo">
                                         </div>
                                         @else
                                         <div class="d-block text-center" id="logoDiv">
@@ -179,7 +188,7 @@ button.delete-image.btn-danger.photo-delete {
                                             <span id="preview_name"
                                             style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">
                                             <span>Express T-Shirts</span>
-                                        </span>
+                                            </span>
                                         </div>
 
                                         @endif
