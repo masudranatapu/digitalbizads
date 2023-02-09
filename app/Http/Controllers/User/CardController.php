@@ -311,7 +311,6 @@ class CardController extends Controller
         try {
             $card = BusinessCard::findOrFail($id);
             $card->adsname = $request->adsname;
-            // $card->card_id = $cardId;
             $card->theme_id = $request->theme_id;
             $card->theme_color = $request->theme_color;
             $card->card_lang = 'en';
@@ -321,13 +320,10 @@ class CardController extends Controller
             if ($request->headline == 'text') {
                 $card->title = $request->text;
                 $card->logo = NULL;
-                // DB::table('business_cards')->where('id', $id)->update([
-                //     'logo' => NULL
-                // ]);
-            } else {
+            } elseif(!empty($request->logo_path)) {
                 $card->title             = NULL;
                 $card->header_text_color = NULL;
-                $card->logo         = $request->logo_path;
+                $card->logo  = $request->logo_path;
             }
             if (!empty($request->video) && $request->gallery_type == 'videosource') {
                 if(File::exists(public_path($card->banner_content))){
