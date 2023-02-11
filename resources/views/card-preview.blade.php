@@ -29,7 +29,7 @@
 
 
     [$r, $g, $b] = sscanf($theme_color, '#%02x%02x%02x');
-    $theme_bg = "$r, $g, $b,.1";
+    $theme_bg = "$r, $g, $b,.5";
     $android = stripos($_SERVER['HTTP_USER_AGENT'], 'android');
     $iphone = stripos($_SERVER['HTTP_USER_AGENT'], 'iphone');
     $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
@@ -37,13 +37,7 @@
     ?>
     <style>
         .card_template {
-            background-color: rgba( {
-                        {
-                        $theme_bg
-                    }
-                }
-
-            );
+            background-color: rgba( {{$theme_bg}});
         }
 
         .social_item i {
@@ -342,8 +336,14 @@
             <div class="bottom_content text-center pb-3">
                 <p>CashApp: {{ $cardinfo->cashapp }}</p>
             </div>
+
             <div class="text-center text-light pb-3">
+                @if (isFreePlan($cardinfo->user_id))
+                <p>All Rights Reserved by Digitalbizads.com</p>
+                @else
                 <p>{{ $cardinfo->footer_text }} </p>
+                @endif
+
             </div>
         </div>
 

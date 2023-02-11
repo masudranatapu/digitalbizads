@@ -27,6 +27,8 @@
     <script src="{{ asset('js/chart.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/sweetalert.min.js') }}"></script>
     @yield('css')
+    <input type="hidden" name="base_url" id="base_url" value="{{url('/')}}">
+
 </head>
 
 <body class="antialiased" dir="{{(App::isLocale('ar') || App::isLocale('ur') || App::isLocale('he') ? 'rtl' : 'ltr')}}">

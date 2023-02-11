@@ -68,6 +68,17 @@ Create New DigitalBizAds Card
     top: 4px;
     right: 4px;
 }
+a.overlay-btn {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        z-index: 999;
+    }
 </style>
 @endsection
 <?php
@@ -263,7 +274,13 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                     <p>CashApp: <span id="preview_cashapp">$SBOWEN2005</span> </p>
                                 </div>
                                 <div class="text-center text-light pb-3">
-                                    <p id="preview_copyright">Copyright © Copyright</p>
+                                    <div class="text-center text-light pb-3">
+                                        @if (isFreePlan(Auth::user()->id))
+                                            <p>All Rights Reserved by Digitalbizads.com</p>
+                                        @else
+                                        <p id="preview_copyright">© Copyright</p>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -551,7 +568,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                         </div>
                                     </div>
                                     @if ($plan_details->personalized_link == '1')
-                                    <div class="col-6">
+                                    {{-- <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="personalized_link" class="form-label">Personalized
                                                 Link <span class="text-danger">*</span></label></label>
@@ -565,9 +582,9 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                             @endif
                                             <span id="status"></span>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     @endif
-                                    <div class="col-12">
+                                    {{-- <div class="col-12">
                                         <div class="mb-3 form-input">
                                             <label for="footer_text" class="form-label">Copyright</label>
                                             <input type="text" name="footer_text" placeholder="copyright"
@@ -579,7 +596,51 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                                 }}</span>
                                             @endif
                                         </div>
+                                    </div> --}}
+
+
+                                    <div class="col-12">
+                                        <div class="mb-3 form-input position-relative">
+                                            <label for="personalized_link" class="form-label">Personalized
+                                                Link</label>
+                                                @if (isFreePlan(Auth::user()->id))
+                                                <a href="javascript:void(0)" class="overlay-btn upgrade-plan" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                data-bs-custom-class="custom-tooltip"
+                                                title="Upgrade to a Premium account to access personalized link"></a>
+                                            @endif
+                                            <input type="text" placeholder="Personalized Link"
+                                                name="personalized_link" id="personalized_link"
+                                                class="form-control @error('personalized_link') is-invalid @enderror"
+                                                 tabindex="{{ $tabindex++ }}" {{ isFreePlan(Auth::user()->id)==true ? 'disabled':'' }}>
+                                            @if ($errors->has('personalized_link'))
+                                            <span class="help-block text-danger">{{
+                                                $errors->first('personalized_link')
+                                                }}</span>
+                                            @endif
+                                            <span id="status"></span>
+                                        </div>
                                     </div>
+                                    {{-- @endif --}}
+                                    <div class="col-12">
+                                        <div class="mb-3 form-input position-relative">
+                                            <label for="footer_text" class="form-label">Copyright</label>
+                                            @if (isFreePlan(Auth::user()->id))
+                                                <a href="javascript:void(0)" class="overlay-btn upgrade-plan" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                data-bs-custom-class="custom-tooltip"
+                                                title="Upgrade to a Premium account to access custom Copyright"></a>
+                                            @endif
+                                            <input type="text" data-preview="preview_copyright" name="footer_text" placeholder="copyright"
+                                                id="footer_text"
+                                                class="form-control cin @error('footer_text') is-invalid @enderror"
+                                                tabindex="{{ $tabindex++ }}"  {{ isFreePlan(Auth::user()->id)==true ? 'disabled':'' }}>
+                                            @if ($errors->has('footer_text'))
+                                            <span class="help-block text-danger">{{ $errors->first('footer_text')
+                                                }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+
+
                                 </div>
                                 <div class="mb-3">
                                     <button type="submit" class="btn btn-primary submit submitBtn">Create Your Biz
@@ -621,7 +682,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
         </div>
     </div>
 </div>
-
+@include('user.cards._upgrade_plan_modal')
 @push('custom-js')
 {{-- <script type="text/javascript" src="{{ asset('assets/js/slim.kickstart.min.js') }}"></script> --}}
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
@@ -631,71 +692,11 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
 @include('image_crop')
 
 <script>
-//     var cropper = new Slim(document.getElementById('logo'), {
-//         ratio: '35:12',
-//         minSize: {
-//             width: 125,
-//             height: 60,
-//         },
-//         size: {
-//             width: 350,
-//             height: 120,
-//         },
-//         willSave: function(data, ready) {
-//             $('#previewLogo').attr('src', data.output.image);
-//             ready(data);
-//         },
-//         meta: {
-//             viewid: 1
-//         },
-//         download: false,
-//         instantEdit: true,
-//         // label: 'Upload: Click here or drag an image file onto it',
-//         buttonConfirmLabel: 'Crop',
-//         buttonConfirmTitle: 'Crop',
-//         buttonCancelLabel: 'Cancel',
-//         buttonCancelTitle: 'Cancel',
-//         buttonEditTitle: 'Edit',
-//         buttonRemoveTitle: 'Remove',
-//         buttonDownloadTitle: 'Download',
-//         buttonRotateTitle: 'Rotate',
-//         buttonUploadTitle: 'Upload',
-//         statusImageTooSmall: 'This photo is too small. The minimum size is 360 * 240 pixels.'
-//     });
-// var cropper = new Slim(document.getElementById('banner'), {
-//         ratio: '5:7',
-//         minSize: {
-//             width: 500,
-//             height: 700,
-//         },
-//         size: {
-//             width: 500,
-//             height: 700,
-//         },
-//         willSave: function(data, ready) {
-//             $('#digitalbizSlider').find('img').attr('src', data.output.image);
-//             ready(data);
-//         },
-//         meta: {
-//             viewid: 1
-//         },
-//         download: false,
-//         instantEdit: true,
-//         // label: 'Upload: Click here or drag an image file onto it',
-//         buttonConfirmLabel: 'Crop',
-//         buttonConfirmTitle: 'Crop',
-//         buttonCancelLabel: 'Cancel',
-//         buttonCancelTitle: 'Cancel',
-//         buttonEditTitle: 'Edit',
-//         buttonRemoveTitle: 'Remove',
-//         buttonDownloadTitle: 'Download',
-//         buttonRotateTitle: 'Rotate',
-//         buttonUploadTitle: 'Upload',
-//         statusImageTooSmall: 'This photo is too small. The minimum size is 360 * 240 pixels.'
-//     });
-
+    $(document).on('click','.upgrade-plan',function(e){
+    e.preventDefault();
+    $('#planModal').modal('show');
+})
     $(function () {
-
         // show color code
         $('#theme_color').on('input', function() {
             $('#theme_clr_code').val(this.value);
@@ -706,7 +707,6 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
         $('#header_text_color').on('input', function() {
             $('#header_clr_code').val(this.value);
         });
-
             $('.prod_def_photo_upload').imageUploader();
         });
         function hexToRgb(hex) {
@@ -729,7 +729,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                 'background-color': current_color
             });
             $('.card_template').css({
-                'background-color': 'rgba(' + rgb + ',.1' + ')'
+                'background-color': 'rgba(' + rgb + ',.5' + ')'
             });
             $('.carousel-control-prev,.carousel-control-next').css({
                 'background-color': current_color
@@ -801,9 +801,6 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
             });
         });
 
-        $(document).on('input', '#personalized_link', function(e) {
-            checkLink();
-        })
 
         function checkLink() {
             "use strict";
@@ -921,7 +918,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
         });
     });
 
-    $('#adsname,#personalized_link').on('keyup keydown paste', function() {
+    $('#personalized_link').on('keyup keydown paste', function() {
         var str = $(this).val();
         str = str.replace(/^\s+|\s+$/g, ''); // trim
         str = str.toLowerCase();
@@ -1015,6 +1012,12 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
 
     });
 
+
+
+            $(document).on('input', '#personalized_link', function(e) {
+                checkLink();
+            })
+
     $(function() {
         var
             max_file_number = <?php echo $plan_details->no_of_galleries; ?>,
@@ -1032,6 +1035,10 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                 }
             });
         });
+
+
+
+
 </script>
 @endpush
 @endsection

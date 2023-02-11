@@ -226,40 +226,40 @@ $(document).on('click','.remove_sicon',function(e){
 
 
 
-$(document).on('input','#personalized_link', function() {
-    var get_url = $('#base_url').val();
-    var minLength = 2;
-    var maxLength = 100;
-    var value = $(this).val().replace(/[^A-Z0-9]/gi,'');
-    $('#personalized_link').val(value);
-    $("#personalized_link_help").addClass('text-danger');
-    if(value.length == 0){ $("#personalized_link_help").text(''); return false;}
+// $(document).on('input','#personalized_link', function() {
+//     var get_url = $('#base_url').val();
+//     var minLength = 2;
+//     var maxLength = 100;
+//     var value = $(this).val().replace(/[^A-Z0-9]/gi,'');
+//     $('#personalized_link').val(value);
+//     $("#personalized_link_help").addClass('text-danger');
+//     if(value.length == 0){ $("#personalized_link_help").text(''); return false;}
 
-    if (value.length < minLength){
-        $("#personalized_link_help").text("Text is short");
-    }
-    else if (value.length > maxLength)
-    {
-        $("#personalized_link_help").text("Text is long");
-    }else{
-        $.ajax({
-            type: 'get',
-            url: get_url + '/card/check_link/'+value,
-            async: true,
-            beforeSend: function () {
-                $("body").css("cursor", "progress");
-            },
-            success: function (response) {
-                $("#personalized_link_help").text(response.message).removeClass('text-danger').addClass('text-success');
+//     if (value.length < minLength){
+//         $("#personalized_link_help").text("Text is short");
+//     }
+//     else if (value.length > maxLength)
+//     {
+//         $("#personalized_link_help").text("Text is long");
+//     }else{
+//         $.ajax({
+//             type: 'POST',
+//             url: get_url + '/card/check_link/'+value,
+//             async: true,
+//             beforeSend: function () {
+//                 $("body").css("cursor", "progress");
+//             },
+//             success: function (response) {
+//                 $("#personalized_link_help").text(response.message).removeClass('text-danger').addClass('text-success');
 
-            },
-            complete: function (data) {
-                $("body").css("cursor", "default");
-            }
-        });
-    }
+//             },
+//             complete: function (data) {
+//                 $("body").css("cursor", "default");
+//             }
+//         });
+//     }
 
-}).keyup();
+// }).keyup();
 
 //icon search
 $(document).on('input', '#filter', function(){

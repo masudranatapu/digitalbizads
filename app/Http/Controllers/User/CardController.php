@@ -110,6 +110,11 @@ class CardController extends Controller
             alert()->error(trans('Your card limit is over please upgrade your package for more card'));
             return redirect()->back();
         }
+        $card_url = BusinessCard::where('card_url',$request->personalized_link)->first();
+        if($card_url != null){
+            alert()->error(trans('Personalized link must be unique'));
+            return back()->withInput();
+        }
         $user_details = User::where('user_id', Auth::user()->user_id)->first();
         $plan_details = json_decode($user_details->plan_details, true);
         if ($request->gallery_type == 'videosource') {
@@ -209,7 +214,9 @@ class CardController extends Controller
             $card->card_url = $card_url;
             $card->phone_number = $request->phone_number;
             $card->email = $request->email ?? Auth::user()->email;
-            $card->footer_text = $request->footer_text;
+            if(isFreePlan(Auth::user()->id)==false){
+                $card->footer_text = $request->footer_text;
+            }
             $card->cashapp = $request->cashapp;
             $card->website = $request->website;
             $card->card_status = 'activated';
@@ -301,6 +308,12 @@ class CardController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+            $checkCardUrl = BusinessCard::where('card_url',$request->personalized_link)->whereNotIn('id',[$id])->first();
+        if(!empty($checkCardUrl)){
+            alert()->error(trans('Personalized link must be unique'));
+            return back()->withInput();
+        }
+
         if (!empty($request->personalized_link)) {
             $personalized_link = $request->personalized_link;
             $card_url = strtolower(preg_replace('/\s+/', '-', $personalized_link));
@@ -316,6 +329,8 @@ class CardController extends Controller
             $card->card_lang = 'en';
             if ($plan_details['personalized_link'] == '1' && !empty($card_url)) {
                 $card->card_url = $card_url;
+            }else{
+                $card->card_url = $card->card_id;
             }
             if ($request->headline == 'text') {
                 $card->title = $request->text;
@@ -351,7 +366,10 @@ class CardController extends Controller
             $card->card_type = 'vcard';
             $card->phone_number = $request->phone_number;
             $card->email = $request->email;
-            $card->footer_text = $request->footer_text;
+            if(isFreePlan(Auth::user()->id)==false){
+                $card->footer_text = $request->footer_text;
+            }
+            // $card->footer_text = $request->footer_text;
             $card->cashapp = $request->cashapp;
             $card->website = $request->website;
             $card->header_text_color = $request->header_text_color;

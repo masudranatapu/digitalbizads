@@ -236,7 +236,7 @@ class UserController extends Controller
             } else {
 
                 // Making all cards inactive, For Plan change
-                BusinessCard::where('user_id', $user_details->user_id)->update([
+                BusinessCard::where('user_id', $user_details->id)->update([
                     'card_status' => 'inactive',
                 ]);
 

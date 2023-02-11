@@ -18,6 +18,17 @@ button.delete-image.btn-danger.photo-delete {
     top: 4px;
     right: 4px;
 }
+a.overlay-btn {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        z-index: 999;
+    }
 </style>
 @endsection
 @section('content')
@@ -45,7 +56,15 @@ button.delete-image.btn-danger.photo-delete {
         $theme_color = '#ffc107';
     }
     [$r, $g, $b] = sscanf($theme_color, '#%02x%02x%02x');
-    $theme_bg = "$r, $g, $b,.1";
+    $theme_bg = "$r, $g, $b,.5";
+
+    if (isFreePlan(Auth::user()->id)==false){
+        $footer_text =$card->footer_text;
+        $card_url =$card->card_url;
+    }else{
+        $card_url =$card->card_id;
+        $footer_text = "All Rights Reserved by Digitalbizads.com";
+    }
 
     ?>
 
@@ -398,7 +417,11 @@ button.delete-image.btn-danger.photo-delete {
                                     <p>CashApp: <span id="preview_cashapp">{{ $card->cashapp }}</span></p>
                                 </div>
                                 <div class="text-center text-light pb-3">
+                                    @if (isFreePlan(Auth::user()->id))
+                                        <p>All Rights Reserved by Digitalbizads.com</p>
+                                    @else
                                     <p id="preview_copyright">{{ $card->footer_text }}</p>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -716,30 +739,41 @@ button.delete-image.btn-danger.photo-delete {
                                                 @endif
                                             </div>
                                         </div>
-                                        @if ($plan_details->personalized_link == '1')
-                                        <div class="col-6">
-                                            <div class="mb-3 form-input">
+                                        {{-- @if ($plan_details->personalized_link == '1') --}}
+                                        <div class="col-12">
+                                            <div class="mb-3 form-input position-relative">
                                                 <label for="personalized_link" class="form-label">Personalized
-                                                    Link <span class="text-danger">*</span></label></label>
+                                                    Link</label>
+                                                    @if (isFreePlan(Auth::user()->id))
+                                                    <a href="javascript:void(0)" class="overlay-btn upgrade-plan" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    data-bs-custom-class="custom-tooltip"
+                                                    title="Upgrade to a Premium account to access personalized link"></a>
+                                                @endif
                                                 <input type="text" placeholder="Personalized Link"
                                                     name="personalized_link" id="personalized_link"
                                                     class="form-control @error('gallery_type') is-invalid @enderror"
-                                                    value="{{ $card->card_url }}" tabindex="{{ $tabindex++ }}">
+                                                    value="{{ $card_url }}" tabindex="{{ $tabindex++ }}" {{ isFreePlan(Auth::user()->id)==true ? 'disabled':'' }}>
                                                 @if ($errors->has('personalized_link'))
                                                 <span class="help-block text-danger">{{
                                                     $errors->first('personalized_link')
                                                     }}</span>
                                                 @endif
+                                                <span id="status"></span>
                                             </div>
                                         </div>
-                                        @endif
+                                        {{-- @endif --}}
                                         <div class="col-12">
-                                            <div class="mb-3 form-input">
+                                            <div class="mb-3 form-input position-relative">
                                                 <label for="footer_text" class="form-label">Copyright</label>
+                                                @if (isFreePlan(Auth::user()->id))
+                                                    <a href="javascript:void(0)" class="overlay-btn upgrade-plan" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    data-bs-custom-class="custom-tooltip"
+                                                    title="Upgrade to a Premium account to access custom Copyright"></a>
+                                                @endif
                                                 <input type="text" data-preview="preview_copyright" name="footer_text" placeholder="copyright"
                                                     id="footer_text"
                                                     class="form-control cin @error('footer_text') is-invalid @enderror"
-                                                    tabindex="{{ $tabindex++ }}" value="{{ $card->footer_text }}">
+                                                    tabindex="{{ $tabindex++ }}" value="{{ $footer_text }}" {{ isFreePlan(Auth::user()->id)==true ? 'disabled':'' }}>
                                                 @if ($errors->has('footer_text'))
                                                 <span class="help-block text-danger">{{ $errors->first('footer_text')
                                                     }}</span>
@@ -796,7 +830,7 @@ button.delete-image.btn-danger.photo-delete {
         </div>
     </div>
 </div>
-
+@include('user.cards._upgrade_plan_modal')
 
 @push('custom-js')
 <script type="text/javascript" src="{{ asset('assets/js/slim.kickstart.min.js') }}"></script>
@@ -807,6 +841,10 @@ button.delete-image.btn-danger.photo-delete {
 @include('image_crop')
 
 <script>
+    $(document).on('click','.upgrade-plan',function(e){
+        e.preventDefault();
+        $('#planModal').modal('show');
+    })
     $(function () {
         // show color code
         $('#theme_color').on('input', function() {
@@ -838,10 +876,10 @@ button.delete-image.btn-danger.photo-delete {
                 'background-color': current_color
             });
             $('.purchase_btn').find('a').css({
-                'background-color': 'rgba(' + rgb + ',.1' + ')'
+                'background-color': 'rgba(' + rgb + ',.5' + ')'
             });
             $('.card_template').css({
-                'background-color': 'rgba(' + rgb + ',.1' + ')'
+                'background-color': 'rgba(' + rgb + ',.5' + ')'
             });
             $('.carousel-control-prev,.carousel-control-next').css({
                 'background-color': current_color
@@ -914,9 +952,6 @@ button.delete-image.btn-danger.photo-delete {
             });
         });
 
-        $(document).on('input', '#personalized_link', function(e) {
-            checkLink();
-        })
 
         function checkLink() {
             "use strict";
@@ -931,6 +966,7 @@ button.delete-image.btn-danger.photo-delete {
                         link: plink
                     },
                 }).done(function(res) {
+                    console.log(res);
                     if (res.status == 'success') {
                         $('#status').html("<span class='badge mt-2 bg-green'>{{ __('Available') }}</span>");
                     } else {
@@ -1054,7 +1090,8 @@ button.delete-image.btn-danger.photo-delete {
         });
     });
 
-    $('#adsname,#personalized_link').on('keyup keydown paste', function() {
+
+    $('#personalized_link').on('keyup keydown paste', function() {
         var str = $(this).val();
         str = str.replace(/^\s+|\s+$/g, ''); // trim
         str = str.toLowerCase();
@@ -1067,6 +1104,7 @@ button.delete-image.btn-danger.photo-delete {
         $("#personalized_link").val(str);
         return str;
     })
+
     $('#video_url').on('change', function() {
         var youtube_url = $(this).val();
         var remove_after = youtube_url.split('&')[0];
@@ -1170,6 +1208,10 @@ button.delete-image.btn-danger.photo-delete {
             });
         }
     })
+
+        $(document).on('input', '#personalized_link', function(e) {
+              checkLink();
+        })
 
     $(function() {
         var

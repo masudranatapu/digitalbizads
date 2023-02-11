@@ -41,6 +41,7 @@
                                                     <input class="form-check-input" type="checkbox" name="recommended"
                                                         {{ $plan_details->recommended == 1 ? 'checked' : '' }}>
                                                 </label>
+                                                {!! $errors->first('recommended', '<label class="help-block text-danger">:message</label>') !!}
                                             </div>
                                         </div>
                                         {{-- Private Plan --}}
@@ -51,6 +52,7 @@
                                                     <input class="form-check-input" type="checkbox" name="is_private" {{ $plan_details->is_private == 1 ? 'checked' : '' }}>
                                                 </label>
                                                 <small class="text-muted">{{ __('This plan does not show on the customer page. Only the admin panel can assign this plan to the customer.') }} </small>
+                                                {!! $errors->first('is_private', '<label class="help-block text-danger">:message</label>') !!}
                                             </div>
                                         </div>
                                         {{-- Plan Name --}}
@@ -60,6 +62,7 @@
                                                 <input type="text" class="form-control" name="plan_name"
                                                     placeholder="{{ __('Plan Name') }}..."
                                                     value="{{ $plan_details->plan_name }}" required>
+                                                    {!! $errors->first('plan_name', '<label class="help-block text-danger">:message</label>') !!}
                                             </div>
                                         </div>
                                         {{-- Description --}}
@@ -69,7 +72,7 @@
                                                 <textarea class="form-control" name="plan_description" rows="3"
                                                     placeholder="{{ __('Description') }}.."
                                                     required>{{ $plan_details->plan_description }}</textarea>
-
+                                                {!! $errors->first('plan_description', '<label class="help-block text-danger">:message</label>') !!}
                                             </div>
                                         </div>
                                         <h2 class="page-title my-3">
@@ -82,6 +85,7 @@
                                                     placeholder="{{ __('Price') }}..."
                                                     value="{{ $plan_details->plan_price }}" required>
                                                 <small class="text-muted">{{ __('For free, enter 0') }} </small>
+                                                {!! $errors->first('plan_price', '<label class="help-block text-danger">:message</label>') !!}
                                             </div>
                                         </div>
 
@@ -91,6 +95,7 @@
                                                 <input type="number" class="form-control" name="validity" min="1" max="9999"
                                                     placeholder="{{ __('Validity') }}..."
                                                     value="{{ $plan_details->validity }}" required>
+                                                    {!! $errors->first('validity', '<label class="help-block text-danger">:message</label>') !!}
                                                 <small class="text-muted">{{ __('For forever, enter 9999') }} </small>
                                             </div>
                                         </div>
@@ -104,6 +109,7 @@
                                                 <input type="number" class="form-control" name="no_of_vcards" min="1" max="999"
                                                     placeholder="{{ __('No. Of vCards') }}..."
                                                     value="{{ $plan_details->no_of_vcards }}" required>
+                                                    {!! $errors->first('no_of_vcards', '<label class="help-block text-danger">:message</label>') !!}
                                                 <small class="text-muted">{{ __('For unlimited, enter 999') }} </small>
                                             </div>
                                         </div>
@@ -113,6 +119,7 @@
                                                 <input type="number" class="form-control" name="no_of_services" min="1" max="999"
                                                     placeholder="{{ __('No. Of Services/Products') }}..."
                                                     value="{{ $plan_details->no_of_services }}" required>
+                                                    {!! $errors->first('no_of_services', '<label class="help-block text-danger">:message</label>') !!}
                                                 <small class="text-muted">{{ __('For unlimited, enter 999') }} </small>
                                             </div>
                                         </div>
@@ -122,6 +129,7 @@
                                                 <input type="number" class="form-control" name="no_of_galleries" min="1" max="999"
                                                     placeholder="{{ __('No. Of Galleries') }}..."
                                                     value="{{ $plan_details->no_of_galleries }}" required>
+                                                    {!! $errors->first('no_of_galleries', '<label class="help-block text-danger">:message</label>') !!}
                                                 <small class="text-muted">{{ __('For unlimited, enter 999') }} </small>
                                             </div>
                                         </div>
@@ -150,6 +158,7 @@
                                                     <input class="form-check-input" type="checkbox"
                                                         name="personalized_link"
                                                         {{ $plan_details->personalized_link == 1 ? 'checked' : '' }}>
+                                                        {!! $errors->first('personalized_link', '<label class="help-block text-danger">:message</label>') !!}
                                                 </label>
                                             </div>
                                         </div>
@@ -159,6 +168,7 @@
                                                 <label class="form-check form-switch">
                                                     <input class="form-check-input" type="checkbox" name="hide_branding"
                                                         {{ $plan_details->hide_branding == 1 ? 'checked' : '' }}>
+                                                        {!! $errors->first('name', '<label class="help-block text-danger">:message</label>') !!}
                                                 </label>
                                             </div>
                                         </div>

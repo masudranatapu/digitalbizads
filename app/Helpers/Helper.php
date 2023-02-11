@@ -270,8 +270,11 @@ function checkPackage($id = null){
 
 
 function isFreePlan($user_id){
-    $user = DB::table('users')->select('plans.is_free')->leftJoin('plans','plans.id','=','users.plan_id')->where('users.id',$user_id)->first();
-    if($user->is_free==1){
+    $user = DB::table('users')
+    ->select('plans.plan_price')
+    ->leftJoin('plans','plans.plan_id','=','users.plan_id')
+    ->where('users.id',$user_id)->first();
+    if($user->plan_price == 0){
         return true;
     }
     return false;

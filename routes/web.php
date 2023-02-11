@@ -203,8 +203,6 @@ Route::group(['middleware' => 'Installer'], function () {
         Route::post('card/upload_image',['as'=>'card.upload_image','uses'=>'CardController@uploadImage']);
         Route::post('card/upload_logo',['as'=>'card.upload_logo','uses'=>'CardController@uploadLogo']);
 
-
-
         Route::get('create-card', [CardController::class, 'CreateCard'])->name('create.card');
         Route::get('edit-card/{id}', [CardController::class, 'editCard'])->name('edit.card');
         Route::get('card/gallery-delete/{id}', [CardController::class, 'getDeleteGallery'])->name('card.gallery-delete');
