@@ -309,7 +309,7 @@ a.overlay-btn {
                                             </div>
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="sms://{{ $card->phone_number }}">
+                                                    <a class="social-contact" href="sms://{{ $card->phone_number }}">
                                                         <i class="fa fa-comment"></i>
                                                     </a>
                                                 </div>
