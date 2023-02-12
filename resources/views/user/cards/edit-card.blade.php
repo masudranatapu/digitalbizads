@@ -65,11 +65,8 @@ a.overlay-btn {
         $card_url =$card->card_id;
         $footer_text = "All Rights Reserved by Digitalbizads.com";
     }
-
-    ?>
-
+?>
 <link href="{{ asset('assets/css/image-uploader.min.css')}}" rel="stylesheet">
-
 <style>
     span.error {
         color: #E53935;
@@ -109,9 +106,9 @@ a.overlay-btn {
     }
 
     .social_item i {
+        background-color:rgba({{ $theme_bg }});
         border-color: {{$theme_color}}!important;
     }
-
     .carousel-control-prev,
     .carousel-control-next {
         background-color: {{$theme_color.'!important'}};
@@ -178,7 +175,6 @@ a.overlay-btn {
                         <div class="card_wrapper">
                             <div class="card_template" style="background-color: rgba({{ $theme_bg }})">
                                 <!-- title -->
-
                                 <div class="card_title p-2 pt-3 d-block" style="background-color: {{ $card->header_backgroung ?? '#000000' }};">
                                     <h2>
                                         @if (!empty($card->logo))
@@ -872,6 +868,7 @@ a.overlay-btn {
             let hex2rgb = hexToRgb(current_color);
             let rgb = hex2rgb.toString();
             $('.social_item').find('i').css('border-color', current_color);
+            $('.social_item').find('i').css('background-color', 'rgba(' + rgb + ',.5' + ')');
             $('.subscribe-btn').css({
                 'background-color': current_color
             });
@@ -905,6 +902,7 @@ a.overlay-btn {
         $(document).on('input', '#header_text_color', function(e) {
             var current_color = $("#header_text_color").val();
             $('.gallery-btn').find('i').css('color',current_color);
+            $('.social-contact').find('i').css('color',current_color);
             $('.login_btn').find('svg').attr('stroke',current_color);
             $('#preview_name').css({
                 'color': current_color

@@ -36,14 +36,16 @@
 
     ?>
     <style>
-        .card_template {
+        .card_template,.social_item i {
             background-color: rgba( {{$theme_bg}});
         }
 
         .social_item i {
             border-color: {{$theme_color}};
         }
-
+        .social_item i{
+            color: {{ $cardinfo->header_text_color }};
+        }
         /* .card_title, */
         .subscribe-btn,
         .purchase_btn a,
@@ -154,6 +156,7 @@
             right: 56px;
             font-size: 20px;
         }
+
     </style>
 </head>
 

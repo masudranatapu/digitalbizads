@@ -722,6 +722,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
             let hex2rgb = hexToRgb(current_color);
             let rgb = hex2rgb.toString();
             $('.social_item').find('i').css('border-color', current_color);
+            $('.social-contact').find('i').css('background-color', 'rgba(' + rgb + ',.5' + ')');
             $('.subscribe-btn').css({
                 'background-color': current_color
             });
@@ -754,6 +755,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
         $(document).on('input', '#header_text_color', function(e) {
             var current_color = $("#header_text_color").val();
             $('.gallery-btn').find('i').css('color',current_color);
+            $('.social-contact').find('i').css('color',current_color);
             $('.login_btn').find('svg').attr('stroke',current_color);
             $('#preview_name').css({
                 'color': current_color
