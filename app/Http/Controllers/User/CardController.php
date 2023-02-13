@@ -210,6 +210,9 @@ class CardController extends Controller
             }
             $card->header_text_color = $request->header_text_color;
             $card->header_backgroung = $request->header_backgroung;
+            $card->icon_border_color = $request->icon_border_color;
+            $card->location = $request->location;
+            $card->header_font_family = $request->header_font_family;
             $card->card_type = 'vcard';
             $card->card_url = $card_url;
             $card->phone_number = $request->phone_number;
@@ -374,6 +377,9 @@ class CardController extends Controller
             $card->website = $request->website;
             $card->header_text_color = $request->header_text_color;
             $card->header_backgroung = $request->header_backgroung;
+            $card->icon_border_color = $request->icon_border_color;
+            $card->location = $request->location;
+            $card->header_font_family = $request->header_font_family;
             $card->updated_at = date('Y-m-d H:i:s');
             $card->updated_by = Auth::user()->id;
             $card->update();

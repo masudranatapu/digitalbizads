@@ -80,6 +80,20 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-sm-12 col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="subheader">{{ __('Remaining Days') }}</div>
+                                        </div>
+                                            <p class="h1">{{ __('Lifetime') }}</p>
+
+                                        <a class="btn btn-sm btn-white" href="{{ route('user.plans') }}">
+                                            {{ __('Create new biz ad') }}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-6">

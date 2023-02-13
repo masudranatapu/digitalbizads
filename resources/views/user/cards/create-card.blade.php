@@ -86,6 +86,18 @@ $tabindex = 1;
 $android = stripos($_SERVER['HTTP_USER_AGENT'], 'android');
 $iphone = stripos($_SERVER['HTTP_USER_AGENT'], 'iphone');
 $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
+$font_family = [
+        'Arial ',
+        'Verdana',
+        'Poppins',
+        'Tahoma',
+        'Trebuchet M',
+        'Times New Roman',
+        'Georgia',
+        'Courier New',
+        'Brush Script',
+        'Garamond',
+    ];
 
 ?>
 <div class="page-wrapper">
@@ -114,7 +126,7 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                 <!-- title -->
                                 <div class="card_title p-2 pt-3" id="titleDiv">
                                     <h2 class="">
-                                        <span id="preview_name">Express T-Shirts</span>
+                                        <span id="preview_name" class="shop-title">Express T-Shirts</span>
                                         <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
                                             data-bs-target="#galleryModal">
                                             <i class="fas fa-images"></i>
@@ -359,6 +371,29 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
+                                            <label for="icon_border_color" class="form-label">Icon Border Color</label>
+                                            <div class="input-group custome_color">
+                                                <label for="icon_border_color" class="input-group-text">
+                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
+                                                        alt="color picker">
+                                                    <input type="color" placeholder="card color"
+                                                        name="icon_border_color" id="icon_border_color"
+                                                        value="{{ old('icon_border_color') ?? "#ffc107" }}"
+                                                        class="form-control @error('icon_border_color') is-invalid @enderror"
+                                                        tabindex="{{ $tabindex++ }}" required>
+                                                </label>
+                                                <input type="text" id="icon_border_color_code" class="form-control"
+                                                    value="#ffc107" disabled>
+                                            </div>
+                                            @if ($errors->has('icon_border_color'))
+                                            <span class="help-block text-danger">{{
+                                                $errors->first('icon_border_color')
+                                                }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3 form-input">
                                             <label for="" class="form-label">Select Logo/Heading <span
                                                     class="text-danger">*</span></label></label>
                                             <select id="selectField1" name="headline" class="form-control"
@@ -402,6 +437,19 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                             @if ($errors->has('header_text_color'))
                                             <span class="help-block text-danger">{{ $errors->first('header_text_color')
                                                 }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3 form-input">
+                                            <label for="header_font_family" class="form-label">Heading Font Family</label>
+                                              <select class="form-control" name="header_font_family" id="header_font_family">
+                                                @foreach ($font_family as $font_)
+                                                    <option value="{{ $font_ }}">{{ $font_ }}</option>
+                                                @endforeach
+                                              </select>
+                                            @if ($errors->has('header_font_family'))
+                                            <span class="help-block text-danger">{{ $errors->first('header_font_family') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -597,7 +645,19 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
                                             @endif
                                         </div>
                                     </div> --}}
-
+                                    <div class="col-md-12">
+                                        <div class="mb-3 form-input">
+                                            <label for="location" class="form-label">Location</label>
+                                            <input type="url" name="location" id="location"
+                                                placeholder="location" value="{{ old('location') }}"
+                                                data-preview="preview_location"
+                                                class="form-control cin @error('location') is-invalid @enderror"
+                                                tabindex="{{ $tabindex++ }}">
+                                            @if ($errors->has('location'))
+                                            <span class="help-block text-danger">{{ $errors->first('location') }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
 
                                     <div class="col-12">
                                         <div class="mb-3 form-input position-relative">
@@ -742,6 +802,17 @@ $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
             $('.card_title').css({
                 'background-color': current_color
             });
+        })
+
+        $(document).on('input', '#icon_border_color', function(e) {
+            $('#icon_border_color_code').val(this.value);
+            var current_color = $("#icon_border_color").val();
+            $('.social_item').find('i').css('border-color', current_color);
+        })
+
+        $(document).on('change', '#header_font_family', function(e) {
+            var font = $("#header_font_family").val();
+            $('.shop-title').css('font-family', font);
         })
 
 

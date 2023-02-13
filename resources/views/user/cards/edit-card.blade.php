@@ -29,6 +29,7 @@ a.overlay-btn {
         cursor: pointer;
         z-index: 999;
     }
+
 </style>
 @endsection
 @section('content')
@@ -65,6 +66,20 @@ a.overlay-btn {
         $card_url =$card->card_id;
         $footer_text = "All Rights Reserved by Digitalbizads.com";
     }
+    $font_family = [
+        'Arial ',
+        'Verdana',
+        'Poppins',
+        'Tahoma',
+        'Trebuchet M',
+        'Times New Roman',
+        'Georgia',
+        'Courier New',
+        'Brush Script',
+        'Garamond',
+    ];
+
+    // dd($font_family);
 ?>
 <link href="{{ asset('assets/css/image-uploader.min.css')}}" rel="stylesheet">
 <style>
@@ -107,7 +122,7 @@ a.overlay-btn {
 
     .social_item i {
         background-color:rgba({{ $theme_bg }});
-        border-color: {{$theme_color}}!important;
+        border-color: {{ $card->icon_border_color }};
     }
     .carousel-control-prev,
     .carousel-control-next {
@@ -182,14 +197,14 @@ a.overlay-btn {
                                             <img src="{{ asset($card->logo) }}" id="previewLogo" alt="logo">
                                         </div>
                                         <div class="d-none" id="titleDiv">
-                                            <span id="preview_name"
+                                            <span id="preview_name" class="shop-title"
                                             style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">
                                             <span>Express T-Shirts</span>
                                             </span>
                                         </div>
                                         @elseif ($card->title)
                                         <div class="d-block" id="titleDiv">
-                                            <span id="preview_name"
+                                            <span id="preview_name" class="shop-title"
                                             style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">{{ $card->title }}</span>
                                         </div>
                                         <div class="d-none text-center" id="logoDiv">
@@ -200,7 +215,7 @@ a.overlay-btn {
                                             <img src="{{ asset('assets/images/bizads.png') }}" id="previewLogo" width="140" alt="logo">
                                         </div>
                                         <div class="d-none" id="titleDiv">
-                                            <span id="preview_name"
+                                            <span id="preview_name" class="shop-title"
                                             style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">
                                             <span>Express T-Shirts</span>
                                             </span>
@@ -229,7 +244,6 @@ a.overlay-btn {
                                 </div>
 
                                 <div class="slider-box" id="slider-box">
-
                                     @if (!empty($card->banner_content))
                                     @if ($card->banner_type == 'videourl')
                                     <div class="video_wrapper" id="digitalBizEmbad">
@@ -495,6 +509,29 @@ a.overlay-btn {
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
+                                            <label for="icon_border_color" class="form-label">Icon Border Color</label>
+                                            <div class="input-group custome_color">
+                                                <label for="icon_border_color" class="input-group-text">
+                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
+                                                        alt="color picker">
+                                                    <input type="color" placeholder="card color"
+                                                        name="icon_border_color" id="icon_border_color"
+                                                        value="{{ $card->icon_border_color }}"
+                                                        class="form-control @error('icon_border_color') is-invalid @enderror"
+                                                        tabindex="{{ $tabindex++ }}" required>
+                                                </label>
+                                                <input type="text" id="icon_border_color_code" class="form-control"
+                                                    value="{{ $card->icon_border_color }}" disabled>
+                                            </div>
+
+                                            @if ($errors->has('icon_border_color'))
+                                            <span class="help-block text-danger">{{ $errors->first('icon_border_color')
+                                                }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3 form-input">
                                             <label for="selectField1" class="form-label">Select Logo/Heading <span
                                                     class="text-danger">*</span></label></label>
                                             <select id="selectField1" name="headline" class="form-control"
@@ -545,8 +582,19 @@ a.overlay-btn {
                                             <span class="help-block text-danger">{{ $errors->first('text') }}</span>
                                             @endif
                                         </div>
-
-
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3 form-input">
+                                            <label for="header_font_family" class="form-label">Heading Font Family</label>
+                                              <select class="form-control" name="header_font_family" id="header_font_family">
+                                                @foreach ($font_family as $font_)
+                                                    <option value="{{ $font_ }}" {{ $font_== $card->header_font_family ? 'selected' : '' }}>{{ $font_ }}</option>
+                                                @endforeach
+                                              </select>
+                                            @if ($errors->has('header_font_family'))
+                                            <span class="help-block text-danger">{{ $errors->first('header_font_family') }}</span>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
 
@@ -735,6 +783,22 @@ a.overlay-btn {
                                                 @endif
                                             </div>
                                         </div>
+
+                                        <div class="col-md-6">
+                                            <div class="mb-3 form-input">
+                                                <label for="location" class="form-label">Location</label>
+                                                <input type="url" name="location" data-preview="preview_location"
+                                                    id="location" placeholder="location"
+                                                    value="{{ $card->location }}"
+                                                    class="form-control cin  @error('location') is-invalid @enderror"
+                                                    tabindex="{{ $tabindex++ }}">
+                                                @if ($errors->has('location'))
+                                                <span class="help-block text-danger">{{ $errors->first('location')
+                                                    }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+
                                         {{-- @if ($plan_details->personalized_link == '1') --}}
                                         <div class="col-12">
                                             <div class="mb-3 form-input position-relative">
@@ -843,12 +907,15 @@ a.overlay-btn {
     })
     $(function () {
         // show color code
+
         $('#theme_color').on('input', function() {
             $('#theme_clr_code').val(this.value);
         });
+
         $('#header_backgroung').on('input', function() {
             $('#theme_back_code').val(this.value);
         });
+
         $('#header_text_color').on('input', function() {
             $('#header_clr_code').val(this.value);
         });
@@ -862,12 +929,12 @@ a.overlay-btn {
             if (shorthand) return shorthand.slice(1).map(e => 0x11 * parseInt(e, 16));
             return null;
         }
+
         $(document).on('input', '#theme_color,#theme_clr_code', function(e) {
             var current_color = $("#theme_color").val();
             console.log(current_color);
             let hex2rgb = hexToRgb(current_color);
             let rgb = hex2rgb.toString();
-            $('.social_item').find('i').css('border-color', current_color);
             $('.social_item').find('i').css('background-color', 'rgba(' + rgb + ',.5' + ')');
             $('.subscribe-btn').css({
                 'background-color': current_color
@@ -907,6 +974,17 @@ a.overlay-btn {
             $('#preview_name').css({
                 'color': current_color
             });
+        })
+
+        $(document).on('input', '#icon_border_color', function(e) {
+            $('#icon_border_color_code').val(this.value);
+            var current_color = $("#icon_border_color").val();
+            $('.social_item').find('i').css('border-color', current_color);
+        })
+
+        $(document).on('change', '#header_font_family', function(e) {
+            var font = $("#header_font_family").val();
+            $('.shop-title').css('font-family', font);
         })
 
 

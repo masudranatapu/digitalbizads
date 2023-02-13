@@ -36,16 +36,14 @@
 
     ?>
     <style>
-        .card_template,.social_item i {
+        .card_template {
             background-color: rgba( {{$theme_bg}});
         }
 
         .social_item i {
-            border-color: {{$theme_color}};
+            border-color: {{$cardinfo->icon_border_color ?? '#000000'}};
         }
-        .social_item i{
-            color: {{ $cardinfo->header_text_color }};
-        }
+
         /* .card_title, */
         .subscribe-btn,
         .purchase_btn a,
@@ -54,7 +52,10 @@
         .purchase_btn a {
             background-color: {{ $theme_color }}!important;
         }
+        .card_title h2{
+            font-family: {{ $cardinfo->header_font_family }}
 
+        }
         .card_template .card_title {
             padding: 9px 0px 9px 0px;
             background: #eb8714;
@@ -156,7 +157,6 @@
             right: 56px;
             font-size: 20px;
         }
-
     </style>
 </head>
 
@@ -262,6 +262,13 @@
                             </div>
                         </div>
                         @endif
+                        <div class="col">
+                            <div class="social_item">
+                                <a href="{{ $cardinfo->location }}" target="__blank">
+                                    <i class="fas fa-map-marker"></i>
+                                </a>
+                            </div>
+                        </div>
                         <!-- Qr code icon -->
                         <div class="col">
                             <div class="social_item qrcode_icon">
@@ -307,13 +314,14 @@
                         @endforeach
                         @endif
 
-                        <div class="col">
+
+                        {{-- <div class="col">
                             <div class="social_item">
                                 <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#SocialModal">
                                     <i class="fas fa-share-nodes"></i>
                                 </a>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
