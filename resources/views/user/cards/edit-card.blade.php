@@ -5,20 +5,24 @@
 <link rel="stylesheet" href="{{ asset('css/croppie.css') }}" />
 <style>
     .loading-spinner {
-    display: none;
-}
-.loading-spinner.active {
-    display: inline-block;
-}
-img#previewLogo {
-    max-width: 140px;
-}
-button.delete-image.btn-danger.photo-delete {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-}
-a.overlay-btn {
+        display: none;
+    }
+
+    .loading-spinner.active {
+        display: inline-block;
+    }
+
+    img#previewLogo {
+        max-width: 140px;
+    }
+
+    button.delete-image.btn-danger.photo-delete {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+    }
+
+    a.overlay-btn {
         position: absolute;
         top: 0;
         left: 0;
@@ -29,7 +33,6 @@ a.overlay-btn {
         cursor: pointer;
         z-index: 999;
     }
-
 </style>
 @endsection
 @section('content')
@@ -87,6 +90,7 @@ a.overlay-btn {
         color: #E53935;
         padding: 2px 0px;
     }
+
     .purchase_btn a {
         padding: 10px 27px;
         font-size: 20px;
@@ -105,7 +109,13 @@ a.overlay-btn {
     }
 
     .card_title {
-        background-color: {{$theme_color}};
+        background-color: {
+                {
+                $theme_color
+            }
+        }
+
+        ;
     }
 
     .gallery-btn {
@@ -121,12 +131,32 @@ a.overlay-btn {
     }
 
     .social_item i {
-        background-color:rgba({{ $theme_bg }});
-        border-color: {{ $card->icon_border_color }};
+        background-color:rgba( {
+                    {
+                    $theme_bg
+                }
+            }
+
+        );
+
+        border-color: {
+                {
+                $card->icon_border_color
+            }
+        }
+
+        ;
     }
+
     .carousel-control-prev,
     .carousel-control-next {
-        background-color: {{$theme_color.'!important'}};
+        background-color: {
+                {
+                $theme_color.'!important'
+            }
+        }
+
+        ;
     }
 
     .social_share {
@@ -158,6 +188,7 @@ a.overlay-btn {
         height: 111px;
         margin-bottom: 12px;
     }
+
     .gallery-btn {
         position: absolute;
         top: 23px;
@@ -190,7 +221,8 @@ a.overlay-btn {
                         <div class="card_wrapper">
                             <div class="card_template" style="background-color: rgba({{ $theme_bg }})">
                                 <!-- title -->
-                                <div class="card_title p-2 pt-3 d-block" style="background-color: {{ $card->header_backgroung ?? '#000000' }};">
+                                <div class="card_title p-2 pt-3 d-block"
+                                    style="background-color: {{ $card->header_backgroung ?? '#000000' }};">
                                     <h2>
                                         @if (!empty($card->logo))
                                         <div class="d-block text-center" id="logoDiv">
@@ -198,34 +230,37 @@ a.overlay-btn {
                                         </div>
                                         <div class="d-none" id="titleDiv">
                                             <span id="preview_name" class="shop-title"
-                                            style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">
-                                            <span>Express T-Shirts</span>
+                                                style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">
+                                                <span>Express T-Shirts</span>
                                             </span>
                                         </div>
                                         @elseif ($card->title)
                                         <div class="d-block" id="titleDiv">
                                             <span id="preview_name" class="shop-title"
-                                            style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">{{ $card->title }}</span>
+                                                style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">{{
+                                                $card->title }}</span>
                                         </div>
                                         <div class="d-none text-center" id="logoDiv">
-                                            <img src="{{ asset('assets/images/bizads.png') }}" id="previewLogo" width="140" alt="logo">
+                                            <img src="{{ asset('assets/images/bizads.png') }}" id="previewLogo"
+                                                width="140" alt="logo">
                                         </div>
                                         @else
                                         <div class="d-block text-center" id="logoDiv">
-                                            <img src="{{ asset('assets/images/bizads.png') }}" id="previewLogo" width="140" alt="logo">
+                                            <img src="{{ asset('assets/images/bizads.png') }}" id="previewLogo"
+                                                width="140" alt="logo">
                                         </div>
                                         <div class="d-none" id="titleDiv">
                                             <span id="preview_name" class="shop-title"
-                                            style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">
-                                            <span>Express T-Shirts</span>
+                                                style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">
+                                                <span>Express T-Shirts</span>
                                             </span>
                                         </div>
 
                                         @endif
                                         <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
-                                        data-bs-target="#galleryModal">
-                                        <i class="fas fa-images" style="color:{{ $card->header_text_color }};"></i>
-                                    </a>
+                                            data-bs-target="#galleryModal">
+                                            <i class="fas fa-images" style="color:{{ $card->header_text_color }};"></i>
+                                        </a>
 
                                         <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
                                             data-bs-target="#loginModal">
@@ -428,7 +463,7 @@ a.overlay-btn {
                                 </div>
                                 <div class="text-center text-light pb-3">
                                     @if (isFreePlan(Auth::user()->id))
-                                        <p>All Rights Reserved by Digitalbizads.com</p>
+                                    <p>All Rights Reserved by Digitalbizads.com</p>
                                     @else
                                     <p id="preview_copyright">{{ $card->footer_text }}</p>
                                     @endif
@@ -444,7 +479,7 @@ a.overlay-btn {
                                 novalidate="novalidate" enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="upload_image_url" id="upload_image_url"
-                                value="{{ route('user.card.upload_image') }}" />
+                                    value="{{ route('user.card.upload_image') }}" />
                                 <input type="hidden" name="upload_logo_url" id="upload_logo_url"
                                     value="{{ route('user.card.upload_logo') }}" />
                                 <div class="row">
@@ -582,14 +617,18 @@ a.overlay-btn {
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="header_font_family" class="form-label">Heading Font Family</label>
-                                              <select class="form-control" name="header_font_family" id="header_font_family">
+                                            <label for="header_font_family" class="form-label">Heading Font
+                                                Family</label>
+                                            <select class="form-control" name="header_font_family"
+                                                id="header_font_family">
                                                 @foreach ($font_family as $font_)
-                                                    <option value="{{ $font_ }}" {{ $font_== $card->header_font_family ? 'selected' : '' }}>{{ $font_ }}</option>
+                                                <option value="{{ $font_ }}" {{ $font_==$card->header_font_family ?
+                                                    'selected' : '' }}>{{ $font_ }}</option>
                                                 @endforeach
-                                              </select>
+                                            </select>
                                             @if ($errors->has('header_font_family'))
-                                            <span class="help-block text-danger">{{ $errors->first('header_font_family') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('header_font_family')
+                                                }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -666,8 +705,10 @@ a.overlay-btn {
                                     <div class="col-12">
                                         <div class="form-group">
                                             <div class="input-field gallery_image">
-                                                <label class="active">Gallery<span class="img-note d-inline-block"></label>
-                                                <div class="row row-cols-3 row-cols-sm-3 row-cols-md-4 row-cols-xl-5 mt-2">
+                                                <label class="active">Gallery<span
+                                                        class="img-note d-inline-block"></label>
+                                                <div
+                                                    class="row row-cols-3 row-cols-sm-3 row-cols-md-4 row-cols-xl-5 mt-2">
                                                     @if($card->gallery && $card->gallery->count() > 0)
                                                     @foreach($card->gallery as $photo)
                                                     <div class="col" id="photo_div_{{$photo->id}}">
@@ -684,7 +725,8 @@ a.overlay-btn {
                                                     @endforeach
                                                     @endif
                                                 </div>
-                                                <div class="prod_def_photo_upload py-2" title="Click for photo upload"></div>
+                                                <div class="prod_def_photo_upload py-2" title="Click for photo upload">
+                                                </div>
                                             </div>
 
                                         </div>
@@ -783,8 +825,7 @@ a.overlay-btn {
                                             <div class="mb-3 form-input">
                                                 <label for="location" class="form-label">Location</label>
                                                 <input type="url" name="location" data-preview="preview_location"
-                                                    id="location" placeholder="location"
-                                                    value="{{ $card->location }}"
+                                                    id="location" placeholder="location" value="{{ $card->location }}"
                                                     class="form-control cin  @error('location') is-invalid @enderror"
                                                     tabindex="{{ $tabindex++ }}">
                                                 @if ($errors->has('location'))
@@ -797,15 +838,17 @@ a.overlay-btn {
                                             <div class="mb-3 form-input position-relative">
                                                 <label for="personalized_link" class="form-label">Personalized
                                                     Link</label>
-                                                    @if (isFreePlan(Auth::user()->id))
-                                                    <a href="javascript:void(0)" class="overlay-btn upgrade-plan" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                @if (isFreePlan(Auth::user()->id))
+                                                <a href="javascript:void(0)" class="overlay-btn upgrade-plan"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
                                                     data-bs-custom-class="custom-tooltip"
                                                     title="Upgrade to a Premium account to access personalized link"></a>
                                                 @endif
                                                 <input type="text" placeholder="Personalized Link"
                                                     name="personalized_link" id="personalized_link"
                                                     class="form-control @error('gallery_type') is-invalid @enderror"
-                                                    value="{{ $card_url }}" tabindex="{{ $tabindex++ }}" {{ isFreePlan(Auth::user()->id)==true ? 'disabled':'' }}>
+                                                    value="{{ $card_url }}" tabindex="{{ $tabindex++ }}" {{
+                                                    isFreePlan(Auth::user()->id)==true ? 'disabled':'' }}>
                                                 @if ($errors->has('personalized_link'))
                                                 <span class="help-block text-danger">{{
                                                     $errors->first('personalized_link')
@@ -818,14 +861,16 @@ a.overlay-btn {
                                             <div class="mb-3 form-input position-relative">
                                                 <label for="footer_text" class="form-label">Copyright</label>
                                                 @if (isFreePlan(Auth::user()->id))
-                                                    <a href="javascript:void(0)" class="overlay-btn upgrade-plan" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                <a href="javascript:void(0)" class="overlay-btn upgrade-plan"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
                                                     data-bs-custom-class="custom-tooltip"
                                                     title="Upgrade to a Premium account to access custom Copyright"></a>
                                                 @endif
-                                                <input type="text" data-preview="preview_copyright" name="footer_text" placeholder="copyright"
-                                                    id="footer_text"
+                                                <input type="text" data-preview="preview_copyright" name="footer_text"
+                                                    placeholder="copyright" id="footer_text"
                                                     class="form-control cin @error('footer_text') is-invalid @enderror"
-                                                    tabindex="{{ $tabindex++ }}" value="{{ $footer_text }}" {{ isFreePlan(Auth::user()->id)==true ? 'disabled':'' }}>
+                                                    tabindex="{{ $tabindex++ }}" value="{{ $footer_text }}" {{
+                                                    isFreePlan(Auth::user()->id)==true ? 'disabled':'' }}>
                                                 @if ($errors->has('footer_text'))
                                                 <span class="help-block text-danger">{{ $errors->first('footer_text')
                                                     }}</span>
@@ -858,20 +903,20 @@ a.overlay-btn {
                     <div id="social-links">
                         <div>
                             @if ($android !== false || $ipad !== false || $iphone !== false)
-                                @php
-                                    $sms_attr ="sms:?body=".URL::to('/');
-                                @endphp
+                            @php
+                            $sms_attr ="sms:?body=".URL::to('/');
+                            @endphp
                             @else
-                                @php
-                                    $sms_attr ="sms:;body=".URL::to('/');
-                                @endphp
+                            @php
+                            $sms_attr ="sms:;body=".URL::to('/');
+                            @endphp
                             @endif
                             <label class="py-2" for="send_to">Send To</label>
                             <div class="input-group">
                                 <input type="text" name="send_to" id="send_to"
-                                        class="form-control @error('send_to') is-invalid @enderror" placeholder="Send to phone no"
-                                        required>
-                                <a href="{{ $sms_attr }}"  class="input-group-text btn btn-dark sendto-btn">Send</a>
+                                    class="form-control @error('send_to') is-invalid @enderror"
+                                    placeholder="Send to phone no" required>
+                                <a href="{{ $sms_attr }}" class="input-group-text btn btn-dark sendto-btn">Send</a>
                             </div>
                         </div>
                     </div>
