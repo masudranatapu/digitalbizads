@@ -128,6 +128,9 @@
                                                             <a class="btn btn-primary btn-sm"
                                                                 href="{{ route('card.preview', $row->card_url) }}"
                                                                 target="_blank">{{ __('Preview') }}</a>
+                                                            <a class="btn btn-danger btn-sm delete-card" href="{{ route('user.card.delete', $row->card_id) }}">{{ __('Delete') }}</a>
+
+
                                                             {{--
                                                 <a class="btn btn-primary btn-sm"
                                                     href="{{ URL::to('/')."/".$row->card_url }}"
@@ -237,4 +240,18 @@
             </div>
         </div>
     </div>
+
+
+
+
+    <script>
+
+    $(document).on('click','.delete-card',function(e){
+        var conBox = confirm("Are you sure to delete this ads?");
+        if(conBox){
+             return true;
+        }
+        return false;
+    })
+    </script>
 @endsection

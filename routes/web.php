@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WebToolsController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\User\CardController;
 use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\UserController;
@@ -56,6 +57,9 @@ Route::group(['middleware' => 'Installer'], function () {
     Route::get('terms-and-conditions', [HomeController::class, 'termsAndConditions'])->name('terms.and.conditions');
     Route::get('refund-policy', [HomeController::class, 'refundPolicy'])->name('refund.policy');
     Route::post('card/subscriber', [HomeController::class, 'postSubscriber'])->name('card.subscriber');
+
+    Route::post('post-register', [AuthController::class, 'postRegister'])->name('post-register');
+
 
     // Web Tools
     // HTML
@@ -194,11 +198,14 @@ Route::group(['middleware' => 'Installer'], function () {
 
         Route::post('card/store', [CardController::class, 'postStore'])->name('card.store');
         Route::post('card/update/{id}', [CardController::class, 'postUpdate'])->name('card.update');
+        Route::get('card/delete/{id}', [CardController::class, 'getDelete'])->name('card.delete');
 
+        Route::post('card/upload_image',['as'=>'card.upload_image','uses'=>'CardController@uploadImage']);
+        Route::post('card/upload_logo',['as'=>'card.upload_logo','uses'=>'CardController@uploadLogo']);
 
         Route::get('create-card', [CardController::class, 'CreateCard'])->name('create.card');
         Route::get('edit-card/{id}', [CardController::class, 'editCard'])->name('edit.card');
-
+        Route::get('card/gallery-delete/{id}', [CardController::class, 'getDeleteGallery'])->name('card.gallery-delete');
 
         if (env('APP_TYPE') == 'VCARD' || env('APP_TYPE') == 'BOTH') {
             // Create Business Card

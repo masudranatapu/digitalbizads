@@ -55,8 +55,8 @@ class PlanController extends Controller
             'no_of_vcards' => 'required',
             'no_of_services' => 'required',
             'no_of_galleries' => 'required',
-            'no_of_features' => 'required',
-            'no_of_payments' => 'required'
+            // 'no_of_features' => 'required',
+            // 'no_of_payments' => 'required'
         ]);
 
 
@@ -137,6 +137,8 @@ class PlanController extends Controller
     // Update Plan
     public function updatePlan(Request $request)
     {
+
+
         $validator = Validator::make($request->all(), [
             'plan_id' => 'required',
             'plan_name' => 'required',
@@ -145,21 +147,30 @@ class PlanController extends Controller
             'no_of_vcards' => 'required',
             'no_of_services' => 'required',
             'no_of_galleries' => 'required',
-            'no_of_features' => 'required',
-            'no_of_payments' => 'required'
+            // 'no_of_features' => 'required',
+            // 'no_of_payments' => 'required'
         ]);
 
-        if ($request->personalized_link == null) {
-            $personalized_link = 0;
-        } else {
-            $personalized_link = 1;
+          if ($validator->fails()) {
+
+            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
         }
 
-        if ($request->hide_branding == null) {
-            $hide_branding = 0;
+        DB::beginTransaction();
+        try {
+
+        if ($request->personalized_link == 'on') {
+            $personalized_link = 1;
         } else {
-            $hide_branding = 1;
+            $personalized_link = 0;
         }
+
+        if ($request->hide_branding == 'on') {
+            $hide_branding = 1;
+        } else {
+            $hide_branding = 0;
+        }
+
 
         if ($request->is_private == null) {
             $is_private = 0;
@@ -185,19 +196,39 @@ class PlanController extends Controller
             $recommended = 1;
         }
 
-        if ($validator->fails()) {
-            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
-        }
         Plan::where('plan_id', $request->plan_id)->update([
             'plan_name' => $request->plan_name,
-            'plan_description' => $request->plan_description, 'recommended' => $recommended, 'plan_price' => $request->plan_price, 'validity' => $request->validity,
-            'no_of_vcards' => $request->no_of_vcards, 'no_of_services' => $request->no_of_services, 'no_of_galleries' => $request->no_of_galleries, 'no_of_features' => $request->no_of_features, 'no_of_payments' => $request->no_of_payments,
-            'personalized_link' => $personalized_link, 'hide_branding' => $hide_branding, 'free_setup' => $free_setup, 'free_support' => $free_support, 'is_private' => $is_private
+            'plan_description' => $request->plan_description,
+            'recommended' => $recommended,
+            'plan_price' => $request->plan_price,
+            'validity' => $request->validity,
+            'no_of_vcards' => $request->no_of_vcards,
+            'no_of_services' => $request->no_of_services,
+            'no_of_galleries' => $request->no_of_galleries,
+            'no_of_features' => $request->no_of_features,
+            'no_of_payments' => $request->no_of_payments,
+            'personalized_link' => $personalized_link,
+            'hide_branding' => $hide_branding,
+            'free_setup' => $free_setup,
+             'free_support' => $free_support,
+             'is_private' => $is_private
         ]);
-        alert()->success(trans('Plan Details Updated Successfully!'));
-        return redirect()->route('admin.edit.plan', $request->plan_id);
-    }
 
+
+
+        // return redirect()->route('admin.edit.plan', $request->plan_id);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            DB::rollback();
+            alert()->error(trans('Plan Details not Updated!'));
+
+            return redirect()->route('admin.edit.plan', $request->plan_id);
+    }
+    DB::commit();
+    alert()->success(trans('Plan Details Updated Successfully!'));
+
+    return redirect()->route('admin.edit.plan', $request->plan_id);
+    }
     // Delete Plan
     public function deletePlan(Request $request)
     {

@@ -85,14 +85,14 @@ a {
 }
 
 .card_title h2 {
-    font-size: 29px;
-    font-family: "Poppins";
+    font-size: 25px;
     font-weight: 900;
     text-align: center;
     color: #fff;
     letter-spacing: 0.1px;
     padding: 0px;
     margin: 0px;
+    padding-right: 78px;
 }
 
 .card_title h2 img {
@@ -124,7 +124,6 @@ a {
     border: none !important;
     border-bottom: 2px;
     font-size: 17px;
-    font-family: 'Roboto Condensed', sans-serif;
     color: #000;
     background: #FFC107;
     font-weight: 500;
@@ -184,7 +183,6 @@ a {
     position: relative;
     padding: 3px 15px;
     font-size: 17px;
-    font-family: 'Roboto Condensed', sans-serif;
     font-weight: 600;
     text-transform: uppercase;
     border-radius: 1px;
@@ -238,7 +236,6 @@ a {
 
 .modal-header h1 {
     font-size: 20px !important;
-    font-family: 'Roboto Condensed', sans-serif;
     font-weight: 700;
 }
 
@@ -307,7 +304,6 @@ a {
     padding: 12px 40px;
     text-transform: uppercase;
     font-weight: 600;
-    font-family: 'Roboto Condensed', sans-serif;
     letter-spacing: 1px;
     background-color: #FFC107 !important;
     color: #212121;
@@ -348,6 +344,36 @@ a {
 .video_wrapper {
     overflow: hidden;
 }
+
+
+.custome_color #theme_color,
+.custome_color #header_backgroung,
+.custome_color #header_text_color,
+#icon_border_color {
+    position: absolute;
+    top: 6px;
+    left: 0px;
+    opacity: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 100px;
+}
+
+.form-control {
+    outline: none !important;
+    box-shadow: none !important;
+    height: 45px;
+}
+
+.form-control[type="file"] {
+    cursor: pointer;
+    line-height: 29px;
+}
+
+
+
+
+
 
 @media screen and (max-width:420px) {
     .card_title h2 {

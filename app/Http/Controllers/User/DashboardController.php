@@ -35,7 +35,8 @@ class DashboardController extends Controller
         $plan = User::where('user_id', Auth::user()->user_id)->first();
         $active_plan = json_decode($plan->plan_details);
         $settings = Setting::where('status', 1)->first();
-        $business_card = BusinessCard::where('user_id', Auth::user()->user_id)->count();
+        $business_card = BusinessCard::where('user_id', Auth::user()->id)->count();
+
         $remaining_days = 0;
 
         if($active_plan != null) {
@@ -50,7 +51,7 @@ class DashboardController extends Controller
             {
                 $startDate = Carbon::create(date('Y'), $month);
                 $endDate = $startDate->copy()->endOfMonth();
-                $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('created_at', '>=', $startDate)->where('created_at', '<=', $endDate)->count();
+                $cards = BusinessCard::where('user_id', Auth::user()->id)->where('created_at', '>=', $startDate)->where('created_at', '<=', $endDate)->count();
                 $monthCards[$month] = $cards;
             }
             $monthCards = implode(',', $monthCards);

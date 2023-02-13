@@ -77,7 +77,7 @@ class RegisterController extends Controller
     public function showRegistrationForm()
     {
         $config = DB::table('config')->get();
-        $settings = Setting::first(); 
+        $settings = Setting::first();
 
         $google_configuration = [
             'GOOGLE_ENABLE' => env('GOOGLE_ENABLE', ''),
@@ -106,6 +106,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
         $user = User::create([
             'user_id' => uniqid(),
             'name' => $data['name'],
