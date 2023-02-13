@@ -544,13 +544,10 @@ a.overlay-btn {
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="row @if(!empty($card->title)) d-flex @else d-none @endif" id="headline">
-
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="textfield">
                                             <label for="header_text_color" class="form-label">Headline Color</label>
-
                                             <div class="input-group custome_color">
                                                 <label for="header_text_color" class="input-group-text">
                                                     <img src="{{ asset('images/color-picker.png') }}" width="25"
@@ -602,7 +599,7 @@ a.overlay-btn {
                                     <div id="logofield1"></div>
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="logo" class="form-label">Logo</label>
+                                            <label for="logo" class="form-label">Logo <span class="text-danger">(Recomended size (140x48)px)</span></label>
                                             <input type="file" name="logo" id="logo" onchange="readURL(this);"
                                                 class="form-control @error('logo') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
@@ -634,7 +631,7 @@ a.overlay-btn {
                                         <div class="mb-3 form-input {{ $banner_type == 'banner' ? 'd-block' : 'd-none' }}"
                                             id="galleryfield">
                                             <div id="galleryfield1"></div>
-                                            <label for="banner" class="form-label">Banner</label>
+                                            <label for="banner" class="form-label">Banner <span class="text-danger">(Recomended size (450x600)px)</span></label>
                                             <input type="file" name="banner" id="banner"
                                                 class="form-control @error('banner') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
@@ -767,8 +764,6 @@ a.overlay-btn {
                                                 @endif
                                             </div>
                                         </div>
-
-
                                         <div class="col-md-6">
                                             <div class="mb-3 form-input">
                                                 <label for="cashapp" class="form-label">CashApp</label>
@@ -784,7 +779,7 @@ a.overlay-btn {
                                             </div>
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <div class="mb-3 form-input">
                                                 <label for="location" class="form-label">Location</label>
                                                 <input type="url" name="location" data-preview="preview_location"
@@ -798,8 +793,6 @@ a.overlay-btn {
                                                 @endif
                                             </div>
                                         </div>
-
-                                        {{-- @if ($plan_details->personalized_link == '1') --}}
                                         <div class="col-12">
                                             <div class="mb-3 form-input position-relative">
                                                 <label for="personalized_link" class="form-label">Personalized
@@ -821,7 +814,6 @@ a.overlay-btn {
                                                 <span id="status"></span>
                                             </div>
                                         </div>
-                                        {{-- @endif --}}
                                         <div class="col-12">
                                             <div class="mb-3 form-input position-relative">
                                                 <label for="footer_text" class="form-label">Copyright</label>
@@ -853,8 +845,6 @@ a.overlay-btn {
     </div>
     @include('user.includes.footer')
 </div>
-
-<!-- Social Modal modal -->
 <div class="share_modal email_modal">
     <div class="modal animate__animated animate__fadeIn" id="SocialModal" tabindex="-1" data-bs-backdrop="static"
         aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -891,7 +881,6 @@ a.overlay-btn {
     </div>
 </div>
 @include('user.cards._upgrade_plan_modal')
-
 @push('custom-js')
 <script type="text/javascript" src="{{ asset('assets/js/slim.kickstart.min.js') }}"></script>
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>

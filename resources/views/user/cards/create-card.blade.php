@@ -458,7 +458,7 @@ $font_family = [
                                     <div class="col-6">
                                         <div class="mb-3 d-none form-input" id="logofield">
                                             <div id="logofield1"></div>
-                                            <label for="logo" class="form-label">Logo</label>
+                                            <label for="logo" class="form-label">Logo <span class="text-danger">(Recomended size (140x48)px)</span></label>
                                             <input type="file" name="logo" id="logo" onchange="readURL(this);"
                                                 class="form-control @error('logo') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
@@ -486,7 +486,7 @@ $font_family = [
                                     <div class="col-6">
                                         <div class="mb-3 form-input" id="galleryfield" >
                                             <div id="galleryfield1"></div>
-                                            <label for="banner" class="form-label">Banner</label>
+                                            <label for="banner" class="form-label">Banner  <span class="text-danger">{Recomended size (450x600)px}</span></label>
                                             <input type="file" name="banner" id="banner"
                                                 class="form-control @error('banner') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}" required>
