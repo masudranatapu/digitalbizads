@@ -238,7 +238,7 @@
                         <div class="col">
                             <div class="social_item">
                                 <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#SocialModal">
-                                    <i class="fas fa-share-nodes"></i>
+                                    <i class="fas fa-map-marker"></i>
                                 </a>
                             </div>
                         </div>

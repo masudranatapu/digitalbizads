@@ -732,8 +732,6 @@
         }
         $(document).on('input', '#theme_color', function(e) {
             var current_color = $("#theme_color").val();
-            console.log(current_color);
-            // $( "#theme_color_input").val(current_color);
             let hex2rgb = hexToRgb(current_color);
             let rgb = hex2rgb.toString();
             $('.social_item').find('i').css('border-color', current_color);
