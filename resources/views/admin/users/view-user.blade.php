@@ -82,12 +82,9 @@
                                                     <tr>
                                                         {{-- <td><a href="{{ route('profile', $user_card->card_url) }}"
                                                                 target="_blank">{{ $user_card->card_id }}</a></td> --}}
-                                                        <td><a href="#"
-                                                                target="_blank">{{ $user_card->card_id }}</a></td>
-
-
+                                                        <td><a href="#" target="_blank">{{ $user_card->card_id }}</a></td>
                                                         <td class="text-muted">
-                                                            {{ $user_card->title }}
+                                                            {{ $user_card->adsname ?? $user_card->title }}
                                                         </td>
                                                         <td>{{ $user_card->card_type == 'vcard' ? __('vCard') : __('WhatsApp Store') }}</td>
                                                         <td class="text-muted">
