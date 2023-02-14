@@ -105,7 +105,7 @@
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $row->card_id }}</td>
-                                                    <td>{{ $row->title }}</td>
+                                                    <td>{{ $row->adsname ?? $row->title }}</td>
                                                     <td>{{ $row->card_type == 'vcard' ? __('vCard') : __('WhatsApp Store') }}
                                                     </td>
                                                     <td class="text-muted">
