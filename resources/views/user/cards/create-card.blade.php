@@ -6,7 +6,8 @@ Create New DigitalBizAds Card
 @section('content')
 @section('css')
 <link href="{{ asset('assets/css/image-uploader.min.css')}}" rel="stylesheet">
-{{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" /> --}}
+{{--
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" /> --}}
 <link rel="stylesheet" href="{{ asset('css/croppie.css') }}" />
 <style>
     span.error {
@@ -51,24 +52,26 @@ Create New DigitalBizAds Card
 
     .gallery-btn {
         position: absolute;
-        top: 23px;
+        top: 13px;
         right: 52px;
         font-size: 20px;
-        /* color: #0d6efd !important; */
     }
+
     .loading-spinner {
-    display: none;
+        display: none;
     }
 
     .loading-spinner.active {
         display: inline-block;
     }
+
     button.delete-image.btn-danger.photo-delete {
-    position: absolute;
-    top: 4px;
-    right: 4px;
-}
-a.overlay-btn {
+        position: absolute;
+        top: 4px;
+        right: 4px;
+    }
+
+    a.overlay-btn {
         position: absolute;
         top: 0;
         left: 0;
@@ -78,6 +81,12 @@ a.overlay-btn {
         height: 100%;
         cursor: pointer;
         z-index: 999;
+    }
+
+    .login_btn {
+        position: absolute;
+        top: 6px;
+        right: 0;
     }
 </style>
 @endsection
@@ -124,7 +133,7 @@ $font_family = [
                         <div class="card_wrapper">
                             <div class="card_template">
                                 <!-- title -->
-                                <div class="card_title p-2 pt-3" id="titleDiv">
+                                <div class="card_title p-2" id="titleDiv">
                                     <h2 class="">
                                         <span id="preview_name" class="shop-title">Express T-Shirts</span>
                                         <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
@@ -147,7 +156,7 @@ $font_family = [
                                 </div>
                                 <div class="card_title p-2 pt-3 d-none" id="logoDiv">
                                     <h2 class="">
-                                        <div class="text-center">
+                                        <div>
                                             <img src="{{ asset('assets/images/bizads.png') }}" width="140"
                                                 id="previewLogo" alt="logo">
                                         </div>
@@ -237,7 +246,8 @@ $font_family = [
                                             <div class="col">
                                                 <div class="social_item qrcode_icon">
                                                     <a href="javascript:void(0)">
-                                                        <img src="{{ asset('backend/img') }}/icon/qr-code.svg" alt="qr-code">
+                                                        <img src="{{ asset('backend/img') }}/icon/qr-code.svg"
+                                                            alt="qr-code">
                                                     </a>
                                                 </div>
                                             </div>
@@ -287,7 +297,7 @@ $font_family = [
                                 <div class="text-center text-light pb-3">
                                     <div class="text-center text-light pb-3">
                                         @if (isFreePlan(Auth::user()->id))
-                                            <p>All Rights Reserved by Digitalbizads.com</p>
+                                        <p>All Rights Reserved by Digitalbizads.com</p>
                                         @else
                                         <p id="preview_copyright">© Copyright</p>
                                         @endif
@@ -304,7 +314,7 @@ $font_family = [
                                 novalidate="novalidate" enctype="multipart/form-data">
                                 @csrf
                                 <input type="hidden" name="upload_image_url" id="upload_image_url"
-                                value="{{ route('user.card.upload_image') }}" />
+                                    value="{{ route('user.card.upload_image') }}" />
                                 <input type="hidden" name="upload_logo_url" id="upload_logo_url"
                                     value="{{ route('user.card.upload_logo') }}" />
                                 <div class="row">
@@ -354,7 +364,7 @@ $font_family = [
                                                         alt="color picker">
                                                     <input type="color" placeholder="card color"
                                                         name="header_backgroung" id="header_backgroung"
-                                                        value="{{ old('header_backgroung') ?? "#ffc107" }}"
+                                                        value="{{ old('header_backgroung') ?? " #ffc107" }}"
                                                         class="form-control @error('header_backgroung') is-invalid @enderror"
                                                         tabindex="{{ $tabindex++ }}" required>
                                                 </label>
@@ -377,7 +387,7 @@ $font_family = [
                                                         alt="color picker">
                                                     <input type="color" placeholder="card color"
                                                         name="icon_border_color" id="icon_border_color"
-                                                        value="{{ old('icon_border_color') ?? "#ffc107" }}"
+                                                        value="{{ old('icon_border_color') ?? " #ffc107" }}"
                                                         class="form-control @error('icon_border_color') is-invalid @enderror"
                                                         tabindex="{{ $tabindex++ }}" required>
                                                 </label>
@@ -441,14 +451,17 @@ $font_family = [
                                     </div>
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="header_font_family" class="form-label">Heading Font Family</label>
-                                              <select class="form-control" name="header_font_family" id="header_font_family">
+                                            <label for="header_font_family" class="form-label">Heading Font
+                                                Family</label>
+                                            <select class="form-control" name="header_font_family"
+                                                id="header_font_family">
                                                 @foreach ($font_family as $font_)
-                                                    <option value="{{ $font_ }}">{{ $font_ }}</option>
+                                                <option value="{{ $font_ }}">{{ $font_ }}</option>
                                                 @endforeach
-                                              </select>
+                                            </select>
                                             @if ($errors->has('header_font_family'))
-                                            <span class="help-block text-danger">{{ $errors->first('header_font_family') }}</span>
+                                            <span class="help-block text-danger">{{ $errors->first('header_font_family')
+                                                }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -457,7 +470,8 @@ $font_family = [
                                     <div class="col-6">
                                         <div class="mb-3 d-none form-input" id="logofield">
                                             <div id="logofield1"></div>
-                                            <label for="logo" class="form-label">Logo <span class="text-danger">(Recomended size (140x48)px)</span></label>
+                                            <label for="logo" class="form-label">Logo <span
+                                                    class="text-danger">(Recomended size (140x48)px)</span></label>
                                             <input type="file" name="logo" id="logo" onchange="readURL(this);"
                                                 class="form-control @error('logo') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
@@ -483,9 +497,10 @@ $font_family = [
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="mb-3 form-input" id="galleryfield" >
+                                        <div class="mb-3 form-input" id="galleryfield">
                                             <div id="galleryfield1"></div>
-                                            <label for="banner" class="form-label">Banner  <span class="text-danger">{Recomended size (450x600)px}</span></label>
+                                            <label for="banner" class="form-label">Banner <span
+                                                    class="text-danger">{Recomended size (450x600)px}</span></label>
                                             <input type="file" name="banner" id="banner"
                                                 class="form-control @error('banner') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}" required>
@@ -635,7 +650,8 @@ $font_family = [
                                         <div class="mb-3 form-input">
                                             <label for="footer_text" class="form-label">Copyright</label>
                                             <input type="text" name="footer_text" placeholder="copyright"
-                                                id="footer_text" data-preview="preview_copyright" value="{{ old('footer_text') }}"
+                                                id="footer_text" data-preview="preview_copyright"
+                                                value="{{ old('footer_text') }}"
                                                 class="form-control cin @error('footer_text') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('footer_text'))
@@ -647,9 +663,8 @@ $font_family = [
                                     <div class="col-md-12">
                                         <div class="mb-3 form-input">
                                             <label for="location" class="form-label">Location</label>
-                                            <input type="url" name="location" id="location"
-                                                placeholder="location" value="{{ old('location') }}"
-                                                data-preview="preview_location"
+                                            <input type="url" name="location" id="location" placeholder="location"
+                                                value="{{ old('location') }}" data-preview="preview_location"
                                                 class="form-control cin @error('location') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('location'))
@@ -662,15 +677,17 @@ $font_family = [
                                         <div class="mb-3 form-input position-relative">
                                             <label for="personalized_link" class="form-label">Personalized
                                                 Link</label>
-                                                @if (isFreePlan(Auth::user()->id))
-                                                <a href="javascript:void(0)" class="overlay-btn upgrade-plan" data-bs-toggle="tooltip" data-bs-placement="top"
+                                            @if (isFreePlan(Auth::user()->id))
+                                            <a href="javascript:void(0)" class="overlay-btn upgrade-plan"
+                                                data-bs-toggle="tooltip" data-bs-placement="top"
                                                 data-bs-custom-class="custom-tooltip"
                                                 title="Upgrade to a Premium account to access personalized link"></a>
                                             @endif
-                                            <input type="text" placeholder="Personalized Link"
-                                                name="personalized_link" id="personalized_link"
+                                            <input type="text" placeholder="Personalized Link" name="personalized_link"
+                                                id="personalized_link"
                                                 class="form-control @error('personalized_link') is-invalid @enderror"
-                                                 tabindex="{{ $tabindex++ }}" {{ isFreePlan(Auth::user()->id)==true ? 'disabled':'' }}>
+                                                tabindex="{{ $tabindex++ }}" {{ isFreePlan(Auth::user()->id)==true ?
+                                            'disabled':'' }}>
                                             @if ($errors->has('personalized_link'))
                                             <span class="help-block text-danger">{{
                                                 $errors->first('personalized_link')
@@ -684,14 +701,16 @@ $font_family = [
                                         <div class="mb-3 form-input position-relative">
                                             <label for="footer_text" class="form-label">Copyright</label>
                                             @if (isFreePlan(Auth::user()->id))
-                                                <a href="javascript:void(0)" class="overlay-btn upgrade-plan" data-bs-toggle="tooltip" data-bs-placement="top"
+                                            <a href="javascript:void(0)" class="overlay-btn upgrade-plan"
+                                                data-bs-toggle="tooltip" data-bs-placement="top"
                                                 data-bs-custom-class="custom-tooltip"
                                                 title="Upgrade to a Premium account to access custom Copyright"></a>
                                             @endif
-                                            <input type="text" data-preview="preview_copyright" name="footer_text" placeholder="copyright"
-                                                id="footer_text"
+                                            <input type="text" data-preview="preview_copyright" name="footer_text"
+                                                placeholder="copyright" id="footer_text"
                                                 class="form-control cin @error('footer_text') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}"  {{ isFreePlan(Auth::user()->id)==true ? 'disabled':'' }}>
+                                                tabindex="{{ $tabindex++ }}" {{ isFreePlan(Auth::user()->id)==true ?
+                                            'disabled':'' }}>
                                             @if ($errors->has('footer_text'))
                                             <span class="help-block text-danger">{{ $errors->first('footer_text')
                                                 }}</span>
@@ -730,9 +749,9 @@ $font_family = [
                             <label class="py-2" for="send_to">Send To</label>
                             <div class="input-group">
                                 <input type="text" name="send_to" id="send_to"
-                                        class="form-control @error('send_to') is-invalid @enderror" placeholder="Send to phone no"
-                                        required>
-                                <a href="javascript:void(0)"  class="input-group-text btn btn-dark sendto-btn">Send</a>
+                                    class="form-control @error('send_to') is-invalid @enderror"
+                                    placeholder="Send to phone no" required>
+                                <a href="javascript:void(0)" class="input-group-text btn btn-dark sendto-btn">Send</a>
                             </div>
                         </div>
                     </div>

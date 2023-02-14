@@ -37,11 +37,23 @@
     ?>
     <style>
         .card_template {
-            background-color: rgba( {{$theme_bg}});
+            background-color: rgba( {
+                        {
+                        $theme_bg
+                    }
+                }
+
+            );
         }
 
         .social_item i {
-            border-color: {{$cardinfo->icon_border_color ?? '#000000'}};
+            border-color: {
+                    {
+                    $cardinfo->icon_border_color ?? '#000000'
+                }
+            }
+
+            ;
         }
 
         /* .card_title, */
@@ -50,12 +62,24 @@
         .carousel-control-prev,
         .carousel-control-next,
         .purchase_btn a {
-            background-color: {{ $theme_color }}!important;
+            background-color: {
+                    {
+                    $theme_color
+                }
+            }
+
+             !important;
         }
-        .card_title h2{
-            font-family: {{ $cardinfo->header_font_family }}
+
+        .card_title h2 {
+            font-family: {
+                    {
+                    $cardinfo->header_font_family
+                }
+            }
 
         }
+
         .card_template .card_title {
             padding: 9px 0px 9px 0px;
             background: #eb8714;
@@ -167,7 +191,7 @@
             <div class="card_title" style="background-color: {{ $cardinfo->header_backgroung ?? '#000000' }};">
                 @if (!empty($cardinfo->logo))
                 <h2>
-                    <div class="text-center">
+                    <div>
                         <img src="{{ asset($cardinfo->logo) }}" alt="logo">
                     </div>
                 </h2>
@@ -178,13 +202,15 @@
 
                 @endif
                 <div class="float-end">
-                    <a href="javascript:void(0)" style="color: {{ $cardinfo->header_text_color ?? '#ffffff' }};" class="gallery-btn" data-bs-toggle="modal"
-                        data-bs-target="#galleryModal">
+                    <a href="javascript:void(0)" style="color: {{ $cardinfo->header_text_color ?? '#ffffff' }};"
+                        class="gallery-btn" data-bs-toggle="modal" data-bs-target="#galleryModal">
                         <i class="fas fa-images"></i>
                     </a>
-                    <a style="color: {{ $cardinfo->header_text_color ?? '#ffffff' }};" href="javascript:void(0)" class="login_btn" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <a style="color: {{ $cardinfo->header_text_color ?? '#ffffff' }};" href="javascript:void(0)"
+                        class="login_btn" data-bs-toggle="modal" data-bs-target="#loginModal">
                         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none"
-                            stroke="{{ $cardinfo->header_text_color ?? '#ffffff' }}" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            stroke="{{ $cardinfo->header_text_color ?? '#ffffff' }}" stroke-width="1"
+                            stroke-linecap="round" stroke-linejoin="round">
                             <line x1="3" y1="12" x2="21" y2="12"></line>
                             <line x1="3" y1="6" x2="21" y2="6"></line>
                             <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -333,8 +359,8 @@
                     <input type="hidden" id="" name="card_id" value="{{ $cardinfo->id }}">
                     <div class="input-group">
                         <input type="email" name="subscriber_email" id="subscriber_email"
-                            class="form-control @error('subscriber_email') is-invalid @enderror" placeholder="Enter your emaill..."
-                            required>
+                            class="form-control @error('subscriber_email') is-invalid @enderror"
+                            placeholder="Enter your emaill..." required>
                         <button type="submit" class="input-group-text btn btn-primary subscribe-btn">Subscribe</button>
                     </div>
                     {{-- @if ($errors->has('subscriber_email'))
@@ -392,8 +418,8 @@
                         <div class="mb-3">
                             <label class="form-label" for="email">Email</label>
                             <input type="text" name="email" id="email" value="{{ old('email') }}"
-                                class="form-control @error('email') is-invalid @enderror"
-                                placeholder="Email Address" required>
+                                class="form-control @error('email') is-invalid @enderror" placeholder="Email Address"
+                                required>
                             @if ($errors->has('email'))
                             <span class="help-block text-danger">{{ $errors->first('email') }}</span>
                             @endif
@@ -440,9 +466,9 @@
                                 <label class="py-2" for="send_to">Send To</label>
                                 <div class="input-group">
                                     <input type="text" name="send_to" id="send_to"
-                                            class="form-control @error('send_to') is-invalid @enderror" placeholder="Send to phone no"
-                                            required>
-                                    <a href="sms:;"  class="input-group-text btn btn-dark sendto-btn">Send</a>
+                                        class="form-control @error('send_to') is-invalid @enderror"
+                                        placeholder="Send to phone no" required>
+                                    <a href="sms:;" class="input-group-text btn btn-dark sendto-btn">Send</a>
                                 </div>
                             </div>
                         </div>
@@ -476,29 +502,30 @@
                         <div class="mb-3">
                             <label class="form-label" for="user_email">Email</label>
                             <input type="email" name="reg_email" id="user_email" value="{{ old('user_email') }}"
-                                class="form-control @error('user_email') is-invalid @enderror" placeholder="Email Address"
-                                required>
+                                class="form-control @error('user_email') is-invalid @enderror"
+                                placeholder="Email Address" required>
                             @if ($errors->has('reg_email'))
                             <span class="help-block text-danger">{{ $errors->first('reg_email') }}</span>
                             @endif
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="reg_password">Password</label>
-                            <input type="password" name="reg_password" value="{{ old('reg_password') }}" id="reg_password"
-                                class="form-control @error('reg_password') is-invalid @enderror" placeholder="Password"
-                                required>
+                            <input type="password" name="reg_password" value="{{ old('reg_password') }}"
+                                id="reg_password" class="form-control @error('reg_password') is-invalid @enderror"
+                                placeholder="Password" required>
                             @if ($errors->has('reg_password'))
                             <span class="help-block text-danger">{{ $errors->first('reg_password') }}</span>
                             @endif
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="reg_password_confirmation">Confirm Password</label>
-                            <input type="password" name="reg_password_confirmation" value="{{ old('reg_password_confirmation') }}"
-                                id="reg_password_confirmation"
+                            <input type="password" name="reg_password_confirmation"
+                                value="{{ old('reg_password_confirmation') }}" id="reg_password_confirmation"
                                 class="form-control @error('reg_password_confirmation') is-invalid @enderror"
                                 placeholder="Password" required>
                             @if ($errors->has('reg_password_confirmation'))
-                            <span class="help-block text-danger">{{ $errors->first('reg_password_confirmation') }}</span>
+                            <span class="help-block text-danger">{{ $errors->first('reg_password_confirmation')
+                                }}</span>
                             @endif
                         </div>
                         <div class="text-center mb-3">

@@ -81,18 +81,18 @@ a {
 
 .card_title {
     background: #ffc107;
-    border-radius: 15px 15px 0px 0px;
+
 }
 
 .card_title h2 {
     font-size: 25px;
     font-weight: 900;
-    text-align: center;
     color: #fff;
     letter-spacing: 0.1px;
     padding: 0px;
     margin: 0px;
-    padding-right: 78px;
+    width: 82%;
+    display: block;
 }
 
 .card_title h2 img {
