@@ -115,7 +115,6 @@
         top: 16px;
         right: 52px;
         font-size: 20px;
-        /* color: #0d6efd !important; */
     }
 
     a.social-contact.disabled {
@@ -125,12 +124,12 @@
     .social_item i {
         background-color:rgba( {{$theme_bg}});
         border-color: {{$card->icon_border_color}};
+        color:{{ $card->header_text_color }};
     }
 
     .carousel-control-prev,
     .carousel-control-next {
-        background-color: {{
-                $theme_color.'!important'}};
+        background-color: {{$theme_color.'!important'}};
     }
 
     .social_share {
@@ -241,7 +240,7 @@
                                         <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
                                             data-bs-target="#loginModal">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1"
+                                                viewBox="0 0 24 24" fill="none" stroke="{{ $card->header_text_color }}" stroke-width="1"
                                                 stroke-linecap="round" stroke-linejoin="round">
                                                 <line x1="3" y1="12" x2="21" y2="12">
                                                 </line>
@@ -411,7 +410,7 @@
                                             @endforeach
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="javascript:void(0)" class="social-contact share">
+                                                    <a href="{{ $card->location }}" class="social-contact map" target="__blank">
                                                         <i class="fas fa-map-marker"></i>
                                                     </a>
                                                 </div>
@@ -816,8 +815,8 @@
                                                 <label for="location" class="form-label">Location</label>
                                                 <input type="url" name="location" data-preview="preview_location"
                                                     id="location" placeholder="location" value="{{ $card->location }}"
-                                                    class="form-control cin  @error('location') is-invalid @enderror"
-                                                    tabindex="{{ $tabindex++ }}">
+                                                    class="social_item_in form-control cin  @error('location') is-invalid @enderror"
+                                                    tabindex="{{ $tabindex++ }}" data-attr="" data-type="map">
                                                 @if ($errors->has('location'))
                                                 <span class="help-block text-danger">{{ $errors->first('location')
                                                     }}</span>
@@ -1265,22 +1264,64 @@
         }
     });
 
+    // $(document).on('input', '.social_item_in', function() {
+    //     var this_value = $(this).val();
+    //     var this_type = $(this).attr('data-type');
+    //     $("a.social-contact").each(function() {
+    //         var href = $(this).attr("href");
+    //         if (href == '' || !href) {
+    //             $(this).addClass('disabled');
+    //             $('.' + this_type).removeClass('disabled');
+    //             $('.' + this_type).attr("href", this_value);
+    //         } else {
+    //             $('.' + this_type).removeClass('disabled');
+    //             $('.' + this_type).attr("href", this_value);
+    //         };
+    //     });
+    // })
+
+    // $(document).on('input', '.social_item_in', function() {
+    //     var this_value = $(this).val();
+    //     var this_type = $(this).attr('data-type');
+    //     var data_attr = $(this).attr('data-attr');
+    //     console.log(data_attr);
+    //     $("a.social-contact").each(function() {
+    //         var href = $(this).attr("href");
+    //         if (href == '' || !href) {
+    //             $(this).addClass('disabled');
+    //             $('.' + this_type).removeClass('disabled');
+    //             $('.' + this_type).attr("href", data_attr + this_value);
+    //         } else {
+    //             $('.' + this_type).removeClass('disabled');
+    //               $('.' + this_type).attr("href", data_attr + this_value);
+    //         };
+    //     });
+    // });
+
+
     $(document).on('input', '.social_item_in', function() {
         var this_value = $(this).val();
         var this_type = $(this).attr('data-type');
+        var data_attr = $(this).attr('data-attr');
+        console.log(data_attr);
         $("a.social-contact").each(function() {
             var href = $(this).attr("href");
             if (href == '' || !href) {
                 $(this).addClass('disabled');
                 $('.' + this_type).removeClass('disabled');
-                $('.' + this_type).attr("href", this_value);
+
+                $('.' + this_type).attr("href", data_attr + this_value);
+
             } else {
                 $('.' + this_type).removeClass('disabled');
-                $('.' + this_type).attr("href", this_value);
+                  $('.' + this_type).attr("href", data_attr + this_value);
             };
         });
 
-    })
+    });
+
+
+
     $(document).on('click','.photo-delete', function(e){
         var id = $(this).attr('data-id');
         if (!confirm('Are you sure you want to delete the photo')) {

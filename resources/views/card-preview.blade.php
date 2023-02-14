@@ -38,7 +38,11 @@
         }
 
         .social_item i {
-            border-color: {{$cardinfo->icon_border_color ?? '#000000'}};
+            background-color:rgba( {{$theme_bg}});
+            border-color: {{$cardinfo->icon_border_color}};
+            color:{{ $cardinfo->header_text_color }};
+            /* border-color: {{$cardinfo->icon_border_color ?? '#000000'}};
+            color:{{ $cardinfo->header_text_color }}; */
         }
 
         /* .card_title, */
