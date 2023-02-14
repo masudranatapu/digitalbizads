@@ -639,7 +639,8 @@
                                     <div id="logofield1"></div>
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="logo" class="form-label">Logo
+                                            <label for="logo" class="form-label">Logo <span
+                                                    class="text-danger">(Recomended size (140x48)</span>
                                                 <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                                                     data-bs-title="to use your complete image: slide crop to maximum and press close, your image default size will be used!">
@@ -677,7 +678,8 @@
                                         <div class="mb-3 form-input {{ $banner_type == 'banner' ? 'd-block' : 'd-none' }}"
                                             id="galleryfield">
                                             <div id="galleryfield1"></div>
-                                            <label for="banner" class="form-label">Banner
+                                            <label for="banner" class="form-label">Banner<span
+                                                    class="text-danger">(Recomended size (450x600)</span>
                                                 <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                                                     data-bs-title="to use your complete image: slide crop to maximum and press close, your image default size will be used!">
