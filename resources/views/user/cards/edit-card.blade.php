@@ -639,8 +639,13 @@
                                     <div id="logofield1"></div>
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="logo" class="form-label">Logo <span
-                                                    class="text-danger">(Recomended size (140x48)px)</span></label>
+                                            <label for="logo" class="form-label">Logo
+                                                <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                    data-bs-title="to use your complete image: slide crop to maximum and press close, your image default size will be used!">
+                                                    <i class="fa fa-info"></i>
+                                                </button>
+                                            </label>
                                             <input type="file" name="logo" id="logo" onchange="readURL(this);"
                                                 class="form-control @error('logo') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
@@ -672,8 +677,13 @@
                                         <div class="mb-3 form-input {{ $banner_type == 'banner' ? 'd-block' : 'd-none' }}"
                                             id="galleryfield">
                                             <div id="galleryfield1"></div>
-                                            <label for="banner" class="form-label">Banner <span
-                                                    class="text-danger">(Recomended size (450x600)px)</span></label>
+                                            <label for="banner" class="form-label">Banner
+                                                <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                    data-bs-title="to use your complete image: slide crop to maximum and press close, your image default size will be used!">
+                                                    <i class="fa fa-info"></i>
+                                                </button>
+                                            </label>
                                             <input type="file" name="banner" id="banner"
                                                 class="form-control @error('banner') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">

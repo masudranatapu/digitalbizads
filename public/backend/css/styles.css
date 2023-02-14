@@ -371,7 +371,18 @@ a {
 }
 
 
-
+.tooltip_icon {
+    border: none !important;
+    width: 24px;
+    height: 25px;
+    display: inline-block;
+    border-radius: 100px;
+    font-size: 13px;
+    vertical-align: middle;
+    background: #EEE;
+    font-weight: bold;
+    text-align: center;
+}
 
 
 
