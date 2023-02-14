@@ -26,34 +26,19 @@
     } else {
         $theme_color = '#ffc107';
     }
-
-
     [$r, $g, $b] = sscanf($theme_color, '#%02x%02x%02x');
     $theme_bg = "$r, $g, $b,.5";
     $android = stripos($_SERVER['HTTP_USER_AGENT'], 'android');
     $iphone = stripos($_SERVER['HTTP_USER_AGENT'], 'iphone');
     $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
-
     ?>
     <style>
         .card_template {
-            background-color: rgba( {
-                        {
-                        $theme_bg
-                    }
-                }
-
-            );
+            background-color: rgba( {{$theme_bg}});
         }
 
         .social_item i {
-            border-color: {
-                    {
-                    $cardinfo->icon_border_color ?? '#000000'
-                }
-            }
-
-            ;
+            border-color: {{$cardinfo->icon_border_color ?? '#000000'}};
         }
 
         /* .card_title, */
@@ -62,42 +47,25 @@
         .carousel-control-prev,
         .carousel-control-next,
         .purchase_btn a {
-            background-color: {
-                    {
-                    $theme_color
-                }
-            }
-
-             !important;
+            background-color: {{$theme_color}}!important;
         }
-
         .card_title h2 {
-            font-family: {
-                    {
-                    $cardinfo->header_font_family
-                }
-            }
-
+            font-family: {{$cardinfo->header_font_family}}
         }
-
         .card_template .card_title {
             padding: 9px 0px 9px 0px;
             background: #eb8714;
         }
-
         .social_share {
             margin-bottom: 20px;
         }
-
         .social_share img {
             width: 56px !important;
         }
-
         .single_product .single_item img {
             height: auto !important;
             width: 100% !important;
         }
-
         .single_product .mySwiper2 {
             position: relative;
             width: 100%;
@@ -105,7 +73,6 @@
             overflow: hidden;
             background-color: #ebeef7;
         }
-
         .single_product .mySwiper2 .swiper-slide {
             display: flex;
             justify-content: center;

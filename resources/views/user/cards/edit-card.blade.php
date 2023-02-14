@@ -90,7 +90,6 @@
         color: #E53935;
         padding: 2px 0px;
     }
-
     .purchase_btn a {
         padding: 10px 27px;
         font-size: 20px;
@@ -107,15 +106,8 @@
         -ms-transition: all 0.3s ease-in-out;
         -o-transition: all 0.3s ease-in-out;
     }
-
     .card_title {
-        background-color: {
-                {
-                $theme_color
-            }
-        }
-
-        ;
+        background-color: {{$theme_color}};
     }
 
     .gallery-btn {
@@ -131,32 +123,14 @@
     }
 
     .social_item i {
-        background-color:rgba( {
-                    {
-                    $theme_bg
-                }
-            }
-
-        );
-
-        border-color: {
-                {
-                $card->icon_border_color
-            }
-        }
-
-        ;
+        background-color:rgba( {{$theme_bg}});
+        border-color: {{$card->icon_border_color}};
     }
 
     .carousel-control-prev,
     .carousel-control-next {
-        background-color: {
-                {
-                $theme_color.'!important'
-            }
-        }
-
-        ;
+        background-color: {{
+                $theme_color.'!important'}};
     }
 
     .social_share {

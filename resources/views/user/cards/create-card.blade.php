@@ -269,7 +269,7 @@ $font_family = [
                                             </div>
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="javascript:void(0)" class="social-contact share">
+                                                    <a href="" class="social-contact map" target="_blank">
                                                         <i class="fas fa-map-marker"></i>
                                                     </a>
                                                 </div>
@@ -677,8 +677,8 @@ $font_family = [
                                             <label for="location" class="form-label">Location</label>
                                             <input type="url" name="location" id="location" placeholder="location"
                                                 value="{{ old('location') }}" data-preview="preview_location"
-                                                class="form-control cin @error('location') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}">
+                                                class="social_item_in form-control cin @error('location') is-invalid @enderror"
+                                                tabindex="{{ $tabindex++ }}" data-attr="" data-type="map">
                                             @if ($errors->has('location'))
                                             <span class="help-block text-danger">{{ $errors->first('location') }}</span>
                                             @endif
