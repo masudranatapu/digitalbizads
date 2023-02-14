@@ -471,7 +471,7 @@ $font_family = [
                                         <div class="mb-3 d-none form-input" id="logofield">
                                             <div id="logofield1"></div>
                                             <label for="logo" class="form-label">Logo <span
-                                                    class="text-danger">(Recomended size (140x48)</span>
+                                                    class="text-danger">(Recommended size (140x48)</span>
                                                 <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                                                     data-bs-title="to use your complete image: slide crop to maximum and press close, your image default size will be used!">
@@ -506,7 +506,7 @@ $font_family = [
                                         <div class="mb-3 form-input" id="galleryfield">
                                             <div id="galleryfield1"></div>
                                             <label for="banner" class="form-label">Banner <span
-                                                    class="text-danger">(Recomended size (450x600)</span>
+                                                    class="text-danger">(Recommended size (450x600)</span>
                                                 <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" data-bs-custom-class="custom-tooltip"
                                                     data-bs-title="to use your complete image: slide crop to maximum and press close, your image default size will be used!">
