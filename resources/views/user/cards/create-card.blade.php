@@ -393,6 +393,28 @@ $font_family = [
                                         </div>
                                     </div>
                                     <div class="col-6">
+                                        <div class="mb-3 form-input" id="textfield">
+                                            <label for="header_text_color" class="form-label">Headline Color/Icon Color</label>
+                                            <div class="input-group custome_color">
+                                                <label for="header_text_color" class="input-group-text">
+                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
+                                                        alt="color picker">
+                                                    <input type="color" placeholder="card color"
+                                                        name="header_text_color" id="header_text_color"
+                                                        value="{{ old('header_text_color') ?? '#ffffff' }}"
+                                                        class="form-control @error('header_text_color') is-invalid @enderror"
+                                                        tabindex="{{ $tabindex++ }}" required>
+                                                </label>
+                                                <input type="text" id="header_clr_code" class="form-control"
+                                                    value="#ffffff">
+                                            </div>
+                                            @if ($errors->has('header_text_color'))
+                                            <span class="help-block text-danger">{{ $errors->first('header_text_color')
+                                                }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="" class="form-label">Select Logo/Heading <span
                                                     class="text-danger">*</span></label></label>
@@ -415,28 +437,6 @@ $font_family = [
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('text'))
                                             <span class="help-block text-danger">{{ $errors->first('text') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input" id="textfield">
-                                            <label for="header_text_color" class="form-label">Headline Color</label>
-                                            <div class="input-group custome_color">
-                                                <label for="header_text_color" class="input-group-text">
-                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
-                                                        alt="color picker">
-                                                    <input type="color" placeholder="card color"
-                                                        name="header_text_color" id="header_text_color"
-                                                        value="{{ old('header_text_color') ?? '#ffffff' }}"
-                                                        class="form-control @error('header_text_color') is-invalid @enderror"
-                                                        tabindex="{{ $tabindex++ }}" required>
-                                                </label>
-                                                <input type="text" id="header_clr_code" class="form-control"
-                                                    value="#ffffff">
-                                            </div>
-                                            @if ($errors->has('header_text_color'))
-                                            <span class="help-block text-danger">{{ $errors->first('header_text_color')
-                                                }}</span>
                                             @endif
                                         </div>
                                     </div>

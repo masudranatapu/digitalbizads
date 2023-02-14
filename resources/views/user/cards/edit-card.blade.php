@@ -566,23 +566,8 @@
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="selectField1" class="form-label">Select Logo/Heading <span
-                                                    class="text-danger">*</span></label></label>
-                                            <select id="selectField1" name="headline" class="form-control"
-                                                tabindex="{{ $tabindex++ }}" required>
-                                                <option value="text" @if (!empty($card->title)) selected @endif>Heading
-                                                </option>
-                                                <option value="logo" @if (!empty($card->logo)) selected @endif>Logo
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row @if(!empty($card->title)) d-flex @else d-none @endif" id="headline">
-                                    <div class="col-6">
                                         <div class="mb-3 form-input" id="textfield">
-                                            <label for="header_text_color" class="form-label">Headline Color</label>
+                                            <label for="header_text_color" class="form-label">Headline Color/Icon Color</label>
                                             <div class="input-group custome_color">
                                                 <label for="header_text_color" class="input-group-text">
                                                     <img src="{{ asset('images/color-picker.png') }}" width="25"
@@ -603,6 +588,22 @@
                                             @endif
                                         </div>
                                     </div>
+                                    <div class="col-6">
+                                        <div class="mb-3 form-input">
+                                            <label for="selectField1" class="form-label">Select Logo/Heading <span
+                                                    class="text-danger">*</span></label></label>
+                                            <select id="selectField1" name="headline" class="form-control"
+                                                tabindex="{{ $tabindex++ }}" required>
+                                                <option value="text" @if (!empty($card->title)) selected @endif>Heading
+                                                </option>
+                                                <option value="logo" @if (!empty($card->logo)) selected @endif>Logo
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row @if(!empty($card->title)) d-flex @else d-none @endif" id="headline">
+
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="text" class="form-label">Heading</label>
