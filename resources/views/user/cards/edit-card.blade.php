@@ -120,7 +120,7 @@
 
     .gallery-btn {
         position: absolute;
-        top: 23px;
+        top: 16px;
         right: 52px;
         font-size: 20px;
         /* color: #0d6efd !important; */
@@ -191,7 +191,7 @@
 
     .gallery-btn {
         position: absolute;
-        top: 23px;
+        top: 16px;
         right: 52px;
         font-size: 20px;
     }
@@ -221,11 +221,11 @@
                         <div class="card_wrapper">
                             <div class="card_template" style="background-color: rgba({{ $theme_bg }})">
                                 <!-- title -->
-                                <div class="card_title p-2 pt-3 d-block"
+                                <div class="card_title p-2 d-block"
                                     style="background-color: {{ $card->header_backgroung ?? '#000000' }};">
                                     <h2>
                                         @if (!empty($card->logo))
-                                        <div class="d-block text-center" id="logoDiv">
+                                        <div class="d-block" id="logoDiv">
                                             <img src="{{ asset($card->logo) }}" id="previewLogo" alt="logo">
                                         </div>
                                         <div class="d-none" id="titleDiv">
@@ -240,12 +240,12 @@
                                                 style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">{{
                                                 $card->title }}</span>
                                         </div>
-                                        <div class="d-none text-center" id="logoDiv">
+                                        <div class="d-none" id="logoDiv">
                                             <img src="{{ asset('assets/images/bizads.png') }}" id="previewLogo"
                                                 width="140" alt="logo">
                                         </div>
                                         @else
-                                        <div class="d-block text-center" id="logoDiv">
+                                        <div class="d-block" id="logoDiv">
                                             <img src="{{ asset('assets/images/bizads.png') }}" id="previewLogo"
                                                 width="140" alt="logo">
                                         </div>
@@ -257,6 +257,8 @@
                                         </div>
 
                                         @endif
+                                    </h2>
+                                    <div class="header_left">
                                         <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
                                             data-bs-target="#galleryModal">
                                             <i class="fas fa-images" style="color:{{ $card->header_text_color }};"></i>
@@ -275,7 +277,7 @@
                                                 </line>
                                             </svg>
                                         </a>
-                                    </h2>
+                                    </div>
                                 </div>
 
                                 <div class="slider-box" id="slider-box">
@@ -435,9 +437,8 @@
                                             @endforeach
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="javascript:void(0)" class="social-contact share"
-                                                        data-bs-toggle="modal" data-bs-target="#SocialModal">
-                                                        <i class="fas fa-share-nodes"></i>
+                                                    <a href="javascript:void(0)" class="social-contact share">
+                                                        <i class="fas fa-map-marker"></i>
                                                     </a>
                                                 </div>
                                             </div>
@@ -639,7 +640,14 @@
                                     <div id="logofield1"></div>
                                     <div class="col-6">
                                         <div class="mb-3 form-input">
-                                            <label for="logo" class="form-label">Logo <span class="text-danger">(Recomended size (140x48)px)</span></label>
+                                            <label for="logo" class="form-label">Logo <span
+                                                    class="text-danger">(Recommended size (140x48)</span>
+                                                <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                    data-bs-title="to use your complete image: slide crop to maximum and press close, your image default size will be used!">
+                                                    <i class="fa fa-info"></i>
+                                                </button>
+                                            </label>
                                             <input type="file" name="logo" id="logo" onchange="readURL(this);"
                                                 class="form-control @error('logo') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
@@ -671,7 +679,14 @@
                                         <div class="mb-3 form-input {{ $banner_type == 'banner' ? 'd-block' : 'd-none' }}"
                                             id="galleryfield">
                                             <div id="galleryfield1"></div>
-                                            <label for="banner" class="form-label">Banner <span class="text-danger">(Recomended size (450x600)px)</span></label>
+                                            <label for="banner" class="form-label">Banner<span
+                                                    class="text-danger">(Recommended size (450x600)</span>
+                                                <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                    data-bs-title="to use your complete image: slide crop to maximum and press close, your image default size will be used!">
+                                                    <i class="fa fa-info"></i>
+                                                </button>
+                                            </label>
                                             <input type="file" name="banner" id="banner"
                                                 class="form-control @error('banner') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
