@@ -204,7 +204,22 @@ class CardController extends Controller
                 $card->banner_content  =  $this->getYoutubeEmbad($request->video);
 
             } elseif (!empty($request->banner) && $request->gallery_type == 'banner') {
-                $card->banner_content      = $request->profile_image_path ?? null;
+
+                if (!is_null($request->file('banner')))
+                {
+                    $image = $request->file('banner');
+                    $extension = $image->getClientOriginalExtension();
+                    $file_path = 'assets/uploads/banner';
+                    $base_name = preg_replace('/\..+$/', '', $image->getClientOriginalName());
+                    $base_name = explode(' ', $base_name);
+                    $base_name = implode('-', $base_name);
+                    $img       = Image::make($image->getRealPath());
+                    $feature_image = $base_name . "-" . uniqid().'.webp';
+                    Image::make($img)->save($file_path.'/'.$feature_image);
+                    $image_name = $file_path .'/'. $feature_image;
+                    $card->banner_content = $image_name;
+                }
+                // $card->banner_content      = $request->profile_image_path ?? null;
                 $card->banner_type =  $request->gallery_type;
 
             }
@@ -362,7 +377,24 @@ class CardController extends Controller
                 $card->banner_content  =  $this->getYoutubeEmbad($request->video);
 
             } elseif (!empty($request->banner) && $request->gallery_type == 'banner') {
-                $card->banner_content      = $request->profile_image_path ?? null;
+                if (!is_null($request->file('banner')))
+                {
+                    if(File::exists(public_path($card->banner_content))){
+                        File::delete(public_path($card->banner_content));
+                    }
+                    $image = $request->file('banner');
+                    $extension = $image->getClientOriginalExtension();
+                    $file_path = 'assets/uploads/banner';
+                    $base_name = preg_replace('/\..+$/', '', $image->getClientOriginalName());
+                    $base_name = explode(' ', $base_name);
+                    $base_name = implode('-', $base_name);
+                    $img       = Image::make($image->getRealPath());
+                    $feature_image = $base_name . "-" . uniqid().'.webp';
+                    Image::make($img)->save($file_path.'/'.$feature_image);
+                    $image_name = $file_path .'/'. $feature_image;
+                    $card->banner_content = $image_name;
+                }
+                // $card->banner_content      = $request->profile_image_path ?? null;
                 $card->banner_type =  $request->gallery_type;
 
             }

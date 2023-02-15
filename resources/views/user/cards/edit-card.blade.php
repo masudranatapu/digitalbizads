@@ -617,7 +617,7 @@
                                                     class="text-danger">(Recommended size (140x48)</span>
                                                 <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                                    data-bs-title="to use your complete image: slide crop to maximum and press close, your image default size will be used!">
+                                                    data-bs-title="Let us design your BizAd Advertisement to properly fit to the correct size or have your designer do it, Thanks Admin">
                                                     <i class="fa fa-info"></i>
                                                 </button>
                                             </label>
@@ -656,7 +656,7 @@
                                                     class="text-danger">(Recommended size (450x600)</span>
                                                 <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
                                                     data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                                    data-bs-title="to use your complete image: slide crop to maximum and press close, your image default size will be used!">
+                                                    data-bs-title="Let us design your BizAd Advertisement to properly fit to the correct size or have your designer do it, Thanks Admin">
                                                     <i class="fa fa-info"></i>
                                                 </button>
                                             </label>
@@ -920,9 +920,8 @@
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('assets/js/card.js') }}"></script>
 <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
-<script src="{{ asset('js/croppie.js') }}"></script>
-@include('image_crop')
-
+{{-- <script src="{{ asset('js/croppie.js') }}"></script> --}}
+{{-- @include('image_crop') --}}
 <script>
     $(document).on('click','.upgrade-plan',function(e){
         e.preventDefault();
