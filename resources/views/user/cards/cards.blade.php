@@ -176,7 +176,7 @@
                         @foreach ($business_cards as $row)
                         <div class="">
                             <div class="card">
-                                <div class="card-body" style=" width: 100%;overflow: hidden; overflow-x: auto;">
+                                <div class="card-body">
                                     <div class="row">
 
                                         <div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">
@@ -186,22 +186,31 @@
                                         </div>
 
                                         <div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7">
+                                            <div class="dropdown text-end">
+                                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Actions
+                                                </button>
+                                                <div class="dropdown-menu" style="">
+                                                    <a class="open-qr dropdown-item text-info"
+                                                        data-id="{{ $row->card_url }}" href="#openQR">
+                                                        {{ __('Scan') }}
+                                                    </a>
+                                                    <a class="dropdown-item text-success"
+                                                        href="{{ route('user.edit.card', $row->card_id) }}">{{
+                                                        __('Edit')
+                                                        }}</a>
 
-                                            <div class="btn-list flex-nowrap">
-                                                <a class="open-qr btn btn-primary btn-sm" data-id="{{ $row->card_url }}"
-                                                    href="#openQR">{{ __('Scan') }}</a>
-                                                <a class="btn btn-primary btn-sm"
-                                                    href="{{ route('user.edit.card', $row->card_id) }}">{{ __('Edit')
-                                                    }}</a>
-
-                                                <a class="btn btn-primary btn-sm"
-                                                    href="{{ route('card.preview', $row->card_url) }}"
-                                                    target="_blank">{{ __('Preview') }}</a>
-                                                <a class="btn btn-danger btn-sm delete-card"
-                                                    href="{{ route('user.card.delete', $row->card_id) }}">
-                                                    {{ __('Delete') }}
-                                                </a>
+                                                    <a class="dropdown-item text-dark"
+                                                        href="{{ route('card.preview', $row->card_url) }}"
+                                                        target="_blank">{{ __('Preview') }}</a>
+                                                    <a class="dropdown-item  text-danger delete-card"
+                                                        href="{{ route('user.card.delete', $row->card_id) }}">
+                                                        {{ __('Delete') }}
+                                                    </a>
+                                                </div>
                                             </div>
+
                                         </div>
                                     </div>
                                 </div>
