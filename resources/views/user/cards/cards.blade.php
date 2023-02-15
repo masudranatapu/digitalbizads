@@ -128,7 +128,9 @@
                                                             <a class="btn btn-primary btn-sm"
                                                                 href="{{ route('card.preview', $row->card_url) }}"
                                                                 target="_blank">{{ __('Preview') }}</a>
-                                                            <a class="btn btn-danger btn-sm delete-card" href="{{ route('user.card.delete', $row->card_id) }}">{{ __('Delete') }}</a>
+                                                            <a class="btn btn-danger btn-sm delete-card" href="{{ route('user.card.delete', $row->card_id) }}">
+                                                                {{ __('Delete') }}
+                                                            </a>
 
 
                                                             {{--
@@ -179,7 +181,7 @@
 
                                                     <div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">
                                                         <h3 class="text-left">
-                                                            {{ $row->title }}
+                                                            <td>{{ $row->adsname ?? $row->title }}</td>
                                                         </h3>
                                                     </div>
 
@@ -195,6 +197,9 @@
                                                             <a class="btn btn-primary btn-sm"
                                                                 href="{{ route('card.preview', $row->card_url) }}"
                                                                 target="_blank">{{ __('Preview') }}</a>
+                                                                <a class="btn btn-danger btn-sm delete-card" href="{{ route('user.card.delete', $row->card_id) }}">
+                                                                    {{ __('Delete') }}
+                                                                </a>
                                                         </div>
                                                     </div>
                                                 </div>
