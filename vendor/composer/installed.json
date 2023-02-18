@@ -3373,17 +3373,17 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.3.8",
-            "version_normalized": "2.3.8.0",
+            "version": "2.3.9",
+            "version_normalized": "2.3.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "c493585c130544c4e91d2e0e131e6d35cb0cbc47"
+                "reference": "c1e114f74e518daca2729ea8c4bf1167038fa4b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/c493585c130544c4e91d2e0e131e6d35cb0cbc47",
-                "reference": "c493585c130544c4e91d2e0e131e6d35cb0cbc47",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/c1e114f74e518daca2729ea8c4bf1167038fa4b5",
+                "reference": "c1e114f74e518daca2729ea8c4bf1167038fa4b5",
                 "shasum": ""
             },
             "require": {
@@ -3416,7 +3416,7 @@
             "suggest": {
                 "symfony/yaml": "v2.3+ required if using the Front Matter extension"
             },
-            "time": "2022-12-10T16:02:17+00:00",
+            "time": "2023-02-15T14:07:24+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -3664,17 +3664,17 @@
         },
         {
             "name": "league/glide",
-            "version": "1.7.1",
-            "version_normalized": "1.7.1.0",
+            "version": "1.7.2",
+            "version_normalized": "1.7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/glide.git",
-                "reference": "257e0c3612ef3dc57eb7f90cb741198151a45a5f"
+                "reference": "8dba756ada0b8e525bf6f1f7d1bd83c1e99e124e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/glide/zipball/257e0c3612ef3dc57eb7f90cb741198151a45a5f",
-                "reference": "257e0c3612ef3dc57eb7f90cb741198151a45a5f",
+                "url": "https://api.github.com/repos/thephpleague/glide/zipball/8dba756ada0b8e525bf6f1f7d1bd83c1e99e124e",
+                "reference": "8dba756ada0b8e525bf6f1f7d1bd83c1e99e124e",
                 "shasum": ""
             },
             "require": {
@@ -3688,7 +3688,7 @@
                 "phpunit/php-token-stream": "^3.1|^4.0",
                 "phpunit/phpunit": "^8.5|^9.0"
             },
-            "time": "2022-04-27T04:03:46+00:00",
+            "time": "2023-02-14T06:26:04+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -3731,7 +3731,7 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/glide/issues",
-                "source": "https://github.com/thephpleague/glide/tree/1.7.1"
+                "source": "https://github.com/thephpleague/glide/tree/1.7.2"
             },
             "install-path": "../league/glide"
         },
@@ -9904,17 +9904,17 @@
         },
         {
             "name": "twig/twig",
-            "version": "v3.5.0",
-            "version_normalized": "3.5.0.0",
+            "version": "v3.5.1",
+            "version_normalized": "3.5.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "3ffcf4b7d890770466da3b2666f82ac054e7ec72"
+                "reference": "a6e0510cc793912b451fd40ab983a1d28f611c15"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/3ffcf4b7d890770466da3b2666f82ac054e7ec72",
-                "reference": "3ffcf4b7d890770466da3b2666f82ac054e7ec72",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/a6e0510cc793912b451fd40ab983a1d28f611c15",
+                "reference": "a6e0510cc793912b451fd40ab983a1d28f611c15",
                 "shasum": ""
             },
             "require": {
@@ -9926,7 +9926,7 @@
                 "psr/container": "^1.0",
                 "symfony/phpunit-bridge": "^4.4.9|^5.0.9|^6.0"
             },
-            "time": "2022-12-27T12:28:18+00:00",
+            "time": "2023-02-08T07:49:20+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -9967,7 +9967,7 @@
             ],
             "support": {
                 "issues": "https://github.com/twigphp/Twig/issues",
-                "source": "https://github.com/twigphp/Twig/tree/v3.5.0"
+                "source": "https://github.com/twigphp/Twig/tree/v3.5.1"
             },
             "funding": [
                 {

@@ -78,17 +78,20 @@ class CardController extends Controller
     {
         $themes = Theme::where('theme_description', 'vCard')->where('status', 1)->get();
         $settings = Setting::where('status', 1)->first();
-        $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', '1')->count();
+        $old_cards = BusinessCard::where('user_id', Auth::user()->id)->count();
         $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
         $plan_details = json_decode($plan->plan_details);
 
         if ($plan_details->no_of_vcards == 999) {
-            $no_cards = 999999;
+            $no_card_limit = 999999;
         } else {
-            $no_cards = $plan_details->no_of_vcards;
+            $no_card_limit = (int) $plan_details->no_of_vcards;
         }
 
-        if ($cards <= $no_cards) {
+        // dd($old_cards);
+
+
+        if ($old_cards < $no_card_limit) {
             return view('user.cards.create-card', compact('themes', 'settings', 'plan_details'));
         } else {
             alert()->error(trans('Maximum card creation limit is exceeded, Please upgrade your plan.'));
