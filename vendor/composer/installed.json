@@ -135,32 +135,32 @@
         },
         {
             "name": "astrotomic/laravel-translatable",
-            "version": "v11.11.0",
-            "version_normalized": "11.11.0.0",
+            "version": "v11.12.0",
+            "version_normalized": "11.12.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Astrotomic/laravel-translatable.git",
-                "reference": "14335e33189a0902941a9795f744dea2a4a929f1"
+                "reference": "8d1bda74b3ae36321f1420f3359e44553093f8e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Astrotomic/laravel-translatable/zipball/14335e33189a0902941a9795f744dea2a4a929f1",
-                "reference": "14335e33189a0902941a9795f744dea2a4a929f1",
+                "url": "https://api.github.com/repos/Astrotomic/laravel-translatable/zipball/8d1bda74b3ae36321f1420f3359e44553093f8e5",
+                "reference": "8d1bda74b3ae36321f1420f3359e44553093f8e5",
                 "shasum": ""
             },
             "require": {
-                "illuminate/contracts": "^8.0 || ^9.0",
-                "illuminate/database": "^8.0 || ^9.0",
-                "illuminate/support": "^8.0 || ^9.0",
+                "illuminate/contracts": "^8.0 || ^9.0 || ^10.0",
+                "illuminate/database": "^8.0 || ^9.0 || ^10.0",
+                "illuminate/support": "^8.0 || ^9.0 || ^10.0",
                 "php": "^8.0"
             },
             "require-dev": {
                 "laravel/legacy-factories": "^1.0.4",
                 "mockery/mockery": "^1.3.3",
-                "orchestra/testbench": "^6.0 || ^7.0",
+                "orchestra/testbench": "^6.0 || ^7.0 || ^8.0",
                 "phpunit/phpunit": "^9.0"
             },
-            "time": "2022-10-10T12:35:52+00:00",
+            "time": "2023-02-21T08:54:20+00:00",
             "type": "library",
             "extra": {
                 "laravel": {
@@ -3151,17 +3151,17 @@
         },
         {
             "name": "laravel/tinker",
-            "version": "v2.8.0",
-            "version_normalized": "2.8.0.0",
+            "version": "v2.8.1",
+            "version_normalized": "2.8.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/tinker.git",
-                "reference": "74d0b287cc4ae65d15c368dd697aae71d62a73ad"
+                "reference": "04a2d3bd0d650c0764f70bf49d1ee39393e4eb10"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/tinker/zipball/74d0b287cc4ae65d15c368dd697aae71d62a73ad",
-                "reference": "74d0b287cc4ae65d15c368dd697aae71d62a73ad",
+                "url": "https://api.github.com/repos/laravel/tinker/zipball/04a2d3bd0d650c0764f70bf49d1ee39393e4eb10",
+                "reference": "04a2d3bd0d650c0764f70bf49d1ee39393e4eb10",
                 "shasum": ""
             },
             "require": {
@@ -3179,7 +3179,7 @@
             "suggest": {
                 "illuminate/database": "The Illuminate Database package (^6.0|^7.0|^8.0|^9.0|^10.0)."
             },
-            "time": "2023-01-10T18:03:30+00:00",
+            "time": "2023-02-15T16:40:09+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -3216,7 +3216,7 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/tinker/issues",
-                "source": "https://github.com/laravel/tinker/tree/v2.8.0"
+                "source": "https://github.com/laravel/tinker/tree/v2.8.1"
             },
             "install-path": "../laravel/tinker"
         },

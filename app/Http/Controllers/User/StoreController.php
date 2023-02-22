@@ -21,6 +21,7 @@ class StoreController extends Controller
     // Create Store
     public function CreateStore()
     {
+
         $themes = Theme::where('theme_description', 'WhatsApp Store')->where('status', 1)->get();
         $settings = Setting::where('status', 1)->first();
         $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
@@ -39,7 +40,7 @@ class StoreController extends Controller
             return view('user.store.create-store', compact('themes', 'settings', 'plan_details', 'currencies'));
         } else {
             alert()->error(trans('Maximum card creation limit is exceeded, Please upgrade your plan.'));
-            return redirect()->route('user.cards');
+            return redirect()->route('user.stores');
         }
     }
 
@@ -104,7 +105,7 @@ class StoreController extends Controller
                     $card_id = $cardId;
                     $card = new BusinessCard();
                     $card->card_id = $card_id;
-                    $card->user_id = Auth::user()->user_id;
+                    $card->user_id = Auth::user()->id;
                     $card->theme_id = $request->theme_id;
                     $card->theme_color = $request->card_color;
                     $card->card_lang = $request->card_lang;
@@ -118,7 +119,7 @@ class StoreController extends Controller
                     $card->save();
 
                     alert()->success(trans('New WhatsApp Store Created Successfully!'));
-                    return redirect()->route('user.products', $card_id);
+                    return redirect()->route('user.stores', $card_id);
                 } catch (\Exception $th) {
                     alert()->error(trans('Sorry, personalized link was already registered.'));
                     return redirect()->route('user.create.store');
@@ -312,7 +313,7 @@ class StoreController extends Controller
                     'description' => $store_details,
                 ]);
                 alert()->success(trans('Store details updated'));
-                return redirect()->route('user.edit.products', $id);
+                return redirect()->route('user.stores', $id);
             }
         }
     }
@@ -372,10 +373,10 @@ class StoreController extends Controller
                             'card_status' => 'activated',
                         ]);
                         alert()->success(trans('Products updated.'));
-                        return redirect()->route('user.cards');
+                        return redirect()->route('user.stores');
                     }
                     alert()->success(trans('Products updated.'));
-                    return redirect()->route('user.cards');
+                    return redirect()->route('user.stores');
                 } else {
                     alert()->error(trans('You have reached plan limit.'));
                     return redirect()->route('user.edit.products', $id);
@@ -391,7 +392,7 @@ class StoreController extends Controller
                         'card_status' => 'activated',
                     ]);
                     alert()->success(trans('Products updated.'));
-                    return redirect()->route('user.cards');
+                    return redirect()->route('user.stores');
                 }
                 alert()->error(trans('You have reached plan limit.'));
                 return redirect()->route('user.edit.products', $id);

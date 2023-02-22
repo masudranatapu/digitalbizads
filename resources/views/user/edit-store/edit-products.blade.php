@@ -129,7 +129,7 @@
 
                         <div class="col-md-4 col-xl-4 my-3">
                             <div class="mb-3">
-                                <a href="{{ route('user.cards') }}" class="btn btn-primary">
+                                <a href="{{ route('user.stores') }}" class="btn btn-primary">
                                     {{ __('Skip & Continue') }}
                                 </a>
 

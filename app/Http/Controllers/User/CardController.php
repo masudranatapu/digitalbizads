@@ -49,6 +49,26 @@ class CardController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
+     public function getStores()
+    {
+        $plan = User::where('user_id', Auth::user()->user_id)->first();
+        $active_plan =  json_decode($plan->plan_details);
+        if ($active_plan != null) {
+            if($active_plan->is_whatsapp_store == 0){return abort(404);}
+            $business_cards = DB::table('business_cards')
+                ->where('card_type', '=', 'store')
+                ->join('users', 'business_cards.user_id', '=', 'users.id')
+                ->select('users.id', 'users.plan_validity', 'business_cards.*')
+                ->where('business_cards.user_id', Auth::user()->id)
+                ->where('business_cards.status', 1)
+                ->orderBy('business_cards.id', 'desc')->get();
+            $settings = Setting::where('status', 1)->first();
+            return view('user.cards.stores', compact('business_cards', 'settings'));
+        } else {
+            return redirect()->route('user.plans');
+        }
+    }
+
     // All user cards
     public function cards()
     {
@@ -71,6 +91,7 @@ class CardController extends Controller
             return redirect()->route('user.plans');
         }
     }
+    
 
 
     // Create Card
@@ -551,7 +572,7 @@ class CardController extends Controller
                 $enquiry_button = '#';
 
                 $business_card_details = DB::table('business_cards')->where('business_cards.card_id', $card_details->card_id)
-                    ->join('users', 'business_cards.user_id', '=', 'users.user_id')
+                    ->join('users', 'business_cards.user_id', '=', 'users.id')
                     ->select('business_cards.*', 'users.plan_details')
                     ->first();
 

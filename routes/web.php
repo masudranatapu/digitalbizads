@@ -186,6 +186,10 @@ Route::group(['middleware' => 'Installer'], function () {
         // Business Cards
         Route::get('cards', [CardController::class, 'cards'])->name('cards');
         Route::get('card-status/{id}', [CardController::class, 'cardStatus'])->name('card.status');
+
+        // Business Store
+        Route::get('stores', [CardController::class, 'getStores'])->name('stores');
+        Route::get('whatsapp-stores', 'CardController@storeCards')->name('whatsapp-stores');
         // Business Plans
         Route::get('plans', [CardController::class, 'plans'])->name('plans');
         // Media
