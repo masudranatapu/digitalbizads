@@ -228,8 +228,8 @@
         @endif
     </div>
 
-    <input type="text" id="whatsapp_no" value="{{ $store_details['whatsapp_no'] ?? null }}">
-    <input type="text" id="email" value="{{ $store_details['email'] ?? null }}">
+    <input type="hidden" id="whatsapp_no" value="{{ $store_details['whatsapp_no'] ?? null }}">
+    <input type="hidden" id="email" value="{{ $store_details['email'] ?? null }}">
     <script src="{{ asset('frontend/whatsapp-store/js/script.js') }}"></script>
     <script>
         var cart = [];

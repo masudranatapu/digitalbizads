@@ -22,6 +22,16 @@ class StoreController extends Controller
     public function CreateStore()
     {
 
+        $cards = BusinessCard::where('user_id', Auth::id())->count();
+
+
+
+        if ($cards > 0) {
+            alert()->error(trans('Maximum store creation limit is exceeded.'));
+
+            return redirect()->route('user.stores');
+        }
+
         $themes = Theme::where('theme_description', 'WhatsApp Store')->where('status', 1)->get();
         $settings = Setting::where('status', 1)->first();
         $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
