@@ -168,7 +168,7 @@ class CardController extends Controller
             'personalized_link' => 'nullable|string|max:191',
             'footer_text' => 'nullable|string|max:191',
             'banner' => 'required',
-            'about_us' => 'required|string'
+            'about_us' => 'sometimes'
         ]);
 
         if ($validator->fails()) {
@@ -346,7 +346,7 @@ class CardController extends Controller
             'personalized_link' => 'nullable|string|max:191',
             'footer_text' => 'nullable|string|max:191',
             'banner' => 'nullable',
-            'about_us' => 'required|string'
+            'about_us' => 'sometimes'
 
         ]);
 

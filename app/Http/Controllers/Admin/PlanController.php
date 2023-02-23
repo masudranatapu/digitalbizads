@@ -95,6 +95,11 @@ class PlanController extends Controller
         } else {
             $recommended = 1;
         }
+        if ($request->is_whatsapp_store == null) {
+            $whatsappStore = 0;
+        } else {
+            $whatsappStore = 1;
+        }
 
         if ($validator->fails()) {
             return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
@@ -109,12 +114,13 @@ class PlanController extends Controller
         $plan->no_of_vcards = $request->no_of_vcards;
         $plan->no_of_services = $request->no_of_services;
         $plan->no_of_galleries = $request->no_of_galleries;
-        $plan->no_of_features = $request->no_of_features;
-        $plan->no_of_payments = $request->no_of_payments;
+        $plan->no_of_features = $request->no_of_features ?? 0;
+        $plan->no_of_payments = $request->no_of_payments ?? 0;
         $plan->personalized_link = $personalized_link;
         $plan->hide_branding = $hide_branding;
         $plan->free_setup = $free_setup;
         $plan->free_support = $free_support;
+        $plan->is_whatsapp_store = $whatsappStore;
         $plan->is_private = $is_private;
         $plan->save();
         alert()->success(trans('New Plan Created Successfully!'));
@@ -151,7 +157,7 @@ class PlanController extends Controller
             // 'no_of_payments' => 'required'
         ]);
 
-          if ($validator->fails()) {
+        if ($validator->fails()) {
 
             return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
         }
@@ -159,75 +165,83 @@ class PlanController extends Controller
         DB::beginTransaction();
         try {
 
-        if ($request->personalized_link == 'on') {
-            $personalized_link = 1;
-        } else {
-            $personalized_link = 0;
-        }
+            if ($request->personalized_link == 'on') {
+                $personalized_link = 1;
+            } else {
+                $personalized_link = 0;
+            }
 
-        if ($request->hide_branding == 'on') {
-            $hide_branding = 1;
-        } else {
-            $hide_branding = 0;
-        }
-
-
-        if ($request->is_private == null) {
-            $is_private = 0;
-        } else {
-            $is_private = 1;
-        }
-
-        if ($request->free_setup == null) {
-            $free_setup = 0;
-        } else {
-            $free_setup = 1;
-        }
-
-        if ($request->free_support == null) {
-            $free_support = 0;
-        } else {
-            $free_support = 1;
-        }
-
-        if ($request->recommended == null) {
-            $recommended = 0;
-        } else {
-            $recommended = 1;
-        }
-
-        Plan::where('plan_id', $request->plan_id)->update([
-            'plan_name' => $request->plan_name,
-            'plan_description' => $request->plan_description,
-            'recommended' => $recommended,
-            'plan_price' => $request->plan_price,
-            'validity' => $request->validity,
-            'no_of_vcards' => $request->no_of_vcards,
-            'no_of_services' => $request->no_of_services,
-            'no_of_galleries' => $request->no_of_galleries,
-            'no_of_features' => $request->no_of_features,
-            'no_of_payments' => $request->no_of_payments,
-            'personalized_link' => $personalized_link,
-            'hide_branding' => $hide_branding,
-            'free_setup' => $free_setup,
-             'free_support' => $free_support,
-             'is_private' => $is_private
-        ]);
+            if ($request->hide_branding == 'on') {
+                $hide_branding = 1;
+            } else {
+                $hide_branding = 0;
+            }
 
 
+            if ($request->is_private == null) {
+                $is_private = 0;
+            } else {
+                $is_private = 1;
+            }
 
-        // return redirect()->route('admin.edit.plan', $request->plan_id);
+            if ($request->free_setup == null) {
+                $free_setup = 0;
+            } else {
+                $free_setup = 1;
+            }
+
+            if ($request->free_support == null) {
+                $free_support = 0;
+            } else {
+                $free_support = 1;
+            }
+
+            if ($request->recommended == null) {
+                $recommended = 0;
+            } else {
+                $recommended = 1;
+            }
+
+            if ($request->is_whatsapp_store == null) {
+                $whatsappStore = 0;
+            } else {
+                $whatsappStore = 1;
+            }
+
+
+            Plan::where('plan_id', $request->plan_id)->update([
+                'plan_name' => $request->plan_name,
+                'plan_description' => $request->plan_description,
+                'recommended' => $recommended,
+                'plan_price' => $request->plan_price,
+                'validity' => $request->validity,
+                'no_of_vcards' => $request->no_of_vcards,
+                'no_of_services' => $request->no_of_services,
+                'no_of_galleries' => $request->no_of_galleries,
+                // 'no_of_features' => $request->no_of_features ?? 0,
+                // 'no_of_payments' => $request->no_of_payments ?? 0,
+                'personalized_link' => $personalized_link,
+                'hide_branding' => $hide_branding,
+                'free_setup' => $free_setup,
+                'free_support' => $free_support,
+                'is_whatsapp_store' => $whatsappStore,
+                'is_private' => $is_private
+            ]);
+
+
+
+            // return redirect()->route('admin.edit.plan', $request->plan_id);
         } catch (\Exception $e) {
             dd($e->getMessage());
             DB::rollback();
             alert()->error(trans('Plan Details not Updated!'));
 
             return redirect()->route('admin.edit.plan', $request->plan_id);
-    }
-    DB::commit();
-    alert()->success(trans('Plan Details Updated Successfully!'));
+        }
+        DB::commit();
+        alert()->success(trans('Plan Details Updated Successfully!'));
 
-    return redirect()->route('admin.edit.plan', $request->plan_id);
+        return redirect()->route('admin.edit.plan', $request->plan_id);
     }
     // Delete Plan
     public function deletePlan(Request $request)

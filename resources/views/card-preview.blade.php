@@ -381,7 +381,7 @@
     </div>
 
     <div class="about_us_modal email_modal">
-        <div class="modal animate__animated animate__fadeIn" id="aboutUsModal" tabindex="-1"
+        <div class="modal fade animate__animated animate__fadeIn" id="aboutUsModal" tabindex="-1"
             data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-xl">
                 <div class="modal-content ">

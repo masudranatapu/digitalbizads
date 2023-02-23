@@ -23,6 +23,7 @@ use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\SEOTools;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
@@ -127,28 +128,91 @@ class HomeController extends Controller
             return redirect()->route('home-locale');
         }
         if ($cardinfo) {
-            $cardinfo->gallery = Gallery::where('card_id', $cardinfo->id)->get();
-            $cardinfo->contacts = BusinessField::where('card_id', $cardinfo->id)->get();
-            $user = User::find($cardinfo->user_id);
-            $url = url($cardinfo->card_url);
 
 
 
-            if ($cardinfo->card_status == 'deactive') {
-                alert()->error(trans('This card is not active now'));
-                return redirect()->route('home-locale');
+            if ($cardinfo->card_type == "vcard") {
+                $cardinfo->gallery = Gallery::where('card_id', $cardinfo->id)->get();
+                $cardinfo->contacts = BusinessField::where('card_id', $cardinfo->id)->get();
+                $user = User::find($cardinfo->user_id);
+                $url = url($cardinfo->card_url);
+
+
+
+                if ($cardinfo->card_status == 'deactive') {
+                    alert()->error(trans('This card is not active now'));
+                    return redirect()->route('home-locale');
+                }
+                if ($cardinfo->card_status == 2) {
+                    alert()->error(trans('This card is not available'));
+                    return redirect()->route('home-locale');
+                }
+                $settings = getSetting();
+
+                return view('card-preview', compact('cardinfo', 'user', 'settings'));
+            } else {
+                $card_details = $cardinfo;
+
+                $business_card_details = DB::table('business_cards')->where('business_cards.card_id', $card_details->card_id)
+                    ->join('users', 'business_cards.user_id', '=', 'users.id')
+                    ->select('business_cards.*', 'users.plan_details')
+                    ->first();
+
+                if ($business_card_details) {
+
+                    $products = DB::table('store_products')->where('card_id', $card_details->card_id)->where('product_status', 'instock')->orderBy('id', 'desc')->get();
+
+                    $settings = Setting::where('status', 1)->first();
+                    $config = DB::table('config')->get();
+
+                    $plan_details = json_decode($business_card_details->plan_details, true);
+                    $store_details = json_decode($business_card_details->description, true);
+
+                    if ($store_details['whatsapp_no'] != null) {
+                        $enquiry_button = $store_details['whatsapp_no'];
+                    }
+
+                    $whatsapp_msg = $store_details['whatsapp_msg'];
+                    $currency = $store_details['currency'];
+
+                    $url = URL::to('/') . "/" . strtolower(preg_replace('/\s+/', '-', $card_details->card_url));
+                    $business_name = $card_details->title;
+                    $profile = URL::to('/') . "/" . $business_card_details->profile;
+
+                    $shareContent = $config[30]->config_value;
+                    $shareContent = str_replace("{ business_name }", $business_name, $shareContent);
+                    $shareContent = str_replace("{ business_url }", $url, $shareContent);
+                    $shareContent = str_replace("{ appName }", $config[0]->config_value, $shareContent);
+
+                    // If branding enabled, then show app name.
+
+                    if ($plan_details['hide_branding'] == "1") {
+                        $shareContent = str_replace("{ appName }", $business_name, $shareContent);
+                    } else {
+                        $shareContent = str_replace("{ appName }", $config[0]->config_value, $shareContent);
+                    }
+
+                    $url = urlencode($url);
+                    $shareContent = urlencode($shareContent);
+
+                    Session::put('locale', $business_card_details->card_lang);
+                    app()->setLocale(Session::get('locale'));
+
+                    $qr_url = "https://chart.googleapis.com/chart?chs=250x250&cht=qr&chl=" . $url;
+
+                    $shareComponent['facebook'] = "https://www.facebook.com/sharer/sharer.php?u=$url&quote=$shareContent";
+                    $shareComponent['twitter'] = "https://twitter.com/intent/tweet?text=$shareContent";
+                    $shareComponent['linkedin'] = "https://www.linkedin.com/shareArticle?mini=true&url=$url";
+                    $shareComponent['telegram'] = "https://telegram.me/share/url?text=$shareContent&url=$url";
+                    $shareComponent['whatsapp'] = "https://api.whatsapp.com/send/?phone&text=$shareContent";
+
+                    if ($card_details->theme_id == "7ccc432a06hty") {
+                        return view('vcard.modern-store-light', compact('card_details', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency'));
+                    } else if ($card_details->theme_id == "7ccc432a06hju") {
+                        return view('vcard.modern-store-dark', compact('card_details', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency'));
+                    }
+                }
             }
-            if ($cardinfo->card_status == 2) {
-                alert()->error(trans('This card is not available'));
-                return redirect()->route('home-locale');
-            }
-            $settings = getSetting();
-
-            return view('card-preview', compact('cardinfo', 'user', 'settings'));
-        } else {
-
-            alert()->error(trans('This card is not available please create your desired card'));
-            return redirect()->route('home-locale');
         }
     }
 
