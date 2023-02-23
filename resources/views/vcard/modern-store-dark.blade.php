@@ -242,13 +242,6 @@
         $("#place-order-email").hide();
         $("#empty-cart").show();
 
-
-        let whatsapp_no = $('#whatsapp_no').val();
-        let email = $('#email').val();
-        if (whatsapp_no) {
-
-        }
-
         function addToCart(pid) {
             "use strict";
             var productName = $("#" + pid + "_product_name").text();
@@ -312,8 +305,19 @@
                 $("#empty-cart").hide();
                 $("#badge").text(badgeCount);
                 $("#badge").show();
-                $("#place-order").show();
-                $("#place-order-email").show();
+                if (whatsapp_no.length > 0 && email.length > 0) {
+                    $("#place-order").hide();
+                    $("#place-order-email").show();
+                } else {
+                    if (whatsapp_no.length > 0) {
+                        $("#place-order").show();
+                        $("#place-order-email").hide();
+                    } else {
+                        $("#place-order").hide();
+                        $("#place-order-email").show();
+
+                    }
+                }
 
 
             } else {
