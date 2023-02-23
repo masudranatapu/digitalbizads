@@ -242,6 +242,13 @@
         $("#place-order-email").hide();
         $("#empty-cart").show();
 
+
+        let whatsapp_no = $('#whatsapp_no').val();
+        let email = $('#email').val();
+        if (whatsapp_no) {
+
+        }
+
         function addToCart(pid) {
             "use strict";
             var productName = $("#" + pid + "_product_name").text();
@@ -307,6 +314,8 @@
                 $("#badge").show();
                 $("#place-order").show();
                 $("#place-order-email").show();
+
+
             } else {
                 $("#badge").hide();
                 $("#place-order-email").hide();
