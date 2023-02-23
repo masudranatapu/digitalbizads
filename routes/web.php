@@ -204,8 +204,8 @@ Route::group(['middleware' => 'Installer'], function () {
         Route::post('card/update/{id}', [CardController::class, 'postUpdate'])->name('card.update');
         Route::get('card/delete/{id}', [CardController::class, 'getDelete'])->name('card.delete');
 
-        Route::post('card/upload_image',['as'=>'card.upload_image','uses'=>'CardController@uploadImage']);
-        Route::post('card/upload_logo',['as'=>'card.upload_logo','uses'=>'CardController@uploadLogo']);
+        Route::post('card/upload_image', ['as' => 'card.upload_image', 'uses' => 'CardController@uploadImage']);
+        Route::post('card/upload_logo', ['as' => 'card.upload_logo', 'uses' => 'CardController@uploadLogo']);
 
         Route::get('create-card', [CardController::class, 'CreateCard'])->name('create.card');
         Route::get('edit-card/{id}', [CardController::class, 'editCard'])->name('edit.card');
@@ -281,6 +281,7 @@ Route::group(['middleware' => 'Installer'], function () {
         // View Preview Business Card
         Route::get('view-preview/{id}', [CardController::class, 'viewPreview'])->name('view.preview');
 
+
         // Account Setting
         Route::get('account', [userAccount::class, 'account'])->name('account');
         Route::get('edit-account', [userAccount::class, 'editAccount'])->name('edit.account');
@@ -320,4 +321,5 @@ Route::group(['middleware' => 'Installer'], function () {
 });
 
 
-Route::get('{cardurl}', ['as'=>'card.preview', 'uses'=>'HomeController@getPreview']);
+Route::get('{cardurl}', ['as' => 'card.preview', 'uses' => 'HomeController@getPreview']);
+Route::post('/place-email-order', [HomeController::class, 'placeEmailOrder'])->name('place.email.order');

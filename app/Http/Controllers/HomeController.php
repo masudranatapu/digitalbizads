@@ -11,6 +11,7 @@ use App\Currency;
 use App\Subscriber;
 use App\BusinessCard;
 use App\BusinessField;
+use App\Mail\OrderEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
@@ -192,5 +193,17 @@ class HomeController extends Controller
         DB::commit();
         alert()->success(trans('Thank you You have successfully subscribed.'));
         return redirect()->back();
+    }
+
+
+    public function placeEmailOrder(Request $request)
+    {
+        $settings = Setting::first();
+        $owner = User::find($request->card_user_id);
+        $customer_info = $request->customer_info;
+        $cart = $request->cart;
+        Mail::to($owner->email)->send(new OrderEmail($settings, $owner, $customer_info, $cart));
+
+        return response()->json(['status' => 'success']);
     }
 }

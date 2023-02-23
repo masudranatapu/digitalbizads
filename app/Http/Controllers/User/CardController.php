@@ -49,12 +49,16 @@ class CardController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
-     public function getStores()
+    public function getStores()
     {
+
         $plan = User::where('user_id', Auth::user()->user_id)->first();
         $active_plan =  json_decode($plan->plan_details);
+
         if ($active_plan != null) {
-            if($active_plan->is_whatsapp_store == 0){return abort(404);}
+            if ($active_plan->is_whatsapp_store == 0) {
+                return abort(404);
+            }
             $business_cards = DB::table('business_cards')
                 ->where('card_type', '=', 'store')
                 ->join('users', 'business_cards.user_id', '=', 'users.id')
@@ -91,7 +95,7 @@ class CardController extends Controller
             return redirect()->route('user.plans');
         }
     }
-    
+
 
 
     // Create Card
@@ -134,8 +138,8 @@ class CardController extends Controller
             alert()->error(trans('Your card limit is over please upgrade your package for more card'));
             return redirect()->back();
         }
-        $card_url = BusinessCard::where('card_url',$request->personalized_link)->first();
-        if($card_url != null){
+        $card_url = BusinessCard::where('card_url', $request->personalized_link)->first();
+        if ($card_url != null) {
             alert()->error(trans('Personalized link must be unique'));
             return back()->withInput();
         }
@@ -164,6 +168,7 @@ class CardController extends Controller
             'personalized_link' => 'nullable|string|max:191',
             'footer_text' => 'nullable|string|max:191',
             'banner' => 'required',
+            'about_us' => 'required|string'
         ]);
 
         if ($validator->fails()) {
@@ -222,15 +227,12 @@ class CardController extends Controller
                 }
                 $_video->move($file_path, $video_name);
                 $card->banner_content = asset($file_path . '/' . $video_name);
-
             } elseif (!empty($request->video) && $request->gallery_type == 'videourl') {
                 $card->banner_type =  $request->gallery_type;
                 $card->banner_content  =  $this->getYoutubeEmbad($request->video);
-
             } elseif (!empty($request->banner) && $request->gallery_type == 'banner') {
 
-                if (!is_null($request->file('banner')))
-                {
+                if (!is_null($request->file('banner'))) {
                     $image = $request->file('banner');
                     $extension = $image->getClientOriginalExtension();
                     $file_path = 'assets/uploads/banner';
@@ -238,14 +240,13 @@ class CardController extends Controller
                     $base_name = explode(' ', $base_name);
                     $base_name = implode('-', $base_name);
                     $img       = Image::make($image->getRealPath());
-                    $feature_image = $base_name . "-" . uniqid().'.webp';
-                    Image::make($img)->save($file_path.'/'.$feature_image);
-                    $image_name = $file_path .'/'. $feature_image;
+                    $feature_image = $base_name . "-" . uniqid() . '.webp';
+                    Image::make($img)->save($file_path . '/' . $feature_image);
+                    $image_name = $file_path . '/' . $feature_image;
                     $card->banner_content = $image_name;
                 }
                 // $card->banner_content      = $request->profile_image_path ?? null;
                 $card->banner_type =  $request->gallery_type;
-
             }
             $card->header_text_color = $request->header_text_color;
             $card->header_backgroung = $request->header_backgroung;
@@ -256,10 +257,11 @@ class CardController extends Controller
             $card->card_url = $card_url;
             $card->phone_number = $request->phone_number;
             $card->email = $request->email ?? Auth::user()->email;
-            if(isFreePlan(Auth::user()->id)==false){
+            if (isFreePlan(Auth::user()->id) == false) {
                 $card->footer_text = $request->footer_text;
             }
             $card->cashapp = $request->cashapp;
+            $card->about_us = $request->about_us;
             $card->website = $request->website;
             $card->card_status = 'activated';
             $card->created_at = date('Y-m-d H:i:s');
@@ -344,14 +346,16 @@ class CardController extends Controller
             'personalized_link' => 'nullable|string|max:191',
             'footer_text' => 'nullable|string|max:191',
             'banner' => 'nullable',
+            'about_us' => 'required|string'
+
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-            $checkCardUrl = BusinessCard::where('card_url',$request->personalized_link)->whereNotIn('id',[$id])->first();
-        if(!empty($checkCardUrl)){
+        $checkCardUrl = BusinessCard::where('card_url', $request->personalized_link)->whereNotIn('id', [$id])->first();
+        if (!empty($checkCardUrl)) {
             alert()->error(trans('Personalized link must be unique'));
             return back()->withInput();
         }
@@ -371,19 +375,19 @@ class CardController extends Controller
             $card->card_lang = 'en';
             if ($plan_details['personalized_link'] == '1' && !empty($card_url)) {
                 $card->card_url = $card_url;
-            }else{
+            } else {
                 $card->card_url = $card->card_id;
             }
             if ($request->headline == 'text') {
                 $card->title = $request->text;
                 $card->logo = NULL;
-            } elseif(!empty($request->logo_path)) {
+            } elseif (!empty($request->logo_path)) {
                 $card->title             = NULL;
                 $card->header_text_color = NULL;
                 $card->logo  = $request->logo_path;
             }
             if (!empty($request->video) && $request->gallery_type == 'videosource') {
-                if(File::exists(public_path($card->banner_content))){
+                if (File::exists(public_path($card->banner_content))) {
                     File::delete(public_path($card->banner_content));
                 }
                 $card->banner_type =  $request->gallery_type;
@@ -399,11 +403,9 @@ class CardController extends Controller
             } elseif (!empty($request->video) && $request->gallery_type == 'videourl') {
                 $card->banner_type =  $request->gallery_type;
                 $card->banner_content  =  $this->getYoutubeEmbad($request->video);
-
             } elseif (!empty($request->banner) && $request->gallery_type == 'banner') {
-                if (!is_null($request->file('banner')))
-                {
-                    if(File::exists(public_path($card->banner_content))){
+                if (!is_null($request->file('banner'))) {
+                    if (File::exists(public_path($card->banner_content))) {
                         File::delete(public_path($card->banner_content));
                     }
                     $image = $request->file('banner');
@@ -413,23 +415,23 @@ class CardController extends Controller
                     $base_name = explode(' ', $base_name);
                     $base_name = implode('-', $base_name);
                     $img       = Image::make($image->getRealPath());
-                    $feature_image = $base_name . "-" . uniqid().'.webp';
-                    Image::make($img)->save($file_path.'/'.$feature_image);
-                    $image_name = $file_path .'/'. $feature_image;
+                    $feature_image = $base_name . "-" . uniqid() . '.webp';
+                    Image::make($img)->save($file_path . '/' . $feature_image);
+                    $image_name = $file_path . '/' . $feature_image;
                     $card->banner_content = $image_name;
                 }
                 // $card->banner_content      = $request->profile_image_path ?? null;
                 $card->banner_type =  $request->gallery_type;
-
             }
             $card->card_type = 'vcard';
             $card->phone_number = $request->phone_number;
             $card->email = $request->email;
-            if(isFreePlan(Auth::user()->id)==false){
+            if (isFreePlan(Auth::user()->id) == false) {
                 $card->footer_text = $request->footer_text;
             }
             // $card->footer_text = $request->footer_text;
             $card->cashapp = $request->cashapp;
+            $card->about_us = $request->about_us;
             $card->website = $request->website;
             $card->header_text_color = $request->header_text_color;
             $card->header_backgroung = $request->header_backgroung;
@@ -490,20 +492,20 @@ class CardController extends Controller
         return redirect()->route('user.cards');
     }
 
-    public function getDelete(Request $request,$id){
+    public function getDelete(Request $request, $id)
+    {
 
         DB::beginTransaction();
         try {
 
-            $gallery =  DB::table('card_gallery')->where('card_id',$id)->first();
-            if(!empty($gallery)){
-                if(File::exists(public_path($gallery->content))){
+            $gallery =  DB::table('card_gallery')->where('card_id', $id)->first();
+            if (!empty($gallery)) {
+                if (File::exists(public_path($gallery->content))) {
                     File::delete(public_path($gallery->content));
                 }
             }
-            DB::table('business_fields')->where('card_id',$id)->delete();
-            DB::table('business_cards')->where('card_id',$id)->delete();
-
+            DB::table('business_fields')->where('card_id', $id)->delete();
+            DB::table('business_cards')->where('card_id', $id)->delete();
         } catch (\Exception $e) {
             dd($e->getMessage());
             DB::rollback();
@@ -516,16 +518,17 @@ class CardController extends Controller
     }
 
 
-    public function getDeleteGallery(Request $request,$id){
+    public function getDeleteGallery(Request $request, $id)
+    {
 
         DB::beginTransaction();
         try {
 
-            $gallery =  DB::table('card_gallery')->where('id',$id)->first();
-            if(File::exists(public_path($gallery->content))){
+            $gallery =  DB::table('card_gallery')->where('id', $id)->first();
+            if (File::exists(public_path($gallery->content))) {
                 File::delete(public_path($gallery->content));
             }
-            DB::table('card_gallery')->where('id',$id)->delete();
+            DB::table('card_gallery')->where('id', $id)->delete();
         } catch (\Exception $e) {
             dd($e->getMessage());
             DB::rollback();
@@ -1285,12 +1288,12 @@ class CardController extends Controller
     {
         $shortUrlRegex = '/youtu.be\/([a-zA-Z0-9_-]+)\??/i';
         $longUrlRegex = '/youtube.com\/((?:embed)|(?:watch))((?:\?v\=)|(?:\/))([a-zA-Z0-9_-]+)/i';
-       if (preg_match($longUrlRegex, $url, $matches)) {
-           $youtube_id = $matches[count($matches) - 1];
-       }
-       if (preg_match($shortUrlRegex, $url, $matches)) {
-           $youtube_id = $matches[count($matches) - 1];
-       }
+        if (preg_match($longUrlRegex, $url, $matches)) {
+            $youtube_id = $matches[count($matches) - 1];
+        }
+        if (preg_match($shortUrlRegex, $url, $matches)) {
+            $youtube_id = $matches[count($matches) - 1];
+        }
         $video_file = 'https://www.youtube.com/embed/' . $youtube_id;
         return $video_file;
     }
@@ -1326,75 +1329,74 @@ class CardController extends Controller
 
 
 
-        function uploadAndResize($file, $_path, $width, $height)
-        {
-            $blank_img =  Image::canvas($width, $height, '#EBEEF7');
-            $path = public_path($_path);
-            if (!File::isDirectory($path)) {
-                    File::makeDirectory($path, 0777, true, true);
-            }
-            $fileName = preg_replace('/\..+$/', '', $file->getClientOriginalName());
-            $fileName = explode(' ', $fileName);
-            $fileName = implode('-', $fileName);
-            $fileName = Str::lower($fileName);
-            $fileName = $fileName . "-" . uniqid() . "." . $file->getClientOriginalExtension();
-            $image = Image::make($file);
-            $imageWidth = $image->width();
-            $imageHeight = $image->height();
-            if ($imageWidth > $width) {
-                $image->resize($width, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-            }
-            if ($imageHeight > $height) {
-                 $image->resize(null, $height, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-            }
-            $blank_img->insert($image, 'center');
-            $blank_img->save($path.'/'. $fileName);
-            return $_path. $fileName;
+    function uploadAndResize($file, $_path, $width, $height)
+    {
+        $blank_img =  Image::canvas($width, $height, '#EBEEF7');
+        $path = public_path($_path);
+        if (!File::isDirectory($path)) {
+            File::makeDirectory($path, 0777, true, true);
         }
-
-        public function uploadImage(Request $request){
-
-            $data = $request->image;
-            $image_array_1 = explode(";", $data);
-            $image_array_2 = explode(",", $image_array_1[1]);
-            $data = base64_decode($image_array_2[1]);
-            $imageName = time() . '.png';
-            if (!File::isDirectory('assets/uploads/logo/')) {
-                File::makeDirectory('assets/uploads/logo/', 0777, true, true);
-            }
-            Image::make($data)->save('assets/uploads/banner/' . $imageName);
-            $imagePath = asset('assets/uploads/banner/' . $imageName);
-            $imagePath2 = 'assets/uploads/banner/' . $imageName;
-            return response()->json([
-                'html'=>'<input type="hidden" name="profile_image_path" value="'.$imagePath2.'">',
-                'banner'=>$imagePath
-            ]);
+        $fileName = preg_replace('/\..+$/', '', $file->getClientOriginalName());
+        $fileName = explode(' ', $fileName);
+        $fileName = implode('-', $fileName);
+        $fileName = Str::lower($fileName);
+        $fileName = $fileName . "-" . uniqid() . "." . $file->getClientOriginalExtension();
+        $image = Image::make($file);
+        $imageWidth = $image->width();
+        $imageHeight = $image->height();
+        if ($imageWidth > $width) {
+            $image->resize($width, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
         }
-
-        public function uploadLogo(Request $request){
-            $data = $request->image;
-            $image_array_1 = explode(";", $data);
-            $image_array_2 = explode(",", $image_array_1[1]);
-            $data = base64_decode($image_array_2[1]);
-            $imageName = time() . '.png';
-            if (!File::isDirectory('assets/uploads/logo/')) {
-                File::makeDirectory('assets/uploads/logo/', 0777, true, true);
-            }
-           Image::make($data)->save('assets/uploads/logo/' . $imageName);
-            $imagePath = asset('assets/uploads/logo/' . $imageName);
-            $imagePath2 = 'assets/uploads/logo/' . $imageName;
-            return response()->json(
-                [
-                    'html'=>'<input type="hidden" name="logo_path" value="'.$imagePath2.'">',
-                    'logo'=>$imagePath
-                ]);
-
+        if ($imageHeight > $height) {
+            $image->resize(null, $height, function ($constraint) {
+                $constraint->aspectRatio();
+            });
         }
+        $blank_img->insert($image, 'center');
+        $blank_img->save($path . '/' . $fileName);
+        return $_path . $fileName;
+    }
 
+    public function uploadImage(Request $request)
+    {
 
+        $data = $request->image;
+        $image_array_1 = explode(";", $data);
+        $image_array_2 = explode(",", $image_array_1[1]);
+        $data = base64_decode($image_array_2[1]);
+        $imageName = time() . '.png';
+        if (!File::isDirectory('assets/uploads/logo/')) {
+            File::makeDirectory('assets/uploads/logo/', 0777, true, true);
+        }
+        Image::make($data)->save('assets/uploads/banner/' . $imageName);
+        $imagePath = asset('assets/uploads/banner/' . $imageName);
+        $imagePath2 = 'assets/uploads/banner/' . $imageName;
+        return response()->json([
+            'html' => '<input type="hidden" name="profile_image_path" value="' . $imagePath2 . '">',
+            'banner' => $imagePath
+        ]);
+    }
 
+    public function uploadLogo(Request $request)
+    {
+        $data = $request->image;
+        $image_array_1 = explode(";", $data);
+        $image_array_2 = explode(",", $image_array_1[1]);
+        $data = base64_decode($image_array_2[1]);
+        $imageName = time() . '.png';
+        if (!File::isDirectory('assets/uploads/logo/')) {
+            File::makeDirectory('assets/uploads/logo/', 0777, true, true);
+        }
+        Image::make($data)->save('assets/uploads/logo/' . $imageName);
+        $imagePath = asset('assets/uploads/logo/' . $imageName);
+        $imagePath2 = 'assets/uploads/logo/' . $imageName;
+        return response()->json(
+            [
+                'html' => '<input type="hidden" name="logo_path" value="' . $imagePath2 . '">',
+                'logo' => $imagePath
+            ]
+        );
+    }
 }

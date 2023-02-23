@@ -30,7 +30,7 @@ class StoreController extends Controller
         $currencies = Currency::get();
         $plan_details = json_decode($plan->plan_details);
 
-	if($plan_details->no_of_vcards == 999) {
+        if ($plan_details->no_of_vcards == 999) {
             $no_cards = 999999;
         } else {
             $no_cards = $plan_details->no_of_vcards;
@@ -56,9 +56,15 @@ class StoreController extends Controller
             'title' => 'required',
             'currency' => 'required',
             'subtitle' => 'required',
-            'whatsapp_no' => 'required',
+            'whatsapp_no' => 'sometimes',
             'whatsapp_msg' => 'required',
+            'email' => 'sometimes'
         ]);
+
+        if (!isset($request->email) && !isset($request->whatsapp_no)) {
+
+            return redirect()->back()->withErrors(['error' => 'Please Provide Email or Phone Number'])->withInput();
+        }
 
         if ($validator->fails()) {
             alert()->error(trans('Some fields missing or banner/logo size is large.'));
@@ -87,12 +93,13 @@ class StoreController extends Controller
         $store_details['whatsapp_no'] = $request->whatsapp_no;
         $store_details['whatsapp_msg'] = $request->whatsapp_msg;
         $store_details['currency'] = $request->currency;
+        $store_details['email'] = $request->email;
 
         $card_url = strtolower(preg_replace('/\s+/', '-', $personalized_link));
 
         $current_card = BusinessCard::where('card_url', $card_url)->count();
 
-	if($plan_details['no_of_vcards'] == 999) {
+        if ($plan_details['no_of_vcards'] == 999) {
             $no_cards = 999999;
         } else {
             $no_cards = $plan_details['no_of_vcards'];
@@ -121,6 +128,7 @@ class StoreController extends Controller
                     alert()->success(trans('New WhatsApp Store Created Successfully!'));
                     return redirect()->route('user.stores', $card_id);
                 } catch (\Exception $th) {
+                    dd($th);
                     alert()->error(trans('Sorry, personalized link was already registered.'));
                     return redirect()->route('user.create.store');
                 }
@@ -139,7 +147,7 @@ class StoreController extends Controller
     {
         $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
         $plan_details = json_decode($plan->plan_details);
-        $media = Medias::where('user_id', Auth::user()->user_id)->orderBy('id','desc')->get();
+        $media = Medias::where('user_id', Auth::user()->user_id)->orderBy('id', 'desc')->get();
         $settings = Setting::where('status', 1)->first();
 
         return view('user.store.products', compact('plan_details', 'media', 'settings'));
@@ -156,36 +164,34 @@ class StoreController extends Controller
             $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
             $plan_details = json_decode($plan->plan_details);
 
-            if($request->badge != null){
-                 if (count($request->badge) <= $plan_details->no_of_services) {
-                
+            if ($request->badge != null) {
+                if (count($request->badge) <= $plan_details->no_of_services) {
+
                     StoreProduct::where('card_id', $id)->delete();
-                        for ($i = 0; $i < count($request->badge); $i++) {
-                            $service = new StoreProduct();
-                            $service->card_id = $id;
-                            $service->product_id = uniqid();
-                            $service->badge = $request->badge[$i];
-                            $service->product_image = $request->product_image[$i];
-                            $service->product_name = $request->product_name[$i];
-                            $service->product_subtitle = $request->product_subtitle[$i];
-                            $service->regular_price = $request->regular_price[$i];
-                            $service->sales_price = $request->sales_price[$i];
-                            $service->product_status = $request->product_status[$i];
-                            $service->save();
+                    for ($i = 0; $i < count($request->badge); $i++) {
+                        $service = new StoreProduct();
+                        $service->card_id = $id;
+                        $service->product_id = uniqid();
+                        $service->badge = $request->badge[$i];
+                        $service->product_image = $request->product_image[$i];
+                        $service->product_name = $request->product_name[$i];
+                        $service->product_subtitle = $request->product_subtitle[$i];
+                        $service->regular_price = $request->regular_price[$i];
+                        $service->sales_price = $request->sales_price[$i];
+                        $service->product_status = $request->product_status[$i];
+                        $service->save();
                     }
-                
-                alert()->success(trans('Products added'));
-                return redirect()->route('user.cards');
+
+                    alert()->success(trans('Products added'));
+                    return redirect()->route('user.cards');
+                } else {
+                    alert()->error(trans('You have reached plan limit.'));
+                    return redirect()->route('user.products', $id);
+                }
             } else {
-                alert()->error(trans('You have reached plan limit.'));
+                alert()->error(trans('You must add atleast one product.'));
                 return redirect()->route('user.products', $id);
             }
-            }else{
-             alert()->error(trans('You must add atleast one product.'));
-                return redirect()->route('user.products', $id);
-            }
-            
-           
         }
     }
 
@@ -230,6 +236,7 @@ class StoreController extends Controller
                 $store_details['whatsapp_no'] = $request->whatsapp_no;
                 $store_details['whatsapp_msg'] = $request->whatsapp_msg;
                 $store_details['currency'] = $request->currency;
+                $store_details['email'] = $request->email;
 
                 BusinessCard::where('card_id', $id)->update([
                     'theme_id' => $request->theme_id,
@@ -252,6 +259,7 @@ class StoreController extends Controller
                 $store_details['whatsapp_no'] = $request->whatsapp_no;
                 $store_details['whatsapp_msg'] = $request->whatsapp_msg;
                 $store_details['currency'] = $request->currency;
+                $store_details['email'] = $request->email;
 
                 BusinessCard::where('card_id', $id)->update([
                     'cover' => $banner,
@@ -275,6 +283,8 @@ class StoreController extends Controller
                 $store_details['whatsapp_no'] = $request->whatsapp_no;
                 $store_details['whatsapp_msg'] = $request->whatsapp_msg;
                 $store_details['currency'] = $request->currency;
+                $store_details['email'] = $request->email;
+
 
                 BusinessCard::where('card_id', $id)->update([
                     'profile' => $logo,
@@ -300,6 +310,8 @@ class StoreController extends Controller
                 $store_details['whatsapp_no'] = $request->whatsapp_no;
                 $store_details['whatsapp_msg'] = $request->whatsapp_msg;
                 $store_details['currency'] = $request->currency;
+                $store_details['email'] = $request->email;
+
 
                 BusinessCard::where('card_id', $id)->update([
                     'cover' => $banner,
@@ -330,7 +342,7 @@ class StoreController extends Controller
             return view('errors.404');
         } else {
             $products = StoreProduct::where('card_id', $id)->get();
-            $media = Medias::where('user_id', Auth::user()->user_id)->orderBy('id','desc')->get();
+            $media = Medias::where('user_id', Auth::user()->user_id)->orderBy('id', 'desc')->get();
             $settings = Setting::where('status', 1)->first();
 
             return view('user.edit-store.edit-products', compact('plan_details', 'products', 'media', 'settings'));
