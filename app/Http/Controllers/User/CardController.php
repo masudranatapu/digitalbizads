@@ -54,7 +54,6 @@ class CardController extends Controller
 
         $plan = User::where('user_id', Auth::user()->user_id)->first();
         $active_plan =  json_decode($plan->plan_details);
-
         if ($active_plan != null) {
             if ($active_plan->is_whatsapp_store == 0) {
                 return abort(404);

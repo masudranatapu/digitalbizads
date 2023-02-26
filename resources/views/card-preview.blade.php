@@ -158,6 +158,22 @@
             right: 56px;
             font-size: 20px;
         }
+        .save_contact a {
+            padding: 12px 5px;
+            font-size: 15px;
+            font-family: 'Inter';
+            font-weight: 400;
+            text-align: center;
+            width: 40%;
+            border-radius: 50px;
+            color: #fff;
+            background: #212121;
+            -webkit-transition: all 0.4s ease;
+        }
+        .purchase_btn.save_contact {
+            padding: 15px;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -223,12 +239,18 @@
                 @endif
             @endif
             <!-- purchase button -->
-            <div class="purchase_btn text-center mb-4">
+            {{-- <div class="purchase_btn text-center mb-4">
                 @if (!empty($cardinfo->website))
                     <a href="{{ $cardinfo->website }}">SHOP</a>
                 @endif
+            </div> --}}
+            <div class="purchase_btn save_contact">
+                <a href=""
+                    class="text-decoration-none save-contact d-inline-block">Save Contact</a>
+                <a href="" target="_blank" class="text-decoration-none d-inline-block btn-secondary">
+                    SHOP
+                </a>
             </div>
-
             <!-- social medai -->
             <div class="social_wrapper mb-3">
                 <div class="section_heading text-center mb-3">
