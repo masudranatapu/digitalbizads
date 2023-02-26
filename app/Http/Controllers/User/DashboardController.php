@@ -39,16 +39,24 @@ class DashboardController extends Controller
 
         $remaining_days = 0;
 
-        if($active_plan != null) {
+        if ($active_plan != null) {
             if (isset($active_plan)) {
                 $plan_validity = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', Auth::user()->plan_validity);
                 $current_date = Carbon::now();
                 $remaining_days = $current_date->diffInDays($plan_validity, false);
+                if ($remaining_days <= 0) {
+                    $business_card = BusinessCard::where('user_id', Auth::user()->id)->update([
+                        'card_status' => 'inactive'
+                    ]);
+
+                    return redirect()->route('user.plans');
+
+                    
+                }
             }
 
             $monthCards = [];
-            for ($month = 1; $month <= 12; $month++)
-            {
+            for ($month = 1; $month <= 12; $month++) {
                 $startDate = Carbon::create(date('Y'), $month);
                 $endDate = $startDate->copy()->endOfMonth();
                 $cards = BusinessCard::where('user_id', Auth::user()->id)->where('created_at', '>=', $startDate)->where('created_at', '<=', $endDate)->count();

@@ -71,7 +71,8 @@ class Kernel extends HttpKernel
         'Installer' => \App\Http\Middleware\Installer::class,
 
         'admin' => AdminMiddleware::class,
-        'user' => UserMiddleware::class
+        'user' => UserMiddleware::class,
+
 
     ];
 }

@@ -83,7 +83,7 @@ class CardController extends Controller
                 ->join('users', 'business_cards.user_id', '=', 'users.id')
                 ->select('users.user_id', 'users.plan_validity', 'business_cards.*')
                 ->where('business_cards.user_id', Auth::user()->id)
-                ->where('business_cards.card_status', 'activated')
+                ->where('business_cards.card_type', 'vCard')
                 ->orderBy('business_cards.id', 'desc')
                 ->get();
 
@@ -1114,18 +1114,24 @@ class CardController extends Controller
     }
 
     // Card Status Page
-    public function cardStatus(Request $request, $id)
+    public function cardStatus($id)
     {
         $businessCard = BusinessCard::where('card_id', $id)->first();
 
+
         if ($businessCard == null) {
+
             return view('errors.404');
         } else {
-            $business_card = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_id', $id)->first();
+            $business_card = BusinessCard::where('user_id', Auth::user()->id)->where('card_id', $id)->first();
+
+
+
 
             if ($business_card == null) {
                 return view('errors.404');
             } else {
+
                 if ($business_card->card_status == 'inactive') {
                     $plan = User::where('user_id', Auth::user()->user_id)->first();
                     $active_plan = json_decode($plan->plan_details);
@@ -1135,17 +1141,26 @@ class CardController extends Controller
                     $no_of_services = Service::where('card_id', $id)->count();
                     $no_of_products = StoreProduct::where('card_id', $id)->count();
                     if ($no_of_services <= $active_plan->no_of_services && $no_of_galleries <= $active_plan->no_of_galleries && $no_of_features <= $active_plan->no_of_features && $no_of_payments <= $active_plan->no_of_payments && $no_of_products <= $active_plan->no_of_services) {
-                        $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
+                        $cards = BusinessCard::where('user_id', Auth::user()->id)->where('card_status', 'activated')->count();
 
                         $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
                         $plan_details = json_decode($plan->plan_details);
 
                         if ($cards < $plan_details->no_of_vcards) {
-                            BusinessCard::where('user_id', Auth::user()->user_id)->where('card_id', $id)->update([
+                            $result =  BusinessCard::where('user_id', Auth::user()->id)->where('card_id', $id)->update([
                                 'card_status' => 'activated',
                             ]);
-                            alert()->success(trans('Your Business Card Enabled'));
-                            return redirect()->route('user.cards');
+
+
+                            if ($business_card->card_type == 'vcard') {
+
+                                alert()->success(trans('Your Business Card Enabled'));
+                                return redirect()->back();
+                            } else {
+                                alert()->success(trans('Your Whats\'s App Store Is Enabled'));
+
+                                return redirect()->back();
+                            }
                         } else {
                             alert()->error(trans('Maximum card creation limit is exceeded, Please upgrade your plan.'));
                             return redirect()->route('user.cards');
@@ -1164,11 +1179,21 @@ class CardController extends Controller
                         }
                     }
                 } else {
-                    BusinessCard::where('user_id', Auth::user()->user_id)->where('card_id', $id)->update([
+                    BusinessCard::where('user_id', Auth::user()->id)->where('card_id', $id)->update([
                         'card_status' => 'inactive',
                     ]);
-                    alert()->success(trans('Your Business Card Disabled'));
-                    return redirect()->route('user.cards');
+
+
+
+                    if ($business_card->card_type == 'vcard') {
+
+
+                        alert()->success(trans('Your Business Card Disabled'));
+                        return redirect()->back();
+                    } else {
+                        alert()->success(trans('Your Whats\'s App Store Is Disabled'));
+                        return redirect()->back();
+                    }
                 }
             }
         }

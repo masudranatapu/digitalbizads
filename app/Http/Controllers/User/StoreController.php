@@ -79,7 +79,7 @@ class StoreController extends Controller
 
         if ($validator->fails()) {
             // alert()->error(trans('Some fields missing or banner/logo size is large.'));
-            dd($validator->errors());
+          
             return back()->with('toast_error', $validator->errors())->withInput();
         }
 

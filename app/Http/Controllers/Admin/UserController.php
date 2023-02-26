@@ -57,7 +57,7 @@ class UserController extends Controller
         if ($user_details == null) {
             return view('errors.404');
         } else {
-            $user_cards = BusinessCard::where('user_id', $user_details->id)->where('card_status','activated')->get();
+            $user_cards = BusinessCard::where('user_id', $user_details->id)->where('card_status', 'activated')->get();
             $settings = Setting::where('status', 1)->first();
             return view('admin.users.view-user', compact('user_details', 'user_cards', 'settings'));
         }
@@ -236,9 +236,9 @@ class UserController extends Controller
             } else {
 
                 // Making all cards inactive, For Plan change
-                BusinessCard::where('user_id', $user_details->id)->update([
-                    'card_status' => 'inactive',
-                ]);
+                // BusinessCard::where('user_id', $user_details->id)->update([
+                //     'card_status' => 'inactive',
+                // ]);
 
                 $plan_validity = Carbon::now();
                 $plan_validity->addDays($term_days);
@@ -363,14 +363,15 @@ class UserController extends Controller
         $transactions = Transaction::where('user_id', $request->query('id'))->first();
         $businessCards = BusinessCard::where('user_id', $request->query('id'))->first();
 
-        if ($transactions != null) {
-            $transactions->delete();
-        }
+        // if ($transactions != null) {
+        //     $transactions->delete();
+        // }
+
+
 
         if ($businessCards != null) {
             $businessCards->delete();
         }
-
         User::where('user_id', $request->query('id'))->delete();
         return redirect()->route('admin.users')->with('success', 'User deleted Successfully!');
     }

@@ -124,19 +124,20 @@ class HomeController extends Controller
     {
         $cardinfo = BusinessCard::select('business_cards.*', 'plans.plan_name', 'plans.hide_branding')
             ->where('business_cards.card_url', $cardurl)
+            ->where('card_status', 'activated')
             ->leftJoin('users', 'users.id', 'business_cards.user_id')
             ->leftJoin('plans', 'plans.id', 'users.plan_id')
             ->first();
 
-        $store_details = BusinessCard::where('card_type', 'store')->where('status', 1)->where('user_id', $cardinfo->user_id)->first();
-
-
-
-
         if ($cardinfo == null) {
+            alert()->error(trans('This card is not available'));
+
             return redirect()->route('home-locale');
         }
         if ($cardinfo) {
+            $store_details = BusinessCard::where('card_type', 'store')->where('status', 1)
+                ->where('card_status', 'activated')
+                ->where('user_id', $cardinfo->user_id)->first();
 
 
 
@@ -177,8 +178,11 @@ class HomeController extends Controller
                     $plan_details = json_decode($business_card_details->plan_details, true);
                     $store_details = json_decode($business_card_details->description, true);
 
+
                     if ($store_details['whatsapp_no'] != null) {
                         $enquiry_button = $store_details['whatsapp_no'];
+                    } else {
+                        $enquiry_button = null;
                     }
 
                     $whatsapp_msg = $store_details['whatsapp_msg'];
