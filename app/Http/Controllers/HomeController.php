@@ -127,6 +127,12 @@ class HomeController extends Controller
             ->leftJoin('users', 'users.id', 'business_cards.user_id')
             ->leftJoin('plans', 'plans.id', 'users.plan_id')
             ->first();
+
+        $store_details = BusinessCard::where('card_type', 'store')->where('status', 1)->where('user_id', $cardinfo->user_id)->first();
+
+
+
+
         if ($cardinfo == null) {
             return redirect()->route('home-locale');
         }
@@ -152,7 +158,7 @@ class HomeController extends Controller
                 }
                 $settings = getSetting();
 
-                return view('card-preview', compact('cardinfo', 'user', 'settings'));
+                return view('card-preview', compact('cardinfo', 'user', 'settings', 'store_details'));
             } else {
                 $card_details = $cardinfo;
 
