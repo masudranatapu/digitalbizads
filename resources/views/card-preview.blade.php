@@ -297,10 +297,12 @@
             <div class="purchase_btn save_contact">
                 <a href="{{ route('download.vCard', $cardinfo->card_id) }}"
                     class="text-decoration-none save-contact d-inline-block">Save Contact</a>
-                <a href="{{ URL::to('/') . '/' . $store_details->card_url }}" target="_blank"
-                    class="text-decoration-none d-inline-block btn-secondary">
-                    SHOP
-                </a>
+                @if (isset($store_details->card_url))
+                    <a href="{{ URL::to('/') . '/' . $store_details->card_url }}" target="_blank"
+                        class="text-decoration-none d-inline-block btn-secondary">
+                        SHOP
+                    </a>
+                @endif
             </div>
             <!-- social medai -->
             <div class="social_wrapper mb-3">
