@@ -1,129 +1,129 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
 @section('card-create', 'active')
 @section('title')
-Create New DigitalBizAds Card
+    Create New DigitalBizAds Card
 @endsection
 @section('content')
 @section('css')
-<link href="{{ asset('assets/css/image-uploader.min.css') }}" rel="stylesheet">
-{{--
+    <link href="{{ asset('assets/css/image-uploader.min.css') }}" rel="stylesheet">
+    {{--
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" /> --}}
-<link rel="stylesheet" href="{{ asset('css/croppie.css') }}" />
-<style>
-    span.error {
-        color: #E53935;
-        padding: 2px 0px;
-    }
-
-    a.social-contact.disabled {
-        opacity: .3;
-    }
-
-    .purchase_btn a {
-        padding: 10px 27px;
-        font-size: 20px;
-        font-family: 'Poppins', sans-serif;
-        font-weight: 500;
-        color: #ffffff;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        display: block;
-        background: #ffc107;
-        transition: all 0.3s ease-in-out;
-        -webkit-transition: all 0.3s ease-in-out;
-        -moz-transition: all 0.3s ease-in-out;
-        -ms-transition: all 0.3s ease-in-out;
-        -o-transition: all 0.3s ease-in-out;
-    }
-
-    .social_share {
-        margin-bottom: 20px;
-    }
-
-    .social_share img {
-        width: 75%;
-        height: 75%;
-    }
-
-    .modal-header .btn-close {
-        width: 25px;
-        height: 25px;
-    }
-
-    .gallery-btn {
-        position: absolute;
-        top: 13px;
-        right: 52px;
-        font-size: 20px;
-    }
-
-    .loading-spinner {
-        display: none;
-    }
-
-    .loading-spinner.active {
-        display: inline-block;
-    }
-
-    button.delete-image.btn-danger.photo-delete {
-        position: absolute;
-        top: 4px;
-        right: 4px;
-    }
-
-    a.overlay-btn {
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        width: 100%;
-        height: 100%;
-        cursor: pointer;
-        z-index: 999;
-    }
-
-    .login_btn {
-        position: absolute;
-        top: 6px;
-        right: 0;
-    }
-
-    .save_contact a {
-        padding: 12px 10px;
-        font-size: 13px;
-        font-family: 'Inter';
-        font-weight: 700;
-        text-align: center;
-        width: 40%;
-        border-radius: 6px;
-        color: #fff;
-        background: #212121;
-        -webkit-transition: all 0.4s ease;
-        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    }
-
-    .purchase_btn.save_contact {
-        text-align: center;
-        margin-bottom: 33px;
-        margin-top: -19px;
-        z-index: 5;
-        position: relative;
-    }
-
-    .purchase_btn a:hover {
-        background: #ffffff !important;
-        color: #000000;
-    }
-
-    @media screen and (max-width:380px) {
-        .save_contact a {
-            padding: 12px 3px;
-            font-size: 11px;
-            width: 44%;
+    <link rel="stylesheet" href="{{ asset('css/croppie.css') }}" />
+    <style>
+        span.error {
+            color: #E53935;
+            padding: 2px 0px;
         }
-    }
-</style>
+
+        a.social-contact.disabled {
+            opacity: .3;
+        }
+
+        .purchase_btn a {
+            padding: 10px 27px;
+            font-size: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            color: #ffffff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: block;
+            background: #ffc107;
+            transition: all 0.3s ease-in-out;
+            -webkit-transition: all 0.3s ease-in-out;
+            -moz-transition: all 0.3s ease-in-out;
+            -ms-transition: all 0.3s ease-in-out;
+            -o-transition: all 0.3s ease-in-out;
+        }
+
+        .social_share {
+            margin-bottom: 20px;
+        }
+
+        .social_share img {
+            width: 75%;
+            height: 75%;
+        }
+
+        .modal-header .btn-close {
+            width: 25px;
+            height: 25px;
+        }
+
+        .gallery-btn {
+            position: absolute;
+            top: 13px;
+            right: 52px;
+            font-size: 20px;
+        }
+
+        .loading-spinner {
+            display: none;
+        }
+
+        .loading-spinner.active {
+            display: inline-block;
+        }
+
+        button.delete-image.btn-danger.photo-delete {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+        }
+
+        a.overlay-btn {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 999;
+        }
+
+        .login_btn {
+            position: absolute;
+            top: 6px;
+            right: 0;
+        }
+
+        .save_contact a {
+            padding: 12px 10px;
+            font-size: 13px;
+            font-family: 'Inter';
+            font-weight: 700;
+            text-align: center;
+            width: 40%;
+            border-radius: 6px;
+            color: #fff;
+            background: #212121;
+            -webkit-transition: all 0.4s ease;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        }
+
+        .purchase_btn.save_contact {
+            text-align: center;
+            margin-bottom: 33px;
+            margin-top: -19px;
+            z-index: 5;
+            position: relative;
+        }
+
+        .purchase_btn a:hover {
+            background: #ffffff !important;
+            color: #000000;
+        }
+
+        @media screen and (max-width:380px) {
+            .save_contact a {
+                padding: 12px 3px;
+                font-size: 11px;
+                width: 44%;
+            }
+        }
+    </style>
 @endsection
 <?php
 $tabindex = 1;
@@ -211,8 +211,8 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                 <!-- Video -->
                                 <div class="video_wrapper d-none" id="digitaBizSourc">
                                     <div class="ratio ratio-1x1">
-                                        <video autoplay="" loop="" muted="" id="video_preview" playsinline=""
-                                            data-wf-ignore="true" data-object-fit="cover" controls>
+                                        <video autoplay="" loop="" muted="" id="video_preview"
+                                            playsinline="" data-wf-ignore="true" data-object-fit="cover" controls>
                                             <source src="{{ asset('assets/video.mp4') }}" type="video/mp4">
                                             <source src="{{ asset('assets/video.mp4') }}" type="video/ogg">
                                         </video>
@@ -222,8 +222,8 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                 <div class="video_wrapper d-none" id="digitalBizEmbad">
                                     <div class="ratio ratio-1x1">
                                         <iframe width="100%" height="315" id="youtube_video_preview"
-                                            src="https://www.youtube.com/embed/Fhskvloj1gE" title="YouTube video player"
-                                            frameborder="0"
+                                            src="https://www.youtube.com/embed/Fhskvloj1gE"
+                                            title="YouTube video player" frameborder="0"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                             allowfullscreen></iframe>
                                     </div>
@@ -231,9 +231,10 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
 
                                 <!-- purchase button -->
                                 <div class="purchase_btn save_contact">
-                                    <a href="#" class="text-decoration-none save-contact d-inline-block">Save Contact
+                                    <a href="javascript:void(0)"
+                                        class="text-decoration-none save-contact d-inline-block">Save Contact
                                     </a>
-                                    <a href="#" target="_blank"
+                                    <a href="javascript:void(0)"
                                         class="text-decoration-none d-inline-block btn-secondary">
                                         SHOP
                                     </a>
@@ -250,7 +251,8 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                             <!-- social icon -->
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="" class="social-contact phone_number" target="_blank">
+                                                    <a href="" class="social-contact phone_number"
+                                                        target="_blank">
                                                         <i class="fa fa-phone"></i>
                                                     </a>
                                                 </div>
@@ -258,7 +260,8 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                             <!-- social icon -->
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="" class="social-contact user_email" target="_blank">
+                                                    <a href="" class="social-contact user_email"
+                                                        target="_blank">
                                                         <i class="fa fa-envelope"></i>
                                                     </a>
                                                 </div>
@@ -283,7 +286,8 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                             <!-- social icon -->
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="" class="social-contact facebook" target="_blank">
+                                                    <a href="" class="social-contact facebook"
+                                                        target="_blank">
                                                         <i class="fab fa-facebook"></i>
                                                     </a>
                                                 </div>
@@ -291,7 +295,8 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                             <!-- social icon -->
                                             <div class="col">
                                                 <div class="social_item">
-                                                    <a href="" class="social-contact instagram" target="_blank">
+                                                    <a href="" class="social-contact instagram"
+                                                        target="_blank">
                                                         <i class="fab fa-instagram"></i>
                                                     </a>
                                                 </div>
@@ -333,9 +338,9 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                 <div class="text-center text-light pb-3">
                                     <div class="text-center text-light pb-3">
                                         @if (isFreePlan(Auth::user()->id))
-                                        <p>All Rights Reserved by Digitalbizads.com</p>
+                                            <p>All Rights Reserved by Digitalbizads.com</p>
                                         @else
-                                        <p id="preview_copyright">© Copyright</p>
+                                            <p id="preview_copyright">© Copyright</p>
                                         @endif
                                     </div>
                                 </div>
@@ -358,11 +363,13 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                         <div class="mb-3 form-input">
                                             <label for="adsname" class="form-label">Biz Ad Name <span
                                                     class="text-danger">*</span></label>
-                                            <input type="text" placeholder="ads name" name="adsname" id="adsname"
+                                            <input type="text" placeholder="ads name" name="adsname"
+                                                id="adsname"
                                                 class="form-control @error('adsname') is-invalid @enderror"
                                                 value="{{ old('adsname') }}" tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('adsname'))
-                                            <span class="help-block text-danger">{{ $errors->first('adsname') }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('adsname') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -375,7 +382,8 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                                     <img src="{{ asset('images/color-picker.png') }}" width="25"
                                                         alt="color picker">
                                                     <input type="color" placeholder="card color" name="theme_color"
-                                                        id="theme_color" value="{{ old('theme_color') ?? '#ffc107' }}"
+                                                        id="theme_color"
+                                                        value="{{ old('theme_color') ?? '#ffc107' }}"
                                                         class="form-control @error('theme_color') is-invalid @enderror"
                                                         tabindex="{{ $tabindex++ }}" required>
                                                 </label>
@@ -383,8 +391,8 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                                     value="#ffc107" disabled>
                                             </div>
                                             @if ($errors->has('theme_color'))
-                                            <span class="help-block text-danger">{{ $errors->first('theme_color')
-                                                }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('theme_color') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -408,8 +416,8 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                                     value="#ffc107" disabled>
                                             </div>
                                             @if ($errors->has('header_backgroung'))
-                                            <span class="help-block text-danger">{{ $errors->first('header_backgroung')
-                                                }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('header_backgroung') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -427,12 +435,12 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                                         class="form-control @error('icon_border_color') is-invalid @enderror"
                                                         tabindex="{{ $tabindex++ }}" required>
                                                 </label>
-                                                <input type="text" id="icon_border_color_code" class="form-control"
-                                                    value="#ffc107" disabled>
+                                                <input type="text" id="icon_border_color_code"
+                                                    class="form-control" value="#ffc107" disabled>
                                             </div>
                                             @if ($errors->has('icon_border_color'))
-                                            <span class="help-block text-danger">{{ $errors->first('icon_border_color')
-                                                }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('icon_border_color') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -454,8 +462,8 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                                     value="#ffffff">
                                             </div>
                                             @if ($errors->has('header_text_color'))
-                                            <span class="help-block text-danger">{{ $errors->first('header_text_color')
-                                                }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('header_text_color') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -481,7 +489,8 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                                 class="form-control cin preview_name @error('text') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('text'))
-                                            <span class="help-block text-danger">{{ $errors->first('text') }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('text') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -492,12 +501,12 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                             <select class="form-control" name="header_font_family"
                                                 id="header_font_family">
                                                 @foreach ($font_family as $font_)
-                                                <option value="{{ $font_ }}">{{ $font_ }}</option>
+                                                    <option value="{{ $font_ }}">{{ $font_ }}</option>
                                                 @endforeach
                                             </select>
                                             @if ($errors->has('header_font_family'))
-                                            <span class="help-block text-danger">{{ $errors->first('header_font_family')
-                                                }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('header_font_family') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -514,11 +523,13 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                                     <i class="fa fa-info"></i>
                                                 </button>
                                             </label>
-                                            <input type="file" name="logo" id="logo" onchange="readURL(this);"
+                                            <input type="file" name="logo" id="logo"
+                                                onchange="readURL(this);"
                                                 class="form-control @error('logo') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('logo'))
-                                            <span class="help-block text-danger">{{ $errors->first('logo') }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('logo') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -553,7 +564,8 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                                 class="form-control @error('banner') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}" required>
                                             @if ($errors->has('banner'))
-                                            <span class="help-block text-danger">{{ $errors->first('banner') }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('banner') }}</span>
                                             @endif
                                         </div>
                                         <div class="mb-3 d-none form-input" id="videourl">
@@ -563,7 +575,8 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                                 class="form-control @error('video') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('video'))
-                                            <span class="help-block text-danger">{{ $errors->first('video') }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('video') }}</span>
                                             @endif
                                         </div>
                                         <div class="mb-3 form-input d-none" id="videosource">
@@ -573,7 +586,8 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                                 class="form-control @error('video') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('video'))
-                                            <span class="help-block text-danger">{{ $errors->first('video') }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('video') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -599,14 +613,14 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                         <div class="mb-3 form-input">
                                             <label for="phone_number" class="form-label">Phone <span
                                                     class="text-danger">*</span></label></label>
-                                            <input type="number" name="phone_number" id="phone" data-attr="tel:"
-                                                data-type="phone_number" placeholder="your phone"
+                                            <input type="number" name="phone_number" id="phone"
+                                                data-attr="tel:" data-type="phone_number" placeholder="your phone"
                                                 value="{{ old('phone_number') }}" data-preview="preview_phone_number"
                                                 class="social_item_in form-control cin @error('phone') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}" required>
                                             @if ($errors->has('phone_number'))
-                                            <span class="help-block text-danger">{{ $errors->first('phone_number')
-                                                }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('phone_number') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -620,33 +634,37 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                                 class="social_item_in form-control cin @error('email') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}" data-preview="preview_email" required>
                                             @if ($errors->has('email'))
-                                            <span class="help-block text-danger">{{ $errors->first('email') }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('email') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="website" class="form-label">Website</label>
-                                            <input type="url" name="website" data-attr="" placeholder="your website"
-                                                data-type="website" value="{{ old('website') }}" id="website"
+                                            <input type="url" name="website" data-attr=""
+                                                placeholder="your website" data-type="website"
+                                                value="{{ old('website') }}" id="website"
                                                 class="social_item_in form-control cin  @error('website') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" data-preview="preview_company_websitelink"
-                                                id="company_websitelink">
+                                                tabindex="{{ $tabindex++ }}"
+                                                data-preview="preview_company_websitelink" id="company_websitelink">
                                             @if ($errors->has('website'))
-                                            <span class="help-block text-danger">{{ $errors->first('website') }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('website') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label for="facebook" class="form-label">Facebook</label>
-                                            <input type="text" name="facebook" data-attr="https://www.facebook.com/"
-                                                placeholder="facebook username" data-type="facebook"
-                                                value="{{ old('facebook') }}" id="facebook"
+                                            <input type="text" name="facebook"
+                                                data-attr="https://www.facebook.com/" placeholder="facebook username"
+                                                data-type="facebook" value="{{ old('facebook') }}" id="facebook"
                                                 class="social_item_in form-control @error('facebook') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('facebook'))
-                                            <span class="help-block text-danger">{{ $errors->first('facebook') }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('facebook') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -659,8 +677,8 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                                 class="social_item_in form-control @error('instagram') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('instagram'))
-                                            <span class="help-block text-danger">{{ $errors->first('instagram')
-                                                }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('instagram') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -673,12 +691,13 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                                 class="form-control cin @error('cashapp') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('cashapp'))
-                                            <span class="help-block text-danger">{{ $errors->first('cashapp') }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('cashapp') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                     @if ($plan_details->personalized_link == '1')
-                                    {{-- <div class="col-6">
+                                        {{-- <div class="col-6">
                                         <div class="mb-3 form-input">
                                             <label for="personalized_link" class="form-label">Personalized
                                                 Link <span class="text-danger">*</span></label></label>
@@ -711,26 +730,27 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                     <div class="col-md-12">
                                         <div class="mb-3 form-input">
                                             <label for="location" class="form-label">Location</label>
-                                            <input type="text" name="location" id="location" placeholder="location"
-                                                value="{{ old('location') }}" data-preview="preview_location"
+                                            <input type="text" name="location" id="location"
+                                                placeholder="location" value="{{ old('location') }}"
+                                                data-preview="preview_location"
                                                 class="social_item_in form-control cin @error('location') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}" data-attr="" data-type="map">
                                             @if ($errors->has('location'))
-                                            <span class="help-block text-danger">{{ $errors->first('location') }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('location') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3 form-input">
                                             <label for="about_us" class="form-label">About Your Bussiness</label>
-                                            <textarea type="text" name="about_us" id="about_us" data-type="about"
-                                                placeholder="About Your Bussiness" cols="30" rows="10"
-                                                data-preview="preview_about_us"
-                                                class="social_item_in form-control cin @error('about_us') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}"
+                                            <textarea type="text" name="about_us" id="about_us" data-type="about" placeholder="About Your Bussiness"
+                                                cols="30" rows="10" data-preview="preview_about_us"
+                                                class="social_item_in form-control cin @error('about_us') is-invalid @enderror" tabindex="{{ $tabindex++ }}"
                                                 data-attr="">{{ old('about_us') }}</textarea>
                                             @if ($errors->has('about_us'))
-                                            <span class="help-block text-danger">{{ $errors->first('about_us') }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('about_us') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -740,19 +760,19 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                             <label for="personalized_link" class="form-label">Personalized
                                                 Link</label>
                                             @if (isFreePlan(Auth::user()->id))
-                                            <a href="javascript:void(0)" class="overlay-btn upgrade-plan"
-                                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                                data-bs-custom-class="custom-tooltip"
-                                                title="Upgrade to a Premium account to access personalized link"></a>
+                                                <a href="javascript:void(0)" class="overlay-btn upgrade-plan"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    data-bs-custom-class="custom-tooltip"
+                                                    title="Upgrade to a Premium account to access personalized link"></a>
                                             @endif
-                                            <input type="text" placeholder="Personalized Link" name="personalized_link"
-                                                id="personalized_link"
+                                            <input type="text" placeholder="Personalized Link"
+                                                name="personalized_link" id="personalized_link"
                                                 class="form-control @error('personalized_link') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" {{ isFreePlan(Auth::user()->id) == true ?
-                                            'disabled' : '' }}>
+                                                tabindex="{{ $tabindex++ }}"
+                                                {{ isFreePlan(Auth::user()->id) == true ? 'disabled' : '' }}>
                                             @if ($errors->has('personalized_link'))
-                                            <span class="help-block text-danger">{{ $errors->first('personalized_link')
-                                                }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('personalized_link') }}</span>
                                             @endif
                                             <span id="status"></span>
                                         </div>
@@ -762,19 +782,19 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                         <div class="mb-3 form-input position-relative">
                                             <label for="footer_text" class="form-label">Copyright</label>
                                             @if (isFreePlan(Auth::user()->id))
-                                            <a href="javascript:void(0)" class="overlay-btn upgrade-plan"
-                                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                                data-bs-custom-class="custom-tooltip"
-                                                title="Upgrade to a Premium account to access custom Copyright"></a>
+                                                <a href="javascript:void(0)" class="overlay-btn upgrade-plan"
+                                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                                    data-bs-custom-class="custom-tooltip"
+                                                    title="Upgrade to a Premium account to access custom Copyright"></a>
                                             @endif
                                             <input type="text" data-preview="preview_copyright" name="footer_text"
                                                 placeholder="copyright" id="footer_text"
                                                 class="form-control cin @error('footer_text') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" {{ isFreePlan(Auth::user()->id) == true ?
-                                            'disabled' : '' }}>
+                                                tabindex="{{ $tabindex++ }}"
+                                                {{ isFreePlan(Auth::user()->id) == true ? 'disabled' : '' }}>
                                             @if ($errors->has('footer_text'))
-                                            <span class="help-block text-danger">{{ $errors->first('footer_text')
-                                                }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('footer_text') }}</span>
                                             @endif
                                         </div>
                                     </div>
@@ -823,15 +843,15 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
 </div>
 @include('user.cards._upgrade_plan_modal')
 @push('custom-js')
-{{-- <script type="text/javascript" src="{{ asset('assets/js/slim.kickstart.min.js') }}"></script> --}}
-<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-<script src="{{ asset('assets/js/card.js') }}"></script>
-<script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
-{{-- <script src="{{ asset('js/croppie.js') }}"></script> --}}
-{{-- @include('image_crop') --}}
+    {{-- <script type="text/javascript" src="{{ asset('assets/js/slim.kickstart.min.js') }}"></script> --}}
+    <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('assets/js/card.js') }}"></script>
+    <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
+    {{-- <script src="{{ asset('js/croppie.js') }}"></script> --}}
+    {{-- @include('image_crop') --}}
 
-<script>
-    $(document).on('click', '.upgrade-plan', function(e) {
+    <script>
+        $(document).on('click', '.upgrade-plan', function(e) {
             e.preventDefault();
             $('#planModal').modal('show');
         })
@@ -1189,6 +1209,6 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                 }
             });
         });
-</script>
+    </script>
 @endpush
 @endsection

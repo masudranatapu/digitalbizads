@@ -182,89 +182,95 @@ Route::group(['middleware' => 'Installer'], function () {
     });
 
     Route::group(['as' => 'user.', 'prefix' => 'user', 'namespace' => 'User', 'middleware' => ['auth', 'user'], 'where' => ['locale' => '[a-zA-Z]{2}']], function () {
-        Route::get('dashboard', [userDashboard::class, 'index'])->name('dashboard');
-        // Business Cards
-        Route::get('cards', [CardController::class, 'cards'])->name('cards');
-        Route::get('card-status/{id}', [CardController::class, 'cardStatus'])->name('card.status');
 
-        // Business Store
-        Route::get('stores', [CardController::class, 'getStores'])->name('stores');
-        Route::get('whatsapp-stores', 'CardController@storeCards')->name('whatsapp-stores');
-        // Business Plans
-        Route::get('plans', [CardController::class, 'plans'])->name('plans');
-        // Media
-        Route::get('media', [MediaController::class, 'media'])->name('media');
-        Route::get('add-media', [MediaController::class, 'addMedia'])->name('add.media');
-        Route::post('upload-media', [MediaController::class, 'uploadMedia'])->name('upload.media');
-        Route::get('delete-media/{id}', [MediaController::class, 'deleteMedia'])->name('media.delete');
-        // Upload media images
-        Route::post('multiple', [MediaController::class, 'multipleImages'])->name('multiple');
+        Route::get('plans', [CardController::class, 'plans'])->name('plans')->withoutMiddleware(['userPlan']);
 
-        Route::post('card/store', [CardController::class, 'postStore'])->name('card.store');
-        Route::post('card/update/{id}', [CardController::class, 'postUpdate'])->name('card.update');
-        Route::get('card/delete/{id}', [CardController::class, 'getDelete'])->name('card.delete');
 
-        Route::post('card/upload_image', ['as' => 'card.upload_image', 'uses' => 'CardController@uploadImage']);
-        Route::post('card/upload_logo', ['as' => 'card.upload_logo', 'uses' => 'CardController@uploadLogo']);
+        Route::middleware(['userPlan'])->group(function () {
 
-        Route::get('create-card', [CardController::class, 'CreateCard'])->name('create.card');
-        Route::get('edit-card/{id}', [CardController::class, 'editCard'])->name('edit.card');
-        Route::get('card/gallery-delete/{id}', [CardController::class, 'getDeleteGallery'])->name('card.gallery-delete');
+            Route::get('dashboard', [userDashboard::class, 'index'])->name('dashboard');
+            // Business Cards
+            Route::get('cards', [CardController::class, 'cards'])->name('cards');
+            Route::get('card-status/{id}', [CardController::class, 'cardStatus'])->name('card.status');
 
-        if (env('APP_TYPE') == 'VCARD' || env('APP_TYPE') == 'BOTH') {
-            // Create Business Card
-            // Route::get('create-card', [CardController::class, 'CreateCard'])->name('create.card');
-            Route::post('save-business-card', [CardController::class, 'saveBusinessCard'])->name('save.business.card');
-            Route::get('social-links/{id}', [CardController::class, 'socialLinks'])->name('social.links');
-            Route::post('save-social-links/{id}', [CardController::class, 'saveSocialLinks'])->name('save.social.links');
-            Route::get('payment-links/{id}', [CardController::class, 'paymentLinks'])->name('payment.links');
-            Route::post('save-payment-links/{id}', [CardController::class, 'savePaymentLinks'])->name('save.payment.links');
-            Route::get('services/{id}', [CardController::class, 'services'])->name('services');
-            Route::post('save-services/{id}', [CardController::class, 'saveServices'])->name('save.services');
-            Route::get('galleries/{id}', [CardController::class, 'galleries'])->name('galleries');
-            Route::post('save-galleries/{id}', [CardController::class, 'saveGalleries'])->name('save.galleries');
-            Route::get('business-hours/{id}', [CardController::class, 'businessHours'])->name('business.hours');
-            Route::post('save-business-hours/{id}', [CardController::class, 'saveBusinessHours'])->name('save.business.hours');
-        }
-        // Check link
-        Route::post('check-link', [CardController::class, 'checkLink'])->name('check.link');
-        // Edit Business Card
-        // Route::get('edit-card/{id}', [EditCardController::class, 'editCard'])->name('edit.card');
-        Route::post('update-business-card/{id}', [EditCardController::class, 'updateBusinessCard'])->name('update.business.card');
-        Route::get('edit-social-links/{id}', [EditCardController::class, 'socialLinks'])->name('edit.social.links');
-        Route::post('update-social-links/{id}', [EditCardController::class, 'updateSocialLinks'])->name('update.social.links');
-        Route::get('edit-payment-links/{id}', [EditCardController::class, 'paymentLinks'])->name('edit.payment.links');
-        Route::post('update-payment-links/{id}', [EditCardController::class, 'updatePaymentLinks'])->name('update.payment.links');
-        Route::get('edit-services/{id}', [EditCardController::class, 'services'])->name('edit.services');
-        Route::post('update-services/{id}', [EditCardController::class, 'updateServices'])->name('update.services');
-        Route::get('edit-galleries/{id}', [EditCardController::class, 'galleries'])->name('edit.galleries');
-        Route::post('update-galleries/{id}', [EditCardController::class, 'updateGalleries'])->name('update.galleries');
-        Route::get('edit-business-hours/{id}', [EditCardController::class, 'businessHours'])->name('edit.business.hours');
-        Route::post('update-business-hours/{id}', [EditCardController::class, 'updateBusinessHours'])->name('update.business.hours');
-        Route::get('clear-business-hours/{id}', [EditCardController::class, 'clearBusinessHours'])->name('clear.business.hours');
+            // Business Store
+            Route::get('stores', [CardController::class, 'getStores'])->name('stores');
+            Route::get('whatsapp-stores', 'CardController@storeCards')->name('whatsapp-stores');
+            // Business Plans
+            // Media
+            Route::get('media', [MediaController::class, 'media'])->name('media');
+            Route::get('add-media', [MediaController::class, 'addMedia'])->name('add.media');
+            Route::post('upload-media', [MediaController::class, 'uploadMedia'])->name('upload.media');
+            Route::get('delete-media/{id}', [MediaController::class, 'deleteMedia'])->name('media.delete');
+            // Upload media images
+            Route::post('multiple', [MediaController::class, 'multipleImages'])->name('multiple');
 
-        if (env('APP_TYPE') == 'STORE' || env('APP_TYPE') == 'BOTH') {
-            // Create Store
-            Route::get('create-store', [StoreController::class, 'CreateStore'])->name('create.store');
-            Route::post('save-store', [StoreController::class, 'saveStore'])->name('save.store');
-            Route::get('products/{id}', [StoreController::class, 'products'])->name('products');
-            Route::post('save-products/{id}', [StoreController::class, 'saveProducts'])->name('save.products');
-        }
+            Route::post('card/store', [CardController::class, 'postStore'])->name('card.store');
+            Route::post('card/update/{id}', [CardController::class, 'postUpdate'])->name('card.update');
+            Route::get('card/delete/{id}', [CardController::class, 'getDelete'])->name('card.delete');
 
-        // Edit Store
-        Route::get('edit-store/{id}', [StoreController::class, 'editStore'])->name('edit.store');
-        Route::post('update-store/{id}', [StoreController::class, 'updateStore'])->name('update.store');
-        Route::get('edit-products/{id}', [StoreController::class, 'editProducts'])->name('edit.products');
-        Route::post('update-products/{id}', [StoreController::class, 'updateProducts'])->name('update.products');
+            Route::post('card/upload_image', ['as' => 'card.upload_image', 'uses' => 'CardController@uploadImage']);
+            Route::post('card/upload_logo', ['as' => 'card.upload_logo', 'uses' => 'CardController@uploadLogo']);
 
-        //Addtional Tootls -> QR Maker
-        Route::get('tools/qr-maker', [AdditionalController::class, 'qrMaker'])->name('qr-maker');
-        Route::get('tools/whois-lookup', [AdditionalController::class, 'whoisLookup'])->name('whois-lookup');
-        Route::post('tools/whois-lookup', [AdditionalController::class, 'resultWhoisLookup'])->name('result.whois-lookup');
-        Route::get('tools/dns-lookup', [AdditionalController::class, 'dnsLookup'])->name('dns-lookup');
-        Route::post('tools/dns-lookup', [AdditionalController::class, 'resultDnsLookup'])->name('result.dns-lookup');
-        Route::get('tools/ip-lookup', [AdditionalController::class, 'ipLookup'])->name('ip-lookup');
-        Route::post('tools/ip-lookup', [AdditionalController::class, 'resultIpLookup'])->name('result.ip-lookup');
+            Route::get('create-card', [CardController::class, 'CreateCard'])->name('create.card');
+            Route::get('edit-card/{id}', [CardController::class, 'editCard'])->name('edit.card');
+            Route::get('card/gallery-delete/{id}', [CardController::class, 'getDeleteGallery'])->name('card.gallery-delete');
+
+            if (env('APP_TYPE') == 'VCARD' || env('APP_TYPE') == 'BOTH') {
+                // Create Business Card
+                // Route::get('create-card', [CardController::class, 'CreateCard'])->name('create.card');
+                Route::post('save-business-card', [CardController::class, 'saveBusinessCard'])->name('save.business.card');
+                Route::get('social-links/{id}', [CardController::class, 'socialLinks'])->name('social.links');
+                Route::post('save-social-links/{id}', [CardController::class, 'saveSocialLinks'])->name('save.social.links');
+                Route::get('payment-links/{id}', [CardController::class, 'paymentLinks'])->name('payment.links');
+                Route::post('save-payment-links/{id}', [CardController::class, 'savePaymentLinks'])->name('save.payment.links');
+                Route::get('services/{id}', [CardController::class, 'services'])->name('services');
+                Route::post('save-services/{id}', [CardController::class, 'saveServices'])->name('save.services');
+                Route::get('galleries/{id}', [CardController::class, 'galleries'])->name('galleries');
+                Route::post('save-galleries/{id}', [CardController::class, 'saveGalleries'])->name('save.galleries');
+                Route::get('business-hours/{id}', [CardController::class, 'businessHours'])->name('business.hours');
+                Route::post('save-business-hours/{id}', [CardController::class, 'saveBusinessHours'])->name('save.business.hours');
+            }
+            // Check link
+            Route::post('check-link', [CardController::class, 'checkLink'])->name('check.link');
+            // Edit Business Card
+            // Route::get('edit-card/{id}', [EditCardController::class, 'editCard'])->name('edit.card');
+            Route::post('update-business-card/{id}', [EditCardController::class, 'updateBusinessCard'])->name('update.business.card');
+            Route::get('edit-social-links/{id}', [EditCardController::class, 'socialLinks'])->name('edit.social.links');
+            Route::post('update-social-links/{id}', [EditCardController::class, 'updateSocialLinks'])->name('update.social.links');
+            Route::get('edit-payment-links/{id}', [EditCardController::class, 'paymentLinks'])->name('edit.payment.links');
+            Route::post('update-payment-links/{id}', [EditCardController::class, 'updatePaymentLinks'])->name('update.payment.links');
+            Route::get('edit-services/{id}', [EditCardController::class, 'services'])->name('edit.services');
+            Route::post('update-services/{id}', [EditCardController::class, 'updateServices'])->name('update.services');
+            Route::get('edit-galleries/{id}', [EditCardController::class, 'galleries'])->name('edit.galleries');
+            Route::post('update-galleries/{id}', [EditCardController::class, 'updateGalleries'])->name('update.galleries');
+            Route::get('edit-business-hours/{id}', [EditCardController::class, 'businessHours'])->name('edit.business.hours');
+            Route::post('update-business-hours/{id}', [EditCardController::class, 'updateBusinessHours'])->name('update.business.hours');
+            Route::get('clear-business-hours/{id}', [EditCardController::class, 'clearBusinessHours'])->name('clear.business.hours');
+
+            if (env('APP_TYPE') == 'STORE' || env('APP_TYPE') == 'BOTH') {
+                // Create Store
+                Route::get('create-store', [StoreController::class, 'CreateStore'])->name('create.store');
+                Route::post('save-store', [StoreController::class, 'saveStore'])->name('save.store');
+                Route::get('products/{id}', [StoreController::class, 'products'])->name('products');
+                Route::post('save-products/{id}', [StoreController::class, 'saveProducts'])->name('save.products');
+            }
+
+            // Edit Store
+            Route::get('edit-store/{id}', [StoreController::class, 'editStore'])->name('edit.store');
+            Route::post('update-store/{id}', [StoreController::class, 'updateStore'])->name('update.store');
+            Route::get('edit-products/{id}', [StoreController::class, 'editProducts'])->name('edit.products');
+            Route::post('update-products/{id}', [StoreController::class, 'updateProducts'])->name('update.products');
+
+            //Addtional Tootls -> QR Maker
+            Route::get('tools/qr-maker', [AdditionalController::class, 'qrMaker'])->name('qr-maker');
+            Route::get('tools/whois-lookup', [AdditionalController::class, 'whoisLookup'])->name('whois-lookup');
+            Route::post('tools/whois-lookup', [AdditionalController::class, 'resultWhoisLookup'])->name('result.whois-lookup');
+            Route::get('tools/dns-lookup', [AdditionalController::class, 'dnsLookup'])->name('dns-lookup');
+            Route::post('tools/dns-lookup', [AdditionalController::class, 'resultDnsLookup'])->name('result.dns-lookup');
+            Route::get('tools/ip-lookup', [AdditionalController::class, 'ipLookup'])->name('ip-lookup');
+            Route::post('tools/ip-lookup', [AdditionalController::class, 'resultIpLookup'])->name('result.ip-lookup');
+        });
 
         // Transactions
         Route::get('transactions', [userTransactions::class, 'indexTransactions'])->name('transactions');

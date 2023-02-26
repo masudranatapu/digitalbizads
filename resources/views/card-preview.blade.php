@@ -33,39 +33,15 @@
     ?>
     <style>
         .card_template {
-            background-color: rgba( {
-                        {
-                        $theme_bg
-                    }
-                }
-
-            );
+            background-color: rgba({{ $theme_bg }});
         }
 
         .social_item i {
-            background-color: rgba( {
-                        {
-                        $theme_bg
-                    }
-                }
+            background-color: rgba({{ $theme_bg }});
 
-            );
+            border-color: {{ $cardinfo->icon_border_color }};
 
-            border-color: {
-                    {
-                    $cardinfo->icon_border_color
-                }
-            }
-
-            ;
-
-            color: {
-                    {
-                    $cardinfo->header_text_color
-                }
-            }
-
-            ;
+            color: {{ $cardinfo->header_text_color }};
             /* border-color: {{ $cardinfo->icon_border_color ?? '#000000' }};
             color:{{ $cardinfo->header_text_color }}; */
         }
@@ -76,21 +52,11 @@
         .carousel-control-prev,
         .carousel-control-next,
         .purchase_btn a {
-            background-color: {
-                    {
-                    $theme_color
-                }
-            }
-
-             !important;
+            background-color: {{ $theme_color }} !important;
         }
 
         .card_title h2 {
-            font-family: {
-                    {
-                    $cardinfo->header_font_family
-                }
-            }
+            font-family: {{ $cardinfo->header_font_family }}
         }
 
         .card_template .card_title {
@@ -204,7 +170,7 @@
             width: 40%;
             border-radius: 6px;
             color: #fff;
-            background: #212121;
+            background: {{ $theme_color }};
             -webkit-transition: all 0.4s ease;
             box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
         }
@@ -215,6 +181,8 @@
             margin-top: -19px;
             z-index: 5;
             position: relative;
+            background: ;
+
         }
 
         @media screen and (max-width:380px) {
@@ -262,186 +230,198 @@
             </div>
 
 
-            @if (!empty($cardinfo->banner_content))
-                @if ($cardinfo->banner_type == 'videourl')
-                    <div class="video_wrapper">
-                        <div class="ratio ratio-1x1">
-                            <iframe width="100%" src="{{ $cardinfo->banner_content }}" frameborder="0"
-                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                allowfullscreen></iframe>
-                        </div>
-                    </div>
-                @elseif ($cardinfo->banner_type == 'videosource')
-                    <!-- Video -->
-                    <div class="video_wrapper">
-                        <div class="ratio ratio-1x1">
-                            <video autoplay="" loop="" muted="" playsinline="" data-wf-ignore="true"
-                                data-object-fit="cover" controls>
-                                <source src="{{ $cardinfo->banner_content }}" type="video/mp4">
-                                <source src="{{ $cardinfo->banner_content }}" type="video/ogg">
-                            </video>
-                        </div>
-                    </div>
-                @elseif ($cardinfo->banner_type == 'banner')
-                    <div class="carousel-inner">
-                        <img src="{{ $cardinfo->banner_content }}" class="d-block w-100" alt="image">
-                    </div>
-                @endif
-            @endif
-            <!-- purchase button -->
-            {{-- <div class="purchase_btn text-center mb-4">
-                @if (!empty($cardinfo->website))
-                <a href="{{ $cardinfo->website }}">SHOP</a>
-                @endif
-            </div> --}}
-            <div class="purchase_btn save_contact">
-                <a href="{{ route('download.vCard', $cardinfo->card_id) }}"
-                    class="text-decoration-none save-contact d-inline-block">Save Contact</a>
-                @if (isset($store_details->card_url))
-                    <a href="{{ URL::to('/') . '/' . $store_details->card_url }}" target="_blank"
-                        class="text-decoration-none d-inline-block btn-secondary">
-                        SHOP
-                    </a>
-                @endif
-            </div>
-            <!-- social medai -->
-            <div class="social_wrapper mb-3">
-                <div class="section_heading text-center mb-3">
-                    <h4>Connect With Me</h4>
-                </div>
 
-                <div class="social_wrapper">
-                    <div class="row row-cols-4 row-cols-sm-5 g-3">
-                        <!-- social icon -->
-                        @if (!empty($cardinfo->phone_number))
-                            <div class="col">
-                                <div class="social_item">
-                                    <a href="tel:{{ $cardinfo->phone_number }}">
-                                        <i class="fa fa-phone"></i>
-                                    </a>
-                                </div>
+
+            @if ($cardinfo->card_status == 'activated')
+
+                @if (!empty($cardinfo->banner_content))
+                    @if ($cardinfo->banner_type == 'videourl')
+                        <div class="video_wrapper">
+                            <div class="ratio ratio-1x1">
+                                <iframe width="100%" src="{{ $cardinfo->banner_content }}" frameborder="0"
+                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen></iframe>
                             </div>
-                            <div class="col">
-                                <div class="social_item">
-                                    <a href="sms://{{ $cardinfo->phone_number }}">
-                                        <i class="fa fa-comment"></i>
-                                    </a>
-                                </div>
+                        </div>
+                    @elseif ($cardinfo->banner_type == 'videosource')
+                        <!-- Video -->
+                        <div class="video_wrapper">
+                            <div class="ratio ratio-1x1">
+                                <video autoplay="" loop="" muted="" playsinline="" data-wf-ignore="true"
+                                    data-object-fit="cover" controls>
+                                    <source src="{{ $cardinfo->banner_content }}" type="video/mp4">
+                                    <source src="{{ $cardinfo->banner_content }}" type="video/ogg">
+                                </video>
                             </div>
-                        @endif
-                        @if (!empty($cardinfo->email))
+                        </div>
+                    @elseif ($cardinfo->banner_type == 'banner')
+                        <div class="carousel-inner">
+                            <img src="{{ $cardinfo->banner_content }}" class="d-block w-100" alt="image">
+                        </div>
+                    @endif
+                @endif
+                <!-- purchase button -->
+                {{-- <div class="purchase_btn text-center mb-4">
+@if (!empty($cardinfo->website))
+<a href="{{ $cardinfo->website }}">SHOP</a>
+@endif
+</div> --}}
+                <div class="purchase_btn save_contact">
+                    <a href="{{ route('download.vCard', $cardinfo->card_id) }}"
+                        class="text-decoration-none save-contact d-inline-block">Save Contact</a>
+                    @if (isset($store_details->card_url))
+                        <a href="{{ URL::to('/') . '/' . $store_details->card_url }}" target="_blank"
+                            class="text-decoration-none d-inline-block btn-secondary">
+                            SHOP
+                        </a>
+                    @endif
+                </div>
+                <!-- social medai -->
+                <div class="social_wrapper mb-3">
+                    <div class="section_heading text-center mb-3">
+                        <h4>Connect With Me</h4>
+                    </div>
+
+                    <div class="social_wrapper">
+                        <div class="row row-cols-4 row-cols-sm-5 g-3">
                             <!-- social icon -->
+                            @if (!empty($cardinfo->phone_number))
+                                <div class="col">
+                                    <div class="social_item">
+                                        <a href="tel:{{ $cardinfo->phone_number }}">
+                                            <i class="fa fa-phone"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="social_item">
+                                        <a href="sms://{{ $cardinfo->phone_number }}">
+                                            <i class="fa fa-comment"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
+                            @if (!empty($cardinfo->email))
+                                <!-- social icon -->
+                                <div class="col">
+                                    <div class="social_item">
+                                        <a href="mailto:{{ $cardinfo->email }}">
+                                            <i class="fa fa-envelope"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
+
+                            @if (isset($cardinfo->location))
+                                <div class="col">
+                                    <div class="social_item">
+                                        <a href="{{ $cardinfo->location }}" target="__blank">
+                                            <i class="fas fa-map-marker"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
+
+                            <!-- Qr code icon -->
                             <div class="col">
-                                <div class="social_item">
-                                    <a href="mailto:{{ $cardinfo->email }}">
-                                        <i class="fa fa-envelope"></i>
+                                <div class="social_item qrcode_icon">
+                                    <a href="javascript:void(0)" target="_blank" data-bs-toggle="modal"
+                                        data-bs-target="#qrcodeModal">
+                                        <img src="{{ asset('assets/images/icon/qr-code.svg') }}" alt="qr-code">
                                     </a>
                                 </div>
                             </div>
-                        @endif
 
-                        @if (isset($cardinfo->location))
-                            <div class="col">
-                                <div class="social_item">
-                                    <a href="{{ $cardinfo->location }}" target="__blank">
-                                        <i class="fas fa-map-marker"></i>
-                                    </a>
+                            @if (isset($cardinfo->about_us))
+                                <div class="col">
+                                    <div class="social_item">
+                                        <a href="javascript:void(0)" data-bs-toggle="modal"
+                                            data-bs-target="#aboutUsModal">
+                                            <i class="fas fa-user"></i>
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                        @endif
+                            @endif
 
-                        <!-- Qr code icon -->
-                        <div class="col">
-                            <div class="social_item qrcode_icon">
-                                <a href="javascript:void(0)" target="_blank" data-bs-toggle="modal"
-                                    data-bs-target="#qrcodeModal">
-                                    <img src="{{ asset('assets/images/icon/qr-code.svg') }}" alt="qr-code">
-                                </a>
-                            </div>
+                            @if (!empty($cardinfo->website))
+                                <div class="col">
+                                    <div class="social_item">
+                                        <a href="{{ $cardinfo->website }}" target="_blank">
+                                            <i class="fa fa-globe"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
+                            <!-- social icon -->
+
+                            <!-- social icon -->
+                            @if (!empty($cardinfo->contacts))
+                                @foreach ($cardinfo->contacts as $contact)
+                                    @if ($contact->label == 'facebook')
+                                        <!-- social icon -->
+                                        <div class="col">
+                                            <div class="social_item">
+                                                <a href="https://www.facebook.com/{{ $contact->content }}"
+                                                    target="_blank">
+                                                    <i class="fab fa-facebook"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @elseif ($contact->label == 'instagram')
+                                        <div class="col">
+                                            <div class="social_item">
+                                                <a href="https://www.instagram.com/{{ $contact->content }}"
+                                                    target="_blank">
+                                                    <i class="fab fa-instagram"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            @endif
+
+
+                            {{-- <div class="col">
+            <div class="social_item">
+                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#SocialModal">
+                    <i class="fas fa-map-marker"></i>
+                </a>
+            </div>
+        </div> --}}
                         </div>
-
-                        @if (isset($cardinfo->about_us))
-                            <div class="col">
-                                <div class="social_item">
-                                    <a href="javascript:void(0)" data-bs-toggle="modal"
-                                        data-bs-target="#aboutUsModal">
-                                        <i class="fas fa-user"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        @endif
-
-                        @if (!empty($cardinfo->website))
-                            <div class="col">
-                                <div class="social_item">
-                                    <a href="{{ $cardinfo->website }}" target="_blank">
-                                        <i class="fa fa-globe"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        @endif
-                        <!-- social icon -->
-
-                        <!-- social icon -->
-                        @if (!empty($cardinfo->contacts))
-                            @foreach ($cardinfo->contacts as $contact)
-                                @if ($contact->label == 'facebook')
-                                    <!-- social icon -->
-                                    <div class="col">
-                                        <div class="social_item">
-                                            <a href="https://www.facebook.com/{{ $contact->content }}"
-                                                target="_blank">
-                                                <i class="fab fa-facebook"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                @elseif ($contact->label == 'instagram')
-                                    <div class="col">
-                                        <div class="social_item">
-                                            <a href="https://www.instagram.com/{{ $contact->content }}"
-                                                target="_blank">
-                                                <i class="fab fa-instagram"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                @endif
-                            @endforeach
-                        @endif
-
-
-                        {{-- <div class="col">
-                            <div class="social_item">
-                                <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#SocialModal">
-                                    <i class="fas fa-map-marker"></i>
-                                </a>
-                            </div>
-                        </div> --}}
                     </div>
                 </div>
-            </div>
 
-            <!-- subscribe -->
-            <div class="subscribe mb-3">
-                <form action="{{ route('card.subscriber') }}" method="post">
-                    @csrf
-                    <input type="hidden" id="" name="card_id" value="{{ $cardinfo->id }}">
-                    <div class="input-group">
-                        <input type="email" name="subscriber_email" id="subscriber_email"
-                            class="form-control @error('subscriber_email') is-invalid @enderror"
-                            placeholder="Enter your emaill..." required>
-                        <button type="submit"
-                            class="input-group-text btn btn-primary subscribe-btn">Subscribe</button>
-                    </div>
-                    {{-- @if ($errors->has('subscriber_email'))
-                    <span class="help-block text-danger d-block">{{ $errors->first('subscriber_email') }}</span>
-                    @endif --}}
-                </form>
-            </div>
+                <!-- subscribe -->
+                <div class="subscribe mb-3">
+                    <form action="{{ route('card.subscriber') }}" method="post">
+                        @csrf
+                        <input type="hidden" id="" name="card_id" value="{{ $cardinfo->id }}">
+                        <div class="input-group">
+                            <input type="email" name="subscriber_email" id="subscriber_email"
+                                class="form-control @error('subscriber_email') is-invalid @enderror"
+                                placeholder="Enter your emaill..." required>
+                            <button type="submit"
+                                class="input-group-text btn btn-primary subscribe-btn">Subscribe</button>
+                        </div>
+                        {{-- @if ($errors->has('subscriber_email'))
+    <span class="help-block text-danger d-block">{{ $errors->first('subscriber_email') }}</span>
+    @endif --}}
+                    </form>
+                </div>
 
-            <!-- copyright -->
-            <div class="bottom_content text-center pb-3">
-                <p>CashApp: {{ $cardinfo->cashapp }}</p>
-            </div>
+                <!-- copyright -->
+                <div class="bottom_content text-center pb-3">
+                    <p>CashApp: {{ $cardinfo->cashapp }}</p>
+                </div>
+            @else
+                <div class="text-center text-light d-flex align-items-center" style="min-height: 90vh">
+                    <h4>Your Bizad is currently Inactive. Please activate.</h4>
+                </div>
+
+            @endif
+
+
 
             <div class="text-center text-light pb-3">
                 @if (isFreePlan($cardinfo->user_id))

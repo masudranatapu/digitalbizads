@@ -776,6 +776,7 @@ class ComposerStaticInitec9eb9e6794726359916422c02240236
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\UserMiddleware' => __DIR__ . '/../..' . '/app/Http/Middleware/UserMiddleware.php',
+        'App\\Http\\Middleware\\UserPlanMiddleWare' => __DIR__ . '/../..' . '/app/Http/Middleware/UserPlanMiddleWare.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
         'App\\Mail\\ExpiryPlanMail' => __DIR__ . '/../..' . '/app/Mail/ExpiryPlanMail.php',
         'App\\Mail\\OrderEmail' => __DIR__ . '/../..' . '/app/Mail/OrderEmail.php',

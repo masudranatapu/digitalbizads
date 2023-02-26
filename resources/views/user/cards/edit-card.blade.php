@@ -1,42 +1,42 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
 @section('css')
-<link href="{{ asset('assets/css/image-uploader.min.css') }}" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" />
-<link rel="stylesheet" href="{{ asset('css/croppie.css') }}" />
-<style>
-    .loading-spinner {
-        display: none;
-    }
+    <link href="{{ asset('assets/css/image-uploader.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/croppie.css') }}" />
+    <style>
+        .loading-spinner {
+            display: none;
+        }
 
-    .loading-spinner.active {
-        display: inline-block;
-    }
+        .loading-spinner.active {
+            display: inline-block;
+        }
 
-    img#previewLogo {
-        max-width: 140px;
-    }
+        img#previewLogo {
+            max-width: 140px;
+        }
 
-    button.delete-image.btn-danger.photo-delete {
-        position: absolute;
-        top: 4px;
-        right: 4px;
-    }
+        button.delete-image.btn-danger.photo-delete {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+        }
 
-    a.overlay-btn {
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        width: 100%;
-        height: 100%;
-        cursor: pointer;
-        z-index: 999;
-    }
-</style>
+        a.overlay-btn {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 999;
+        }
+    </style>
 @endsection
 @section('content')
-<?php
+    <?php
     $tabindex = 1;
     $android = stripos($_SERVER['HTTP_USER_AGENT'], 'android');
     $iphone = stripos($_SERVER['HTTP_USER_AGENT'], 'iphone');
@@ -74,372 +74,380 @@
     // dd($font_family);
 
     ?>
-<link href="{{ asset('assets/css/image-uploader.min.css') }}" rel="stylesheet">
-<style>
-    span.error {
-        color: #E53935;
-        padding: 2px 0px;
-    }
-
-    .purchase_btn a {
-        padding: 10px 27px;
-        font-size: 20px;
-        font-family: 'Poppins', sans-serif;
-        font-weight: 500;
-        color: #ffffff;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        display: block;
-        background: #ffc107;
-        transition: all 0.3s ease-in-out;
-        -webkit-transition: all 0.3s ease-in-out;
-        -moz-transition: all 0.3s ease-in-out;
-        -ms-transition: all 0.3s ease-in-out;
-        -o-transition: all 0.3s ease-in-out;
-    }
-
-    .card_title {
-        background-color: {
-                {
-                $theme_color
-            }
+    <link href="{{ asset('assets/css/image-uploader.min.css') }}" rel="stylesheet">
+    <style>
+        span.error {
+            color: #E53935;
+            padding: 2px 0px;
         }
 
-        ;
-    }
+        .purchase_btn a {
+            padding: 10px 27px;
+            font-size: 20px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            color: #ffffff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: block;
+            background: #ffc107;
+            transition: all 0.3s ease-in-out;
+            -webkit-transition: all 0.3s ease-in-out;
+            -moz-transition: all 0.3s ease-in-out;
+            -ms-transition: all 0.3s ease-in-out;
+            -o-transition: all 0.3s ease-in-out;
+        }
 
-    .gallery-btn {
-        position: absolute;
-        top: 16px;
-        right: 52px;
-        font-size: 20px;
-    }
-
-    a.social-contact.disabled {
-        opacity: .3;
-    }
-
-    .social_item i {
-        background-color: rgba( {
+        .card_title {
+            background-color: {
                     {
-                    $theme_bg
+                    $theme_color
                 }
             }
 
-        );
-
-        border-color: {
-                {
-                $card->icon_border_color
-            }
+            ;
         }
 
-        ;
-
-        color: {
-                {
-                $card->header_text_color
-            }
+        .gallery-btn {
+            position: absolute;
+            top: 16px;
+            right: 52px;
+            font-size: 20px;
         }
 
-        ;
-    }
-
-    .carousel-control-prev,
-    .carousel-control-next {
-        background-color: {
-                {
-                $theme_color . '!important'
-            }
+        a.social-contact.disabled {
+            opacity: .3;
         }
 
-        ;
-    }
+        .social_item i {
+            background-color: rgba( {
+                        {
+                        $theme_bg
+                    }
+                }
 
-    .social_share {
-        margin-bottom: 20px;
-    }
+            );
 
-    .social_share img {
-        width: 75%;
-        height: 75%;
-    }
+            border-color: {
+                    {
+                    $card->icon_border_color
+                }
+            }
 
-    .modal-header .btn-close {
-        width: 25px;
-        height: 25px;
-    }
+            ;
 
-    .delete-image.photo-delete {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 22px;
-        height: 22px;
-        border-radius: 50px;
-        border: none !important;
-    }
+            color: {
+                    {
+                    $card->header_text_color
+                }
+            }
 
-    .gallery_image img {
-        width: 100%;
-        height: 111px;
-        margin-bottom: 12px;
-    }
+            ;
+        }
 
-    .gallery-btn {
-        position: absolute;
-        top: 16px;
-        right: 52px;
-        font-size: 20px;
-    }
+        .carousel-control-prev,
+        .carousel-control-next {
+            background-color: {
+                    {
+                    $theme_color . '!important'
+                }
+            }
 
-    .save_contact a {
-        padding: 12px 10px;
-        font-size: 13px;
-        font-family: 'Inter';
-        font-weight: 700;
-        text-align: center;
-        width: 40%;
-        border-radius: 6px;
-        color: #fff;
-        background: #212121;
-        -webkit-transition: all 0.4s ease;
-        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    }
+            ;
+        }
 
-    .purchase_btn.save_contact {
-        text-align: center;
-        margin-bottom: 33px;
-        margin-top: -19px;
-        z-index: 5;
-        position: relative;
-    }
+        .social_share {
+            margin-bottom: 20px;
+        }
 
-    .purchase_btn a:hover {
-        background: #ffffff !important;
-        color: #000000;
-    }
+        .social_share img {
+            width: 75%;
+            height: 75%;
+        }
 
-    @media screen and (max-width:380px) {
+        .modal-header .btn-close {
+            width: 25px;
+            height: 25px;
+        }
+
+        .delete-image.photo-delete {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 22px;
+            height: 22px;
+            border-radius: 50px;
+            border: none !important;
+        }
+
+        .gallery_image img {
+            width: 100%;
+            height: 111px;
+            margin-bottom: 12px;
+        }
+
+        .gallery-btn {
+            position: absolute;
+            top: 16px;
+            right: 52px;
+            font-size: 20px;
+        }
+
         .save_contact a {
-            padding: 12px 3px;
-            font-size: 11px;
-            width: 44%;
+            padding: 12px 10px;
+            font-size: 13px;
+            font-family: 'Inter';
+            font-weight: 700;
+            text-align: center;
+            width: 40%;
+            border-radius: 6px;
+            color: #fff;
+            background: #212121;
+            -webkit-transition: all 0.4s ease;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
         }
-    }
-</style>
 
-<div class="page-wrapper">
-    <div class="container-xl">
-        <!-- Page title -->
-        <div class="page-header d-print-none">
-            <div class="row align-items-center">
-                <div class="col">
-                    <div class="page-pretitle">
-                        {{ __('Overview') }}
+        .purchase_btn.save_contact {
+            text-align: center;
+            margin-bottom: 33px;
+            margin-top: -19px;
+            z-index: 5;
+            position: relative;
+        }
+
+        .purchase_btn a:hover {
+            background: #ffffff !important;
+            color: #000000;
+        }
+
+        @media screen and (max-width:380px) {
+            .save_contact a {
+                padding: 12px 3px;
+                font-size: 11px;
+                width: 44%;
+            }
+        }
+    </style>
+
+    <div class="page-wrapper">
+        <div class="container-xl">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="page-pretitle">
+                            {{ __('Overview') }}
+                        </div>
+                        <h2 class="page-title">
+                            {{ __('Edit Biz Ad') }}
+                        </h2>
                     </div>
-                    <h2 class="page-title">
-                        {{ __('Edit Biz Ad') }}
-                    </h2>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-deck row-cards">
-                <div class="col-md-5 col-xl-5">
-                    <div class="card_preview_sec">
-                        <div class="card_wrapper">
-                            <div class="card_template" style="background-color: rgba({{ $theme_bg }})">
-                                <!-- title -->
-                                <div class="card_title p-2 d-block"
-                                    style="background-color: {{ $card->header_backgroung ?? '#000000' }};">
-                                    <h2>
-                                        @if (!empty($card->logo))
-                                        <div class="d-block" id="logoDiv">
-                                            <img src="{{ asset($card->logo) }}" id="previewLogo" alt="logo">
+        <div class="page-body">
+            <div class="container-xl">
+                <div class="row row-deck row-cards">
+                    <div class="col-md-5 col-xl-5">
+                        <div class="card_preview_sec">
+                            <div class="card_wrapper">
+                                <div class="card_template" style="background-color: rgba({{ $theme_bg }})">
+                                    <!-- title -->
+                                    <div class="card_title p-2 d-block"
+                                        style="background-color: {{ $card->header_backgroung ?? '#000000' }};">
+                                        <h2>
+                                            @if (!empty($card->logo))
+                                                <div class="d-block" id="logoDiv">
+                                                    <img src="{{ asset($card->logo) }}" id="previewLogo" alt="logo">
+                                                </div>
+                                                <div class="d-none" id="titleDiv">
+                                                    <span id="preview_name" class="shop-title"
+                                                        style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">
+                                                        <span>Express T-Shirts</span>
+                                                    </span>
+                                                </div>
+                                            @elseif ($card->title)
+                                                <div class="d-block" id="titleDiv">
+                                                    <span id="preview_name" class="shop-title"
+                                                        style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">{{ $card->title }}</span>
+                                                </div>
+                                                <div class="d-none" id="logoDiv">
+                                                    <img src="{{ asset('assets/images/bizads.png') }}" id="previewLogo"
+                                                        width="140" alt="logo">
+                                                </div>
+                                            @else
+                                                <div class="d-block" id="logoDiv">
+                                                    <img src="{{ asset('assets/images/bizads.png') }}" id="previewLogo"
+                                                        width="140" alt="logo">
+                                                </div>
+                                                <div class="d-none" id="titleDiv">
+                                                    <span id="preview_name" class="shop-title"
+                                                        style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">
+                                                        <span>Express T-Shirts</span>
+                                                    </span>
+                                                </div>
+                                            @endif
+                                        </h2>
+                                        <div class="header_left">
+                                            <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
+                                                data-bs-target="#galleryModal">
+                                                <i class="fas fa-images" style="color:{{ $card->header_text_color }};"></i>
+                                            </a>
+
+                                            <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
+                                                data-bs-target="#loginModal">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                                    viewBox="0 0 24 24" fill="none"
+                                                    stroke="{{ $card->header_text_color }}" stroke-width="1"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <line x1="3" y1="12" x2="21" y2="12">
+                                                    </line>
+                                                    <line x1="3" y1="6" x2="21" y2="6">
+                                                    </line>
+                                                    <line x1="3" y1="18" x2="21" y2="18">
+                                                    </line>
+                                                </svg>
+                                            </a>
                                         </div>
-                                        <div class="d-none" id="titleDiv">
-                                            <span id="preview_name" class="shop-title"
-                                                style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">
-                                                <span>Express T-Shirts</span>
-                                            </span>
-                                        </div>
-                                        @elseif ($card->title)
-                                        <div class="d-block" id="titleDiv">
-                                            <span id="preview_name" class="shop-title"
-                                                style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">{{
-                                                $card->title }}</span>
-                                        </div>
-                                        <div class="d-none" id="logoDiv">
-                                            <img src="{{ asset('assets/images/bizads.png') }}" id="previewLogo"
-                                                width="140" alt="logo">
-                                        </div>
+                                    </div>
+
+                                    <div class="slider-box" id="slider-box">
+                                        @if (!empty($card->banner_content))
+                                            @if ($card->banner_type == 'videourl')
+                                                <div class="video_wrapper" id="digitalBizEmbad">
+                                                    <div class="ratio ratio-1x1">
+                                                        <iframe width="100%" src="{{ $card->banner_content }}"
+                                                            frameborder="0"
+                                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                                            allowfullscreen></iframe>
+                                                    </div>
+                                                </div>
+                                            @elseif ($card->banner_type == 'videosource')
+                                                <!-- Video -->
+                                                <div class="video_wrapper" id="digitaBizSourc">
+                                                    <div class="ratio ratio-1x1">
+                                                        <video autoplay="" loop="" muted=""
+                                                            playsinline="" data-wf-ignore="true" data-object-fit="cover"
+                                                            controls>
+                                                            <source src="{{ $card->banner_content }}" type="video/mp4">
+                                                            <source src="{{ $card->banner_content }}" type="video/ogg">
+                                                        </video>
+                                                    </div>
+                                                </div>
+                                            @elseif ($card->banner_type == 'banner')
+                                                <div class="" id="digitalbizSlider">
+                                                    <img src="{{ asset($card->banner_content) }}" class="d-block w-100"
+                                                        alt="image">
+                                                </div>
+                                            @endif
                                         @else
-                                        <div class="d-block" id="logoDiv">
-                                            <img src="{{ asset('assets/images/bizads.png') }}" id="previewLogo"
-                                                width="140" alt="logo">
-                                        </div>
-                                        <div class="d-none" id="titleDiv">
-                                            <span id="preview_name" class="shop-title"
-                                                style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">
-                                                <span>Express T-Shirts</span>
-                                            </span>
-                                        </div>
+                                            <div id="digitalbizSlider">
+                                                <img src="{{ asset('backend/img') }}/1.jpg" class="d-block w-100"
+                                                    alt="image">
+                                            </div>
                                         @endif
-                                    </h2>
-                                    <div class="header_left">
-                                        <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
-                                            data-bs-target="#galleryModal">
-                                            <i class="fas fa-images" style="color:{{ $card->header_text_color }};"></i>
+                                        <div class="video_wrapper d-none" id="digitalBizEmbad">
+                                            <div class="ratio ratio-1x1">
+                                                <iframe width="100%" height="315" id="youtube_video_preview"
+                                                    src="https://www.youtube.com/embed/Fhskvloj1gE"
+                                                    title="YouTube video player" frameborder="0"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                    allowfullscreen></iframe>
+                                            </div>
+                                        </div>
+                                        <div class="video_wrapper d-none" id="digitaBizSourc">
+                                            <div class="ratio ratio-1x1">
+                                                <video autoplay="" loop="" muted="" playsinline=""
+                                                    id="video_preview" data-wf-ignore="true" data-object-fit="cover"
+                                                    controls>
+                                                    <source src="{{ asset('assets/video.mp4') }}" type="video/mp4">
+                                                    <source src="{{ asset('assets/video.mp4') }}" type="video/ogg">
+                                                </video>
+                                            </div>
+                                        </div>
+                                        <div class="d-none" id="digitalbizSlider">
+                                            <img src="{{ asset('backend/img') }}/1.jpg" class="d-block w-100"
+                                                alt="image">
+                                        </div>
+                                    </div>
+                                    <!-- purchase button -->
+                                    <div class="purchase_btn save_contact">
+                                        <a href="javascript:void(0)"
+                                            class="text-decoration-none save-contact d-inline-block"
+                                            style="background-color: {{ $theme_color }}">Save Contact
                                         </a>
-
-                                        <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                viewBox="0 0 24 24" fill="none" stroke="{{ $card->header_text_color }}"
-                                                stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                                                <line x1="3" y1="12" x2="21" y2="12">
-                                                </line>
-                                                <line x1="3" y1="6" x2="21" y2="6">
-                                                </line>
-                                                <line x1="3" y1="18" x2="21" y2="18">
-                                                </line>
-                                            </svg>
+                                        <a href="javascript:void(0)" 
+                                            class="text-decoration-none shop-button d-inline-block btn-secondary"
+                                            style="background-color: {{ $theme_color }}">
+                                            SHOP
                                         </a>
                                     </div>
-                                </div>
 
-                                <div class="slider-box" id="slider-box">
-                                    @if (!empty($card->banner_content))
-                                    @if ($card->banner_type == 'videourl')
-                                    <div class="video_wrapper" id="digitalBizEmbad">
-                                        <div class="ratio ratio-1x1">
-                                            <iframe width="100%" src="{{ $card->banner_content }}" frameborder="0"
-                                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                                allowfullscreen></iframe>
+                                    <!-- social medai -->
+                                    <div class="social_wrapper mb-3">
+                                        <div class="section_heading text-center mb-3">
+                                            <h4>Connect With Me</h4>
                                         </div>
-                                    </div>
-                                    @elseif ($card->banner_type == 'videosource')
-                                    <!-- Video -->
-                                    <div class="video_wrapper" id="digitaBizSourc">
-                                        <div class="ratio ratio-1x1">
-                                            <video autoplay="" loop="" muted="" playsinline="" data-wf-ignore="true"
-                                                data-object-fit="cover" controls>
-                                                <source src="{{ $card->banner_content }}" type="video/mp4">
-                                                <source src="{{ $card->banner_content }}" type="video/ogg">
-                                            </video>
-                                        </div>
-                                    </div>
-                                    @elseif ($card->banner_type == 'banner')
-                                    <div class="" id="digitalbizSlider">
-                                        <img src="{{ asset($card->banner_content) }}" class="d-block w-100" alt="image">
-                                    </div>
-                                    @endif
-                                    @else
-                                    <div id="digitalbizSlider">
-                                        <img src="{{ asset('backend/img') }}/1.jpg" class="d-block w-100" alt="image">
-                                    </div>
-                                    @endif
-                                    <div class="video_wrapper d-none" id="digitalBizEmbad">
-                                        <div class="ratio ratio-1x1">
-                                            <iframe width="100%" height="315" id="youtube_video_preview"
-                                                src="https://www.youtube.com/embed/Fhskvloj1gE"
-                                                title="YouTube video player" frameborder="0"
-                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                allowfullscreen></iframe>
-                                        </div>
-                                    </div>
-                                    <div class="video_wrapper d-none" id="digitaBizSourc">
-                                        <div class="ratio ratio-1x1">
-                                            <video autoplay="" loop="" muted="" playsinline="" id="video_preview"
-                                                data-wf-ignore="true" data-object-fit="cover" controls>
-                                                <source src="{{ asset('assets/video.mp4') }}" type="video/mp4">
-                                                <source src="{{ asset('assets/video.mp4') }}" type="video/ogg">
-                                            </video>
-                                        </div>
-                                    </div>
-                                    <div class="d-none" id="digitalbizSlider">
-                                        <img src="{{ asset('backend/img') }}/1.jpg" class="d-block w-100" alt="image">
-                                    </div>
-                                </div>
-                                <!-- purchase button -->
-                                <div class="purchase_btn save_contact">
-                                    <a href="" class="text-decoration-none save-contact d-inline-block"
-                                        style="background-color: {{ $theme_color }}">Save Contact
-                                    </a>
-                                    <a href="{{ $card->website }}" target="_blank"
-                                        class="text-decoration-none d-inline-block btn-secondary"
-                                        style="background-color: {{ $theme_color }}">
-                                        SHOP
-                                    </a>
-                                </div>
 
-                                <!-- social medai -->
-                                <div class="social_wrapper mb-3">
-                                    <div class="section_heading text-center mb-3">
-                                        <h4>Connect With Me</h4>
-                                    </div>
+                                        <div class="social_wrapper">
+                                            <div class="row row-cols-4 row-cols-sm-5 g-3">
+                                                <!-- social icon -->
+                                                @if (!empty($card->phone_number))
+                                                    <div class="col">
+                                                        <div class="social_item">
+                                                            <a class="social-contact phone_number"
+                                                                href="tel:{{ $card->phone_number }}">
+                                                                <i class="fa fa-phone"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="social_item">
+                                                            <a class="social-contact"
+                                                                href="sms://{{ $card->phone_number }}">
+                                                                <i class="fa fa-comment"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                @if (!empty($card->email))
+                                                    <!-- social icon -->
+                                                    <div class="col">
+                                                        <div class="social_item">
+                                                            <a class="social-contact user_email"
+                                                                href="mailto:{{ $card->email }}">
+                                                                <i class="fa fa-envelope"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                <!-- Qr code icon -->
+                                                <div class="col">
+                                                    <div class="social_item qrcode_icon">
+                                                        <a href="javascript:void(0)" target="_blank"
+                                                            data-bs-toggle="modal" data-bs-target="#qrcodeModal">
+                                                            <img src="{{ asset('assets/images/icon/qr-code.svg') }}"
+                                                                alt="qr-code">
+                                                        </a>
+                                                    </div>
+                                                </div>
 
-                                    <div class="social_wrapper">
-                                        <div class="row row-cols-4 row-cols-sm-5 g-3">
-                                            <!-- social icon -->
-                                            @if (!empty($card->phone_number))
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a class="social-contact phone_number"
-                                                        href="tel:{{ $card->phone_number }}">
-                                                        <i class="fa fa-phone"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a class="social-contact" href="sms://{{ $card->phone_number }}">
-                                                        <i class="fa fa-comment"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            @endif
-                                            @if (!empty($card->email))
-                                            <!-- social icon -->
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a class="social-contact user_email"
-                                                        href="mailto:{{ $card->email }}">
-                                                        <i class="fa fa-envelope"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            @endif
-                                            <!-- Qr code icon -->
-                                            <div class="col">
-                                                <div class="social_item qrcode_icon">
-                                                    <a href="javascript:void(0)" target="_blank" data-bs-toggle="modal"
-                                                        data-bs-target="#qrcodeModal">
-                                                        <img src="{{ asset('assets/images/icon/qr-code.svg') }}"
-                                                            alt="qr-code">
-                                                    </a>
-                                                </div>
-                                            </div>
+                                                @if (!empty($card->website))
+                                                    <div class="col">
+                                                        <div class="social_item">
+                                                            <a class="social-contact website" href="{{ $card->website }}"
+                                                                target="_blank">
+                                                                <i class="fa fa-globe"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                                <!-- social icon -->
 
-                                            @if (!empty($card->website))
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a class="social-contact website" href="{{ $card->website }}"
-                                                        target="_blank">
-                                                        <i class="fa fa-globe"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            @endif
-                                            <!-- social icon -->
-
-                                            <!-- social icon -->
-                                            @if (!empty($card->contacts))
-                                            @foreach ($card->contacts as $contact)
-                                            {{--
+                                                <!-- social icon -->
+                                                @if (!empty($card->contacts))
+                                                    @foreach ($card->contacts as $contact)
+                                                        {{--
                                             <div class="col">
                                                 <div class="social_item">
                                                     <a href="{{ $card->contacts }}" target="_blank">
@@ -448,558 +456,579 @@
                                                 </div>
                                             </div> --}}
 
-                                            @if ($contact->label == 'facebook')
-                                            <!-- social icon -->
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a class="social-contact facebook"
-                                                        href="https://www.facebook.com/{{ $contact->content }}"
-                                                        target="_blank">
-                                                        <i class="fab fa-facebook"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            @elseif ($contact->label == 'instagram')
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a class="social-contact instagram"
-                                                        href="https://www.instagram.com/{{ $contact->content }}"
-                                                        target="_blank">
-                                                        <i class="fab fa-instagram"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            @endif
-                                            @endforeach
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a href="{{ $card->location }}" class="social-contact map"
-                                                        target="__blank">
-                                                        <i class="fas fa-map-marker"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
+                                                        @if ($contact->label == 'facebook')
+                                                            <!-- social icon -->
+                                                            <div class="col">
+                                                                <div class="social_item">
+                                                                    <a class="social-contact facebook"
+                                                                        href="https://www.facebook.com/{{ $contact->content }}"
+                                                                        target="_blank">
+                                                                        <i class="fab fa-facebook"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        @elseif ($contact->label == 'instagram')
+                                                            <div class="col">
+                                                                <div class="social_item">
+                                                                    <a class="social-contact instagram"
+                                                                        href="https://www.instagram.com/{{ $contact->content }}"
+                                                                        target="_blank">
+                                                                        <i class="fab fa-instagram"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        @endif
+                                                    @endforeach
+                                                    <div class="col">
+                                                        <div class="social_item">
+                                                            <a href="{{ $card->location }}" class="social-contact map"
+                                                                target="__blank">
+                                                                <i class="fas fa-map-marker"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
 
-                                            @if (isset($card->about_us))
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a href="javascript:void(0)" class="social-contact about"
-                                                        target="_blank">
-                                                        <i class="fas fa-user"></i>
-                                                    </a>
-                                                </div>
+                                                    @if (isset($card->about_us))
+                                                        <div class="col">
+                                                            <div class="social_item">
+                                                                <a href="javascript:void(0)" class="social-contact about"
+                                                                    target="_blank">
+                                                                    <i class="fas fa-user"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                @endif
                                             </div>
-                                            @endif
-                                            @endif
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- subscribe -->
-                                <div class="subscribe mb-3">
-                                    <form action="javascript:void(0)" method="">
-                                        <div class="input-group">
-                                            <input type="text" name="email" id="email" class="form-control"
-                                                placeholder="Enter your emaill..." required="">
-                                            <button type="submit" class="input-group-text btn btn-primary subscribe-btn"
-                                                style="background-color: {{ $theme_color }}">Subscribe</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <!-- copyright -->
-                                <div class="bottom_content text-center pb-3">
-                                    <p>CashApp: <span id="preview_cashapp">{{ $card->cashapp }}</span></p>
-                                </div>
-                                <div class="text-center text-light pb-3">
-                                    @if (isFreePlan(Auth::user()->id))
-                                    <p>All Rights Reserved by Digitalbizads.com</p>
-                                    @else
-                                    <p id="preview_copyright">{{ $card->footer_text }}</p>
-                                    @endif
+                                    <!-- subscribe -->
+                                    <div class="subscribe mb-3">
+                                        <form action="javascript:void(0)" method="">
+                                            <div class="input-group">
+                                                <input type="text" name="email" id="email" class="form-control"
+                                                    placeholder="Enter your emaill..." required="">
+                                                <button type="submit"
+                                                    class="input-group-text btn btn-primary subscribe-btn"
+                                                    style="background-color: {{ $theme_color }}">Subscribe</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- copyright -->
+                                    <div class="bottom_content text-center pb-3">
+                                        <p>CashApp: <span id="preview_cashapp">{{ $card->cashapp }}</span></p>
+                                    </div>
+                                    <div class="text-center text-light pb-3">
+                                        @if (isFreePlan(Auth::user()->id))
+                                            <p>All Rights Reserved by Digitalbizads.com</p>
+                                        @else
+                                            <p id="preview_copyright">{{ $card->footer_text }}</p>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-7 col-xl-7">
-                    <div class="card card_form">
-                        <div class="card-body">
-                            <form action="{{ route('user.card.update', $card->id) }}" method="post" id="card-form"
-                                novalidate="novalidate" enctype="multipart/form-data">
-                                @csrf
-                                <input type="hidden" name="upload_image_url" id="upload_image_url"
-                                    value="{{ route('user.card.upload_image') }}" />
-                                <input type="hidden" name="upload_logo_url" id="upload_logo_url"
-                                    value="{{ route('user.card.upload_logo') }}" />
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="adsname" class="form-label">Biz Ads Name <span
-                                                    class="text-danger">*</span></label></label>
-                                            <input type="text" placeholder="ads name" name="adsname" id="adsname"
-                                                class="form-control @error('adsname') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" value="{{ $card->adsname }}" required>
-                                            @if ($errors->has('adsname'))
-                                            <span class="help-block text-danger">{{ $errors->first('adsname') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input" id="textfield">
-                                            <label for="color" class="form-label">Biz Ad Color</label>
-                                            <div class="input-group custome_color">
-                                                <label for="theme_color" class="input-group-text">
-                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
-                                                        alt="color picker">
-                                                    <input type="color" placeholder="card color" name="theme_color"
-                                                        id="theme_color"
-                                                        class="form-control @error('theme_color') is-invalid @enderror"
-                                                        tabindex="{{ $tabindex++ }}" value="{{ $card->theme_color }}"
-                                                        required>
-                                                </label>
-                                                <input type="text" id="theme_clr_code" class="form-control"
-                                                    value="{{ $card->theme_color }}" disabled>
+                    <div class="col-md-7 col-xl-7">
+                        <div class="card card_form">
+                            <div class="card-body">
+                                <form action="{{ route('user.card.update', $card->id) }}" method="post" id="card-form"
+                                    novalidate="novalidate" enctype="multipart/form-data">
+                                    @csrf
+                                    <input type="hidden" name="upload_image_url" id="upload_image_url"
+                                        value="{{ route('user.card.upload_image') }}" />
+                                    <input type="hidden" name="upload_logo_url" id="upload_logo_url"
+                                        value="{{ route('user.card.upload_logo') }}" />
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input">
+                                                <label for="adsname" class="form-label">Biz Ads Name <span
+                                                        class="text-danger">*</span></label></label>
+                                                <input type="text" placeholder="ads name" name="adsname"
+                                                    id="adsname"
+                                                    class="form-control @error('adsname') is-invalid @enderror"
+                                                    tabindex="{{ $tabindex++ }}" value="{{ $card->adsname }}"
+                                                    required>
+                                                @if ($errors->has('adsname'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('adsname') }}</span>
+                                                @endif
                                             </div>
-                                            @if ($errors->has('color'))
-                                            <span class="help-block text-danger">{{ $errors->first('color') }}</span>
-                                            @endif
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="header_backgroung" class="form-label">Header background
-                                                color</label>
-                                            <div class="input-group custome_color">
-                                                <label for="header_backgroung" class="input-group-text">
-                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
-                                                        alt="color picker">
-                                                    <input type="color" placeholder="card color"
-                                                        name="header_backgroung" id="header_backgroung"
-                                                        value="{{ $card->header_backgroung }}"
-                                                        class="form-control @error('header_backgroung') is-invalid @enderror"
-                                                        tabindex="{{ $tabindex++ }}" required>
-                                                </label>
-                                                <input type="text" id="theme_back_code" class="form-control"
-                                                    value="{{ $card->header_backgroung }}" disabled>
-                                            </div>
-
-                                            @if ($errors->has('header_backgroung'))
-                                            <span class="help-block text-danger">{{ $errors->first('header_backgroung')
-                                                }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="icon_border_color" class="form-label">Icon Border
-                                                Color</label>
-                                            <div class="input-group custome_color">
-                                                <label for="icon_border_color" class="input-group-text">
-                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
-                                                        alt="color picker">
-                                                    <input type="color" placeholder="card color"
-                                                        name="icon_border_color" id="icon_border_color"
-                                                        value="{{ $card->icon_border_color }}"
-                                                        class="form-control @error('icon_border_color') is-invalid @enderror"
-                                                        tabindex="{{ $tabindex++ }}" required>
-                                                </label>
-                                                <input type="text" id="icon_border_color_code" class="form-control"
-                                                    value="{{ $card->icon_border_color }}" disabled>
-                                            </div>
-
-                                            @if ($errors->has('icon_border_color'))
-                                            <span class="help-block text-danger">{{ $errors->first('icon_border_color')
-                                                }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input" id="textfield">
-                                            <label for="header_text_color" class="form-label">Headline Color/Icon
-                                                Color</label>
-                                            <div class="input-group custome_color">
-                                                <label for="header_text_color" class="input-group-text">
-                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
-                                                        alt="color picker">
-                                                    <input type="color" placeholder="card color"
-                                                        name="header_text_color" id="header_text_color"
-                                                        value="{{ $card->header_text_color }}"
-                                                        class="form-control @error('header_text_color') is-invalid @enderror"
-                                                        tabindex="{{ $tabindex++ }}" required>
-                                                </label>
-                                                <input type="text" id="header_clr_code" class="form-control"
-                                                    value="{{ $card->header_text_color }}" disabled>
-                                            </div>
-
-                                            @if ($errors->has('header_text_color'))
-                                            <span class="help-block text-danger">{{ $errors->first('header_text_color')
-                                                }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="selectField1" class="form-label">Select Logo/Heading <span
-                                                    class="text-danger">*</span></label></label>
-                                            <select id="selectField1" name="headline" class="form-control"
-                                                tabindex="{{ $tabindex++ }}" required>
-                                                <option value="text" @if (!empty($card->title)) selected @endif>Heading
-                                                </option>
-                                                <option value="logo" @if (!empty($card->logo)) selected @endif>Logo
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row @if (!empty($card->title)) d-flex @else d-none @endif" id="headline">
-
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="text" class="form-label">Heading</label>
-                                            <input type="text" placeholder="ads heading" name="text" id="text"
-                                                data-preview="preview_name" data-concat="preview_name"
-                                                class="form-control cin preview_name  @error('text') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" value="{{ $card->title }}">
-                                            @if ($errors->has('text'))
-                                            <span class="help-block text-danger">{{ $errors->first('text') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="header_font_family" class="form-label">Heading Font
-                                                Family</label>
-                                            <select class="form-control" name="header_font_family"
-                                                id="header_font_family">
-                                                @foreach ($font_family as $font_)
-                                                <option value="{{ $font_ }}" {{ $font_==$card->header_font_family ?
-                                                    'selected' : '' }}>
-                                                    {{ $font_ }}</option>
-                                                @endforeach
-                                            </select>
-                                            @if ($errors->has('header_font_family'))
-                                            <span class="help-block text-danger">{{ $errors->first('header_font_family')
-                                                }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row @if (!empty($card->logo)) d-flex @else d-none @endif" id="logofield">
-                                    <div id="logofield1"></div>
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="logo" class="form-label">Logo <span
-                                                    class="text-danger">(Recommended size (140x48)</span>
-                                                <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                                    data-bs-title="Let us design your BizAd Advertisement to properly fit to the correct size or have your designer do it, Thanks Admin">
-                                                    <i class="fa fa-info"></i>
-                                                </button>
-                                            </label>
-                                            <input type="file" name="logo" id="logo" onchange="readURL(this);"
-                                                class="form-control @error('logo') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}">
-                                            @if ($errors->has('logo'))
-                                            <span class="help-block text-danger">{{ $errors->first('logo') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="selectField2" class="form-label">Banner or Video <span
-                                                    class="text-danger">*</span></label></label>
-                                            <select id="selectField2" name="gallery_type" class="form-control"
-                                                tabindex="{{ $tabindex++ }}" required>
-                                                <option value="banner" @if ($banner_type=='banner' ) selected @endif>
-                                                    Banner</option>
-                                                <option value="videourl" @if ($banner_type=='videourl' ) selected
-                                                    @endif>Video Url
-                                                </option>
-                                                <option value="videosource" @if ($banner_type=='videosource' ) selected
-                                                    @endif>Uplaod Video
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input {{ $banner_type == 'banner' ? 'd-block' : 'd-none' }}"
-                                            id="galleryfield">
-                                            <div id="galleryfield1"></div>
-                                            <label for="banner" class="form-label">Banner<span
-                                                    class="text-danger">(Recommended size (450x600)</span>
-                                                <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                                    data-bs-title="Let us design your BizAd Advertisement to properly fit to the correct size or have your designer do it, Thanks Admin">
-                                                    <i class="fa fa-info"></i>
-                                                </button>
-                                            </label>
-                                            <input type="file" name="banner" id="banner"
-                                                class="form-control @error('banner') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}">
-                                            @if ($errors->has('gallery'))
-                                            <span class="help-block text-danger">{{ $errors->first('gallery') }}</span>
-                                            @endif
-                                        </div>
-                                        <div class="mb-3 form-input {{ $banner_type == 'videourl' ? 'd-block' : 'd-none' }}"
-                                            id="videourl">
-                                            <label for="video" class="form-label">Video Url</label>
-                                            <input type="url" name="video" placeholder="your video url" id="video_url"
-                                                class="form-control @error('video') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" value="">
-                                            @if ($errors->has('video'))
-                                            <span class="help-block text-danger">{{ $errors->first('video') }}</span>
-                                            @endif
-                                        </div>
-                                        <div class="mb-3 form-input {{ $banner_type == 'videosource' ? 'd-block' : 'd-none' }}"
-                                            id="videosource">
-                                            <label for="video" class="form-label">Uplaod Video</label>
-                                            <input type="file" name="video" placeholder="upload your video"
-                                                id="video_file"
-                                                class="form-control @error('video') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}">
-                                            @if ($errors->has('video'))
-                                            <span class="help-block text-danger">{{ $errors->first('video') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <div class="input-field gallery_image">
-                                                <label class="active">Gallery<span
-                                                        class="img-note d-inline-block"></label>
-                                                <div
-                                                    class="row row-cols-3 row-cols-sm-3 row-cols-md-4 row-cols-xl-5 mt-2">
-                                                    @if ($card->gallery && $card->gallery->count() > 0)
-                                                    @foreach ($card->gallery as $photo)
-                                                    <div class="col" id="photo_div_{{ $photo->id }}">
-                                                        <div class="position-relative">
-                                                            <img src="{{ asset($photo->content) }}" class="img-fluid"
-                                                                width="100%" height="auto">
-                                                            <button type="button"
-                                                                class="delete-image btn btn-sm btn-danger photo-delete"
-                                                                data-id="{{ $photo->id }}">
-                                                                <i class="iui-close"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    @endforeach
-                                                    @endif
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input" id="textfield">
+                                                <label for="color" class="form-label">Biz Ad Color</label>
+                                                <div class="input-group custome_color">
+                                                    <label for="theme_color" class="input-group-text">
+                                                        <img src="{{ asset('images/color-picker.png') }}" width="25"
+                                                            alt="color picker">
+                                                        <input type="color" placeholder="card color" name="theme_color"
+                                                            id="theme_color"
+                                                            class="form-control @error('theme_color') is-invalid @enderror"
+                                                            tabindex="{{ $tabindex++ }}"
+                                                            value="{{ $card->theme_color }}" required>
+                                                    </label>
+                                                    <input type="text" id="theme_clr_code" class="form-control"
+                                                        value="{{ $card->theme_color }}" disabled>
                                                 </div>
-                                                <div class="prod_def_photo_upload py-2" title="Click for photo upload">
-                                                </div>
+                                                @if ($errors->has('color'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('color') }}</span>
+                                                @endif
                                             </div>
-
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-6">
                                             <div class="mb-3 form-input">
-                                                <label for="phone_number" class="form-label">Phone <span
-                                                        class="text-danger">*</span></label></label>
-                                                <input type="number" name="phone_number" data-type="phone_number"
-                                                    data-preview="preview_phone_number" id="phone"
-                                                    placeholder="your phone"
-                                                    class="social_item_in form-control cin @error('phone') is-invalid @enderror"
-                                                    tabindex="{{ $tabindex++ }}" value="{{ $card->phone_number }}"
-                                                    required>
-                                                @if ($errors->has('phone_number'))
-                                                <span class="help-block text-danger">{{ $errors->first('phone_number')
-                                                    }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-3 form-input">
-                                                <label for="email" class="form-label">Email <span
-                                                        class="text-danger">*</span></label></label>
-                                                <input type="email" name="email" data-type="user_email"
-                                                    data-type="email" placeholder="your email" id="email"
-                                                    class="social_item_in form-control cin @error('email') is-invalid @enderror"
-                                                    data-preview="preview_email" tabindex="{{ $tabindex++ }}"
-                                                    value="{{ $card->email }}" required>
-                                                @if ($errors->has('email'))
-                                                <span class="help-block text-danger">{{ $errors->first('email')
-                                                    }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="mb-3 form-input">
-                                                <label for="website" class="form-label">Website</label>
-                                                <input type="url" name="website" data-type="website"
-                                                    placeholder="your website" id="website"
-                                                    class="social_item_in form-control cin @error('website') is-invalid @enderror cin"
-                                                    tabindex="{{ $tabindex++ }}" value="{{ $card->website }}">
-                                                @if ($errors->has('website'))
-                                                <span class="help-block text-danger">{{ $errors->first('website')
-                                                    }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
+                                                <label for="header_backgroung" class="form-label">Header background
+                                                    color</label>
+                                                <div class="input-group custome_color">
+                                                    <label for="header_backgroung" class="input-group-text">
+                                                        <img src="{{ asset('images/color-picker.png') }}" width="25"
+                                                            alt="color picker">
+                                                        <input type="color" placeholder="card color"
+                                                            name="header_backgroung" id="header_backgroung"
+                                                            value="{{ $card->header_backgroung }}"
+                                                            class="form-control @error('header_backgroung') is-invalid @enderror"
+                                                            tabindex="{{ $tabindex++ }}" required>
+                                                    </label>
+                                                    <input type="text" id="theme_back_code" class="form-control"
+                                                        value="{{ $card->header_backgroung }}" disabled>
+                                                </div>
 
-                                        <div class="col-md-6">
-                                            <div class="mb-3 form-input">
-                                                <label for="facebook" class="form-label">Facebook</label>
-                                                <input type="text" name="facebook" data-type="facebook"
-                                                    placeholder="facebook username" id="facebook"
-                                                    class="social_item_in form-control @error('facebook') is-invalid @enderror"
-                                                    tabindex="{{ $tabindex++ }}"
-                                                    value="{{ getInputValue($card->id, 'facebook') }}">
-                                                @if ($errors->has('facebook'))
-                                                <span class="help-block text-danger">{{ $errors->first('facebook')
-                                                    }}</span>
+                                                @if ($errors->has('header_backgroung'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('header_backgroung') }}</span>
                                                 @endif
                                             </div>
                                         </div>
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input">
+                                                <label for="icon_border_color" class="form-label">Icon Border
+                                                    Color</label>
+                                                <div class="input-group custome_color">
+                                                    <label for="icon_border_color" class="input-group-text">
+                                                        <img src="{{ asset('images/color-picker.png') }}" width="25"
+                                                            alt="color picker">
+                                                        <input type="color" placeholder="card color"
+                                                            name="icon_border_color" id="icon_border_color"
+                                                            value="{{ $card->icon_border_color }}"
+                                                            class="form-control @error('icon_border_color') is-invalid @enderror"
+                                                            tabindex="{{ $tabindex++ }}" required>
+                                                    </label>
+                                                    <input type="text" id="icon_border_color_code"
+                                                        class="form-control" value="{{ $card->icon_border_color }}"
+                                                        disabled>
+                                                </div>
 
-                                        <div class="col-md-6">
-                                            <div class="mb-3 form-input">
-                                                <label for="instagram" class="form-label">Instagram</label>
-                                                <input type="text" name="instagram" id="instagram" data-type="instagram"
-                                                    placeholder="instagram username"
-                                                    class="social_item_in form-control @error('instagram') is-invalid @enderror"
-                                                    tabindex="{{ $tabindex++ }}"
-                                                    value="{{ getInputValue($card->id, 'instagram') }}">
-                                                @if ($errors->has('instagram'))
-                                                <span class="help-block text-danger">{{ $errors->first('instagram')
-                                                    }}</span>
+                                                @if ($errors->has('icon_border_color'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('icon_border_color') }}</span>
                                                 @endif
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input" id="textfield">
+                                                <label for="header_text_color" class="form-label">Headline Color/Icon
+                                                    Color</label>
+                                                <div class="input-group custome_color">
+                                                    <label for="header_text_color" class="input-group-text">
+                                                        <img src="{{ asset('images/color-picker.png') }}" width="25"
+                                                            alt="color picker">
+                                                        <input type="color" placeholder="card color"
+                                                            name="header_text_color" id="header_text_color"
+                                                            value="{{ $card->header_text_color }}"
+                                                            class="form-control @error('header_text_color') is-invalid @enderror"
+                                                            tabindex="{{ $tabindex++ }}" required>
+                                                    </label>
+                                                    <input type="text" id="header_clr_code" class="form-control"
+                                                        value="{{ $card->header_text_color }}" disabled>
+                                                </div>
+
+                                                @if ($errors->has('header_text_color'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('header_text_color') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
                                             <div class="mb-3 form-input">
-                                                <label for="cashapp" class="form-label">CashApp</label>
-                                                <input type="text" name="cashapp" data-preview="preview_cashapp"
-                                                    id="cashapp" placeholder="cashapp username"
-                                                    value="{{ $card->cashapp }}"
-                                                    class="form-control cin  @error('cashapp') is-invalid @enderror"
+                                                <label for="selectField1" class="form-label">Select Logo/Heading <span
+                                                        class="text-danger">*</span></label></label>
+                                                <select id="selectField1" name="headline" class="form-control"
+                                                    tabindex="{{ $tabindex++ }}" required>
+                                                    <option value="text"
+                                                        @if (!empty($card->title)) selected @endif>Heading
+                                                    </option>
+                                                    <option value="logo"
+                                                        @if (!empty($card->logo)) selected @endif>Logo
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row @if (!empty($card->title)) d-flex @else d-none @endif"
+                                        id="headline">
+
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input">
+                                                <label for="text" class="form-label">Heading</label>
+                                                <input type="text" placeholder="ads heading" name="text"
+                                                    id="text" data-preview="preview_name" data-concat="preview_name"
+                                                    class="form-control cin preview_name  @error('text') is-invalid @enderror"
+                                                    tabindex="{{ $tabindex++ }}" value="{{ $card->title }}">
+                                                @if ($errors->has('text'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('text') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input">
+                                                <label for="header_font_family" class="form-label">Heading Font
+                                                    Family</label>
+                                                <select class="form-control" name="header_font_family"
+                                                    id="header_font_family">
+                                                    @foreach ($font_family as $font_)
+                                                        <option value="{{ $font_ }}"
+                                                            {{ $font_ == $card->header_font_family ? 'selected' : '' }}>
+                                                            {{ $font_ }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @if ($errors->has('header_font_family'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('header_font_family') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row @if (!empty($card->logo)) d-flex @else d-none @endif"
+                                        id="logofield">
+                                        <div id="logofield1"></div>
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input">
+                                                <label for="logo" class="form-label">Logo <span
+                                                        class="text-danger">(Recommended size (140x48)</span>
+                                                    <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                        data-bs-title="Let us design your BizAd Advertisement to properly fit to the correct size or have your designer do it, Thanks Admin">
+                                                        <i class="fa fa-info"></i>
+                                                    </button>
+                                                </label>
+                                                <input type="file" name="logo" id="logo"
+                                                    onchange="readURL(this);"
+                                                    class="form-control @error('logo') is-invalid @enderror"
                                                     tabindex="{{ $tabindex++ }}">
-                                                @if ($errors->has('cashapp'))
-                                                <span class="help-block text-danger">{{ $errors->first('cashapp')
-                                                    }}</span>
+                                                @if ($errors->has('logo'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('logo') }}</span>
                                                 @endif
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input">
+                                                <label for="selectField2" class="form-label">Banner or Video <span
+                                                        class="text-danger">*</span></label></label>
+                                                <select id="selectField2" name="gallery_type" class="form-control"
+                                                    tabindex="{{ $tabindex++ }}" required>
+                                                    <option value="banner"
+                                                        @if ($banner_type == 'banner') selected @endif>
+                                                        Banner</option>
+                                                    <option value="videourl"
+                                                        @if ($banner_type == 'videourl') selected @endif>Video Url
+                                                    </option>
+                                                    <option value="videosource"
+                                                        @if ($banner_type == 'videosource') selected @endif>Uplaod Video
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input {{ $banner_type == 'banner' ? 'd-block' : 'd-none' }}"
+                                                id="galleryfield">
+                                                <div id="galleryfield1"></div>
+                                                <label for="banner" class="form-label">Banner<span
+                                                        class="text-danger">(Recommended size (450x600)</span>
+                                                    <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                        data-bs-title="Let us design your BizAd Advertisement to properly fit to the correct size or have your designer do it, Thanks Admin">
+                                                        <i class="fa fa-info"></i>
+                                                    </button>
+                                                </label>
+                                                <input type="file" name="banner" id="banner"
+                                                    class="form-control @error('banner') is-invalid @enderror"
+                                                    tabindex="{{ $tabindex++ }}">
+                                                @if ($errors->has('gallery'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('gallery') }}</span>
+                                                @endif
+                                            </div>
+                                            <div class="mb-3 form-input {{ $banner_type == 'videourl' ? 'd-block' : 'd-none' }}"
+                                                id="videourl">
+                                                <label for="video" class="form-label">Video Url</label>
+                                                <input type="url" name="video" placeholder="your video url"
+                                                    id="video_url"
+                                                    class="form-control @error('video') is-invalid @enderror"
+                                                    tabindex="{{ $tabindex++ }}" value="">
+                                                @if ($errors->has('video'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('video') }}</span>
+                                                @endif
+                                            </div>
+                                            <div class="mb-3 form-input {{ $banner_type == 'videosource' ? 'd-block' : 'd-none' }}"
+                                                id="videosource">
+                                                <label for="video" class="form-label">Uplaod Video</label>
+                                                <input type="file" name="video" placeholder="upload your video"
+                                                    id="video_file"
+                                                    class="form-control @error('video') is-invalid @enderror"
+                                                    tabindex="{{ $tabindex++ }}">
+                                                @if ($errors->has('video'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('video') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <div class="input-field gallery_image">
+                                                    <label class="active">Gallery<span
+                                                            class="img-note d-inline-block"></label>
+                                                    <div
+                                                        class="row row-cols-3 row-cols-sm-3 row-cols-md-4 row-cols-xl-5 mt-2">
+                                                        @if ($card->gallery && $card->gallery->count() > 0)
+                                                            @foreach ($card->gallery as $photo)
+                                                                <div class="col" id="photo_div_{{ $photo->id }}">
+                                                                    <div class="position-relative">
+                                                                        <img src="{{ asset($photo->content) }}"
+                                                                            class="img-fluid" width="100%"
+                                                                            height="auto">
+                                                                        <button type="button"
+                                                                            class="delete-image btn btn-sm btn-danger photo-delete"
+                                                                            data-id="{{ $photo->id }}">
+                                                                            <i class="iui-close"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
+                                                    </div>
+                                                    <div class="prod_def_photo_upload py-2"
+                                                        title="Click for photo upload">
+                                                    </div>
+                                                </div>
 
-                                        <div class="col-md-12">
-                                            <div class="mb-3 form-input">
-                                                <label for="location" class="form-label">Location</label>
-                                                <input type="url" name="location" data-preview="preview_location"
-                                                    id="location" placeholder="location" value="{{ $card->location }}"
-                                                    class="social_item_in form-control cin  @error('location') is-invalid @enderror"
-                                                    tabindex="{{ $tabindex++ }}" data-attr="" data-type="map">
-                                                @if ($errors->has('location'))
-                                                <span class="help-block text-danger">{{ $errors->first('location')
-                                                    }}</span>
-                                                @endif
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="mb-3 form-input">
-                                                <label for="about_us" class="form-label">About Your Bussiness</label>
-                                                <textarea type="text" cols="30" rows="10" name="about_us" id="about_us"
-                                                    data-type="about" placeholder="About Your Bussiness"
-                                                    data-preview="preview_about_us"
-                                                    class="social_item_in form-control cin @error('about_us') is-invalid @enderror"
-                                                    tabindex="{{ $tabindex++ }}"
-                                                    data-attr="">{{ old('about_us') ?? $card->about_us }}</textarea>
-                                                @if ($errors->has('about_us'))
-                                                <span class="help-block text-danger">{{ $errors->first('about_us')
-                                                    }}</span>
-                                                @endif
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-3 form-input">
+                                                    <label for="phone_number" class="form-label">Phone <span
+                                                            class="text-danger">*</span></label></label>
+                                                    <input type="number" name="phone_number" data-type="phone_number"
+                                                        data-preview="preview_phone_number" id="phone"
+                                                        placeholder="your phone"
+                                                        class="social_item_in form-control cin @error('phone') is-invalid @enderror"
+                                                        tabindex="{{ $tabindex++ }}" value="{{ $card->phone_number }}"
+                                                        required>
+                                                    @if ($errors->has('phone_number'))
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('phone_number') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3 form-input">
+                                                    <label for="email" class="form-label">Email <span
+                                                            class="text-danger">*</span></label></label>
+                                                    <input type="email" name="email" data-type="user_email"
+                                                        data-type="email" placeholder="your email" id="email"
+                                                        class="social_item_in form-control cin @error('email') is-invalid @enderror"
+                                                        data-preview="preview_email" tabindex="{{ $tabindex++ }}"
+                                                        value="{{ $card->email }}" required>
+                                                    @if ($errors->has('email'))
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('email') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3 form-input">
+                                                    <label for="website" class="form-label">Website</label>
+                                                    <input type="url" name="website" data-type="website"
+                                                        placeholder="your website" id="website"
+                                                        class="social_item_in form-control cin @error('website') is-invalid @enderror cin"
+                                                        tabindex="{{ $tabindex++ }}" value="{{ $card->website }}">
+                                                    @if ($errors->has('website'))
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('website') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3 form-input">
+                                                    <label for="facebook" class="form-label">Facebook</label>
+                                                    <input type="text" name="facebook" data-type="facebook"
+                                                        placeholder="facebook username" id="facebook"
+                                                        class="social_item_in form-control @error('facebook') is-invalid @enderror"
+                                                        tabindex="{{ $tabindex++ }}"
+                                                        value="{{ getInputValue($card->id, 'facebook') }}">
+                                                    @if ($errors->has('facebook'))
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('facebook') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="mb-3 form-input">
+                                                    <label for="instagram" class="form-label">Instagram</label>
+                                                    <input type="text" name="instagram" id="instagram"
+                                                        data-type="instagram" placeholder="instagram username"
+                                                        class="social_item_in form-control @error('instagram') is-invalid @enderror"
+                                                        tabindex="{{ $tabindex++ }}"
+                                                        value="{{ getInputValue($card->id, 'instagram') }}">
+                                                    @if ($errors->has('instagram'))
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('instagram') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3 form-input">
+                                                    <label for="cashapp" class="form-label">CashApp</label>
+                                                    <input type="text" name="cashapp" data-preview="preview_cashapp"
+                                                        id="cashapp" placeholder="cashapp username"
+                                                        value="{{ $card->cashapp }}"
+                                                        class="form-control cin  @error('cashapp') is-invalid @enderror"
+                                                        tabindex="{{ $tabindex++ }}">
+                                                    @if ($errors->has('cashapp'))
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('cashapp') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="mb-3 form-input">
+                                                    <label for="location" class="form-label">Location</label>
+                                                    <input type="url" name="location" data-preview="preview_location"
+                                                        id="location" placeholder="location"
+                                                        value="{{ $card->location }}"
+                                                        class="social_item_in form-control cin  @error('location') is-invalid @enderror"
+                                                        tabindex="{{ $tabindex++ }}" data-attr="" data-type="map">
+                                                    @if ($errors->has('location'))
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('location') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="mb-3 form-input">
+                                                    <label for="about_us" class="form-label">About Your Bussiness</label>
+                                                    <textarea type="text" cols="30" rows="10" name="about_us" id="about_us" data-type="about"
+                                                        placeholder="About Your Bussiness" data-preview="preview_about_us"
+                                                        class="social_item_in form-control cin @error('about_us') is-invalid @enderror" tabindex="{{ $tabindex++ }}"
+                                                        data-attr="">{{ old('about_us') ?? $card->about_us }}</textarea>
+                                                    @if ($errors->has('about_us'))
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('about_us') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="mb-3 form-input position-relative">
+                                                    <label for="personalized_link" class="form-label">Personalized
+                                                        Link</label>
+                                                    @if (isFreePlan(Auth::user()->id))
+                                                        <a href="javascript:void(0)" class="overlay-btn upgrade-plan"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            data-bs-custom-class="custom-tooltip"
+                                                            title="Upgrade to a Premium account to access personalized link"></a>
+                                                    @endif
+                                                    <input type="text" placeholder="Personalized Link"
+                                                        name="personalized_link" id="personalized_link"
+                                                        class="form-control @error('gallery_type') is-invalid @enderror"
+                                                        value="{{ $card_url }}" tabindex="{{ $tabindex++ }}"
+                                                        {{ isFreePlan(Auth::user()->id) == true ? 'disabled' : '' }}>
+                                                    @if ($errors->has('personalized_link'))
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('personalized_link') }}</span>
+                                                    @endif
+                                                    <span id="status"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="mb-3 form-input position-relative">
+                                                    <label for="footer_text" class="form-label">Copyright</label>
+                                                    @if (isFreePlan(Auth::user()->id))
+                                                        <a href="javascript:void(0)" class="overlay-btn upgrade-plan"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            data-bs-custom-class="custom-tooltip"
+                                                            title="Upgrade to a Premium account to access custom Copyright"></a>
+                                                    @endif
+                                                    <input type="text" data-preview="preview_copyright"
+                                                        name="footer_text" placeholder="copyright" id="footer_text"
+                                                        class="form-control cin @error('footer_text') is-invalid @enderror"
+                                                        tabindex="{{ $tabindex++ }}" value="{{ $footer_text }}"
+                                                        {{ isFreePlan(Auth::user()->id) == true ? 'disabled' : '' }}>
+                                                    @if ($errors->has('footer_text'))
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('footer_text') }}</span>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-12">
-                                            <div class="mb-3 form-input position-relative">
-                                                <label for="personalized_link" class="form-label">Personalized
-                                                    Link</label>
-                                                @if (isFreePlan(Auth::user()->id))
-                                                <a href="javascript:void(0)" class="overlay-btn upgrade-plan"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-custom-class="custom-tooltip"
-                                                    title="Upgrade to a Premium account to access personalized link"></a>
-                                                @endif
-                                                <input type="text" placeholder="Personalized Link"
-                                                    name="personalized_link" id="personalized_link"
-                                                    class="form-control @error('gallery_type') is-invalid @enderror"
-                                                    value="{{ $card_url }}" tabindex="{{ $tabindex++ }}" {{
-                                                    isFreePlan(Auth::user()->id) == true ? 'disabled' : '' }}>
-                                                @if ($errors->has('personalized_link'))
-                                                <span class="help-block text-danger">{{
-                                                    $errors->first('personalized_link') }}</span>
-                                                @endif
-                                                <span id="status"></span>
-                                            </div>
+                                        <div class="mb-3">
+                                            <button type="submit" class="btn btn-primary submitBtn">Update Biz
+                                                Ad</button>
                                         </div>
-                                        <div class="col-12">
-                                            <div class="mb-3 form-input position-relative">
-                                                <label for="footer_text" class="form-label">Copyright</label>
-                                                @if (isFreePlan(Auth::user()->id))
-                                                <a href="javascript:void(0)" class="overlay-btn upgrade-plan"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-custom-class="custom-tooltip"
-                                                    title="Upgrade to a Premium account to access custom Copyright"></a>
-                                                @endif
-                                                <input type="text" data-preview="preview_copyright" name="footer_text"
-                                                    placeholder="copyright" id="footer_text"
-                                                    class="form-control cin @error('footer_text') is-invalid @enderror"
-                                                    tabindex="{{ $tabindex++ }}" value="{{ $footer_text }}" {{
-                                                    isFreePlan(Auth::user()->id) == true ? 'disabled' : '' }}>
-                                                @if ($errors->has('footer_text'))
-                                                <span class="help-block text-danger">{{ $errors->first('footer_text')
-                                                    }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <button type="submit" class="btn btn-primary submitBtn">Update Biz
-                                            Ad</button>
-                                    </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        @include('user.includes.footer')
     </div>
-    @include('user.includes.footer')
-</div>
 
-<div class="share_modal email_modal">
-    <div class="modal animate__animated animate__fadeIn" id="SocialModal" tabindex="-1" data-bs-backdrop="static"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content ">
-                <div class="modal-header">
-                    <h5 class="modal-title">{{ __('Share Your Card') }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal_body">
-                    <div id="social-links">
-                        <div>
-                            @if ($android !== false || $ipad !== false || $iphone !== false)
-                            @php
-                            $sms_attr = 'sms:?body=' . URL::to('/');
-                            @endphp
-                            @else
-                            @php
-                            $sms_attr = 'sms:;body=' . URL::to('/');
-                            @endphp
-                            @endif
-                            <label class="py-2" for="send_to">Send To</label>
-                            <div class="input-group">
-                                <input type="text" name="send_to" id="send_to"
-                                    class="form-control @error('send_to') is-invalid @enderror"
-                                    placeholder="Send to phone no" required>
-                                <a href="{{ $sms_attr }}" class="input-group-text btn btn-dark sendto-btn">Send</a>
+    <div class="share_modal email_modal">
+        <div class="modal animate__animated animate__fadeIn" id="SocialModal" tabindex="-1" data-bs-backdrop="static"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ __('Share Your Card') }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal_body">
+                        <div id="social-links">
+                            <div>
+                                @if ($android !== false || $ipad !== false || $iphone !== false)
+                                    @php
+                                        $sms_attr = 'sms:?body=' . URL::to('/');
+                                    @endphp
+                                @else
+                                    @php
+                                        $sms_attr = 'sms:;body=' . URL::to('/');
+                                    @endphp
+                                @endif
+                                <label class="py-2" for="send_to">Send To</label>
+                                <div class="input-group">
+                                    <input type="text" name="send_to" id="send_to"
+                                        class="form-control @error('send_to') is-invalid @enderror"
+                                        placeholder="Send to phone no" required>
+                                    <a href="{{ $sms_attr }}"
+                                        class="input-group-text btn btn-dark sendto-btn">Send</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1007,17 +1036,16 @@
             </div>
         </div>
     </div>
-</div>
-@include('user.cards._upgrade_plan_modal')
-@push('custom-js')
-<script type="text/javascript" src="{{ asset('assets/js/slim.kickstart.min.js') }}"></script>
-<script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-<script src="{{ asset('assets/js/card.js') }}"></script>
-<script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
-{{-- <script src="{{ asset('js/croppie.js') }}"></script> --}}
-{{-- @include('image_crop') --}}
-<script>
-    $(document).on('click', '.upgrade-plan', function(e) {
+    @include('user.cards._upgrade_plan_modal')
+    @push('custom-js')
+        <script type="text/javascript" src="{{ asset('assets/js/slim.kickstart.min.js') }}"></script>
+        <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+        <script src="{{ asset('assets/js/card.js') }}"></script>
+        <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
+        {{-- <script src="{{ asset('js/croppie.js') }}"></script> --}}
+        {{-- @include('image_crop') --}}
+        <script>
+            $(document).on('click', '.upgrade-plan', function(e) {
                 e.preventDefault();
                 $('#planModal').modal('show');
             })
@@ -1091,6 +1119,10 @@
                 $('#preview_name').css({
                     'color': current_color
                 });
+
+                $('.save-contact').css('color', current_color);
+                $('.shop-button').css('color', current_color);
+
             })
 
             $(document).on('input', '#icon_border_color', function(e) {
@@ -1467,6 +1499,6 @@
                     }
                 });
             });
-</script>
-@endpush
+        </script>
+    @endpush
 @endsection

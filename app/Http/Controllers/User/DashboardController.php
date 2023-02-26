@@ -44,15 +44,6 @@ class DashboardController extends Controller
                 $plan_validity = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', Auth::user()->plan_validity);
                 $current_date = Carbon::now();
                 $remaining_days = $current_date->diffInDays($plan_validity, false);
-                if ($remaining_days <= 0) {
-                    $business_card = BusinessCard::where('user_id', Auth::user()->id)->update([
-                        'card_status' => 'inactive'
-                    ]);
-
-                    return redirect()->route('user.plans');
-
-                    
-                }
             }
 
             $monthCards = [];

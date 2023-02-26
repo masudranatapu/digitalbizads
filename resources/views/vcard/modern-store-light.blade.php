@@ -95,59 +95,70 @@
             </div>
         </div>
 
-        <section class="py-1">
-            <div class="container px-4 mx-auto">
-                <div class="rounded overflow-hidden">
-                    <img class="rounded pb-2" src="{{ url('/') }}{{ $business_card_details->cover }}"
-                        alt="{{ $business_card_details->title }}">
+
+        @if ($business_card_details->card_status == 'activated')
+
+
+            <section class="py-1">
+                <div class="container px-4 mx-auto">
+                    <div class="rounded overflow-hidden">
+                        <img class="rounded pb-2" src="{{ url('/') }}{{ $business_card_details->cover }}"
+                            alt="{{ $business_card_details->title }}">
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <section id="shop" class="py-8">
-            <div class="container px-4 mx-auto">
-                <div class="flex flex-wrap -m-4">
+            <section id="shop" class="py-8">
+                <div class="container px-4 mx-auto">
+                    <div class="flex flex-wrap -m-4">
 
-                    @foreach ($products as $product)
-                        <div class="w-1/1 lg:w-1/3 p-4">
-                            <div class="p-4 bg-white shadow-lg rounded-lg" style="height:100% !important;">
-                                <div class="w-full mb-2">
-                                    <img class="rounded pb-2" id="{{ $product->product_id }}_product_image"
-                                        src="{{ asset($product->product_image) }}" alt="{{ $product->product_name }}">
-                                </div>
-                                <span
-                                    class="py-1 px-2 bg-red-500 rounded text-xs text-white">{{ $product->badge }}</span>
-                                <div class="w-full mb-1 mt-1 justify-between items-center">
-                                    <div>
-                                        <h3 id="{{ $product->product_id }}_product_name" class="text-sm font-medium">
-                                            {{ $product->product_name }}</h3>
-                                        <span id="{{ $product->product_id }}_subtitle"
-                                            class="text-xs text-gray-500">{{ $product->product_subtitle }}</span>
+                        @foreach ($products as $product)
+                            <div class="w-1/1 lg:w-1/3 p-4">
+                                <div class="p-4 bg-white shadow-lg rounded-lg" style="height:100% !important;">
+                                    <div class="w-full mb-2">
+                                        <img class="rounded pb-2" id="{{ $product->product_id }}_product_image"
+                                            src="{{ asset($product->product_image) }}"
+                                            alt="{{ $product->product_name }}">
+                                    </div>
+                                    <span
+                                        class="py-1 px-2 bg-red-500 rounded text-xs text-white">{{ $product->badge }}</span>
+                                    <div class="w-full mb-1 mt-1 justify-between items-center">
+                                        <div>
+                                            <h3 id="{{ $product->product_id }}_product_name"
+                                                class="text-sm font-medium">
+                                                {{ $product->product_name }}</h3>
+                                            <span id="{{ $product->product_id }}_subtitle"
+                                                class="text-xs text-gray-500">{{ $product->product_subtitle }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="w-full mb-1 justify-between items-center">
+                                        <h4 class="text-sm mb-3 font-bold"><span
+                                                id="{{ $product->product_id }}_currency">{{ $currency }}</span>
+                                            <span
+                                                id="{{ $product->product_id }}_price">{{ $product->sales_price }}</span>
+                                            @if ($product->sales_price != $product->regular_price)
+                                                <span class="text-xs line-through text-red-500 font-bold">
+                                                    {{ $currency }}{{ $product->regular_price }}</span>
+                                            @endif
+                                        </h4>
+                                        @if ($product->product_status == 'instock')
+                                            <a onclick="addToCart('{{ $product->product_id }}')"
+                                                class="py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
+                                                style="cursor: pointer;">{{ __('Add') }}</a>
+                                        @endif
                                     </div>
                                 </div>
-                                <div class="w-full mb-1 justify-between items-center">
-                                    <h4 class="text-sm mb-3 font-bold"><span
-                                            id="{{ $product->product_id }}_currency">{{ $currency }}</span> <span
-                                            id="{{ $product->product_id }}_price">{{ $product->sales_price }}</span>
-                                        @if ($product->sales_price != $product->regular_price)
-                                            <span class="text-xs line-through text-red-500 font-bold">
-                                                {{ $currency }}{{ $product->regular_price }}</span>
-                                        @endif
-                                    </h4>
-                                    @if ($product->product_status == 'instock')
-                                        <a onclick="addToCart('{{ $product->product_id }}')"
-                                            class="py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
-                                            style="cursor: pointer;">{{ __('Add') }}</a>
-                                    @endif
-                                </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
 
+                    </div>
                 </div>
+            </section>
+        @else
+            <div class="text-center text-light d-flex align-items-center" style="min-height: 90vh">
+                <h2 style="color: #000000 ;font-size:25px;">Your Bizad is currently Inactive. Please activate.</h2>
             </div>
-        </section>
-
+        @endif
 
         <div class="py-8">
 
