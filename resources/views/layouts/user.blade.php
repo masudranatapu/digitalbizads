@@ -40,7 +40,7 @@
             <img src="{{ asset('preloader.gif') }}" alt="{{ config('app.name') }}">
         </div>
     </div>
-    @dump(getUserPlan());
+
 
     <div id="wrapper">
         @if (isset($header) && $header)

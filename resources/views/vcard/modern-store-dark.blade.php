@@ -468,6 +468,7 @@
         function createEmailLink(cusDetails) {
             "use strict";
             if (cusDetails[0].length >= 3 && cusDetails[0].length >= 4 && cusDetails[0].length >= 3) {
+                successAlert('{{ __('Order Placed Successfully!') }}');
 
 
                 $.ajaxSetup({
@@ -489,7 +490,6 @@
                         if (data.status == 'success') {
 
                             cart = [];
-                            document.location.reload();
 
 
                         }
@@ -498,6 +498,10 @@
                     error: function(error) {
                         console.log(error);
                         successAlert('{{ __('Order Placed!') }}');
+
+                    },
+                    complete: function() {
+                        document.location.reload();
 
                     }
 

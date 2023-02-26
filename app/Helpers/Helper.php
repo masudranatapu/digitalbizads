@@ -307,7 +307,7 @@ function getPlan($user_id)
         ->first();
 }
 
-if (function_exists('getUserPlan')) {
+if (!function_exists('getUserPlan')) {
     function getUserPlan()
     {
         $plan = User::where('user_id', Auth::user()->user_id)->first();

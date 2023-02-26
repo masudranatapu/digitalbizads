@@ -54,7 +54,7 @@ class PlanController extends Controller
             'plan_price' => 'required',
             'no_of_vcards' => 'required',
             'no_of_services' => 'required',
-            'no_of_galleries' => 'required',
+            // 'no_of_galleries' => 'required',
             // 'no_of_features' => 'required',
             // 'no_of_payments' => 'required'
         ]);
@@ -113,7 +113,7 @@ class PlanController extends Controller
         $plan->validity = $request->validity;
         $plan->no_of_vcards = $request->no_of_vcards;
         $plan->no_of_services = $request->no_of_services;
-        $plan->no_of_galleries = $request->no_of_galleries;
+        $plan->no_of_galleries = $request->no_of_galleries ?? 0;
         $plan->no_of_features = $request->no_of_features ?? 0;
         $plan->no_of_payments = $request->no_of_payments ?? 0;
         $plan->personalized_link = $personalized_link;
@@ -152,7 +152,7 @@ class PlanController extends Controller
             'plan_price' => 'required',
             'no_of_vcards' => 'required',
             'no_of_services' => 'required',
-            'no_of_galleries' => 'required',
+            // 'no_of_galleries' => 'required',
             // 'no_of_features' => 'required',
             // 'no_of_payments' => 'required'
         ]);
@@ -217,7 +217,7 @@ class PlanController extends Controller
                 'validity' => $request->validity,
                 'no_of_vcards' => $request->no_of_vcards,
                 'no_of_services' => $request->no_of_services,
-                'no_of_galleries' => $request->no_of_galleries,
+                'no_of_galleries' => $request->no_of_galleries ?? 0,
                 // 'no_of_features' => $request->no_of_features ?? 0,
                 // 'no_of_payments' => $request->no_of_payments ?? 0,
                 'personalized_link' => $personalized_link,

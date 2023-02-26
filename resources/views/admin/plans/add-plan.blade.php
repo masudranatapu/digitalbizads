@@ -95,7 +95,7 @@
                                             <h2 class="page-title my-3">
                                                 {{ __('Plan Features') }}
                                             </h2>
-                                            <div class="col-md-4 col-xl-4">
+                                            <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
                                                     <label class="form-label required">{{ __('No. Of vCards') }}</label>
                                                     <input type="number" class="form-control" name="no_of_vcards"
@@ -104,7 +104,7 @@
                                                     <small class="text-muted">{{ __('For unlimited, enter 999') }} </small>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 col-xl-4">
+                                            <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
                                                     <label
                                                         class="form-label required">{{ __('No. Of Services/Products') }}</label>
@@ -115,7 +115,7 @@
                                                     <small class="text-muted">{{ __('For unlimited, enter 999') }} </small>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4 col-xl-4">
+                                            {{-- <div class="col-md-4 col-xl-4">
                                                 <div class="mb-3">
                                                     <label class="form-label required">{{ __('No. Of Galleries') }}</label>
                                                     <input type="number" class="form-control" name="no_of_galleries"
@@ -126,7 +126,7 @@
                                                     </small>
                                                 </div>
                                             </div>
-                                            {{-- <div class="col-md-6 col-xl-6">
+                                             <div class="col-md-6 col-xl-6">
                                             <div class="mb-3">
                                                 <label class="form-label required">{{ __('No. Of Card Features') }}</label>
                                                 <input type="number" class="form-control" name="no_of_features" min="1" max="999"
