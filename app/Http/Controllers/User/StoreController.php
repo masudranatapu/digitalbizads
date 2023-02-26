@@ -22,11 +22,12 @@ class StoreController extends Controller
     public function CreateStore()
     {
 
-        $cards = BusinessCard::where('user_id', Auth::id())->count();
+        $result = BusinessCard::where('user_id', Auth::id())->where('card_type', 'store')->count();
 
 
 
-        if ($cards > 0) {
+
+        if ($result > 0) {
             alert()->error(trans('Maximum store creation limit is exceeded.'));
 
             return redirect()->route('user.stores');
@@ -77,8 +78,9 @@ class StoreController extends Controller
         }
 
         if ($validator->fails()) {
-            alert()->error(trans('Some fields missing or banner/logo size is large.'));
-            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+            // alert()->error(trans('Some fields missing or banner/logo size is large.'));
+            dd($validator->errors());
+            return back()->with('toast_error', $validator->errors())->withInput();
         }
 
         $cardId = uniqid();
