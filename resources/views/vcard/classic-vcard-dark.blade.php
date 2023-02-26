@@ -211,7 +211,7 @@
                             <ul class="grid grid-flow-col grid-cols-1 grid-rows-1">
 
                             @if ($payment->type == 'url')
-                            @if(substr($payment->content, 0, 3) == "upi") 
+                            @if(substr($payment->content, 0, 3) == "upi")
                             <a href="{{ str_replace('https://', '', $payment->content) }}" target="_blank">
                             @else
                             <a href="https://{{ str_replace('https://', '', $payment->content) }}" target="_blank">
@@ -277,7 +277,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <div class="w-full overflow-hidden rounded-lg shadow-lg">
-                                        <iframe src="https://www.google.com/maps/embed?{{ $feature->content }}" 
+                                        <iframe src="https://www.google.com/maps/embed?{{ $feature->content }}"
                                             class="w-full h-64" frameborder="0" allowfullscreen></iframe>
                                         <div class="px-5 py-3">
                                             <div class="mb-2">
