@@ -221,29 +221,29 @@ class ProfileController extends Controller
 
     public function downloadVcard(Request $request, $id)
     {
-        $business_card = BusinessCard::where('card_id', $id)->first();
+        $business_card = BusinessCard::select('business_cards.*', 'users.name', 'users.email')
+            ->where('card_id', $id)->leftJoin('users', 'business_cards.user_id', 'users.id')->first();
+
 
         if ($business_card == null) {
             return view('errors.404');
         } else {
-            $business_card_details = DB::table('business_cards')->where('business_cards.card_id', $id)
-                ->join('users', 'business_cards.user_id', '=', 'users.user_id')
-                ->select('business_cards.*')
-                ->first();
-            $features = BusinessField::where('card_id', $id)->get();
 
-            $vcard_url = URL::to('/') . "/" . $business_card_details->card_url;
+
+
+
+            $vcard_url = URL::to('/') . "/" . $business_card->card_url;
 
             // define vcard
             $vcard = new VCard();
 
             // define variables
             $lastname = '';
-            $firstname = $business_card_details->title;
+            $firstname = $business_card->name;
             $additional = '';
             $prefix = '';
             $suffix = '';
-            $email = '';
+            $email = $business_card->email;
             $tel = '';
             $whatsapp = '';
 
@@ -251,34 +251,22 @@ class ProfileController extends Controller
             // add personal data
             $vcard->addName($lastname, $firstname, $additional, $prefix, $suffix);
 
-            foreach ($features as $key => $value) {
-                if ($value->type == "email") {
-                    $vcard->addEmail($value->content);
-                }
-                if ($value->type == "tel") {
-                    $vcard->addPhoneNumber($value->content, 'WORK');
-                }
-                if ($value->type == "wa") {
-                    $vcard->addPhoneNumber($value->content, 'WHATSAPP');
-                }
-                if ($value->type == "url") {
-                    $vcard->addURL($value->content);
-                }
-                if ($value->type == "address") {
-                    $vcard->addAddress($value->content);
-                }
+
+            if (isset($business_card->email)) {
+                $vcard->addEmail($business_card->email);
+            }
+            if (isset($business_card->phone_number)) {
+                $vcard->addPhoneNumber($business_card->phone_number, 'WORK');
             }
 
-            if ($business_card_details->profile == null) {
+
+
+            if ($business_card->profile == null) {
                 $image = "";
             } else {
-                $image = str_replace(' ', '%20', public_path($business_card_details->profile));
+                $image = str_replace(' ', '%20', public_path($business_card->profile));
             }
 
-            // add work data
-            $vcard->addJobtitle($business_card_details->sub_title);
-            //$vcard->addPhoto($image);
-            $vcard->addURL($vcard_url);
 
             return Response::make($vcard->getOutput(), 200, $vcard->getHeaders(true));
         }

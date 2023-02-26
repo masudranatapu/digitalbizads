@@ -323,3 +323,4 @@ Route::group(['middleware' => 'Installer'], function () {
 
 Route::get('{cardurl}', ['as' => 'card.preview', 'uses' => 'HomeController@getPreview']);
 Route::post('/place-email-order', [HomeController::class, 'placeEmailOrder'])->name('place.email.order');
+Route::get('download/{id}', [HomeController::class, 'downloadVcard'])->name('download.vCard');
