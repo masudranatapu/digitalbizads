@@ -1,18 +1,21 @@
 <?php
 
+use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 if (!function_exists('getSetting')) {
-    function getSetting(){
-        return DB::table('settings')->orderBy('id','DESC')->first();
+    function getSetting()
+    {
+        return DB::table('settings')->orderBy('id', 'DESC')->first();
     }
 }
 if (!function_exists('isMobile')) {
-    function isMobile(){
-        if(stristr($_SERVER['HTTP_USER_AGENT'],'Mobile')){
+    function isMobile()
+    {
+        if (stristr($_SERVER['HTTP_USER_AGENT'], 'Mobile')) {
             return true;
-        }else{
+        } else {
             return false;
         }
         // return true;
@@ -23,12 +26,11 @@ if (!function_exists('isMobile')) {
 if (!function_exists('vError')) {
     function vError($errors)
     {
-        if ($errors->any()){
-            foreach ($errors->all() as $error){
-                echo '<li class="text-danger">'. $error .'</li>';
+        if ($errors->any()) {
+            foreach ($errors->all() as $error) {
+                echo '<li class="text-danger">' . $error . '</li>';
             }
-        }
-        else {
+        } else {
             echo 'Not found any validation error';
         }
     }
@@ -57,10 +59,10 @@ if (!function_exists('get_error_response')) {
 if (!function_exists('checkPackageValidity')) {
     function checkPackageValidity($user_id)
     {
-        $user = DB::table('users')->where('id',$user_id)->first();
+        $user = DB::table('users')->where('id', $user_id)->first();
         $today = strtotime("today midnight");
         $expire = strtotime($user->plan_validity);
-        if($today >= $expire){
+        if ($today >= $expire) {
             return false;
         } else {
             return true;
@@ -72,13 +74,13 @@ if (!function_exists('checkPackageValidity')) {
 if (!function_exists('checkCardLimit')) {
     function checkCardLimit($user_id)
     {
-        $user = DB::table('users')->where('id',$user_id)->first();
-        if($user->plan_details){
-            $plan_details = json_decode($user->plan_details,true);
-            if($plan_details['no_of_vcards'] != 9999){
-                $user_card = DB::table('business_cards')->where('card_status','activated')->where('user_id',$user_id)->count();
-                if($plan_details['no_of_vcards'] <=  $user_card){
-                    return false ;
+        $user = DB::table('users')->where('id', $user_id)->first();
+        if ($user->plan_details) {
+            $plan_details = json_decode($user->plan_details, true);
+            if ($plan_details['no_of_vcards'] != 9999) {
+                $user_card = DB::table('business_cards')->where('card_status', 'activated')->where('user_id', $user_id)->count();
+                if ($plan_details['no_of_vcards'] <=  $user_card) {
+                    return false;
                 }
             }
         }
@@ -88,14 +90,14 @@ if (!function_exists('checkCardLimit')) {
 if (!function_exists('getPhoto')) {
     function getPhoto($path)
     {
-        if($path){
+        if ($path) {
             $ppath = public_path($path);
-            if(file_exists($ppath)){
-              return asset($path);
+            if (file_exists($ppath)) {
+                return asset($path);
             } else {
                 return asset('assets/img/card/personal.png');
-           }
-        }else{
+            }
+        } else {
             return asset('assets/img/card/personal.png');
         }
     }
@@ -105,9 +107,9 @@ if (!function_exists('getPhoto')) {
 if (!function_exists('getAvatar')) {
     function getAvatar($path)
     {
-        if(!empty($path)){
-              return $path;
-            } else {
+        if (!empty($path)) {
+            return $path;
+        } else {
             // return asset('assets/img/card/personal.png');
             return asset('assets/img/default-profile.png');
         }
@@ -117,14 +119,14 @@ if (!function_exists('getAvatar')) {
 if (!function_exists('getCover')) {
     function getCover($path = null)
     {
-        if($path){
+        if ($path) {
             $ppath = public_path($path);
-            if(file_exists($ppath)){
-              return asset($path);
+            if (file_exists($ppath)) {
+                return asset($path);
             } else {
                 return asset('assets/img/default-cover.png');
-           }
-        }else{
+            }
+        } else {
             return asset('assets/img/default-cover.png');
         }
     }
@@ -132,30 +134,29 @@ if (!function_exists('getCover')) {
 if (!function_exists('getProfile')) {
     function getProfile($path = null)
     {
-        if($path){
+        if ($path) {
             $ppath = public_path($path);
-            if(file_exists($ppath)){
-              return asset($path);
+            if (file_exists($ppath)) {
+                return asset($path);
             } else {
                 return asset('assets/img/default-profile.png');
-           }
-        }else{
+            }
+        } else {
             return asset('assets/img/default-profile.png');
         }
-
     }
 }
 if (!function_exists('getLogo')) {
     function getLogo($path = null)
     {
-        if($path){
+        if ($path) {
             $ppath = public_path($path);
-            if(file_exists($ppath)){
-              return asset($path);
+            if (file_exists($ppath)) {
+                return asset($path);
             } else {
                 return asset('assets/img/default-logo.png');
-           }
-        }else{
+            }
+        } else {
             return asset('assets/img/default-logo.png');
         }
     }
@@ -164,14 +165,14 @@ if (!function_exists('getLogo')) {
 if (!function_exists('getIcon')) {
     function getIcon($path = null)
     {
-        if($path){
+        if ($path) {
             $ppath = public_path($path);
-            if(file_exists($ppath)){
-              return asset($path);
+            if (file_exists($ppath)) {
+                return asset($path);
             } else {
                 return asset('assets/img/default.svg');
-           }
-        }else{
+            }
+        } else {
             return asset('assets/img/default.svg');
         }
     }
@@ -180,14 +181,13 @@ if (!function_exists('getIcon')) {
 
 
 if (!function_exists('getDesigComp')) {
-    function getDesigComp($desig,$comp)
+    function getDesigComp($desig, $comp)
     {
-        if($desig != '' & $comp != '' ){
-            return  $desig.' At '.$comp;
-        }else{
-            return  $desig.' '.$comp;
+        if ($desig != '' & $comp != '') {
+            return  $desig . ' At ' . $comp;
+        } else {
+            return  $desig . ' ' . $comp;
         }
-
     }
 }
 
@@ -208,17 +208,17 @@ if (!function_exists('makeUrl')) {
 if (!function_exists('getSocialIcon')) {
     function getSocialIcon($ikey)
     {
-        return DB::table('social_icon')->where('icon_name','=',$ikey)->first();
+        return DB::table('social_icon')->where('icon_name', '=', $ikey)->first();
     }
 }
 
 if (!function_exists('getInputValue')) {
-    function getInputValue($card_id,$type)
+    function getInputValue($card_id, $type)
     {
-        $icon = DB::table('business_fields')->where('card_id','=',$card_id)->where('type',$type)->first();
-        if(!empty($icon)){
+        $icon = DB::table('business_fields')->where('card_id', '=', $card_id)->where('type', $type)->first();
+        if (!empty($icon)) {
             $data = $icon->content;
-        }else{
+        } else {
             $data = NULL;
         }
         return $data;
@@ -228,16 +228,17 @@ if (!function_exists('getInputValue')) {
 
 
 if (!function_exists('CurrencyFormat')) {
-    function CurrencyFormat($number, $decimal = 1) { // cents: 0=never, 1=if needed, 2=always
+    function CurrencyFormat($number, $decimal = 1)
+    { // cents: 0=never, 1=if needed, 2=always
         if (is_numeric($number)) { // a number
             if (!$number) { // zero
-            $money = ($decimal == 2 ? '0.00' : '0.00'); // output zero
+                $money = ($decimal == 2 ? '0.00' : '0.00'); // output zero
             } else { // value
-            if (floor($number) == $number) { // whole number
-                $money = number_format($number, ($decimal == 2 ? 2 : 2)); // format
-            } else { // cents
-                $money = number_format(round($number, 2), ($decimal == 0 ? 0 : 2)); // format
-            } // integer or decimal
+                if (floor($number) == $number) { // whole number
+                    $money = number_format($number, ($decimal == 2 ? 2 : 2)); // format
+                } else { // cents
+                    $money = number_format(round($number, 2), ($decimal == 0 ? 0 : 2)); // format
+                } // integer or decimal
             } // value
             return $money;
         } // numeric
@@ -251,56 +252,66 @@ function formatFileName($file)
     $base_name = explode(' ', $base_name);
     $base_name = implode('-', $base_name);
     $base_name = Str::lower($base_name);
-    $file_name = $base_name."-".uniqid().".".$file->getClientOriginalExtension();
+    $file_name = $base_name . "-" . uniqid() . "." . $file->getClientOriginalExtension();
     return $file_name;
 }
 
-function checkPackage($id = null){
-    if($id){
-        $user = DB::table('users')->where('id',$id)->first();
-        if($user->plan_id){
+function checkPackage($id = null)
+{
+    if ($id) {
+        $user = DB::table('users')->where('id', $id)->first();
+        if ($user->plan_id) {
             return true;
-        }else{
+        } else {
             return false;
         }
-    }else{
+    } else {
         return true;
     }
 }
 
 
-function isFreePlan($user_id){
+function isFreePlan($user_id)
+{
     $user = DB::table('users')
-    ->select('plans.plan_price')
-    ->leftJoin('plans','plans.plan_id','=','users.plan_id')
-    ->where('users.id',$user_id)->first();
-    if($user->plan_price == 0){
+        ->select('plans.plan_price')
+        ->leftJoin('plans', 'plans.plan_id', '=', 'users.plan_id')
+        ->where('users.id', $user_id)->first();
+    if ($user->plan_price == 0) {
         return true;
     }
     return false;
 }
-function isAnnualPlan($user_id){
-    $user = DB::table('users')->select('users.*','plans.is_free')
-    ->leftJoin('plans','plans.id','=','users.plan_id')
-    ->where('users.id',$user_id)
-    ->first();
+function isAnnualPlan($user_id)
+{
+    $user = DB::table('users')->select('users.*', 'plans.is_free')
+        ->leftJoin('plans', 'plans.id', '=', 'users.plan_id')
+        ->where('users.id', $user_id)
+        ->first();
     $subscription_end = new \Carbon\Carbon($user->plan_validity);
     $subscription_start = new \Carbon\Carbon($user->plan_activation_date);
     $diff_in_days = $subscription_start->diffInDays($subscription_end);
-    if($diff_in_days > 364 && $user->is_free==0){
+    if ($diff_in_days > 364 && $user->is_free == 0) {
         return true;
     }
     return false;
 }
 
 
-function getPlan($user_id){
+function getPlan($user_id)
+{
     return DB::table('users')
-    ->select('plans.*')
-    ->leftJoin('plans','plans.id','=','users.plan_id')
-    ->where('users.id',$user_id)
-    ->first();
+        ->select('plans.*')
+        ->leftJoin('plans', 'plans.id', '=', 'users.plan_id')
+        ->where('users.id', $user_id)
+        ->first();
 }
 
-
-
+if (function_exists('getUserPlan')) {
+    function getUserPlan()
+    {
+        $plan = User::where('user_id', Auth::user()->user_id)->first();
+        $active_plan = json_decode($plan->plan_details, true);
+        return $active_plan;
+    }
+}
