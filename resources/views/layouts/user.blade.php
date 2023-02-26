@@ -27,11 +27,12 @@
     <script src="{{ asset('js/chart.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/sweetalert.min.js') }}"></script>
     @yield('css')
-    <input type="hidden" name="base_url" id="base_url" value="{{url('/')}}">
+    <input type="hidden" name="base_url" id="base_url" value="{{ url('/') }}">
 
 </head>
 
-<body class="antialiased" dir="{{(App::isLocale('ar') || App::isLocale('ur') || App::isLocale('he') ? 'rtl' : 'ltr')}}">
+<body class="antialiased"
+    dir="{{ App::isLocale('ar') || App::isLocale('ur') || App::isLocale('he') ? 'rtl' : 'ltr' }}">
 
     {{-- Preloader --}}
     <div class="preloader-wrapper">
@@ -40,12 +41,13 @@
         </div>
     </div>
 
+
     <div id="wrapper">
         @if (isset($header) && $header)
-        @include('user.includes.header')
+            @include('user.includes.header')
         @endif
         @if (isset($nav) && $nav)
-        @include('user.includes.nav')
+            @include('user.includes.nav')
         @endif
         @yield('content')
     </div>
@@ -54,18 +56,18 @@
     <!-- Tabler Core -->
     <script type="text/javascript" src="{{ asset('backend/js/tabler.min.js') }}"></script>
     @if (isset($demo) && $demo)
-    <script type="text/javascript" src="{{ asset('backend/js/user-delete-query.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('backend/js/datatable.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('backend/js/jquery-qrcode.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('backend/js/user-delete-query.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('backend/js/datatable.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('backend/js/jquery-qrcode.min.js') }}"></script>
     @endif
     {{-- Preloader --}}
     <script>
         $(document).ready(function() {
-        "use strict";
-        $('.preloader-wrapper').fadeOut();
-    });
+            "use strict";
+            $('.preloader-wrapper').fadeOut();
+        });
     </script>
     @yield('scripts')
     @stack('custom-js')
