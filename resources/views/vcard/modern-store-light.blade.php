@@ -40,8 +40,8 @@
                     <div class="ml-auto flex">
                         <button class="navbar-burger flex items-center">
                             <span class="relative inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                                 </svg>
@@ -69,13 +69,11 @@
 
                     <div class="pt-6 p-3">
                         <a onclick="placeOrder()" id="place-order" style="cursor: pointer"
-                            class="block px-4 py-3 mb-3 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{
-                            __('Place WhatsApp Order') }}</a>
+                            class="block px-4 py-3 mb-3 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{ __('Place WhatsApp Order') }}</a>
                     </div>
                     <div class="pt-6 p-3">
                         <a onclick="placeOrderEmail()" id="place-order-email" style="cursor: pointer"
-                            class="block px-4 py-3 mb-3 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{
-                            __('Place Order To Email') }}</a>
+                            class="block px-4 py-3 mb-3 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{ __('Place Order To Email') }}</a>
                     </div>
 
                     <div id="empty-cart" class="pt-6 p-3">
@@ -83,8 +81,7 @@
                         </p>
 
                         <a
-                            class="block navbar-backdrop px-4 py-3 mb-3 mt-4 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{
-                            __('Start Shopping') }}</a>
+                            class="block navbar-backdrop px-4 py-3 mb-3 mt-4 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{ __('Start Shopping') }}</a>
                     </div>
 
                 </nav>
@@ -159,7 +156,7 @@
             </section>
         @else
             <div class="text-center text-light d-flex align-items-center" style="min-height: 90vh">
-                <h2 style="color: #000000 ;font-size:25px;">Your Bizad is currently Inactive. Please activate.</h2>
+                <h2 style="color: #000000 ;font-size:25px;">Your Whatsapp store is currently Inactive</h2>
             </div>
         @endif
 
@@ -228,17 +225,17 @@
 
 
         @if ($plan_details['hide_branding'] == '1')
-        <div class="my-4 mt-12">
-            <p class="mb-2 text-center text-base text-dark">{{ __('Copyright') }} &copy;
-                {{ $card_details->title }} <span id="year"></span>.
-            </p>
-        </div>
+            <div class="my-4 mt-12">
+                <p class="mb-2 text-center text-base text-dark">{{ __('Copyright') }} &copy;
+                    {{ $card_details->title }} <span id="year"></span>.
+                </p>
+            </div>
         @else
-        <div class="my-4 mt-12">
-            <p class="mb-2 text-center text-base text-gray-500">{{ __('Copyright') }} &copy; <span id="year"></span>. <a
-                    href="{{ url('/') }}">{{ config('app.name') }}
-                    {{ __('WhatsApp Store') }}</a></p>
-        </div>
+            <div class="my-4 mt-12">
+                <p class="mb-2 text-center text-base text-gray-500">{{ __('Copyright') }} &copy; <span
+                        id="year"></span>. <a href="{{ url('/') }}">{{ config('app.name') }}
+                        {{ __('WhatsApp Store') }}</a></p>
+            </div>
         @endif
     </div>
     <script src="{{ asset('frontend/whatsapp-store/js/script.js') }}"></script>

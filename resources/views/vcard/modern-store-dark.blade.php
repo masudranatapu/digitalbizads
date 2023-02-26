@@ -219,7 +219,7 @@
             </div>
         @else
             <div class="text-center text-light d-flex align-items-center" style="min-height: 90vh">
-                <h2 style="color: #ffffff ;font-size:25px;">Your Bizad is currently Inactive. Please activate.</h2>
+                <h2 style="color: #ffffff ;font-size:25px;">Your Whatsapp store is currently Inactive</h2>
             </div>
         @endif
 
