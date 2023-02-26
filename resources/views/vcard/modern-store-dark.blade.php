@@ -14,7 +14,12 @@
     {!! Twitter::generate() !!}
     {!! JsonLd::generate() !!}
 
-    <link rel="icon" href="{{ url('/') }}{{ $business_card_details->profile }}" sizes="96x96" type="image/png" />
+    <meta property="og:title" content="{{ $business_card_details->title ?? '' }}" />
+    <meta property="og:description" content="{{ $business_card_details->sub_title ?? '' }}" />
+
+
+    <link rel="icon" href="{{ url('/') }}{{ $business_card_details->profile }}" sizes="96x96"
+        type="image/png" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap">
     <link rel="stylesheet" href="{{ asset('frontend/whatsapp-store/css/tailwind/tailwind.min.css') }}">
