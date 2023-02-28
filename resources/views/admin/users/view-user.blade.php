@@ -68,7 +68,7 @@
                                 <div class="col-md-7 col-xl-7">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h3 class="card-title">{{ __('DigitalBizAds Cards') }}</h3>
+                                            <h3 class="card-title">{{ __('Biz Ad') }}</h3>
                                         </div>
                                         <div class="table-responsive px-2 py-2">
                                             <table class="table card-table table-vcenter text-nowrap datatable"
@@ -108,7 +108,7 @@
                                                                     data-id="{{ $user_card->card_url }}"
                                                                     href="#openQR">{{ __('Scan') }}</a>
                                                                 <a class="btn btn-primary btn-sm"
-                                                                    href="{{ URL::to('/')." /".$user_card->card_url }}"
+                                                                    href="{{ route('card.preview', $user_card->card_url) }}"
                                                                     target="_blank">{{ __('Live') }}</a>
                                                             </div>
                                                         </td>
@@ -131,6 +131,66 @@
                                     </div>
                                 </div>
                             </div>
+                            @if (count($user_stores) != 0)
+                            <br>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">{{ __('Store') }}</h3>
+                                        </div>
+                                        <div class="table-responsive px-2 py-2">
+                                            <table class="table card-table table-vcenter text-nowrap datatable"
+                                                id="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>{{ __('ID') }}</th>
+                                                        <th>{{ __('Title') }}</th>
+                                                        <th>{{ __('Type') }}</th>
+                                                        <th>{{ __('Status') }}</th>
+                                                        <th class="w-1">{{ __('Actions') }}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($user_stores as $row)
+                                                    <tr>
+                                                        {{-- <td><a href="{{ route('profile', $row->card_url) }}"
+                                                                target="_blank">{{ $row->card_id }}</a></td> --}}
+                                                        <td><a href="#" target="_blank">{{ $row->card_id }}</a>
+                                                        </td>
+                                                        <td class="text-muted">
+                                                            {{ $row->adsname ?? $row->title }}
+                                                        </td>
+                                                        <td>{{ $row->card_type == 'vcard' ? __('vCard') :
+                                                            __('WhatsApp Store') }}</td>
+                                                        <td class="text-muted">
+                                                            @if ($row->card_status == 'inactive')
+                                                            <span class="badge bg-red">{{ __('Deactive') }}</span>
+                                                            @else
+                                                            <span class="badge bg-green">{{ __('Active') }}</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-list flex-nowrap">
+                                                                <a class="open-qr btn btn-primary btn-sm"
+                                                                    data-id="{{ $row->card_url }}"
+                                                                    href="#openQR">{{ __('Scan') }}</a>
+                                                                <a class="btn btn-primary btn-sm"
+                                                                    href="{{ route('card.preview', $row->card_url) }}"
+                                                                    target="_blank">{{ __('Live') }}</a>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
+
                         </div>
                     </div>
                 </div>

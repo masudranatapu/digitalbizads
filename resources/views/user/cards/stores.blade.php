@@ -83,7 +83,7 @@
                                                                 href="{{ route('user.view.preview', $business_card->card_id) }}"
                                                                 target="_blank">{{ __('Preview') }}</a>
                                                             <a class="btn btn-warning btn-sm"
-                                                                href="{{ URL::to('/') . '/' . $business_card->card_url }}"
+                                                                href="{{ route('card.preview', $business_card->card_url) }}"
                                                                 target="_blank">{{ __('Live') }}</a>
                                                             @if ($business_card->card_status == 'activated')
                                                                 <a class="open-model btn btn-danger btn-sm"
