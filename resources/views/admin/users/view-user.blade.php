@@ -107,7 +107,7 @@
                                                                 <a class="open-qr btn btn-primary btn-sm"
                                                                     data-id="{{ $user_card->card_url }}"
                                                                     href="#openQR">{{ __('Scan') }}</a>
-                                                                <a class="btn btn-primary btn-sm"
+                                                                <a class="btn btn-warning btn-sm"
                                                                     href="{{ route('card.preview', $user_card->card_url) }}"
                                                                     target="_blank">{{ __('Live') }}</a>
                                                             </div>
@@ -175,7 +175,7 @@
                                                                 <a class="open-qr btn btn-primary btn-sm"
                                                                     data-id="{{ $row->card_url }}"
                                                                     href="#openQR">{{ __('Scan') }}</a>
-                                                                <a class="btn btn-primary btn-sm"
+                                                                <a class="btn btn-warning btn-sm"
                                                                     href="{{ route('card.preview', $row->card_url) }}"
                                                                     target="_blank">{{ __('Live') }}</a>
                                                             </div>
