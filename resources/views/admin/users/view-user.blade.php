@@ -204,7 +204,7 @@
     <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title">{{ __('Scan Business Card / Store')}}</div>
+                <div class="modal-title">{{ __('Scan the QR Code')}}</div>
             </div>
             <div class="modal-body text-center">
                 <img id="cardURL">
