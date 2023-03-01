@@ -94,6 +94,30 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-sm-12 col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    @if($store)
+                                    <p class="h1">{{ __("Let's see your store") }}</p>
+                                    <a class="btn btn-sm btn-white" href="{{ route('user.stores') }}">
+                                        {{ __('Store view') }}
+                                    </a>
+
+                                    @else
+
+                                    <p class="h1">{{ __("Let's create your store") }}</p>
+                                    <a class="btn btn-sm btn-white" href="{{ route('user.create.store') }}">
+                                        {{ __('Create new store') }}
+                                    </a>
+
+                                    @endif
+
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
                 <div class="col-sm-6 col-lg-6">

@@ -192,6 +192,7 @@ Route::group(['middleware' => 'Installer'], function () {
             // Business Cards
             Route::get('cards', [CardController::class, 'cards'])->name('cards');
             Route::get('card-status/{id}', [CardController::class, 'cardStatus'])->name('card.status');
+            Route::get('card-store/{id}/{status}', [CardController::class, 'cardStoreStatus'])->name('card.storestatus');
 
             // Business Store
             Route::get('stores', [CardController::class, 'getStores'])->name('stores');

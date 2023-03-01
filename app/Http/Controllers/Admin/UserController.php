@@ -350,11 +350,13 @@ class UserController extends Controller
     // Delete User
     public function deleteUser(Request $request)
     {
-        $allcards = BusinessCard::where('user_id', $request->query('id'))->get();
+
         $user = User::where('user_id', $request->query('id'))->first();
+        $allcards = BusinessCard::where('user_id', $user->id)->get();
+
         for ($i = 0; $i < count($allcards); $i++) {
             if ($allcards != null) {
-                BusinessField::where('card_id', $allcards[$i]->card_id)->delete();
+                BusinessField::where('card_id', $allcards[$i]->id)->delete();
                 BusinessHour::where('card_id', $allcards[$i]->card_id)->delete();
                 Gallery::where('card_id', $allcards[$i]->card_id)->delete();
                 Payment::where('card_id', $allcards[$i]->card_id)->delete();
@@ -363,8 +365,9 @@ class UserController extends Controller
             }
         }
 
-        $transactions = Transaction::where('user_id', $request->query('id'))->first();
-        $businessCards = BusinessCard::where('user_id', $request->query('id'))->first();
+        $transactions = Transaction::where('user_id', $user->id)->first();
+        $businessCards = BusinessCard::where('user_id', $user->id)->first();
+
 
         // if ($transactions != null) {
         //     $transactions->delete();

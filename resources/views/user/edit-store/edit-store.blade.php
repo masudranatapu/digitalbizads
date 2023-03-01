@@ -55,7 +55,7 @@
                                         <div class="row">
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
-                                                    <label class="form-label required">{{ __('Card Color') }}</label>
+                                                    <label class="form-label required">{{ __('Color') }}</label>
                                                     <div class="row g-2">
                                                         <div class="col-auto">
                                                             <label class="form-colorinput">
@@ -109,6 +109,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
                                                     <label class="form-label" for="card_lang">{{ __('Language') }} <span
@@ -123,6 +124,56 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            <div class="col-md-6 col-xl-6">
+                                            <div class="mb-3 form-input">
+                                                <label for="header_backgroung" class="form-label">Header background color</label>
+                                                <div class="input-group custome_color">
+                                                    <label for="header_backgroung" class="input-group-text">
+                                                        <img src="{{ asset('images/color-picker.png') }}" width="25"
+                                                            alt="color picker">
+                                                        <input type="color" placeholder="card color"
+                                                            name="header_backgroung" id="header_backgroung"
+                                                            value="{{ $business_card->header_backgroung }}"
+                                                            class="form-control @error('header_backgroung') is-invalid @enderror"
+                                                             required>
+                                                    </label>
+                                                    <input type="text" id="theme_back_code" class="form-control"
+                                                        value="{{ $business_card->header_backgroung }}" disabled>
+                                                </div>
+
+                                                @if ($errors->has('header_backgroung'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('header_backgroung') }}</span>
+                                                @endif
+                                            </div>
+                                            </div>
+
+                                            <div class="col-md-6 col-xl-6">
+                                                <div class="mb-3 form-input" >
+                                                    <label for="header_text_color" class="form-label">Headline Color</label>
+                                                    <div class="input-group custome_color">
+                                                        <label for="header_text_color" class="input-group-text">
+                                                            <img src="{{ asset('images/color-picker.png') }}" width="25"
+                                                                alt="color picker">
+                                                            <input type="color" placeholder="card color"
+                                                                name="header_text_color" id="header_text_color"
+                                                                value="{{ $business_card->header_text_color }}"
+                                                                class="form-control @error('header_text_color') is-invalid @enderror" required>
+                                                        </label>
+                                                        <input type="text" id="header_clr_code" class="form-control"
+                                                            value="{{ $business_card->header_text_color }}" disabled>
+                                                    </div>
+
+                                                    @if ($errors->has('header_text_color'))
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('header_text_color') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+
+
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
                                                     <div class="form-label required">{{ __('Banner') }}</div>
@@ -136,13 +187,12 @@
                                             </div>
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
-                                                    <div class="form-label required">{{ __('Logo') }}</div>
+                                                    <div class="form-label ">{{ __('Logo') }}</div>
                                                     <input type="file" class="form-control" name="logo"
                                                         placeholder="{{ __('Logo') }}..."
                                                         value="{{ $business_card->logo }}"
                                                         accept=".jpeg,.jpg,.png,.gif,.svg" />
-                                                    <small
-                                                        class="text-muted">{{ __('Recommended : 180 x 90 pixels') }}</small>
+                                                    <small class="text-muted">{{ __('Recommended : 180 x 90 pixels') }}</small>
                                                 </div>
                                             </div>
 
@@ -248,6 +298,21 @@
 
     @push('custom-js')
         <script>
+             $(function() {
+                // show color code
+
+                $('#header_backgroung').on('input', function() {
+                    $('#theme_back_code').val(this.value);
+                });
+
+                $('#header_text_color').on('input', function() {
+                    $('#header_clr_code').val(this.value);
+                });
+
+
+
+            });
+
             function checkLink() {
                 "use strict";
                 var plink = $('#plink').val();

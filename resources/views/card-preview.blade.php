@@ -269,7 +269,7 @@
                 <div class="purchase_btn save_contact">
                     <a href="{{ route('download.vCard', $cardinfo->card_id) }}"
                         class="text-decoration-none save-contact d-inline-block">Save Contact</a>
-                    @if (isset($store_details->card_url))
+                    @if (isset($store_details->card_url) && ($cardinfo->is_store_show == 1))
                         <a href="{{ URL::to('/') . '/' . $store_details->card_url }}" target="_blank"
                             class="text-decoration-none d-inline-block btn-secondary">
                             SHOP

@@ -32,14 +32,23 @@
 
         <section>
             <nav dir="ltr" class="relative">
-                <div class="p-6 flex items-center bg-white shadow">
+                <div class="p-6 flex items-center bg-white shadow" style="@if($business_card_details->header_backgroung) background-color: {{ $business_card_details->header_backgroung }}@endif; @if($business_card_details->header_text_color)color: {{ $business_card_details->header_text_color }}@endif"  >
                     <a class="flex-shrink-0 text-2xl font-semibold">
+                        @if($business_card_details->profile)
                         <img class="h-10" src="{{ url('/') }}{{ $business_card_details->profile }}"
                             alt="{{ $business_card_details->title }}" width="auto">
+                        @else
+                        {{ $business_card_details->title }}
+
+                        @endif
                     </a>
 
 
                     <div class="ml-auto flex">
+                        @if(Auth::user() && Auth::user()->id == $business_card_details->user_id )
+                        <a href="{{ route('user.stores') }}" style="padding:3px; border:1px solid #222;" >Back to Store </a>&nbsp;&nbsp;
+                        @endif
+
                         <button class="navbar-burger flex items-center">
                             <span class="relative inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
@@ -58,8 +67,7 @@
 
             <div class="hidden navbar-menu relative z-50">
                 <div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-10"></div>
-                <nav
-                    class="fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-80 sm:max-w-xs pt-6 pb-8 bg-white border-r overflow-y-auto">
+                <nav class="fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-80 sm:max-w-xs pt-6 pb-8 bg-white border-r overflow-y-auto">
                     <div class="flex w-full items-center px-6 pb-6 mb-6 lg:border-b border-blue-50">
                         <a class="text-xl text-dark font-semibold">
                             <img class="h-8" src="{{ url('/') }}{{ $business_card_details->profile }}"
@@ -82,8 +90,7 @@
                         <p class="px-4 py-4 font-bold mb-4 text-center text-gray-600">{{ __('Your cart is empty.') }}
                         </p>
 
-                        <a
-                            class="block navbar-backdrop px-4 py-3 mb-3 mt-4 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{ __('Start Shopping') }}</a>
+                        <a class="block navbar-backdrop px-4 py-3 mb-3 mt-4 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{ __('Start Shopping') }}</a>
                     </div>
 
                 </nav>

@@ -35,7 +35,7 @@
 
         <section>
             <nav dir="ltr" class="relative">
-                <div class="p-6 flex items-center bg-dark shadow">
+                <div class="p-6 flex items-center bg-dark shadow" style="@if($business_card_details->header_backgroung) background-color: {{ $business_card_details->header_backgroung }}@endif; @if($business_card_details->header_text_color)color: {{ $business_card_details->header_text_color }}@endif" >
                     <a class="flex-shrink-0 text-2xl font-semibold text-white">
                         <img class="h-10" src="{{ url('/') }}{{ $business_card_details->profile }}"
                             alt="{{ $business_card_details->title }}" width="auto">
@@ -43,6 +43,11 @@
 
 
                     <div class="ml-auto flex">
+
+                        @if(Auth::user() && Auth::user()->id == $business_card_details->user_id )
+                        <a href="{{ route('user.stores') }}" style="padding:3px; border:1px solid #222;" >Back to Store </a>&nbsp;&nbsp;
+                        @endif
+
                         <button class="navbar-burger flex items-center text-white">
                             <span class="relative inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"

@@ -376,7 +376,7 @@
                                             class="text-decoration-none save-contact d-inline-block"
                                             style="background-color: {{ $theme_color }}">Save Contact
                                         </a>
-                                        <a href="javascript:void(0)" 
+                                        <a href="javascript:void(0)"
                                             class="text-decoration-none shop-button d-inline-block btn-secondary"
                                             style="background-color: {{ $theme_color }}">
                                             SHOP
@@ -582,8 +582,7 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="mb-3 form-input">
-                                                <label for="header_backgroung" class="form-label">Header background
-                                                    color</label>
+                                                <label for="header_backgroung" class="form-label">Header background color</label>
                                                 <div class="input-group custome_color">
                                                     <label for="header_backgroung" class="input-group-text">
                                                         <img src="{{ asset('images/color-picker.png') }}" width="25"
