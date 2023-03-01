@@ -74,9 +74,9 @@
                                                     </td>
                                                     <td>
                                                         @if($row->is_store_show == 1 )
-                                                        <a href="{{ route('user.card.storestatus',[$row->id, '0']) }}" title="Store is connected" >Not connected</a>
+                                                        <a href="{{ route('user.card.storestatus',[$row->id, '0']) }}" title="Store is connected" >Connected</a>
                                                         @else
-                                                        <a href="{{ route('user.card.storestatus',[$row->id, '1']) }}" title="Store is not connected" >Connected</a>
+                                                        <a href="{{ route('user.card.storestatus',[$row->id, '1']) }}" title="Store is not connected" >Not Connected</a>
                                                         @endif
 
 
