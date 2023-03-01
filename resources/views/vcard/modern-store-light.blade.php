@@ -45,9 +45,11 @@
 
 
                     <div class="ml-auto flex">
-                        @if(Auth::user() && Auth::user()->id == $business_card_details->user_id )
-                        <a href="{{ route('user.stores') }}" style="padding:3px; border:1px solid #222;" >Back to Store </a>&nbsp;&nbsp;
+
+                        @if($store_card)
+                        <a href="{{ route('home-locale') }}/{{ $store_card->card_url }}" style="padding:3px; border:1px solid #222;" >Back to Store </a>&nbsp;&nbsp;
                         @endif
+
 
                         <button class="navbar-burger flex items-center">
                             <span class="relative inline-block">
