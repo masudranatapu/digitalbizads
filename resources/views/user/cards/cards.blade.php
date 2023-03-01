@@ -74,9 +74,9 @@
                                                     </td>
                                                     <td>
                                                         @if($row->is_store_show == 1 )
-                                                        <a href="{{ route('user.card.storestatus',[$row->id, '0']) }}"><i class="fa fa-check"></i> <i class="fa fa-store"></i></a>
+                                                        <a href="{{ route('user.card.storestatus',[$row->id, '0']) }}" title="Store is connected" >Not connected</a>
                                                         @else
-                                                        <a href="{{ route('user.card.storestatus',[$row->id, '1']) }}" ><i class="fa fa-times"></i> <i class="fa fa-store"></i></a>
+                                                        <a href="{{ route('user.card.storestatus',[$row->id, '1']) }}" title="Store is not connected" >Connected</a>
                                                         @endif
 
 

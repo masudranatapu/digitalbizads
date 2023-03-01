@@ -354,6 +354,8 @@ class UserController extends Controller
         $user = User::where('user_id', $request->query('id'))->first();
         $allcards = BusinessCard::where('user_id', $user->id)->get();
 
+        // dd($user);
+
         for ($i = 0; $i < count($allcards); $i++) {
             if ($allcards != null) {
                 BusinessField::where('card_id', $allcards[$i]->id)->delete();
@@ -365,19 +367,17 @@ class UserController extends Controller
             }
         }
 
-        $transactions = Transaction::where('user_id', $user->id)->first();
-        $businessCards = BusinessCard::where('user_id', $user->id)->first();
+        $transactions = Transaction::where('user_id', $user->id)->get();
+        $businessCards = BusinessCard::where('user_id', $user->id)->get();
 
-
-        // if ($transactions != null) {
-        //     $transactions->delete();
-        // }
-
-
-
-        if ($businessCards != null) {
-            $businessCards->delete();
+        if ($transactions) {
+            Transaction::where('user_id', $user->id)->delete();
         }
+
+        if ($businessCards) {
+            BusinessCard::where('user_id', $user->id)->delete();
+        }
+
         User::where('user_id', $request->query('id'))->delete();
         return redirect()->route('admin.users')->with('success', 'User deleted Successfully!');
     }

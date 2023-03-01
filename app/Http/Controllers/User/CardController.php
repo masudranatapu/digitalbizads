@@ -1200,9 +1200,10 @@ class CardController extends Controller
     }
 
     public function cardStoreStatus($id,$status){
-        $card = BusinessCard::where('id', $id)->first();
-        BusinessCard::where('user_id', $card->user_id)->update(['is_store_show' => '0']);
-        BusinessCard::where('id', $id)->update(['is_store_show' => '1']);
+        // $card = BusinessCard::where('id', $id)->first();
+        // BusinessCard::where('user_id', $card->user_id)->update(['is_store_show' => '0']);
+        $auth_id = Auth::id();
+        BusinessCard::where('id', $id)->where('user_id', $auth_id)->update(['is_store_show' => $status]);
         alert()->success(trans('Your Business Card Updated'));
         return redirect()->back();
     }
