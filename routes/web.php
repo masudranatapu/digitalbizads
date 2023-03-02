@@ -41,6 +41,14 @@ use App\Http\Controllers\User\TransactionsController as userTransactions;
 | contains the "web" middleware group. Now create something great!
 |
  */
+Route::get('clear', function() {
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:cache');
+    Artisan::call('config:clear');
+    return 'DONE';
+});
 
 // Installer Middleware
 Route::group(['middleware' => 'Installer'], function () {
@@ -186,7 +194,7 @@ Route::group(['middleware' => 'Installer'], function () {
         Route::get('plans', [CardController::class, 'plans'])->name('plans')->withoutMiddleware(['userPlan']);
 
 
-        Route::middleware(['userPlan'])->group(function () {
+        // Route::middleware(['userPlan'])->group(function () {
 
             Route::get('dashboard', [userDashboard::class, 'index'])->name('dashboard');
             // Business Cards
@@ -271,7 +279,7 @@ Route::group(['middleware' => 'Installer'], function () {
             Route::post('tools/dns-lookup', [AdditionalController::class, 'resultDnsLookup'])->name('result.dns-lookup');
             Route::get('tools/ip-lookup', [AdditionalController::class, 'ipLookup'])->name('ip-lookup');
             Route::post('tools/ip-lookup', [AdditionalController::class, 'resultIpLookup'])->name('result.ip-lookup');
-        });
+        // });
 
         // Transactions
         Route::get('transactions', [userTransactions::class, 'indexTransactions'])->name('transactions');

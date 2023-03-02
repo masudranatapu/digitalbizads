@@ -32,6 +32,7 @@ class HomeController extends Controller
 {
     public function index()
     {
+        // Auth::logout();
         $homePage = DB::table('pages')->where('page_name', 'home')->get();
         $supportPage = DB::table('pages')->where('page_name', 'footer support email')->orWhere('page_name', 'footer')->get();
         $plans = Plan::where('status', 1)->where('is_private', '0')->get();
