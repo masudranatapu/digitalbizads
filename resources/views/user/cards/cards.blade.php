@@ -170,9 +170,9 @@
                                                                     target="_blank">{{ __('Preview') }}</a>
 
                                                                 @if($row->is_store_show == 1 )
-                                                                <a class="dropdown-item text-dark" href="{{ route('user.card.storestatus',[$row->id, '0']) }}">Store Connected</a>
+                                                                <a class="dropdown-item text-dark" href="{{ route('user.card.storestatus',[$row->id, '0']) }}">Connect Store</a>
                                                                 @else
-                                                                <a class="dropdown-item text-dark" href="{{ route('user.card.storestatus',[$row->id, '1']) }}" >Store Not Connected</a>
+                                                                <a class="dropdown-item text-dark" href="{{ route('user.card.storestatus',[$row->id, '1']) }}">Disconnect Store</a>
                                                                 @endif
 
                                                                 <a class="dropdown-item  text-danger delete-card"
