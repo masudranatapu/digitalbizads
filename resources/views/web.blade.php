@@ -524,6 +524,23 @@
                                 <span>{{ __($plan->free_support == '0' ? 'No' : '') }} {{ __('Free Support') }}
                                     {{ __($plan->free_support == '1' ? 'Available' : '') }}</span>
                             </li> --}}
+
+
+                        @if (isset($plan->fearures))
+                            @for ($i = 0; $i < count($plan->fearures); $i++)
+                                <li class="mb-2 flex">
+                                    <svg class="mr-2 w-5 h-5 {{ $plan->recommended == '1' ? 'text-' . $config[11]->config_value . '-400' : 'text-' . $config[11]->config_value . '-600' }}"
+                                        xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                    <span>
+                                        {{ $plan->fearures[$i] }}
+                                    </span>
+                                </li>
+                            @endfor
+                        @endif
                     </ul>
                     <a class="inline-block text-center py-2 px-4 w-full rounded-l-xl rounded-t-xl {{ $plan->recommended == '1' ? 'bg-white hover:bg-gray-100' : 'bg-' . $config[11]->config_value . '-600 hover:bg-' . $config[11]->config_value . '-700 text-white' }} font-bold leading-loose transition duration-200"
                         href="{{ route('register') }}">{{ __('Get Started') }}</a>

@@ -60,7 +60,7 @@ class StoreController extends Controller
             'theme_id' => 'required',
             'card_color' => 'required',
             'card_lang' => 'required',
-            'banner' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:' . env("SIZE_LIMIT") . '',
+            'banner' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:' . env("SIZE_LIMIT") . '',
             'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:' . env("SIZE_LIMIT") . '',
             'title' => 'required',
             'currency' => 'required',

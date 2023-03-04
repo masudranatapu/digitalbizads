@@ -48,6 +48,7 @@ class PlanController extends Controller
     // Save Plan
     public function savePlan(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'plan_name' => 'required',
             'plan_description' => 'required',
@@ -57,6 +58,7 @@ class PlanController extends Controller
             // 'no_of_galleries' => 'required',
             // 'no_of_features' => 'required',
             // 'no_of_payments' => 'required'
+            'features' => 'sometimes'
         ]);
 
 
@@ -122,6 +124,8 @@ class PlanController extends Controller
         $plan->free_support = $free_support;
         $plan->is_whatsapp_store = $whatsappStore;
         $plan->is_private = $is_private;
+        $plan->fearures = json_encode($request->features);
+
         $plan->save();
         alert()->success(trans('New Plan Created Successfully!'));
         return redirect()->route('admin.add.plan');
@@ -155,6 +159,8 @@ class PlanController extends Controller
             // 'no_of_galleries' => 'required',
             // 'no_of_features' => 'required',
             // 'no_of_payments' => 'required'
+            'features' => 'sometimes'
+
         ]);
 
         if ($validator->fails()) {
@@ -225,7 +231,9 @@ class PlanController extends Controller
                 'free_setup' => $free_setup,
                 'free_support' => $free_support,
                 'is_whatsapp_store' => $whatsappStore,
-                'is_private' => $is_private
+                'is_private' => $is_private,
+                'fearures' => json_encode($request->features)
+
             ]);
 
 
