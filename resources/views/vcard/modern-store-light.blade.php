@@ -159,8 +159,8 @@
                                         </h4>
                                         <h4 class="text-sm mb-3">
                                             @if (isset($product->hasCategory->category_name))
-                                                <span class="py-1 text-sm font-bold text-dark">Category :</span>
-                                                <span>{{ $product->hasCategory->category_name ?? '' }}</span>
+                                                <span class="py-1 text-sm font-bold text-dark">Category
+                                                    : {{ $product->hasCategory->category_name ?? '' }}</span>
                                             @endif
 
                                         </h4>
