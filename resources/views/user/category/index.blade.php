@@ -46,9 +46,9 @@
                                 <table class="table table-vcenter card-table" id="table">
                                     <thead>
                                         <tr>
-                                            <th>{{ __('S.No') }}</th>
+                                            <th style="width: 10%">{{ __('S.No') }}</th>
                                             <th>{{ __('Name') }}</th>
-                                            <th>{{ __('Status') }}</th>
+                                            {{-- <th>{{ __('Status') }}</th> --}}
                                             <th class="w-1">{{ __('Actions') }}</th>
                                         </tr>
                                     </thead>
@@ -58,13 +58,13 @@
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $productCategory->category_name }}</td>
-                                                    <td>
+                                                    {{-- <td>
                                                         @if ($productCategory->status)
                                                             <span class="badge bg-green">{{ __('Active') }}</span>
                                                         @else
                                                             <span class="badge bg-red">{{ __('Inactive') }}</span>
                                                         @endif
-                                                    </td>
+                                                    </td> --}}
                                                     <td>
                                                         <div class="btn-list flex-nowrap">
                                                             <a class="btn btn-primary btn-sm"

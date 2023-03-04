@@ -157,13 +157,13 @@
                                                     {{ $currency }}{{ $product->regular_price }}</span>
                                             @endif
                                         </h4>
-                                        <div class="text-sm mb-3">
+                                        <h4 class="text-sm mb-3">
                                             @if (isset($product->hasCategory->category_name))
-                                                <span class="py-1 text-dark fw-bolder">Category :
-                                                    {{ $product->hasCategory->category_name ?? '' }}</span>
+                                                <span class="py-1 text-sm font-bold text-dark">Category :</span>
+                                                <span>{{ $product->hasCategory->category_name ?? '' }}</span>
                                             @endif
 
-                                        </div>
+                                        </h4>
 
                                         @if ($product->product_status == 'instock')
                                             <a onclick="addToCart('{{ $product->product_id }}')"

@@ -131,8 +131,6 @@
                                                                         {{ $productCategorie->category_name }}</option>
                                                                 @endforeach
                                                             </select>
-                                                            <a href='#' class='btn mt-3 btn-danger btn-sm'
-                                                                onclick='removeProduct({{ $i }})'>{{ __('Remove') }}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -150,13 +148,13 @@
                                 </div>
 
 
-                                <div class="col-md-4 col-xl-4 my-3">
+                                <div class="col-md-2 col-xl-2 my-3">
                                     <div class="mb-3">
                                         {{-- <a href="{{ route('user.stores') }}" class="btn btn-primary">
                                             {{ __('Skip & Continue') }}
                                         </a> --}}
 
-                                        <button type="submit" class="btn btn-primary">
+                                        <button type="submit" class="btn btn-primary btn-block" style="width: 178px">
                                             {{ __('Submit') }}
                                         </button>
                                     </div>
