@@ -32,22 +32,23 @@
 
         <section>
             <nav dir="ltr" class="relative">
-                <div class="p-6 flex items-center bg-white shadow" style="@if($business_card_details->header_backgroung) background-color: {{ $business_card_details->header_backgroung }}@endif; @if($business_card_details->header_text_color)color: {{ $business_card_details->header_text_color }}@endif"  >
+                <div class="p-6 flex items-center bg-white shadow"
+                    style="@if ($business_card_details->header_backgroung) background-color: {{ $business_card_details->header_backgroung }} @endif; @if ($business_card_details->header_text_color) color: {{ $business_card_details->header_text_color }} @endif">
                     <a class="flex-shrink-0 text-2xl font-semibold">
-                        @if($business_card_details->profile)
-                        <img class="h-10" src="{{ url('/') }}{{ $business_card_details->profile }}"
-                            alt="{{ $business_card_details->title }}" width="auto">
+                        @if ($business_card_details->profile)
+                            <img class="h-10" src="{{ url('/') }}{{ $business_card_details->profile }}"
+                                alt="{{ $business_card_details->title }}" width="auto">
                         @else
-                        {{ $business_card_details->title }}
-
+                            {{ $business_card_details->title }}
                         @endif
                     </a>
 
 
                     <div class="ml-auto flex">
 
-                        @if($store_card)
-                        <a href="{{ route('home-locale') }}/{{ $store_card->card_url }}" style="padding:3px; border:1px solid #222;" >Back to Bizad </a>&nbsp;&nbsp;
+                        @if ($store_card)
+                            <a href="{{ route('home-locale') }}/{{ $store_card->card_url }}"
+                                style="padding:3px; border:1px solid #222;">Back to Bizad </a>&nbsp;&nbsp;
                         @endif
 
 
@@ -69,7 +70,8 @@
 
             <div class="hidden navbar-menu relative z-50">
                 <div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-10"></div>
-                <nav class="fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-80 sm:max-w-xs pt-6 pb-8 bg-white border-r overflow-y-auto">
+                <nav
+                    class="fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-80 sm:max-w-xs pt-6 pb-8 bg-white border-r overflow-y-auto">
                     <div class="flex w-full items-center px-6 pb-6 mb-6 lg:border-b border-blue-50">
                         <a class="text-xl text-dark font-semibold">
                             <img class="h-8" src="{{ url('/') }}{{ $business_card_details->profile }}"
@@ -92,7 +94,8 @@
                         <p class="px-4 py-4 font-bold mb-4 text-center text-gray-600">{{ __('Your cart is empty.') }}
                         </p>
 
-                        <a class="block navbar-backdrop px-4 py-3 mb-3 mt-4 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{ __('Start Shopping') }}</a>
+                        <a
+                            class="block navbar-backdrop px-4 py-3 mb-3 mt-4 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{ __('Start Shopping') }}</a>
                     </div>
 
                 </nav>
@@ -133,6 +136,7 @@
                                     </div>
                                     <span
                                         class="py-1 px-2 bg-red-500 rounded text-xs text-white">{{ $product->badge }}</span>
+
                                     <div class="w-full mb-1 mt-1 justify-between items-center">
                                         <div>
                                             <h3 id="{{ $product->product_id }}_product_name"
@@ -142,8 +146,9 @@
                                                 class="text-xs text-gray-500">{{ $product->product_subtitle }}</span>
                                         </div>
                                     </div>
+
                                     <div class="w-full mb-1 justify-between items-center">
-                                        <h4 class="text-sm mb-3 font-bold"><span
+                                        <h4 class="text-sm  font-bold"><span
                                                 id="{{ $product->product_id }}_currency">{{ $currency }}</span>
                                             <span
                                                 id="{{ $product->product_id }}_price">{{ $product->sales_price }}</span>
@@ -152,6 +157,14 @@
                                                     {{ $currency }}{{ $product->regular_price }}</span>
                                             @endif
                                         </h4>
+                                        <div class="text-sm mb-3">
+                                            @if (isset($product->hasCategory->category_name))
+                                                <span class="py-1 text-dark fw-bolder">Category :
+                                                    {{ $product->hasCategory->category_name ?? '' }}</span>
+                                            @endif
+
+                                        </div>
+
                                         @if ($product->product_status == 'instock')
                                             <a onclick="addToCart('{{ $product->product_id }}')"
                                                 class="py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"

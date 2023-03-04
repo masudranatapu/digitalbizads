@@ -29,7 +29,9 @@ use App\Http\Controllers\Admin\TransactionsController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\User\AccountController as userAccount;
 use App\Http\Controllers\User\DashboardController as userDashboard;
+use App\Http\Controllers\User\ProductCategoryController;
 use App\Http\Controllers\User\TransactionsController as userTransactions;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,7 +43,8 @@ use App\Http\Controllers\User\TransactionsController as userTransactions;
 | contains the "web" middleware group. Now create something great!
 |
  */
-Route::get('clear', function() {
+
+Route::get('clear', function () {
     Artisan::call('cache:clear');
     Artisan::call('view:clear');
     Artisan::call('route:clear');
@@ -264,6 +267,14 @@ Route::group(['middleware' => 'Installer'], function () {
                 Route::get('products/{id}', [StoreController::class, 'products'])->name('products');
                 Route::post('save-products/{id}', [StoreController::class, 'saveProducts'])->name('save.products');
             }
+
+
+            Route::prefix('category')->name('product.category.')->group(function () {
+                Route::get('/', [ProductCategoryController::class, 'index'])->name('index');
+                Route::post('/store', [ProductCategoryController::class, 'store'])->name('store');
+                Route::post('/update/{id}', [ProductCategoryController::class, 'update'])->name('destroy');
+                Route::get('/delete/{id}', [ProductCategoryController::class, 'destroy'])->name('destroy');
+            });
 
             // Edit Store
             Route::get('edit-store/{id}', [StoreController::class, 'editStore'])->name('edit.store');

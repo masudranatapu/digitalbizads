@@ -35,7 +35,8 @@
 
         <section>
             <nav dir="ltr" class="relative">
-                <div class="p-6 flex items-center bg-dark shadow" style="@if($business_card_details->header_backgroung) background-color: {{ $business_card_details->header_backgroung }}@endif; @if($business_card_details->header_text_color)color: {{ $business_card_details->header_text_color }}@endif" >
+                <div class="p-6 flex items-center bg-dark shadow"
+                    style="@if ($business_card_details->header_backgroung) background-color: {{ $business_card_details->header_backgroung }} @endif; @if ($business_card_details->header_text_color) color: {{ $business_card_details->header_text_color }} @endif">
                     <a class="flex-shrink-0 text-2xl font-semibold text-white">
                         <img class="h-10" src="{{ url('/') }}{{ $business_card_details->profile }}"
                             alt="{{ $business_card_details->title }}" width="auto">
@@ -44,8 +45,9 @@
 
                     <div class="ml-auto flex">
 
-                        @if($store_card)
-                        <a href="{{ route('home-locale') }}/{{ $store_card->card_url }}" style="padding:3px; border:1px solid #222;" >Back to Bizad </a>&nbsp;&nbsp;
+                        @if ($store_card)
+                            <a href="{{ route('home-locale') }}/{{ $store_card->card_url }}"
+                                style="padding:3px; border:1px solid #222;">Back to Bizad </a>&nbsp;&nbsp;
                         @endif
 
                         <button class="navbar-burger flex items-center text-white">
@@ -144,7 +146,7 @@
                                         </div>
                                     </div>
                                     <div class="w-full mb-1 justify-between items-center">
-                                        <h4 class="text-sm mb-3 font-bold text-dark"><span
+                                        <h4 class="text-sm font-bold text-dark"><span
                                                 id="{{ $product->product_id }}_currency">{{ $currency }}</span>
                                             <span
                                                 id="{{ $product->product_id }}_price">{{ $product->sales_price }}</span>
@@ -153,6 +155,13 @@
                                                     {{ $currency }}{{ $product->regular_price }}</span>
                                             @endif
                                         </h4>
+                                        <div class="text-sm mb-3">
+                                            @if (isset($product->hasCategory->category_name))
+                                                <span class="py-1 text-dark fw-bolder">Category :
+                                                    {{ $product->hasCategory->category_name ?? '' }}</span>
+                                            @endif
+
+                                        </div>
                                         @if ($product->product_status == 'instock')
                                             <a onclick="addToCart('{{ $product->product_id }}')"
                                                 class="py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"

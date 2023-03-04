@@ -66,6 +66,7 @@ class CardController extends Controller
                 ->where('business_cards.status', 1)
                 ->orderBy('business_cards.id', 'desc')->get();
             $settings = Setting::where('status', 1)->first();
+
             return view('user.cards.stores', compact('business_cards', 'settings'));
         } else {
             return redirect()->route('user.plans');
@@ -629,9 +630,9 @@ class CardController extends Controller
                     $store_card = BusinessCard::where('is_store_show', 1)->where('user_id', $business_card_details->user_id)->first();
 
                     if ($card_details->theme_id == "7ccc432a06hty") {
-                        return view('vcard.modern-store-light', compact('card_details', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency','store_card'));
+                        return view('vcard.modern-store-light', compact('card_details', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency', 'store_card'));
                     } else if ($card_details->theme_id == "7ccc432a06hju") {
-                        return view('vcard.modern-store-dark', compact('card_details', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency','store_card'));
+                        return view('vcard.modern-store-dark', compact('card_details', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency', 'store_card'));
                     }
                 } else {
                     alert()->error(trans('Sorry, Please fill basic business details.'));
@@ -1201,7 +1202,8 @@ class CardController extends Controller
         }
     }
 
-    public function cardStoreStatus($id,$status){
+    public function cardStoreStatus($id, $status)
+    {
         $auth_id = Auth::id();
         $card = BusinessCard::where('id', $id)->where('user_id', $auth_id)->first();
         BusinessCard::where('user_id', $card->user_id)->where('user_id', $auth_id)->update(['is_store_show' => '0']);

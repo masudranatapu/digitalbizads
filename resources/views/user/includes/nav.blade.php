@@ -43,10 +43,13 @@
 
                     @php
                         $userPlan = getUserPlan();
+                        $store = getUserStore();
+                        
                     @endphp
                     @if (isset($userPlan['is_whatsapp_store']) && $userPlan['is_whatsapp_store'] == '1')
-                        <li class="nav-item {{ request()->is('user/stores') ? 'active' : '' }}">
-                            <a class="nav-link" href="{{ route('user.stores') }}">
+                        <li class="nav-item dropdown @yield('store-nav')">
+                            <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown"
+                                role="button" aria-expanded="false">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-id"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
@@ -63,9 +66,19 @@
                                     </svg>
                                 </span>
                                 <span class="nav-link-title">
-                                    {{ __('stores') }}
+                                    {{ __('Store') }}
                                 </span>
                             </a>
+                            <div class="dropdown-menu">
+                                <a href="{{ route('user.stores') }}"
+                                    class="dropdown-item {{ request()->routeIs('user.stores') ? 'active' : '' }}">{{ __('Store List') }}</a>
+                                <a href="{{ route('user.product.category.index') }}"
+                                    class="dropdown-item {{ request()->routeIs('user.product.category.index') ? 'active' : '' }}">{{ __('Product Category') }}</a>
+                                @if (isset($store))
+                                    <a href="{{ route('user.edit.products', ['id' => $store->card_id]) }}"
+                                        class="dropdown-item {{ request()->routeIs('user.edit.products') ? 'active' : '' }}">{{ __('Product List') }}</a>
+                                @endif
+                            </div>
                         </li>
                         <li class="nav-item {{ request()->is('user/media') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('user.media') }}">
@@ -89,6 +102,9 @@
                             </a>
                         </li>
                     @endif
+
+
+
 
 
                     <li class="nav-item {{ request()->is('user/plans') ? 'active' : '' }}">

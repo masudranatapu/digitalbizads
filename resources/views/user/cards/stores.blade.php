@@ -1,4 +1,5 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
+@section('store-nav', 'active')
 @section('content')
     <div class="page-wrapper">
         <div class="container-xl">
@@ -68,8 +69,9 @@
                                                         {{ date('d/M/Y', strtotime($business_card->plan_validity)) }}</td>
                                                     <td class="text-muted">
                                                         @if ($business_card->card_status == 'inactive')
-                                                        <span class="badge bg-red">{{ __('Inactive') }}</span @else
-                                                                <span class="badge bg-green">{{ __('Active') }}</span>
+                                                            <span class="badge bg-red">{{ __('Inactive') }}</span>
+                                                        @else
+                                                            <span class="badge bg-green">{{ __('Active') }}</span>
                                                         @endif
                                                     </td>
                                                     <td>
@@ -114,7 +116,8 @@
                         </div>
                     </div>
                     @if (!empty($business_cards) && $business_cards->count())
-                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none">
+                        <div
+                            class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none">
                             <div class="row">
 
                                 @foreach ($business_cards as $row)
@@ -147,18 +150,18 @@
                                                                     href="{{ route('user.view.preview', $row->card_id) }}"
                                                                     target="_blank">{{ __('Preview') }}</a>
 
-                                                                    <a class="dropdown-item text-success"
+                                                                <a class="dropdown-item text-success"
                                                                     href="{{ route('card.preview', $row->card_url) }}"
                                                                     target="_blank">{{ __('Live') }}</a>
 
-                                                                @if($row->card_status == 'activated' )
-                                                                <a class="open-model dropdown-item text-success"
-                                                                data-id="{{ $row->card_id }}"
-                                                                href="#openModel">{{ __('Disable') }}</a>
+                                                                @if ($row->card_status == 'activated')
+                                                                    <a class="open-model dropdown-item text-success"
+                                                                        data-id="{{ $row->card_id }}"
+                                                                        href="#openModel">{{ __('Disable') }}</a>
                                                                 @else
-                                                                <a class="open-model dropdown-item text-success"
-                                                                data-id="{{ $row->card_id }}"
-                                                                href="#openModel">{{ __('Enable') }}</a>
+                                                                    <a class="open-model dropdown-item text-success"
+                                                                        data-id="{{ $row->card_id }}"
+                                                                        href="#openModel">{{ __('Enable') }}</a>
                                                                 @endif
 
                                                             </div>

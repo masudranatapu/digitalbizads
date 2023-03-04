@@ -12,6 +12,7 @@ use App\Subscriber;
 use App\BusinessCard;
 use App\BusinessField;
 use App\Mail\OrderEmail;
+use App\StoreProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
@@ -165,9 +166,13 @@ class HomeController extends Controller
                     ->select('business_cards.*', 'users.plan_details')
                     ->first();
 
+
+
                 if ($business_card_details) {
 
-                    $products = DB::table('store_products')->where('card_id', $card_details->card_id)->where('product_status', 'instock')->orderBy('id', 'desc')->get();
+                    $products = StoreProduct::with('hasCategory')->where('card_id', $card_details->card_id)->where('product_status', 'instock')->orderBy('id', 'desc')->get();
+
+
 
                     $settings = Setting::where('status', 1)->first();
                     $config = DB::table('config')->get();
@@ -219,9 +224,9 @@ class HomeController extends Controller
                     $store_card = BusinessCard::where('is_store_show', 1)->where('user_id', $business_card_details->user_id)->first();
 
                     if ($card_details->theme_id == "7ccc432a06hty") {
-                        return view('vcard.modern-store-light', compact('card_details', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency','store_card'));
+                        return view('vcard.modern-store-light', compact('card_details', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency', 'store_card'));
                     } else if ($card_details->theme_id == "7ccc432a06hju") {
-                        return view('vcard.modern-store-dark', compact('card_details', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency','store_card'));
+                        return view('vcard.modern-store-dark', compact('card_details', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency', 'store_card'));
                     }
                 }
             }

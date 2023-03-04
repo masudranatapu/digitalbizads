@@ -126,40 +126,43 @@
                                             </div>
 
                                             <div class="col-md-6 col-xl-6">
-                                            <div class="mb-3 form-input">
-                                                <label for="header_backgroung" class="form-label">Header background color</label>
-                                                <div class="input-group custome_color">
-                                                    <label for="header_backgroung" class="input-group-text">
-                                                        <img src="{{ asset('images/color-picker.png') }}" width="25"
-                                                            alt="color picker">
-                                                        <input type="color" placeholder="card color"
-                                                            name="header_backgroung" id="header_backgroung"
-                                                            value="{{ $business_card->header_backgroung }}"
-                                                            class="form-control @error('header_backgroung') is-invalid @enderror"
-                                                             required>
-                                                    </label>
-                                                    <input type="text" id="theme_back_code" class="form-control"
-                                                        value="{{ $business_card->header_backgroung }}" disabled>
-                                                </div>
+                                                <div class="mb-3 form-input">
+                                                    <label for="header_backgroung" class="form-label">Header background
+                                                        color</label>
+                                                    <div class="input-group custome_color">
+                                                        <label for="header_backgroung" class="input-group-text">
+                                                            <img src="{{ asset('images/color-picker.png') }}"
+                                                                width="25" alt="color picker">
+                                                            <input type="color" placeholder="card color"
+                                                                name="header_backgroung" id="header_backgroung"
+                                                                value="{{ $business_card->header_backgroung }}"
+                                                                class="form-control @error('header_backgroung') is-invalid @enderror"
+                                                                required>
+                                                        </label>
+                                                        <input type="text" id="theme_back_code" class="form-control"
+                                                            value="{{ $business_card->header_backgroung }}" disabled>
+                                                    </div>
 
-                                                @if ($errors->has('header_backgroung'))
-                                                    <span
-                                                        class="help-block text-danger">{{ $errors->first('header_backgroung') }}</span>
-                                                @endif
-                                            </div>
+                                                    @if ($errors->has('header_backgroung'))
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('header_backgroung') }}</span>
+                                                    @endif
+                                                </div>
                                             </div>
 
                                             <div class="col-md-6 col-xl-6">
-                                                <div class="mb-3 form-input" >
-                                                    <label for="header_text_color" class="form-label">Headline Color</label>
+                                                <div class="mb-3 form-input">
+                                                    <label for="header_text_color" class="form-label">Headline
+                                                        Color</label>
                                                     <div class="input-group custome_color">
                                                         <label for="header_text_color" class="input-group-text">
-                                                            <img src="{{ asset('images/color-picker.png') }}" width="25"
-                                                                alt="color picker">
+                                                            <img src="{{ asset('images/color-picker.png') }}"
+                                                                width="25" alt="color picker">
                                                             <input type="color" placeholder="card color"
                                                                 name="header_text_color" id="header_text_color"
                                                                 value="{{ $business_card->header_text_color }}"
-                                                                class="form-control @error('header_text_color') is-invalid @enderror" required>
+                                                                class="form-control @error('header_text_color') is-invalid @enderror"
+                                                                required>
                                                         </label>
                                                         <input type="text" id="header_clr_code" class="form-control"
                                                             value="{{ $business_card->header_text_color }}" disabled>
@@ -192,7 +195,8 @@
                                                         placeholder="{{ __('Logo') }}..."
                                                         value="{{ $business_card->logo }}"
                                                         accept=".jpeg,.jpg,.png,.gif,.svg" />
-                                                    <small class="text-muted">{{ __('Recommended : 180 x 90 pixels') }}</small>
+                                                    <small
+                                                        class="text-muted">{{ __('Recommended : 180 x 90 pixels') }}</small>
                                                 </div>
                                             </div>
 
@@ -281,7 +285,7 @@
                                         <div class="col-md-4 col-xl-4 my-3">
                                             <div class="mb-3">
                                                 <button type="submit" class="btn btn-primary">
-                                                    {{ __('Submit & Next') }}
+                                                    {{ __('Update') }}
                                                 </button>
                                             </div>
                                         </div>
@@ -298,7 +302,7 @@
 
     @push('custom-js')
         <script>
-             $(function() {
+            $(function() {
                 // show color code
 
                 $('#header_backgroung').on('input', function() {

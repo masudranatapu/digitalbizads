@@ -15,6 +15,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Medias;
+use App\ProductCategory;
 
 class StoreController extends Controller
 {
@@ -91,7 +92,7 @@ class StoreController extends Controller
         $user_details = User::where('user_id', Auth::user()->user_id)->first();
         $plan_details = json_decode($user_details->plan_details, true);
 
-        if($request->logo){
+        if ($request->logo) {
             $logo = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->logo->getClientOriginalName()) . '.' . $request->logo->extension();
             $request->logo->move(public_path('backend/img/vCards'), $logo);
         }
@@ -250,7 +251,7 @@ class StoreController extends Controller
             $store_details['currency']      = $request->currency;
             $store_details['email']         = $request->email;
 
-            if ($request->logo ) {
+            if ($request->logo) {
                 $banner = '/backend/img/vCards/' . 'IMG-' . $request->banner->getClientOriginalName() . '.' . $request->banner->extension();
                 $request->banner->move(public_path('backend/img/vCards'), $banner);
                 $data['cover']  = $banner;
@@ -275,7 +276,10 @@ class StoreController extends Controller
             BusinessCard::where('card_id', $id)->update($data);
 
             alert()->success(trans('Store details updated'));
-            return redirect()->route('user.edit.products', $id);
+            return redirect()->route('user.stores');
+
+            // return redirect()->route('user.edit.products', $id);
+
 
 
 
@@ -297,8 +301,10 @@ class StoreController extends Controller
             $products = StoreProduct::where('card_id', $id)->get();
             $media = Medias::where('user_id', Auth::user()->user_id)->orderBy('id', 'desc')->get();
             $settings = Setting::where('status', 1)->first();
+            $productCategories = ProductCategory::orderBy('category_name', 'asc')
+                ->where('user_id', Auth::id())->get();
 
-            return view('user.edit-store.edit-products', compact('plan_details', 'products', 'media', 'settings'));
+            return view('user.edit-store.edit-products', compact('plan_details', 'products', 'media', 'settings', 'productCategories'));
         }
     }
 
@@ -306,6 +312,7 @@ class StoreController extends Controller
     // Update products
     public function updateProducts(Request $request, $id)
     {
+
         $business_card = BusinessCard::where('card_id', $id)->first();
 
         if ($business_card == null) {
@@ -328,6 +335,7 @@ class StoreController extends Controller
                         $product->regular_price = $request->regular_price[$i];
                         $product->sales_price = $request->sales_price[$i];
                         $product->product_status = $request->product_status[$i];
+                        $product->category_id = $request->category[$i];
                         $product->save();
                     }
 
@@ -337,10 +345,10 @@ class StoreController extends Controller
                         BusinessCard::where('user_id', Auth::user()->user_id)->where('card_id', $id)->update([
                             'card_status' => 'activated',
                         ]);
-                        alert()->success(trans('Products updated.'));
+                        alert()->success(trans('Products save successfully.'));
                         return redirect()->route('user.stores');
                     }
-                    alert()->success(trans('Products updated.'));
+                    alert()->success(trans('Products save successfully.'));
                     return redirect()->route('user.stores');
                 } else {
                     alert()->error(trans('You have reached plan limit.'));
