@@ -25,6 +25,7 @@ class AuthController extends Controller
 
     public function postRegister(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'reg_name' => 'required',
             'reg_email' => 'required|email|unique:users,email',
@@ -61,10 +62,11 @@ class AuthController extends Controller
             alert()->error(trans('Something went wrong'));
             return redirect()->back();
         }
+        // dd(Auth::check());
         if (Auth::check() && Auth::user()->role_id == 1) {
-            return redirect('/admin/dashboard');
+            return redirect()->route('admin.dashboard');
         }
-        return redirect('/user/dashboard');
+        return redirect()->route('user.dashboard');
     }
 
 

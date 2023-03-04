@@ -41,6 +41,14 @@ use App\Http\Controllers\User\TransactionsController as userTransactions;
 | contains the "web" middleware group. Now create something great!
 |
  */
+Route::get('clear', function() {
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:cache');
+    Artisan::call('config:clear');
+    return 'DONE';
+});
 
 // Installer Middleware
 Route::group(['middleware' => 'Installer'], function () {

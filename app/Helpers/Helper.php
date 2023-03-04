@@ -274,10 +274,13 @@ function checkPackage($id = null)
 function isFreePlan($user_id)
 {
     $user = DB::table('users')
-        ->select('plans.plan_price')
+        ->select('plans.plan_price','plans.is_private')
         ->leftJoin('plans', 'plans.plan_id', '=', 'users.plan_id')
         ->where('users.id', $user_id)->first();
-    if ($user->plan_price == 0) {
+    if($user->is_private==1){
+        return false;
+    }
+    elseif ($user->plan_price == 0) {
         return true;
     }
     return false;
