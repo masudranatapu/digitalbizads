@@ -27,7 +27,8 @@
     @yield('css')
 </head>
 
-<body class="antialiased" dir="{{(App::isLocale('ar') || App::isLocale('ur') || App::isLocale('he') ? 'rtl' : 'ltr')}}">
+<body class="antialiased"
+    dir="{{ App::isLocale('ar') || App::isLocale('ur') || App::isLocale('he') ? 'rtl' : 'ltr' }}">
 
     {{-- Preloader --}}
     <div class="preloader-wrapper">
@@ -38,10 +39,10 @@
 
     <div id="wrapper">
         @if (isset($header) && $header)
-        @include('admin.includes.header')
+            @include('admin.includes.header')
         @endif
         @if (isset($nav) && $nav)
-        @include('admin.includes.nav')
+            @include('admin.includes.nav')
         @endif
         @yield('content')
     </div>
@@ -50,7 +51,7 @@
     <!-- Tabler Core -->
     <script type="text/javascript" src="{{ asset('backend/js/tabler.min.js') }}"></script>
     @if (isset($demo) && $demo)
-    <script type="text/javascript" src="{{ asset('backend/js/admin-delete-query.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('backend/js/admin-delete-query.js') }}"></script>
     @endif
     <script type="text/javascript" src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/dataTables.bootstrap4.min.js') }}"></script>
