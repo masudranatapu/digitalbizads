@@ -15,8 +15,7 @@
     {!! JsonLd::generate() !!} --}}
     <meta property="og:title" content="{{ $business_card_details->title ?? '' }}" />
     <meta property="og:description" content="{{ $business_card_details->sub_title ?? '' }}" />
-    <link rel="icon" href="{{ url('/') }}{{ $business_card_details->profile }}" sizes="96x96"
-        type="image/png" />
+    <link rel="icon" href="{{ url('/') }}{{ $business_card_details->profile }}" sizes="96x96" type="image/png" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap">
     <link rel="stylesheet" href="{{ asset('frontend/whatsapp-store/css/tailwind/tailwind.min.css') }}">
@@ -24,6 +23,28 @@
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}" />
     <script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
+    <style>
+        .form-control {
+            height: 48px;
+            padding: 6px 10px;
+            border: 1px solid #DDD;
+            border-radius: 4px;
+            font-size: 16px;
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        @media screen and (max-width:650px) {
+            .float-right {
+                float: inherit !important;
+            }
+
+            .grid-cols-2 {
+                grid-template-columns: repeat(1, minmax(0, 1fr));
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 
 <body class="antialiased bg-body text-body font-body"
@@ -36,10 +57,10 @@
                     style="@if ($business_card_details->header_backgroung) background-color: {{ $business_card_details->header_backgroung }} @endif; @if ($business_card_details->header_text_color) color: {{ $business_card_details->header_text_color }} @endif">
                     <a class="flex-shrink-0 text-2xl font-semibold">
                         @if ($business_card_details->profile)
-                            <img class="h-10" src="{{ url('/') }}{{ $business_card_details->profile }}"
-                                alt="{{ $business_card_details->title }}" width="auto">
+                        <img class="h-10" src="{{ url('/') }}{{ $business_card_details->profile }}"
+                            alt="{{ $business_card_details->title }}" width="auto">
                         @else
-                            {{ $business_card_details->title }}
+                        {{ $business_card_details->title }}
                         @endif
                     </a>
 
@@ -47,15 +68,15 @@
                     <div class="ml-auto flex">
 
                         @if ($store_card)
-                            <a href="{{ route('home-locale') }}/{{ $store_card->card_url }}"
-                                style="padding:3px; border:1px solid #222;">Back to Bizad </a>&nbsp;&nbsp;
+                        <a href="{{ route('home-locale') }}/{{ $store_card->card_url }}"
+                            style="padding:3px; border:1px solid #222;">Back to Bizad </a>&nbsp;&nbsp;
                         @endif
 
 
                         <button class="navbar-burger flex items-center">
                             <span class="relative inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                                 </svg>
@@ -83,11 +104,13 @@
 
                     <div class="pt-6 p-3">
                         <a onclick="placeOrder()" id="place-order" style="cursor: pointer"
-                            class="block px-4 py-3 mb-3 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{ __('Place WhatsApp Order') }}</a>
+                            class="block px-4 py-3 mb-3 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{
+                            __('Place WhatsApp Order') }}</a>
                     </div>
                     <div class="pt-6 p-3">
                         <a onclick="placeOrderEmail()" id="place-order-email" style="cursor: pointer"
-                            class="block px-4 py-3 mb-3 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{ __('Place Order To Email') }}</a>
+                            class="block px-4 py-3 mb-3 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{
+                            __('Place Order To Email') }}</a>
                     </div>
 
                     <div id="empty-cart" class="pt-6 p-3">
@@ -95,7 +118,8 @@
                         </p>
 
                         <a
-                            class="block navbar-backdrop px-4 py-3 mb-3 mt-4 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{ __('Start Shopping') }}</a>
+                            class="block navbar-backdrop px-4 py-3 mb-3 mt-4 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{
+                            __('Start Shopping') }}</a>
                     </div>
 
                 </nav>
@@ -112,76 +136,107 @@
 
         @if ($business_card_details->card_status == 'activated')
 
+        <section class="py-1">
+            <div class="container px-4 mx-auto">
+                <div class="rounded overflow-hidden">
+                    <img class="rounded pb-2" src="{{ url('/') }}{{ $business_card_details->cover }}"
+                        alt="{{ $business_card_details->title }}">
+                </div>
+            </div>
+        </section>
 
-            <section class="py-1">
-                <div class="container px-4 mx-auto">
-                    <div class="rounded overflow-hidden">
-                        <img class="rounded pb-2" src="{{ url('/') }}{{ $business_card_details->cover }}"
-                            alt="{{ $business_card_details->title }}">
+
+
+        <div class="container shop_filter px-4 mx-auto">
+            <form action="#" method="post">
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="">
+                        <div class="filter_form">
+                            <div class="input-group">
+                                <span class="input-group-text">Category:</span>
+                                <select name="" id="" class="form-control">
+                                    <option value="">Electronices</option>
+                                    <option value="">Mobile</option>
+                                    <option value="">Property</option>
+                                    <option value="">House</option>
+                                    <option value="">Car</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="filter_form float-right">
+                            <div class="input-group">
+                                <span class="input-group-text">Sort By:</span>
+                                <select name="" id="" class="form-control">
+                                    <option value="">A to Z</option>
+                                    <option value="">Z to A</option>
+                                    <option value="">Price low to high</option>
+                                    <option value="">Price high to low</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </section>
+            </form>
+        </div>
 
-            <section id="shop" class="py-8">
-                <div class="container px-4 mx-auto">
-                    <div class="flex flex-wrap -m-4">
+        <section id="shop" class="py-8">
+            <div class="container px-4 mx-auto">
+                <div class="flex flex-wrap -m-4">
+                    @foreach ($products as $product)
+                    <div class="w-1/1 lg:w-1/3 p-2">
+                        <div class="p-4 bg-white shadow-lg rounded-lg" style="height:100% !important;">
+                            <div class="w-full mb-2">
+                                <img class="rounded pb-2" id="{{ $product->product_id }}_product_image"
+                                    src="{{ asset($product->product_image) }}" alt="{{ $product->product_name }}">
+                            </div>
+                            <span class="py-1 px-2 bg-red-500 rounded text-xs text-white">{{ $product->badge
+                                }}</span>
 
-                        @foreach ($products as $product)
-                            <div class="w-1/1 lg:w-1/3 p-4">
-                                <div class="p-4 bg-white shadow-lg rounded-lg" style="height:100% !important;">
-                                    <div class="w-full mb-2">
-                                        <img class="rounded pb-2" id="{{ $product->product_id }}_product_image"
-                                            src="{{ asset($product->product_image) }}"
-                                            alt="{{ $product->product_name }}">
-                                    </div>
-                                    <span
-                                        class="py-1 px-2 bg-red-500 rounded text-xs text-white">{{ $product->badge }}</span>
-
-                                    <div class="w-full mb-1 mt-1 justify-between items-center">
-                                        <div>
-                                            <h3 id="{{ $product->product_id }}_product_name"
-                                                class="text-sm font-medium">
-                                                {{ $product->product_name }}</h3>
-                                            <span id="{{ $product->product_id }}_subtitle"
-                                                class="text-xs text-gray-500">{{ $product->product_subtitle }}</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="w-full mb-1 justify-between items-center">
-                                        <h4 class="text-sm  font-bold"><span
-                                                id="{{ $product->product_id }}_currency">{{ $currency }}</span>
-                                            <span
-                                                id="{{ $product->product_id }}_price">{{ $product->sales_price }}</span>
-                                            @if ($product->sales_price != $product->regular_price)
-                                                <span class="text-xs line-through text-red-500 font-bold">
-                                                    {{ $currency }}{{ $product->regular_price }}</span>
-                                            @endif
-                                        </h4>
-                                        <h4 class="text-sm mb-3">
-                                            @if (isset($product->hasCategory->category_name))
-                                                <span class="py-1 text-sm font-bold text-dark">Category
-                                                    : {{ $product->hasCategory->category_name ?? '' }}</span>
-                                            @endif
-
-                                        </h4>
-
-                                        @if ($product->product_status == 'instock')
-                                            <a onclick="addToCart('{{ $product->product_id }}')"
-                                                class="py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
-                                                style="cursor: pointer;">{{ __('Add') }}</a>
-                                        @endif
-                                    </div>
+                            <div class="w-full mb-1 mt-1 justify-between items-center">
+                                <div>
+                                    <h3 id="{{ $product->product_id }}_product_name" class="text-sm font-medium">
+                                        {{ $product->product_name }}</h3>
+                                    <span id="{{ $product->product_id }}_subtitle" class="text-xs text-gray-500">{{
+                                        $product->product_subtitle }}</span>
                                 </div>
                             </div>
-                        @endforeach
 
+                            <div class="w-full mb-1 justify-between items-center">
+                                <h4 class="text-sm  font-bold"><span id="{{ $product->product_id }}_currency">{{
+                                        $currency }}</span>
+                                    <span id="{{ $product->product_id }}_price">{{ $product->sales_price }}</span>
+                                    @if ($product->sales_price != $product->regular_price)
+                                    <span class="text-xs line-through text-red-500 font-bold">
+                                        {{ $currency }}{{ $product->regular_price }}</span>
+                                    @endif
+                                </h4>
+                                <h4 class="text-sm mb-3">
+                                    @if (isset($product->hasCategory->category_name))
+                                    <span class="py-1 text-sm font-bold text-dark">Category
+                                        : {{ $product->hasCategory->category_name ?? '' }}</span>
+                                    @endif
+
+                                </h4>
+
+                                @if ($product->product_status == 'instock')
+                                <a onclick="addToCart('{{ $product->product_id }}')"
+                                    class="py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
+                                    style="cursor: pointer;">{{ __('Add') }}</a>
+                                @endif
+                            </div>
+                        </div>
                     </div>
+                    @endforeach
+
                 </div>
-            </section>
-        @else
-            <div class="text-center text-light d-flex align-items-center" style="min-height: 90vh">
-                <h2 style="color: #000000 ;font-size:25px;">Your Whatsapp store is currently Inactive</h2>
             </div>
+        </section>
+        @else
+        <div class="text-center text-light d-flex align-items-center" style="min-height: 90vh">
+            <h2 style="color: #000000 ;font-size:25px;">Your Whatsapp store is currently Inactive</h2>
+        </div>
         @endif
 
         <div class="py-8">
@@ -249,17 +304,17 @@
 
 
         @if ($plan_details['hide_branding'] == '1')
-            <div class="my-4 mt-12">
-                <p class="mb-2 text-center text-base text-dark">{{ __('Copyright') }} &copy;
-                    {{ $card_details->title }} <span id="year"></span>.
-                </p>
-            </div>
+        <div class="my-4 mt-12">
+            <p class="mb-2 text-center text-base text-dark">{{ __('Copyright') }} &copy;
+                {{ $card_details->title }} <span id="year"></span>.
+            </p>
+        </div>
         @else
-            <div class="my-4 mt-12">
-                <p class="mb-2 text-center text-base text-gray-500">{{ __('Copyright') }} &copy; <span
-                        id="year"></span>. <a href="{{ url('/') }}">{{ config('app.name') }}
-                        {{ __('WhatsApp Store') }}</a></p>
-            </div>
+        <div class="my-4 mt-12">
+            <p class="mb-2 text-center text-base text-gray-500">{{ __('Copyright') }} &copy; <span id="year"></span>. <a
+                    href="{{ url('/') }}">{{ config('app.name') }}
+                    {{ __('WhatsApp Store') }}</a></p>
+        </div>
         @endif
     </div>
     <script src="{{ asset('frontend/whatsapp-store/js/script.js') }}"></script>
