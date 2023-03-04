@@ -34,8 +34,20 @@
             outline: none !important;
         }
 
-        @media screen and (max-width:650px) {
-            .float-right {
+        .shop_filter {
+            background: #fff;
+            padding: 8px 16px;
+            border: 1px solid #DDD;
+            border-radius: 4px;
+        }
+
+        .input-group span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        @media screen and (max-width:500px) {
+            .shop_filter .float-right {
                 float: inherit !important;
             }
 
@@ -136,7 +148,7 @@
 
         @if ($business_card_details->card_status == 'activated')
 
-        <section class="py-1">
+        <section class="py-3">
             <div class="container px-4 mx-auto">
                 <div class="rounded overflow-hidden">
                     <img class="rounded pb-2" src="{{ url('/') }}{{ $business_card_details->cover }}"
@@ -147,8 +159,8 @@
 
 
 
-        <div class="container shop_filter px-4 mx-auto">
-            <form action="#" method="post">
+        <div class="container px-2 mx-auto">
+            <form action="#" method="post" class="shop_filter">
                 <div class="grid grid-cols-2 gap-6">
                     <div class="">
                         <div class="filter_form">
