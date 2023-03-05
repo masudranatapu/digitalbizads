@@ -72,8 +72,12 @@
                 <div class="p-6 flex items-center bg-dark shadow"
                     style="@if ($business_card_details->header_backgroung) background-color: {{ $business_card_details->header_backgroung }} @endif; @if ($business_card_details->header_text_color) color: {{ $business_card_details->header_text_color }} @endif">
                     <a class="flex-shrink-0 text-2xl font-semibold text-white">
-                        <img class="h-10" src="{{ url('/') }}{{ $business_card_details->profile }}"
-                            alt="{{ $business_card_details->title }}" width="auto">
+                        @if ($business_card_details->profile)
+                            <img class="h-10" src="{{ url('/') }}{{ $business_card_details->profile }}"
+                                alt="{{ $business_card_details->title }}" width="auto">
+                        @else
+                            {{ $business_card_details->title }}
+                        @endif
                     </a>
 
 
