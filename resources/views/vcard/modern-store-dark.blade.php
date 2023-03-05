@@ -145,16 +145,16 @@
 
 
         @if ($business_card_details->card_status == 'activated')
-
-
-            <section class="py-1">
-                <div class="container px-4 mx-auto">
-                    <div class="rounded bg-white overflow-hidden text-dark">
-                        <img class="rounded pb-2" src="{{ url('/') }}{{ $business_card_details->cover }}"
-                            alt="{{ $business_card_details->title }}">
+            @if (isset($business_card_details->cover))
+                <section class="py-1">
+                    <div class="container px-4 mx-auto">
+                        <div class="rounded bg-white overflow-hidden text-dark">
+                            <img class="rounded pb-2" src="{{ url('/') }}{{ $business_card_details->cover }}"
+                                alt="{{ $business_card_details->title }}">
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            @endif
             <div class="container px-2 mx-auto">
                 <form action="{{ url()->current() }}" class="shop_filter">
                     <div class="grid grid-cols-2 gap-6">

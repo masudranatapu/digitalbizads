@@ -78,7 +78,7 @@ class StoreController extends Controller
         if ($validator->fails()) {
             // alert()->error(trans('Some fields missing or banner/logo size is large.'));
 
-            return back()->with('toast_error', $validator->errors())->withInput();
+            return back()->withErrors($validator)->withInput();
         }
 
         $cardId = uniqid();
