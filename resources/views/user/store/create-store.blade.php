@@ -169,11 +169,11 @@
 
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
-                                                    <div class="form-label required">{{ __('Banner') }} <span
+                                                    <div class="form-label">{{ __('Banner') }} <span
                                                             class="text-muted">({{ __('Recommended : 1920 x 550 pixels') }})</span>
                                                     </div>
                                                     <input type="file" class="form-control" name="banner"
-                                                        placeholder="{{ __('Banner') }}..." required
+                                                        placeholder="{{ __('Banner') }}..."
                                                         accept=".jpeg,.jpg,.png,.gif,.svg" />
                                                 </div>
                                             </div>
