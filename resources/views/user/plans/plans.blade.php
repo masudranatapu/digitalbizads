@@ -137,11 +137,13 @@
                                                 {{ __('Hide Branding') }}
                                                 {{ $plan->hide_branding == '1' ? __('Available') : '' }}</span></li>
 
+
                                         @if (isset($plan->fearures))
                                             @php
                                                 $planFeatures = json_decode($plan->fearures, true);
                                             @endphp
-                                            @for ($i = 0; $i < count($planFeatures); $i++)
+
+                                             @for ($i = 0; $i < count($planFeatures); $i++)
                                                 <li>
                                                     <span>
                                                         {{ $planFeatures[$i] }}

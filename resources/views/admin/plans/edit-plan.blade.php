@@ -214,15 +214,25 @@
 
                                                 <div class="features">
 
-                                                    @for ($i = 0; $i < count($plan_details->fearures); $i++)
-                                                        <div class="input-group my-3 row_{{ $i }}">
-                                                            <input type="text" class="form-control" name="features[]"
-                                                                aria-label="remove-btn" aria-describedby="remove-btn"
-                                                                value="{{ $plan_details->fearures[$i] }}">
-                                                            <button class="btn font-bold btn-danger" onclick="remove(0)"
-                                                                type="button" id="remove-btn">-</button>
-                                                        </div>
-                                                    @endfor
+                                                    @if (isset($plan_details->fearures))
+                                                        @php
+                                                            $planDetails = json_decode($plan_details->fearures, true);
+                                                        @endphp
+
+                                                       
+
+                                                        @for ($i = 0; $i < count($planDetails); $i++)
+                                                            <div class="input-group my-3 row_{{ $i }}">
+                                                                <input type="text" class="form-control"
+                                                                    name="features[]" aria-label="remove-btn"
+                                                                    aria-describedby="remove-btn"
+                                                                    value="{{ $planDetails[$i] }}">
+                                                                <button class="btn font-bold btn-danger"
+                                                                    onclick="remove(0)" type="button"
+                                                                    id="remove-btn">-</button>
+                                                            </div>
+                                                        @endfor
+                                                    @endif
                                                 </div>
                                             </div>
                                             {{-- <div class="col-md-3 col-xl-3">
