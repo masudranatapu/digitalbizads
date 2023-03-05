@@ -171,7 +171,8 @@ class PlanController extends Controller
 
         if ($validator->fails()) {
 
-            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+            return back()->withErrors($validator)
+                ->withInput();
         }
 
         DB::beginTransaction();
@@ -222,6 +223,7 @@ class PlanController extends Controller
 
 
             $plan = Plan::where('plan_id', $request->plan_id)->first();
+
             $plan->plan_name = $request->plan_name;
             $plan->plan_description = $request->plan_description;
             $plan->recommended = $recommended;
@@ -244,12 +246,7 @@ class PlanController extends Controller
             } else {
                 $plan->fearures = null;
             }
-
-
-
-
-
-            return redirect()->route('admin.edit.plan', $request->plan_id);
+            $plan->save();
         } catch (\Exception $e) {
             dd($e->getMessage());
             DB::rollback();
