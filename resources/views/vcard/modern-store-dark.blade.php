@@ -161,7 +161,7 @@
                         <div class="">
                             <div class="filter_form">
                                 <div class="input-group">
-                                    <span class="input-group-text">Category:</span>
+                                    {{-- <span class="input-group-text">Category:</span> --}}
                                     <select name="category" id="category" class="form-control">
                                         <option value="">All Category</option>
                                         @foreach ($productCategories as $productCategory)
