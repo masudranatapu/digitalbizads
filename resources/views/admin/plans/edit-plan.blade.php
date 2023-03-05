@@ -219,9 +219,7 @@
                                                             $planDetails = json_decode($plan_details->fearures, true);
                                                         @endphp
 
-
-
-                                                        {{-- @for ($i = 0; $i < count($planDetails); $i++)
+                                                        @for ($i = 0; $i < count($planDetails); $i++)
                                                             <div class="input-group my-3 row_{{ $i }}">
                                                                 <input type="text" class="form-control"
                                                                     name="features[]" aria-label="remove-btn"
@@ -231,7 +229,7 @@
                                                                     onclick="remove(0)" type="button"
                                                                     id="remove-btn">-</button>
                                                             </div>
-                                                        @endfor --}}
+                                                        @endfor
                                                     @endif
                                                 </div>
                                             </div>
