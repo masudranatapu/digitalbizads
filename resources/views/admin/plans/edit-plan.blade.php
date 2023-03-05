@@ -226,7 +226,7 @@
                                                                     aria-describedby="remove-btn"
                                                                     value="{{ $planDetails[$i] }}">
                                                                 <button class="btn font-bold btn-danger"
-                                                                    onclick="remove(0)" type="button"
+                                                                    onclick="remove({{ $i }})" type="button"
                                                                     id="remove-btn">-</button>
                                                             </div>
                                                         @endfor
