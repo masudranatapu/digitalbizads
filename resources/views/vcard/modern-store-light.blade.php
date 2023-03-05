@@ -82,14 +82,16 @@
 
                         @if ($store_card)
                             <a href="{{ route('home-locale') }}/{{ $store_card->card_url }}"
-                                style="padding:3px; border:1px solid #222;">Back to Bizad </a>&nbsp;&nbsp;
+                                style="padding:3px;@if ($business_card_details->header_text_color) border:1px solid {{ $business_card_details->header_text_color }} @else #000000 @endif ;">Back
+                                to Bizad </a>&nbsp;&nbsp;
                         @endif
 
 
                         <button class="navbar-burger flex items-center">
                             <span class="relative inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    viewBox="0 0 24 24"
+                                    stroke="@if ($business_card_details->header_text_color) {{ $business_card_details->header_text_color }} @else #000000 @endif ">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                                 </svg>
@@ -183,7 +185,8 @@
                                     <select name="sort_order" id="sort_order" class="form-control">
                                         <option @if ('1' == request()->sort_order) selected @endif value="1">A to Z
                                         </option>
-                                        <option @if ('2' == request()->sort_order) selected @endif value="2">Z to A
+                                        <option @if ('2' == request()->sort_order) selected @endif value="2">Z to
+                                            A
                                         </option>
                                         <option @if ('3' == request()->sort_order) selected @endif value="3">Price
                                             low to high</option>
