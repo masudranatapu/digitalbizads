@@ -269,7 +269,7 @@
                 <div class="purchase_btn save_contact">
                     <a href="{{ route('download.vCard', $cardinfo->card_id) }}"
                         class="text-decoration-none save-contact d-inline-block">Save Contact</a>
-                    @if (isset($store_details->card_url) && ($cardinfo->is_store_show == 1))
+                    @if (isset($store_details->card_url) && $cardinfo->is_store_show == 1)
                         <a href="{{ URL::to('/') . '/' . $store_details->card_url }}" target="_blank"
                             class="text-decoration-none d-inline-block btn-secondary">
                             SHOP
@@ -427,7 +427,7 @@
                 @if (isFreePlan($cardinfo->user_id))
                     <p>All Rights Reserved by Digitalbizads.com</p>
                 @else
-                    <p>{{ $cardinfo->footer_text }} </p>
+                    <p>Copyright © {{ $cardinfo->footer_text }} {{ date('Y') }}.</p>
                 @endif
 
             </div>
