@@ -97,9 +97,11 @@ class StoreController extends Controller
             $request->logo->move(public_path('backend/img/vCards'), $logo);
         }
 
-        $banner = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->banner->getClientOriginalName()) . '.' . $request->banner->extension();
+        if (isset($request->banner)) {
+            $banner = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->banner->getClientOriginalName()) . '.' . $request->banner->extension();
+            $request->banner->move(public_path('backend/img/vCards'), $banner);
+        }
 
-        $request->banner->move(public_path('backend/img/vCards'), $banner);
         $store_details = [];
         $store_details['whatsapp_no'] = $request->whatsapp_no;
         $store_details['whatsapp_msg'] = $request->whatsapp_msg;
@@ -127,7 +129,7 @@ class StoreController extends Controller
                     $card->theme_id = $request->theme_id;
                     $card->theme_color = $request->card_color;
                     $card->card_lang = $request->card_lang;
-                    $card->cover = $banner;
+                    $card->cover = $banner ?? null;
                     $card->profile = $logo ?? null;
                     $card->card_url = strtolower(preg_replace('/\s+/', '-', $personalized_link));
                     $card->card_type = 'store';
