@@ -79,9 +79,9 @@
                                                                 href="#openQR">{{ __('Scan') }}</a>
                                                             <a class="btn btn-primary btn-sm"
                                                                 href="{{ route('user.edit.store', $business_card->card_id) }}">{{ __('Edit') }}</a>
-                                                            <a class="btn btn-info btn-sm"
+                                                            {{-- <a class="btn btn-info btn-sm"
                                                                 href="{{ route('user.view.preview', $business_card->card_id) }}"
-                                                                target="_blank">{{ __('Preview') }}</a>
+                                                                target="_blank">{{ __('Preview') }}</a> --}}
                                                             <a class="btn btn-warning btn-sm"
                                                                 href="{{ URL::to('/') . '/' . $business_card->card_url }}"
                                                                 target="_blank">{{ __('Live') }}</a>
