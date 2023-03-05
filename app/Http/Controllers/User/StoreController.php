@@ -61,7 +61,7 @@ class StoreController extends Controller
             'card_color' => 'required',
             'card_lang' => 'required',
             'banner' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg',
-            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            'logo' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg',
             'title' => 'required',
             'currency' => 'required',
             'subtitle' => 'required',

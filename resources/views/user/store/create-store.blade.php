@@ -194,13 +194,15 @@
                                                     <input type="text" class="form-control" name="title"
                                                         onload="convertToLink(this.value); checkLink()"
                                                         onkeyup="convertToLink(this.value); checkLink()"
-                                                        placeholder="{{ __('Store name') }}..." required>
+                                                        placeholder="{{ __('Store name') }}..." required
+                                                        value="{{ old('title') }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
                                                     <label class="form-label required">{{ __('Store greeting') }}</label>
                                                     <input type="text" class="form-control" name="subtitle"
+                                                        value="{{ old('subtitle') }}"
                                                         placeholder="{{ __('Ex: Welcome to') }}..." required>
                                                 </div>
                                             </div>
@@ -221,6 +223,7 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">{{ __('WhatsApp Number') }}</label>
                                                     <input type="number" class="form-control" name="whatsapp_no"
+                                                        value="{{ old('whatsapp_no') }}"
                                                         placeholder="{{ __('For example: 919876543210 (With country code)') }}...">
                                                 </div>
                                             </div>
@@ -228,7 +231,7 @@
                                                 <div class="mb-3">
                                                     <label class="form-label required">{{ __('Email') }}</label>
                                                     <input type="email" class="form-control" name="email"
-                                                        placeholder="example@email.com">
+                                                        value="{{ old('email') }}" placeholder="example@email.com">
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-xl-6">
