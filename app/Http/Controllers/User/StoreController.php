@@ -136,6 +136,7 @@ class StoreController extends Controller
                     $card->title = $request->title;
                     $card->sub_title = $request->subtitle;
                     $card->is_store_show = 1;
+                    $card->card_status = "activated";
                     $card->description = json_encode($store_details);
                     $card->header_backgroung = $request->header_backgroung ?? '#fff';
                     $card->header_text_color = $request->header_text_color ?? '#000';

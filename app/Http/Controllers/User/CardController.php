@@ -1440,4 +1440,14 @@ class CardController extends Controller
             ]
         );
     }
+
+
+    public function cardDelete(BusinessCard $card)
+    {
+        StoreProduct::where('card_id', $card->card_id)->delete();
+
+        $card->delete();
+        alert()->success(trans('Your store and store product has successfully deleted'));
+        return redirect()->route('user.stores');
+    }
 }

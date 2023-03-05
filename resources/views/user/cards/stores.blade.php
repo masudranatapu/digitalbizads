@@ -96,6 +96,9 @@
                                                                     data-id="{{ $business_card->card_id }}"
                                                                     href="#openModel">{{ __('Enable') }}</a>
                                                             @endif
+                                                            <a class="delete-model btn btn-danger btn-sm"
+                                                                data-id="{{ $business_card->id }}"
+                                                                href="javascript:void(0)">{{ __('Delete') }}</a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -163,6 +166,9 @@
                                                                         data-id="{{ $row->card_id }}"
                                                                         href="#openModel">{{ __('Enable') }}</a>
                                                                 @endif
+                                                                <a class="delete-model btn btn-danger btn-sm"
+                                                                    data-id="{{ $business_card->id }}"
+                                                                    href="javascript:void(0)">{{ __('Delete') }}</a>
 
                                                             </div>
                                                         </div>
@@ -194,6 +200,22 @@
                     <button type="button" class="btn btn-link link-secondary me-auto"
                         data-bs-dismiss="modal">{{ __('Cancel') }}</button>
                     <a class="btn btn-danger" id="plan_id">{{ __('Yes, proceed') }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-blur fade" id="deleteStoreModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-title">{{ __('Are you sure?') }}</div>
+                    <div>{{ __('If you proceed, you will delete this store and product also.') }}</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link link-secondary me-auto"
+                        data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <a class="btn btn-danger" id="delete_store_id">{{ __('Yes, proceed') }}</a>
                 </div>
             </div>
         </div>
