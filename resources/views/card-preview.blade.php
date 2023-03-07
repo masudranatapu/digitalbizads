@@ -361,8 +361,7 @@
                                         <!-- social icon -->
                                         <div class="col">
                                             <div class="social_item">
-                                                <a href="https://www.facebook.com/{{ $contact->content }}"
-                                                    target="_blank">
+                                                <a href="{{ $contact->content }}" target="_blank">
                                                     <i class="fab fa-facebook"></i>
                                                 </a>
                                             </div>
@@ -370,8 +369,7 @@
                                     @elseif ($contact->label == 'instagram')
                                         <div class="col">
                                             <div class="social_item">
-                                                <a href="https://www.instagram.com/{{ $contact->content }}"
-                                                    target="_blank">
+                                                <a href="{{ $contact->content }}" target="_blank">
                                                     <i class="fab fa-instagram"></i>
                                                 </a>
                                             </div>

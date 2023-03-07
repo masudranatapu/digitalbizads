@@ -254,13 +254,13 @@ class StoreController extends Controller
             $store_details['currency']      = $request->currency;
             $store_details['email']         = $request->email;
 
-            if ($request->logo) {
+            if ($request->banner) {
                 $banner = '/backend/img/vCards/' . 'IMG-' . $request->banner->getClientOriginalName() . '.' . $request->banner->extension();
                 $request->banner->move(public_path('backend/img/vCards'), $banner);
                 $data['cover']  = $banner;
             }
 
-            if ($request->banner) {
+            if ($request->logo) {
                 $logo = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->logo->getClientOriginalName()) . '.' . $request->logo->extension();
                 $request->logo->move(public_path('backend/img/vCards'), $logo);
                 $data['profile'] = $logo;
