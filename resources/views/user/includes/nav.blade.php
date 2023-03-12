@@ -165,7 +165,9 @@
                                     <line x1="15" y1="12" x2="17" y2="12"></line>
                                     <line x1="7" y1="16" x2="17" y2="16"></line>
                                 </svg> --}}
-                                <i class="fas fa-gear"></i>
+
+
+                                <i class="fa-solid fa-sliders"></i>
                             </span>
                             <span class="nav-link-title">
                                 {{ __('Settings') }}
