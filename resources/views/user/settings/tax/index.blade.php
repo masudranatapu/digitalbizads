@@ -144,18 +144,39 @@
                                                             </button>
                                                             <div class="dropdown-menu" style="">
 
-
-                                                                <a class="dropdown-item  text-danger delete-card"
-                                                                    href="javascript:void(0)">
-                                                                    {{ __('Send Mail') }}
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('user.setting.tax.edit', ['state' => $row->id]) }}">
+                                                                    {{ __('Edit') }}
                                                                 </a>
+                                                                @if ($row->status)
+                                                                    <a class="dropdown-item" href="javascripy:void(0)"
+                                                                        data-id="{{ $row->id }}"
+                                                                        data-status="{{ $row->status }}"
+                                                                        onclick="deactiveState(this)">
+                                                                        {{ __('Deactive') }}
+                                                                    </a>
+                                                                @else
+                                                                    <a class="dropdown-item" href="javascript:void(0)"
+                                                                        data-id="{{ $row->id }}"
+                                                                        data-status="{{ $row->status }}"
+                                                                        onclick="deactiveState(this)">
+                                                                        {{ __('Active') }}
+                                                                    </a>
+                                                                @endif
+
+                                                                <a class="dropdown-item" data-id="{{ $row->id }}"
+                                                                    href="javascript:void(0)" onclick="deleteState(this)">
+                                                                    {{ __('Delete') }}
+                                                                </a>
+
+
+
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
                                 @endforeach
                             </div>
 
