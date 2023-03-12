@@ -110,6 +110,18 @@
                 </div>
             </div>
         </div>
+
+        <div
+                            class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none">
+                            <div class="row">
+
+                                @foreach ($states as $row)
+                                    <div class="">
+                                        <div class="card">
+                                        </div>
+                                    </div>
+                            </div>
+        </div>
         @include('user.includes.footer')
     </div>
 @endsection
