@@ -178,7 +178,7 @@
 
                                                                 <a class="dropdown-item text-dark"
                                                                     href="{{ route('card.preview', $row->card_url) }}"
-                                                                    target="_blank">{{ __('Subscriber') }}</a>
+                                                                    target="_blank">{{ __('Subscribers') }}</a>
 
                                                                 @if ($row->is_store_show == 1)
                                                                     <a class="dropdown-item text-dark"
