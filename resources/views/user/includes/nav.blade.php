@@ -148,6 +148,37 @@
                             </span>
                         </a>
                     </li>
+                    <li class="nav-item dropdown @yield('setting-nav')">
+                        <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown"
+                            role="button" aria-expanded="false">
+                            <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                {{-- <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-id"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" fill="none" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <rect x="3" y="4" width="18" height="16"
+                                        rx="3">
+                                    </rect>
+                                    <circle cx="9" cy="10" r="2"></circle>
+                                    <line x1="15" y1="8" x2="17" y2="8"></line>
+                                    <line x1="15" y1="12" x2="17" y2="12"></line>
+                                    <line x1="7" y1="16" x2="17" y2="16"></line>
+                                </svg> --}}
+                                <i class="fas fa-gear"></i>
+                            </span>
+                            <span class="nav-link-title">
+                                {{ __('Settings') }}
+                            </span>
+                        </a>
+                        <div class="dropdown-menu ">
+                            <a href="{{ route('user.setting.payment') }}"
+                                class="dropdown-item @if (request()->routeIs('user.setting.payment')) active @endif">{{ __('Payment') }}</a>
+
+                            <a href="{{ route('user.setting.tax') }}"
+                                class="dropdown-item @if (request()->routeIs('user.setting.tax*')) active @endif">{{ __('Tax') }}</a>
+                        </div>
+                    </li>
 
                     {{-- Additional Tools --}}
                     {{-- <li class="nav-item dropdown {{ request()->is('user/tools*') ? 'active' : '' }}">

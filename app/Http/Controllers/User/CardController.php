@@ -19,10 +19,16 @@ use App\BusinessHour;
 use App\StoreProduct;
 use App\BusinessField;
 use App\ProductCategory;
+use App\Subscriber;
+use Maatwebsite\Excel\Facades\Excel;
+
+use App\Mail\SubscriberMail;
+use App\Exports\SubscriberExport;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
@@ -92,6 +98,7 @@ class CardController extends Controller
                 ->get();
 
             $settings = Setting::where('status', 1)->first();
+
 
             return view('user.cards.cards', compact('business_cards', 'settings'));
         } else {
@@ -1449,5 +1456,31 @@ class CardController extends Controller
         $card->delete();
         alert()->success(trans('Your store and store product has successfully deleted'));
         return redirect()->route('user.stores');
+    }
+
+    public function subscriber($cardId)
+    {
+        $subscriber = Subscriber::where('card_id', $cardId)->get();
+        $settings = Setting::first();
+
+        return view('user.cards.subscriber', compact('subscriber', 'settings', 'cardId'));
+    }
+
+    public function sendMail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required',
+            'subject' => 'required',
+            'message' => 'required',
+        ]);
+
+        Mail::to($request->email)->send(new SubscriberMail($request->subject, $request->message));
+        alert()->success(trans('Your Mail Send Successfully'));
+        return redirect()->back();
+    }
+
+    public function subscriberExport($card)
+    {
+        return Excel::download(new SubscriberExport($card), 'users.xlsx');
     }
 }

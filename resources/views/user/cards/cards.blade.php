@@ -73,10 +73,14 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if($row->is_store_show == 1 )
-                                                        <a href="{{ route('user.card.storestatus',[$row->id, '0']) }}"><i class="fa fa-check"></i> <i class="fa fa-store"></i></a>
+                                                        @if ($row->is_store_show == 1)
+                                                            <a
+                                                                href="{{ route('user.card.storestatus', [$row->id, '0']) }}"><i
+                                                                    class="fa fa-check"></i> <i class="fa fa-store"></i></a>
                                                         @else
-                                                        <a href="{{ route('user.card.storestatus',[$row->id, '1']) }}" ><i class="fa fa-times"></i> <i class="fa fa-store"></i></a>
+                                                            <a
+                                                                href="{{ route('user.card.storestatus', [$row->id, '1']) }}"><i
+                                                                    class="fa fa-times"></i> <i class="fa fa-store"></i></a>
                                                         @endif
 
 
@@ -94,6 +98,8 @@
                                                             <a class="btn btn-primary btn-sm"
                                                                 href="{{ route('card.preview', $row->card_url) }}"
                                                                 target="_blank">{{ __('Preview') }}</a>
+                                                            <a class="btn btn-primary btn-sm"
+                                                                href="{{ route('user.card.subscriber', $row->id) }}">{{ __('Subscriber') }}</a>
                                                             <a class="btn btn-danger btn-sm delete-card"
                                                                 href="{{ route('user.card.delete', $row->card_id) }}">
                                                                 {{ __('Delete') }}
@@ -136,7 +142,8 @@
 
 
                     @if (!empty($business_cards) && $business_cards->count())
-                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none">
+                        <div
+                            class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none">
                             <div class="row">
 
                                 @foreach ($business_cards as $row)
@@ -169,10 +176,18 @@
                                                                     href="{{ route('card.preview', $row->card_url) }}"
                                                                     target="_blank">{{ __('Preview') }}</a>
 
-                                                                @if($row->is_store_show == 1 )
-                                                                <a class="dropdown-item text-dark" href="{{ route('user.card.storestatus',[$row->id, '0']) }}">Connect Store</a>
+                                                                <a class="dropdown-item text-dark"
+                                                                    href="{{ route('card.preview', $row->card_url) }}"
+                                                                    target="_blank">{{ __('Subscriber') }}</a>
+
+                                                                @if ($row->is_store_show == 1)
+                                                                    <a class="dropdown-item text-dark"
+                                                                        href="{{ route('user.card.storestatus', [$row->id, '0']) }}">Connect
+                                                                        Store</a>
                                                                 @else
-                                                                <a class="dropdown-item text-dark" href="{{ route('user.card.storestatus',[$row->id, '1']) }}">Disconnect Store</a>
+                                                                    <a class="dropdown-item text-dark"
+                                                                        href="{{ route('user.card.storestatus', [$row->id, '1']) }}">Disconnect
+                                                                        Store</a>
                                                                 @endif
 
                                                                 <a class="dropdown-item  text-danger delete-card"
