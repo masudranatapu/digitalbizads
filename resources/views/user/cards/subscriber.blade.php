@@ -12,7 +12,7 @@
                             {{ __('Overview') }}
                         </div>
                         <h2 class="page-title">
-                            {{ __('Biz Ad Card Subscriber') }}
+                            {{ __('Biz Ad Subscribers') }}
                         </h2>
                     </div>
                     @if (!empty($subscriber) && $subscriber->count())

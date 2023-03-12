@@ -92,14 +92,14 @@
                                                             <a class="open-qr btn btn-primary btn-sm"
                                                                 data-id="{{ $row->card_url }}"
                                                                 href="#openQR">{{ __('Scan') }}</a>
-                                                            <a class="btn btn-primary btn-sm"
+                                                            <a class="btn btn-info btn-sm"
                                                                 href="{{ route('user.edit.card', $row->card_id) }}">{{ __('Edit') }}</a>
 
                                                             <a class="btn btn-primary btn-sm"
                                                                 href="{{ route('card.preview', $row->card_url) }}"
                                                                 target="_blank">{{ __('Preview') }}</a>
-                                                            <a class="btn btn-primary btn-sm"
-                                                                href="{{ route('user.card.subscriber', $row->id) }}">{{ __('Subscriber') }}</a>
+                                                            <a class="btn btn-secondary btn-sm"
+                                                                href="{{ route('user.card.subscriber', $row->id) }}">{{ __('Subscribers') }}</a>
                                                             <a class="btn btn-danger btn-sm delete-card"
                                                                 href="{{ route('user.card.delete', $row->card_id) }}">
                                                                 {{ __('Delete') }}
