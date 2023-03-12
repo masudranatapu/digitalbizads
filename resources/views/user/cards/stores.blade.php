@@ -1,4 +1,5 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
+@section('store-nav', 'active')
 @section('content')
     <div class="page-wrapper">
         <div class="container-xl">
@@ -40,7 +41,7 @@
         <div class="page-body">
             <div class="container-xl">
                 <div class="row row-deck row-cards">
-                    <div class="col-sm-12 col-lg-12">
+                    <div class="col-sm-12 col-lg-12 d-none d-md-block">
                         <div class="card">
                             <div class="table-responsive px-2 py-2">
                                 <table class="table table-vcenter card-table" id="table">
@@ -68,8 +69,9 @@
                                                         {{ date('d/M/Y', strtotime($business_card->plan_validity)) }}</td>
                                                     <td class="text-muted">
                                                         @if ($business_card->card_status == 'inactive')
-                                                        <span class="badge bg-red">{{ __('Inactive') }}</span @else
-                                                                <span class="badge bg-green">{{ __('Active') }}</span>
+                                                            <span class="badge bg-red">{{ __('Inactive') }}</span>
+                                                        @else
+                                                            <span class="badge bg-green">{{ __('Active') }}</span>
                                                         @endif
                                                     </td>
                                                     <td>
@@ -83,7 +85,7 @@
                                                                 href="{{ route('user.view.preview', $business_card->card_id) }}"
                                                                 target="_blank">{{ __('Preview') }}</a> --}}
                                                             <a class="btn btn-warning btn-sm"
-                                                                href="{{ URL::to('/') . '/' . $business_card->card_url }}"
+                                                                href="{{ route('card.preview', $business_card->card_url) }}"
                                                                 target="_blank">{{ __('Live') }}</a>
                                                             @if ($business_card->card_status == 'activated')
                                                                 <a class="open-model btn btn-danger btn-sm"
@@ -94,6 +96,9 @@
                                                                     data-id="{{ $business_card->card_id }}"
                                                                     href="#openModel">{{ __('Enable') }}</a>
                                                             @endif
+                                                            <a class="delete-model btn btn-danger btn-sm"
+                                                                data-id="{{ $business_card->id }}"
+                                                                href="javascript:void(0)">{{ __('Delete') }}</a>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -103,7 +108,7 @@
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>{{ __('No Business Cards Found.') }}</td>
+                                                <td>{{ __('No Store Found.') }}</td>
                                                 <td></td>
                                                 <td></td>
                                             </tr>
@@ -113,6 +118,71 @@
                             </div>
                         </div>
                     </div>
+                    @if (!empty($business_cards) && $business_cards->count())
+                        <div
+                            class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none">
+                            <div class="row">
+
+                                @foreach ($business_cards as $row)
+                                    <div class="">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+
+                                                    <div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">
+                                                        <h3 class="text-left">
+                                                            <td>{{ $row->title }}</td>
+                                                        </h3>
+                                                    </div>
+
+                                                    <div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7">
+                                                        <div class="dropdown text-end">
+                                                            <button type="button" class="btn btn-primary dropdown-toggle"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                                Actions
+                                                            </button>
+                                                            <div class="dropdown-menu" style="">
+                                                                <a class="open-qr dropdown-item text-info"
+                                                                    data-id="{{ $row->card_url }}" href="#openQR">
+                                                                    {{ __('Scan') }}
+                                                                </a>
+                                                                <a class="dropdown-item text-success"
+                                                                    href="{{ route('user.edit.store', $row->card_id) }}">{{ __('Edit') }}</a>
+
+                                                                <a class="dropdown-item text-success"
+                                                                    href="{{ route('user.view.preview', $row->card_id) }}"
+                                                                    target="_blank">{{ __('Preview') }}</a>
+
+                                                                <a class="dropdown-item text-success"
+                                                                    href="{{ route('card.preview', $row->card_url) }}"
+                                                                    target="_blank">{{ __('Live') }}</a>
+
+                                                                @if ($row->card_status == 'activated')
+                                                                    <a class="open-model dropdown-item text-success"
+                                                                        data-id="{{ $row->card_id }}"
+                                                                        href="#openModel">{{ __('Disable') }}</a>
+                                                                @else
+                                                                    <a class="open-model dropdown-item text-success"
+                                                                        data-id="{{ $row->card_id }}"
+                                                                        href="#openModel">{{ __('Enable') }}</a>
+                                                                @endif
+                                                                <a class="delete-model btn btn-danger btn-sm"
+                                                                    data-id="{{ $business_card->id }}"
+                                                                    href="javascript:void(0)">{{ __('Delete') }}</a>
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -130,6 +200,22 @@
                     <button type="button" class="btn btn-link link-secondary me-auto"
                         data-bs-dismiss="modal">{{ __('Cancel') }}</button>
                     <a class="btn btn-danger" id="plan_id">{{ __('Yes, proceed') }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-blur fade" id="deleteStoreModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-title">{{ __('Are you sure?') }}</div>
+                    <div>{{ __('If you proceed, you will delete this store and product also.') }}</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link link-secondary me-auto"
+                        data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <a class="btn btn-danger" id="delete_store_id">{{ __('Yes, proceed') }}</a>
                 </div>
             </div>
         </div>

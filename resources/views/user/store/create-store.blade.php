@@ -116,23 +116,74 @@
                                                     </select>
                                                 </div>
                                             </div>
+
+
+                                            <div class="col-md-6 col-xl-6">
+                                                <div class="mb-3 form-input">
+                                                    <label for="header_backgroung" class="form-label">Header background
+                                                        color</label>
+                                                    <div class="input-group custome_color">
+                                                        <label for="header_backgroung" class="input-group-text">
+                                                            <img src="{{ asset('images/color-picker.png') }}"
+                                                                width="25" alt="color picker">
+                                                            <input type="color" placeholder="card color"
+                                                                name="header_backgroung" id="header_backgroung"
+                                                                value="#fff"
+                                                                class="form-control @error('header_backgroung') is-invalid @enderror"
+                                                                required>
+                                                        </label>
+                                                        <input type="text" id="theme_back_code" class="form-control"
+                                                            value="#fff" disabled>
+                                                    </div>
+                                                    @if ($errors->has('header_backgroung'))
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('header_backgroung') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6 col-xl-6">
+                                                <div class="mb-3 form-input">
+                                                    <label for="header_text_color" class="form-label">Headline
+                                                        Color</label>
+                                                    <div class="input-group custome_color">
+                                                        <label for="header_text_color" class="input-group-text">
+                                                            <img src="{{ asset('images/color-picker.png') }}"
+                                                                width="25" alt="color picker">
+                                                            <input type="color" placeholder="card color"
+                                                                name="header_text_color" id="header_text_color"
+                                                                value="#000"
+                                                                class="form-control @error('header_text_color') is-invalid @enderror"
+                                                                required>
+                                                        </label>
+                                                        <input type="text" id="header_clr_code" class="form-control"
+                                                            value="#000" disabled>
+                                                    </div>
+                                                    @if ($errors->has('header_text_color'))
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('header_text_color') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
-                                                    <div class="form-label required">{{ __('Banner') }} <span
+                                                    <div class="form-label">{{ __('Banner') }} <span
                                                             class="text-muted">({{ __('Recommended : 1920 x 550 pixels') }})</span>
                                                     </div>
                                                     <input type="file" class="form-control" name="banner"
-                                                        placeholder="{{ __('Banner') }}..." required
+                                                        placeholder="{{ __('Banner') }}..."
                                                         accept=".jpeg,.jpg,.png,.gif,.svg" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
-                                                    <div class="form-label required">{{ __('Logo') }} <span
+                                                    <div class="form-label ">{{ __('Logo') }} <span
                                                             class="text-muted">({{ __('Recommended: 180 x 90 pixels') }})</span>
                                                     </div>
                                                     <input type="file" class="form-control" name="logo"
-                                                        placeholder="{{ __('Logo') }}..." required
+                                                        placeholder="{{ __('Logo') }}..."
                                                         accept=".jpeg,.jpg,.png,.gif,.svg" />
                                                 </div>
                                             </div>
@@ -143,13 +194,15 @@
                                                     <input type="text" class="form-control" name="title"
                                                         onload="convertToLink(this.value); checkLink()"
                                                         onkeyup="convertToLink(this.value); checkLink()"
-                                                        placeholder="{{ __('Store name') }}..." required>
+                                                        placeholder="{{ __('Store name') }}..." required
+                                                        value="{{ old('title') }}">
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
                                                     <label class="form-label required">{{ __('Store greeting') }}</label>
                                                     <input type="text" class="form-control" name="subtitle"
+                                                        value="{{ old('subtitle') }}"
                                                         placeholder="{{ __('Ex: Welcome to') }}..." required>
                                                 </div>
                                             </div>
@@ -170,6 +223,7 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">{{ __('WhatsApp Number') }}</label>
                                                     <input type="number" class="form-control" name="whatsapp_no"
+                                                        value="{{ old('whatsapp_no') }}"
                                                         placeholder="{{ __('For example: 919876543210 (With country code)') }}...">
                                                 </div>
                                             </div>
@@ -177,7 +231,7 @@
                                                 <div class="mb-3">
                                                     <label class="form-label required">{{ __('Email') }}</label>
                                                     <input type="email" class="form-control" name="email"
-                                                        placeholder="example@email.com">
+                                                        value="{{ old('email') }}" placeholder="example@email.com">
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-xl-6">
@@ -213,7 +267,7 @@
                                         <div class="col-md-4 col-xl-4 my-3">
                                             <div class="mb-3">
                                                 <button type="submit" class="btn btn-primary">
-                                                    {{ __('Submit & Next') }}
+                                                    {{ __('Save') }}
                                                 </button>
                                             </div>
                                         </div>
@@ -269,6 +323,21 @@
                 document.getElementById("plink").value = str;
                 //return str;
             }
+
+            $(function() {
+                // show color code
+
+                $('#header_backgroung').on('input', function() {
+                    $('#theme_back_code').val(this.value);
+                });
+
+                $('#header_text_color').on('input', function() {
+                    $('#header_clr_code').val(this.value);
+                });
+
+
+
+            });
         </script>
     @endpush
 @endsection

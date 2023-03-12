@@ -50,6 +50,7 @@
                                             <th>{{ __('Type') }}</th>
                                             <th>{{ __('Validity Upto') }}</th>
                                             <th>{{ __('Status') }}</th>
+                                            <th>{{ __('Store') }}</th>
                                             <th class="w-1">{{ __('Actions') }}</th>
                                         </tr>
                                     </thead>
@@ -65,13 +66,27 @@
                                                     <td class="text-muted">
                                                         {{ date('d/M/Y', strtotime($row->plan_validity)) }}</td>
                                                     <td class="text-muted">
-
                                                         @if ($row->card_status == 'activated')
                                                             <span class="badge bg-green">{{ __('Active') }}</span>
                                                         @else
                                                             <span class="badge bg-red">{{ __('Inactive') }}</span>
                                                         @endif
                                                     </td>
+                                                    <td>
+                                                        @if ($row->is_store_show == 1)
+                                                            <a
+                                                                href="{{ route('user.card.storestatus', [$row->id, '0']) }}"><i
+                                                                    class="fa fa-check"></i> <i class="fa fa-store"></i></a>
+                                                        @else
+                                                            <a
+                                                                href="{{ route('user.card.storestatus', [$row->id, '1']) }}"><i
+                                                                    class="fa fa-times"></i> <i class="fa fa-store"></i></a>
+                                                        @endif
+
+
+
+                                                    </td>
+
                                                     <td>
                                                         <div class="btn-list flex-nowrap">
                                                             <a class="open-qr btn btn-primary btn-sm"
@@ -83,6 +98,8 @@
                                                             <a class="btn btn-primary btn-sm"
                                                                 href="{{ route('card.preview', $row->card_url) }}"
                                                                 target="_blank">{{ __('Preview') }}</a>
+                                                            <a class="btn btn-primary btn-sm"
+                                                                href="{{ route('user.card.subscriber', $row->id) }}">{{ __('Subscriber') }}</a>
                                                             <a class="btn btn-danger btn-sm delete-card"
                                                                 href="{{ route('user.card.delete', $row->card_id) }}">
                                                                 {{ __('Delete') }}
@@ -158,6 +175,21 @@
                                                                 <a class="dropdown-item text-dark"
                                                                     href="{{ route('card.preview', $row->card_url) }}"
                                                                     target="_blank">{{ __('Preview') }}</a>
+
+                                                                <a class="dropdown-item text-dark"
+                                                                    href="{{ route('card.preview', $row->card_url) }}"
+                                                                    target="_blank">{{ __('Subscriber') }}</a>
+
+                                                                @if ($row->is_store_show == 1)
+                                                                    <a class="dropdown-item text-dark"
+                                                                        href="{{ route('user.card.storestatus', [$row->id, '0']) }}">Connect
+                                                                        Store</a>
+                                                                @else
+                                                                    <a class="dropdown-item text-dark"
+                                                                        href="{{ route('user.card.storestatus', [$row->id, '1']) }}">Disconnect
+                                                                        Store</a>
+                                                                @endif
+
                                                                 <a class="dropdown-item  text-danger delete-card"
                                                                     href="{{ route('user.card.delete', $row->card_id) }}">
                                                                     {{ __('Delete') }}
@@ -201,7 +233,7 @@
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <div class="modal-title">{{ __('Scan Business Card / Store') }}</div>
+                    <div class="modal-title">{{ __('Scan Biz Ad') }}</div>
                 </div>
                 <div class="modal-body text-center">
                     <img id="cardURL">

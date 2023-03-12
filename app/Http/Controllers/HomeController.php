@@ -12,6 +12,8 @@ use App\Subscriber;
 use App\BusinessCard;
 use App\BusinessField;
 use App\Mail\OrderEmail;
+use App\ProductCategory;
+use App\StoreProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
@@ -32,6 +34,7 @@ class HomeController extends Controller
 {
     public function index()
     {
+        // Auth::logout();
         $homePage = DB::table('pages')->where('page_name', 'home')->get();
         $supportPage = DB::table('pages')->where('page_name', 'footer support email')->orWhere('page_name', 'footer')->get();
         $plans = Plan::where('status', 1)->where('is_private', '0')->get();
@@ -120,7 +123,7 @@ class HomeController extends Controller
         return view('pages/contact', compact('contactPage', 'supportPage', 'settings', 'config'));
     }
 
-    public function getPreview($cardurl)
+    public function getPreview(Request $request, $cardurl)
     {
         $cardinfo = BusinessCard::select('business_cards.*', 'plans.plan_name', 'plans.hide_branding')
             ->where('business_cards.card_url', $cardurl)
@@ -164,9 +167,33 @@ class HomeController extends Controller
                     ->select('business_cards.*', 'users.plan_details')
                     ->first();
 
+
+
                 if ($business_card_details) {
 
-                    $products = DB::table('store_products')->where('card_id', $card_details->card_id)->where('product_status', 'instock')->orderBy('id', 'desc')->get();
+                    $query = StoreProduct::with('hasCategory')->where('card_id', $card_details->card_id)->where('product_status', 'instock');
+
+
+                    if (isset($request->category)) {
+                        $query = $query->where('category_id', $request->category);
+                    }
+
+                    if (isset($request->sort_order)) {
+
+                        if ($request->sort_order == "1") {
+                            $query = $query->orderBy('product_name', 'asc');
+                        } elseif ($request->sort_order == "2") {
+                            $query = $query->orderBy('product_name', 'desc');
+                        } elseif ($request->sort_order == "3") {
+                            $query = $query->orderBy('sales_price', 'asc');
+                        } elseif ($request->sort_order == "4") {
+                            $query = $query->orderBy('sales_price', 'desc');
+                        }
+                    }
+
+                    $products = $query->get();
+
+
 
                     $settings = Setting::where('status', 1)->first();
                     $config = DB::table('config')->get();
@@ -215,10 +242,15 @@ class HomeController extends Controller
                     $shareComponent['telegram'] = "https://telegram.me/share/url?text=$shareContent&url=$url";
                     $shareComponent['whatsapp'] = "https://api.whatsapp.com/send/?phone&text=$shareContent";
 
+                    $store_card = BusinessCard::where('is_store_show', 1)->where('user_id', $business_card_details->user_id)->first();
+                    $productCategories = ProductCategory::orderBy('category_name', 'asc')
+                        ->where('user_id', $business_card_details->user_id)->get();
+
+
                     if ($card_details->theme_id == "7ccc432a06hty") {
-                        return view('vcard.modern-store-light', compact('card_details', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency'));
+                        return view('vcard.modern-store-light', compact('card_details', 'productCategories', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency', 'store_card'));
                     } else if ($card_details->theme_id == "7ccc432a06hju") {
-                        return view('vcard.modern-store-dark', compact('card_details', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency'));
+                        return view('vcard.modern-store-dark', compact('card_details', 'productCategories', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency', 'store_card'));
                     }
                 }
             }

@@ -136,6 +136,21 @@
                                         <li> <span>{{ $plan->hide_branding == '0' ? __('No') : '' }}
                                                 {{ __('Hide Branding') }}
                                                 {{ $plan->hide_branding == '1' ? __('Available') : '' }}</span></li>
+
+
+                                        @if (isset($plan->fearures))
+                                            @php
+                                                $planFeatures = json_decode($plan->fearures, true);
+                                            @endphp
+
+                                            @for ($i = 0; $i < count($planFeatures); $i++)
+                                                <li>
+                                                    <span>
+                                                        {{ $planFeatures[$i] }}
+                                                    </span>
+                                                </li>
+                                            @endfor
+                                        @endif
                                         {{-- <li><span>{{ $plan->free_setup == '0' ? __('No') : '' }} {{ __('Free Setup') }}
                                         {{ $plan->free_setup == '1' ? __('Available') : '' }}</span></li>
                                 <li> <span>{{ $plan->free_support == '0' ? __('No') : '' }}

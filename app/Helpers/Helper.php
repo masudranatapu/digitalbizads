@@ -1,5 +1,6 @@
 <?php
 
+use App\BusinessCard;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -274,10 +275,12 @@ function checkPackage($id = null)
 function isFreePlan($user_id)
 {
     $user = DB::table('users')
-        ->select('plans.plan_price')
+        ->select('plans.plan_price', 'plans.is_private')
         ->leftJoin('plans', 'plans.plan_id', '=', 'users.plan_id')
         ->where('users.id', $user_id)->first();
-    if ($user->plan_price == 0) {
+    if ($user->is_private == 1) {
+        return false;
+    } elseif ($user->plan_price == 0) {
         return true;
     }
     return false;
@@ -313,5 +316,13 @@ if (!function_exists('getUserPlan')) {
         $plan = User::where('user_id', Auth::user()->user_id)->first();
         $active_plan = json_decode($plan->plan_details, true);
         return $active_plan;
+    }
+}
+if (!function_exists('getUserStore')) {
+    function getUserStore()
+    {
+        $store = BusinessCard::where('user_id', Auth::id())->where('card_type', 'store')->first();
+
+        return $store;
     }
 }

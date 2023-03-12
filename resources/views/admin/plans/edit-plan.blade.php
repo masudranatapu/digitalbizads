@@ -192,6 +192,47 @@
                                                     </label>
                                                 </div>
                                             </div>
+                                            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+
+                                                <div class="d-flex justify-content-between">
+                                                    <p>Add Extra Feature</p>
+                                                    <button type="button" class="btn btn-primary" id="addFeature">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            class="icon icon-tabler icon-tabler-plus" width="24"
+                                                            height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                            stroke="currentColor" fill="none" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none">
+                                                            </path>
+                                                            <line x1="12" y1="5" x2="12"
+                                                                y2="19"></line>
+                                                            <line x1="5" y1="12" x2="19"
+                                                                y2="12"></line>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+
+                                                <div class="features">
+
+                                                    @if (isset($plan_details->fearures))
+                                                        @php
+                                                            $planDetails = json_decode($plan_details->fearures, true);
+                                                        @endphp
+
+                                                        @for ($i = 0; $i < count($planDetails); $i++)
+                                                            <div class="input-group my-3 row_{{ $i }}">
+                                                                <input type="text" class="form-control"
+                                                                    name="features[]" aria-label="remove-btn"
+                                                                    aria-describedby="remove-btn"
+                                                                    value="{{ $planDetails[$i] }}">
+                                                                <button class="btn font-bold btn-danger"
+                                                                    onclick="remove({{ $i }})" type="button"
+                                                                    id="remove-btn">-</button>
+                                                            </div>
+                                                        @endfor
+                                                    @endif
+                                                </div>
+                                            </div>
                                             {{-- <div class="col-md-3 col-xl-3">
                                             <div class="mb-3">
                                                 <div class="form-label">{{ __('Free Setup') }}</div>
@@ -210,11 +251,11 @@
                                                 </label>
                                             </div>
                                         </div> --}}
-                                            <div class="col-md-4 col-xl-4 my-3">
+                                            <div class="col-md-12 col-xl-12 my-3">
                                                 <div class="mb-3">
                                                     <button type="submit" class="btn btn-primary">
                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="icon icon-tabler icon-tabler-edit" width="24"
+                                                            class="icon icon-tabler icon-tabler-edit m-0" width="24"
                                                             height="24" viewBox="0 0 24 24" stroke-width="2"
                                                             stroke="currentColor" fill="none" stroke-linecap="round"
                                                             stroke-linejoin="round">
@@ -242,4 +283,28 @@
         </div>
         @include('admin.includes.footer')
     </div>
+@endsection
+@section('scripts')
+    <script>
+        let i = 0;
+        $('#addFeature').click(function() {
+            i++;
+            console.log(i);
+            let html = "";
+            html += '<div class="input-group my-3 row_' + i + '">';
+            html +=
+                '<input type="text" class="form-control" aria-label="" aria-describedby="remove-btn" name="features[]">';
+            html += '<button class="btn font-bold btn-danger" type="button" onclick="remove(' + i +
+                ')" id="remove-btn"> -';
+            html += '</button>';
+            html += '</div>';
+
+            $('.features').append(html);
+
+        });
+
+        function remove(id) {
+            $('.row_' + id).remove();
+        }
+    </script>
 @endsection

@@ -39,6 +39,8 @@ class UserPlanMiddleWare
                     return $next($request);
                 }
             }
+        }else{
+            return $next($request);
         }
     }
 }

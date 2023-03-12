@@ -15,6 +15,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Medias;
+use App\ProductCategory;
 
 class StoreController extends Controller
 {
@@ -23,9 +24,6 @@ class StoreController extends Controller
     {
 
         $result = BusinessCard::where('user_id', Auth::id())->where('card_type', 'store')->count();
-
-
-
 
         if ($result > 0) {
             alert()->error(trans('Maximum store creation limit is exceeded.'));
@@ -62,8 +60,8 @@ class StoreController extends Controller
             'theme_id' => 'required',
             'card_color' => 'required',
             'card_lang' => 'required',
-            'banner' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:' . env("SIZE_LIMIT") . '',
-            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:' . env("SIZE_LIMIT") . '',
+            'banner' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg',
+            'logo' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg',
             'title' => 'required',
             'currency' => 'required',
             'subtitle' => 'required',
@@ -79,8 +77,8 @@ class StoreController extends Controller
 
         if ($validator->fails()) {
             // alert()->error(trans('Some fields missing or banner/logo size is large.'));
-          
-            return back()->with('toast_error', $validator->errors())->withInput();
+
+            return back()->withErrors($validator)->withInput();
         }
 
         $cardId = uniqid();
@@ -94,14 +92,17 @@ class StoreController extends Controller
         $user_details = User::where('user_id', Auth::user()->user_id)->first();
         $plan_details = json_decode($user_details->plan_details, true);
 
-        $logo = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->logo->getClientOriginalName()) . '.' . $request->logo->extension();
-        $banner = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->banner->getClientOriginalName()) . '.' . $request->banner->extension();
+        if ($request->logo) {
+            $logo = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->logo->getClientOriginalName()) . '.' . $request->logo->extension();
+            $request->logo->move(public_path('backend/img/vCards'), $logo);
+        }
 
-        $request->logo->move(public_path('backend/img/vCards'), $logo);
-        $request->banner->move(public_path('backend/img/vCards'), $banner);
+        if (isset($request->banner)) {
+            $banner = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->banner->getClientOriginalName()) . '.' . $request->banner->extension();
+            $request->banner->move(public_path('backend/img/vCards'), $banner);
+        }
 
         $store_details = [];
-
         $store_details['whatsapp_no'] = $request->whatsapp_no;
         $store_details['whatsapp_msg'] = $request->whatsapp_msg;
         $store_details['currency'] = $request->currency;
@@ -128,13 +129,17 @@ class StoreController extends Controller
                     $card->theme_id = $request->theme_id;
                     $card->theme_color = $request->card_color;
                     $card->card_lang = $request->card_lang;
-                    $card->cover = $banner;
-                    $card->profile = $logo;
+                    $card->cover = $banner ?? null;
+                    $card->profile = $logo ?? null;
                     $card->card_url = strtolower(preg_replace('/\s+/', '-', $personalized_link));
                     $card->card_type = 'store';
                     $card->title = $request->title;
                     $card->sub_title = $request->subtitle;
+                    $card->is_store_show = 1;
+                    $card->card_status = "activated";
                     $card->description = json_encode($store_details);
+                    $card->header_backgroung = $request->header_backgroung ?? '#fff';
+                    $card->header_text_color = $request->header_text_color ?? '#000';
                     $card->save();
 
                     alert()->success(trans('New WhatsApp Store Created Successfully!'));
@@ -242,103 +247,46 @@ class StoreController extends Controller
             } else {
                 $personalized_link = $id;
             }
-            if ($request->banner == null && $request->logo == null) {
-                $store_details = [];
 
-                $store_details['whatsapp_no'] = $request->whatsapp_no;
-                $store_details['whatsapp_msg'] = $request->whatsapp_msg;
-                $store_details['currency'] = $request->currency;
-                $store_details['email'] = $request->email;
+            $store_details = $data = [];
+            $store_details['whatsapp_no']   = $request->whatsapp_no;
+            $store_details['whatsapp_msg']  = $request->whatsapp_msg;
+            $store_details['currency']      = $request->currency;
+            $store_details['email']         = $request->email;
 
-                BusinessCard::where('card_id', $id)->update([
-                    'theme_id' => $request->theme_id,
-                    'theme_color' => $request->card_color,
-                    'card_lang' => $request->card_lang,
-                    'card_url' => $personalized_link,
-                    'title' => $request->title,
-                    'sub_title' => $request->subtitle,
-                    'description' => $store_details,
-                ]);
-                alert()->success(trans('Store details updated'));
-                return redirect()->route('user.edit.products', $id);
-            } else if ($request->logo == null) {
+            if ($request->banner) {
                 $banner = '/backend/img/vCards/' . 'IMG-' . $request->banner->getClientOriginalName() . '.' . $request->banner->extension();
-
                 $request->banner->move(public_path('backend/img/vCards'), $banner);
-
-                $store_details = [];
-
-                $store_details['whatsapp_no'] = $request->whatsapp_no;
-                $store_details['whatsapp_msg'] = $request->whatsapp_msg;
-                $store_details['currency'] = $request->currency;
-                $store_details['email'] = $request->email;
-
-                BusinessCard::where('card_id', $id)->update([
-                    'cover' => $banner,
-                    'theme_id' => $request->theme_id,
-                    'theme_color' => $request->card_color,
-                    'card_lang' => $request->card_lang,
-                    'card_url' => $personalized_link,
-                    'title' => $request->title,
-                    'sub_title' => $request->subtitle,
-                    'description' => $store_details,
-                ]);
-                alert()->success(trans('Store details updated'));
-                return redirect()->route('user.edit.products', $id);
-            } else if ($request->banner == null) {
-                $logo = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->logo->getClientOriginalName()) . '.' . $request->logo->extension();
-
-                $request->logo->move(public_path('backend/img/vCards'), $logo);
-
-                $store_details = [];
-
-                $store_details['whatsapp_no'] = $request->whatsapp_no;
-                $store_details['whatsapp_msg'] = $request->whatsapp_msg;
-                $store_details['currency'] = $request->currency;
-                $store_details['email'] = $request->email;
-
-
-                BusinessCard::where('card_id', $id)->update([
-                    'profile' => $logo,
-                    'theme_id' => $request->theme_id,
-                    'theme_color' => $request->card_color,
-                    'card_lang' => $request->card_lang,
-                    'card_url' => $personalized_link,
-                    'title' => $request->title,
-                    'sub_title' => $request->subtitle,
-                    'description' => $store_details,
-                ]);
-                alert()->success(trans('Store details updated'));
-                return redirect()->route('user.edit.products', $id);
-            } else if ($request->banner != null && $request->logo != null) {
-                $logo = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->logo->getClientOriginalName()) . '.' . $request->logo->extension();
-                $banner = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->banner->getClientOriginalName()) . '.' . $request->banner->extension();
-
-                $request->logo->move(public_path('backend/img/vCards'), $logo);
-                $request->banner->move(public_path('backend/img/vCards'), $banner);
-
-                $store_details = [];
-
-                $store_details['whatsapp_no'] = $request->whatsapp_no;
-                $store_details['whatsapp_msg'] = $request->whatsapp_msg;
-                $store_details['currency'] = $request->currency;
-                $store_details['email'] = $request->email;
-
-
-                BusinessCard::where('card_id', $id)->update([
-                    'cover' => $banner,
-                    'profile' => $logo,
-                    'theme_id' => $request->theme_id,
-                    'theme_color' => $request->card_color,
-                    'card_lang' => $request->card_lang,
-                    'card_url' => $personalized_link,
-                    'title' => $request->title,
-                    'sub_title' => $request->subtitle,
-                    'description' => $store_details,
-                ]);
-                alert()->success(trans('Store details updated'));
-                return redirect()->route('user.stores', $id);
+                $data['cover']  = $banner;
             }
+
+            if ($request->logo) {
+                $logo = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->logo->getClientOriginalName()) . '.' . $request->logo->extension();
+                $request->logo->move(public_path('backend/img/vCards'), $logo);
+                $data['profile'] = $logo;
+            }
+
+            $data['theme_id']           = $request->theme_id;
+            $data['theme_color']        = $request->card_color;
+            $data['card_lang']          = $request->card_lang;
+            $data['card_url']           = $personalized_link;
+            $data['title']              = $request->title;
+            $data['sub_title']          = $request->subtitle;
+            $data['description']        = $store_details;
+            $data['header_backgroung']  = $request->header_backgroung;
+            $data['header_text_color']  = $request->header_text_color;
+
+            BusinessCard::where('card_id', $id)->update($data);
+
+            alert()->success(trans('Store details updated'));
+            return redirect()->route('user.stores');
+
+            // return redirect()->route('user.edit.products', $id);
+
+
+
+
+
         }
     }
 
@@ -356,8 +304,10 @@ class StoreController extends Controller
             $products = StoreProduct::where('card_id', $id)->get();
             $media = Medias::where('user_id', Auth::user()->user_id)->orderBy('id', 'desc')->get();
             $settings = Setting::where('status', 1)->first();
+            $productCategories = ProductCategory::orderBy('category_name', 'asc')
+                ->where('user_id', Auth::id())->get();
 
-            return view('user.edit-store.edit-products', compact('plan_details', 'products', 'media', 'settings'));
+            return view('user.edit-store.edit-products', compact('plan_details', 'products', 'media', 'settings', 'productCategories'));
         }
     }
 
@@ -365,6 +315,7 @@ class StoreController extends Controller
     // Update products
     public function updateProducts(Request $request, $id)
     {
+
         $business_card = BusinessCard::where('card_id', $id)->first();
 
         if ($business_card == null) {
@@ -387,6 +338,7 @@ class StoreController extends Controller
                         $product->regular_price = $request->regular_price[$i];
                         $product->sales_price = $request->sales_price[$i];
                         $product->product_status = $request->product_status[$i];
+                        $product->category_id = $request->category[$i];
                         $product->save();
                     }
 
@@ -396,10 +348,10 @@ class StoreController extends Controller
                         BusinessCard::where('user_id', Auth::user()->user_id)->where('card_id', $id)->update([
                             'card_status' => 'activated',
                         ]);
-                        alert()->success(trans('Products updated.'));
+                        alert()->success(trans('Products save successfully.'));
                         return redirect()->route('user.stores');
                     }
-                    alert()->success(trans('Products updated.'));
+                    alert()->success(trans('Products save successfully.'));
                     return redirect()->route('user.stores');
                 } else {
                     alert()->error(trans('You have reached plan limit.'));

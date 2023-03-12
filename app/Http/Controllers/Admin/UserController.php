@@ -57,9 +57,12 @@ class UserController extends Controller
         if ($user_details == null) {
             return view('errors.404');
         } else {
-            $user_cards = BusinessCard::where('user_id', $user_details->id)->where('card_status', 'activated')->get();
+            $user_cards = BusinessCard::where('user_id', $user_details->id)->where('card_type', 'vcard')->where('card_status', 'activated')->get();
+
+            $user_stores = BusinessCard::where('user_id', $user_details->id)->where('card_type', 'store')->where('card_status', 'activated')->get();
+
             $settings = Setting::where('status', 1)->first();
-            return view('admin.users.view-user', compact('user_details', 'user_cards', 'settings'));
+            return view('admin.users.view-user', compact('user_details', 'user_cards', 'user_stores', 'settings'));
         }
     }
 
@@ -347,11 +350,15 @@ class UserController extends Controller
     // Delete User
     public function deleteUser(Request $request)
     {
-        $allcards = BusinessCard::where('user_id', $request->query('id'))->get();
+
         $user = User::where('user_id', $request->query('id'))->first();
+        $allcards = BusinessCard::where('user_id', $user->id)->get();
+
+        // dd($user);
+
         for ($i = 0; $i < count($allcards); $i++) {
             if ($allcards != null) {
-                BusinessField::where('card_id', $allcards[$i]->card_id)->delete();
+                BusinessField::where('card_id', $allcards[$i]->id)->delete();
                 BusinessHour::where('card_id', $allcards[$i]->card_id)->delete();
                 Gallery::where('card_id', $allcards[$i]->card_id)->delete();
                 Payment::where('card_id', $allcards[$i]->card_id)->delete();
@@ -360,18 +367,17 @@ class UserController extends Controller
             }
         }
 
-        $transactions = Transaction::where('user_id', $request->query('id'))->first();
-        $businessCards = BusinessCard::where('user_id', $request->query('id'))->first();
+        $transactions = Transaction::where('user_id', $user->id)->get();
+        $businessCards = BusinessCard::where('user_id', $user->id)->get();
 
-        // if ($transactions != null) {
-        //     $transactions->delete();
-        // }
-
-
-
-        if ($businessCards != null) {
-            $businessCards->delete();
+        if ($transactions) {
+            Transaction::where('user_id', $user->id)->delete();
         }
+
+        if ($businessCards) {
+            BusinessCard::where('user_id', $user->id)->delete();
+        }
+
         User::where('user_id', $request->query('id'))->delete();
         return redirect()->route('admin.users')->with('success', 'User deleted Successfully!');
     }

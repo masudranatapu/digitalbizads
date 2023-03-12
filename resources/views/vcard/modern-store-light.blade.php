@@ -9,12 +9,14 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    {!! SEOMeta::generate() !!}
+    {{-- {!! SEOMeta::generate() !!}
     {!! OpenGraph::generate() !!}
     {!! Twitter::generate() !!}
-    {!! JsonLd::generate() !!}
-
-    <link rel="icon" href="{{ url('/') }}{{ $business_card_details->profile }}" sizes="96x96" type="image/png" />
+    {!! JsonLd::generate() !!} --}}
+    <meta property="og:title" content="{{ $business_card_details->title ?? '' }}" />
+    <meta property="og:description" content="{{ $business_card_details->sub_title ?? '' }}" />
+    <link rel="icon" href="{{ url('/') }}{{ $business_card_details->profile }}" sizes="96x96"
+        type="image/png" />
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap">
     <link rel="stylesheet" href="{{ asset('frontend/whatsapp-store/css/tailwind/tailwind.min.css') }}">
@@ -22,6 +24,40 @@
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}" />
     <script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
+    <style>
+        .form-control {
+            height: 48px;
+            padding: 6px 10px;
+            border: 1px solid #DDD;
+            border-radius: 4px;
+            font-size: 16px;
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        .shop_filter {
+            background: #fff;
+            padding: 8px 16px;
+            border: 1px solid #DDD;
+            border-radius: 4px;
+        }
+
+        .input-group span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        @media screen and (max-width:500px) {
+            .shop_filter .float-right {
+                float: inherit !important;
+            }
+
+            .grid-cols-2 {
+                grid-template-columns: repeat(1, minmax(0, 1fr));
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 
 <body class="antialiased bg-body text-body font-body"
@@ -30,18 +66,32 @@
 
         <section>
             <nav dir="ltr" class="relative">
-                <div class="p-6 flex items-center bg-white shadow">
+                <div class="p-6 flex items-center bg-white shadow"
+                    style="@if ($business_card_details->header_backgroung) background-color: {{ $business_card_details->header_backgroung }} @endif; @if ($business_card_details->header_text_color) color: {{ $business_card_details->header_text_color }} @endif">
                     <a class="flex-shrink-0 text-2xl font-semibold">
-                        <img class="h-10" src="{{ url('/') }}{{ $business_card_details->profile }}"
-                            alt="{{ $business_card_details->title }}" width="auto">
+                        @if ($business_card_details->profile)
+                            <img class="h-10" src="{{ url('/') }}{{ $business_card_details->profile }}"
+                                alt="{{ $business_card_details->title }}" width="auto">
+                        @else
+                            {{ $business_card_details->title }}
+                        @endif
                     </a>
 
 
                     <div class="ml-auto flex">
+
+                        @if ($store_card)
+                            <a href="{{ route('home-locale') }}/{{ $store_card->card_url }}"
+                                style="padding:3px;@if ($business_card_details->header_text_color) border:1px solid {{ $business_card_details->header_text_color }} @else #000000 @endif ;">Back
+                                to Bizad </a>&nbsp;&nbsp;
+                        @endif
+
+
                         <button class="navbar-burger flex items-center">
                             <span class="relative inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    viewBox="0 0 24 24"
+                                    stroke="@if ($business_card_details->header_text_color) {{ $business_card_details->header_text_color }} @else #000000 @endif ">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                                 </svg>
@@ -98,22 +148,63 @@
 
         @if ($business_card_details->card_status == 'activated')
 
-
-            <section class="py-1">
-                <div class="container px-4 mx-auto">
-                    <div class="rounded overflow-hidden">
-                        <img class="rounded pb-2" src="{{ url('/') }}{{ $business_card_details->cover }}"
-                            alt="{{ $business_card_details->title }}">
+            @if (isset($business_card_details->cover))
+                <section class="py-3">
+                    <div class="container px-4 mx-auto">
+                        <div class="rounded overflow-hidden">
+                            <img class="rounded pb-2" src="{{ url('/') }}{{ $business_card_details->cover }}"
+                                alt="{{ $business_card_details->title }}">
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            @endif
+
+
+            <div class="container px-2 mx-auto">
+                <form action="{{ url()->current() }}" class="shop_filter">
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="">
+                            <div class="filter_form">
+                                <div class="input-group">
+                                    {{-- <span class="input-group-text">Category:</span> --}}
+                                    <select name="category" id="category" class="form-control">
+                                        <option value="">All Category</option>
+                                        @foreach ($productCategories as $productCategory)
+                                            <option value="{{ $productCategory->id }}"
+                                                @if ($productCategory->id == request()->category) selected @endif>
+                                                {{ $productCategory->category_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="">
+                            <div class="filter_form float-right">
+                                <div class="input-group">
+                                    <span class="input-group-text">Sort By:</span>
+                                    <select name="sort_order" id="sort_order" class="form-control">
+                                        <option @if ('1' == request()->sort_order) selected @endif value="1">A to Z
+                                        </option>
+                                        <option @if ('2' == request()->sort_order) selected @endif value="2">Z to
+                                            A
+                                        </option>
+                                        <option @if ('3' == request()->sort_order) selected @endif value="3">Price
+                                            low to high</option>
+                                        <option @if ('4' == request()->sort_order) selected @endif value="4">Price
+                                            high to low</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
             <section id="shop" class="py-8">
                 <div class="container px-4 mx-auto">
                     <div class="flex flex-wrap -m-4">
-
                         @foreach ($products as $product)
-                            <div class="w-1/1 lg:w-1/3 p-4">
+                            <div class="w-1/1 lg:w-1/3 p-2">
                                 <div class="p-4 bg-white shadow-lg rounded-lg" style="height:100% !important;">
                                     <div class="w-full mb-2">
                                         <img class="rounded pb-2" id="{{ $product->product_id }}_product_image"
@@ -122,6 +213,7 @@
                                     </div>
                                     <span
                                         class="py-1 px-2 bg-red-500 rounded text-xs text-white">{{ $product->badge }}</span>
+
                                     <div class="w-full mb-1 mt-1 justify-between items-center">
                                         <div>
                                             <h3 id="{{ $product->product_id }}_product_name"
@@ -131,8 +223,9 @@
                                                 class="text-xs text-gray-500">{{ $product->product_subtitle }}</span>
                                         </div>
                                     </div>
+
                                     <div class="w-full mb-1 justify-between items-center">
-                                        <h4 class="text-sm mb-3 font-bold"><span
+                                        <h4 class="text-sm  font-bold"><span
                                                 id="{{ $product->product_id }}_currency">{{ $currency }}</span>
                                             <span
                                                 id="{{ $product->product_id }}_price">{{ $product->sales_price }}</span>
@@ -141,6 +234,14 @@
                                                     {{ $currency }}{{ $product->regular_price }}</span>
                                             @endif
                                         </h4>
+                                        <h4 class="text-sm mb-3">
+                                            @if (isset($product->hasCategory->category_name))
+                                                <span class="py-1 text-sm font-bold text-dark">Category
+                                                    : {{ $product->hasCategory->category_name ?? '' }}</span>
+                                            @endif
+
+                                        </h4>
+
                                         @if ($product->product_status == 'instock')
                                             <a onclick="addToCart('{{ $product->product_id }}')"
                                                 class="py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
@@ -508,6 +609,13 @@
             }
 
         }
+
+        $('#category').change(function() {
+            $('.shop_filter').submit();
+        })
+        $('#sort_order').change(function() {
+            $('.shop_filter').submit();
+        })
     </script>
 </body>
 

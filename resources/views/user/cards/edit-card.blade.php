@@ -376,7 +376,7 @@
                                             class="text-decoration-none save-contact d-inline-block"
                                             style="background-color: {{ $theme_color }}">Save Contact
                                         </a>
-                                        <a href="javascript:void(0)" 
+                                        <a href="javascript:void(0)"
                                             class="text-decoration-none shop-button d-inline-block btn-secondary"
                                             style="background-color: {{ $theme_color }}">
                                             SHOP
@@ -874,9 +874,16 @@
 
                                             <div class="col-md-6">
                                                 <div class="mb-3 form-input">
-                                                    <label for="facebook" class="form-label">Facebook</label>
-                                                    <input type="text" name="facebook" data-type="facebook"
-                                                        placeholder="facebook username" id="facebook"
+                                                    <label for="facebook" class="form-label">Facebook
+                                                        <button type="button" class="tooltip_icon"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            data-bs-custom-class="custom-tooltip"
+                                                            data-bs-title="The profile link look like https://www.facebook.com/user-id">
+                                                            <i class="fa fa-info"></i>
+                                                        </button>
+                                                    </label>
+                                                    <input type="url" name="facebook" data-type="facebook"
+                                                        placeholder="facebook profile link" id="facebook"
                                                         class="social_item_in form-control @error('facebook') is-invalid @enderror"
                                                         tabindex="{{ $tabindex++ }}"
                                                         value="{{ getInputValue($card->id, 'facebook') }}">
@@ -889,9 +896,16 @@
 
                                             <div class="col-md-6">
                                                 <div class="mb-3 form-input">
-                                                    <label for="instagram" class="form-label">Instagram</label>
-                                                    <input type="text" name="instagram" id="instagram"
-                                                        data-type="instagram" placeholder="instagram username"
+                                                    <label for="instagram" class="form-label">Instagram
+                                                        <button type="button" class="tooltip_icon"
+                                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                                            data-bs-custom-class="custom-tooltip"
+                                                            data-bs-title="The profile link look like https://www.instagram.com/user-id">
+                                                            <i class="fa fa-info"></i>
+                                                        </button>
+                                                    </label>
+                                                    <input type="url" name="instagram" id="instagram"
+                                                        data-type="instagram" placeholder="instagram profile link"
                                                         class="social_item_in form-control @error('instagram') is-invalid @enderror"
                                                         tabindex="{{ $tabindex++ }}"
                                                         value="{{ getInputValue($card->id, 'instagram') }}">

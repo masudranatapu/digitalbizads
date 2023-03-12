@@ -37,6 +37,9 @@ class DashboardController extends Controller
         $settings = Setting::where('status', 1)->first();
         $business_card = BusinessCard::where('user_id', Auth::user()->id)->count();
 
+
+
+
         $remaining_days = 0;
 
         if ($active_plan != null) {
@@ -55,7 +58,9 @@ class DashboardController extends Controller
             }
             $monthCards = implode(',', $monthCards);
 
-            return view('user.home', compact('settings', 'active_plan', 'remaining_days', 'business_card', 'monthCards'));
+            $store = BusinessCard::where('user_id', Auth::id())->where('card_type', 'store')->first();
+
+            return view('user.home', compact('settings', 'active_plan', 'remaining_days', 'business_card', 'monthCards', 'store'));
         } else {
             return redirect()->route('user.plans');
         }
