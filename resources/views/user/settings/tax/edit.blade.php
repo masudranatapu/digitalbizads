@@ -13,7 +13,7 @@
                             {{ __('Overview') }}
                         </div>
                         <h2 class="page-title">
-                            {{ __('Tax Setting') }}
+                            {{ __('Tax Setting Edit') }}
                         </h2>
                     </div>
 
@@ -21,10 +21,10 @@
                     <div class="col-auto ms-auto d-print-none">
                         <div class="dropdown">
 
-                            <a type="button" href="#">
+                            <a type="button" href="{{ route('user.setting.tax') }}">
                                 <button type="button" class="btn btn btn-primary">
-                                    <i class="fas fa-plus-circle fa-1x"></i> &ensp;
-                                    {{ __('Add State Tax') }}
+                                    <i class="fas fa-arrow-left"></i> &ensp;
+                                    {{ __('Back') }}
                                 </button>
                             </a>
                         </div>

@@ -21,14 +21,14 @@
                     <div class="col-auto ms-auto d-print-none">
                         <div class="dropdown">
 
-                            <a type="button" class="btn btn-primary" href="{{ route('user.setting.tax.create') }}">
-
-                                {{ __('Add State Tax') }}
+                            <a type="button" href="{{ route('user.setting.tax.create') }}">
+                                <button type="button" class="btn btn btn-primary">
+                                    <i class="fas fa-plus-circle fa-1x"></i> &ensp;
+                                    {{ __('Add State Tax') }}
                                 </button>
                             </a>
                         </div>
                     </div>
-
 
                 </div>
             </div>
