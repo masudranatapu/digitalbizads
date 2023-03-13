@@ -415,6 +415,16 @@ class StoreController extends Controller
     //     }
     public function updateProducts(Request $request, $id)
     {
+        $request->validate([
+            'badge' => 'required',
+            'product_image' => 'required',
+            'product_name' => 'required',
+            'product_subtitle' => 'required',
+            'regular_price' => 'required',
+            'sales_price' => 'required',
+            'product_status' => 'required',
+            'category' => 'required',
+        ]);
 
         $product = StoreProduct::where('product_id', $id)->first();
 
