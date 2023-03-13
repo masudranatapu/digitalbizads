@@ -213,6 +213,10 @@ class StoreController extends Controller
     }
 
 
+
+
+
+
     // Edit Store
     public function editStore(Request $request, $id)
     {
@@ -283,96 +287,168 @@ class StoreController extends Controller
 
             // return redirect()->route('user.edit.products', $id);
 
-
-
-
-
         }
     }
 
 
-    // Products
-    public function editProducts(Request $request, $id)
+
+    public function storeProductsList($card)
+    {
+        $business_cards = BusinessCard::with('hasProduct')->where('card_id', $card)->first();
+        $settings = Setting::where('status', 1)->first();
+
+
+        return view('user.cards.store-product', compact('business_cards', 'settings'));
+    }
+
+    public function addProducts($id)
     {
         $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
         $plan_details = json_decode($plan->plan_details);
-        $business_card = BusinessCard::where('card_id', $id)->first();
+        $media = Medias::where('user_id', Auth::user()->user_id)->orderBy('id', 'desc')->get();
+        $settings = Setting::where('status', 1)->first();
+        $productCategories = ProductCategory::orderBy('category_name', 'asc')
+            ->where('user_id', Auth::id())->get();
 
-        if ($business_card == null) {
-            return view('errors.404');
-        } else {
-            $products = StoreProduct::where('card_id', $id)->get();
-            $media = Medias::where('user_id', Auth::user()->user_id)->orderBy('id', 'desc')->get();
-            $settings = Setting::where('status', 1)->first();
-            $productCategories = ProductCategory::orderBy('category_name', 'asc')
-                ->where('user_id', Auth::id())->get();
+        return view('user.cards.add-product', compact('plan_details',  'media', 'settings', 'productCategories', 'id'));
+    }
+    public function editProducts($id)
+    {
+        $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
+        $plan_details = json_decode($plan->plan_details);
+        $products = StoreProduct::where('product_id', $id)->first();
+        $media = Medias::where('user_id', Auth::user()->user_id)->orderBy('id', 'desc')->get();
+        $settings = Setting::where('status', 1)->first();
+        $productCategories = ProductCategory::orderBy('category_name', 'asc')
+            ->where('user_id', Auth::id())->get();
 
-            return view('user.edit-store.edit-products', compact('plan_details', 'products', 'media', 'settings', 'productCategories'));
-        }
+        return view('user.cards.edit-product', compact('plan_details', 'products', 'media', 'settings', 'productCategories'));
     }
 
 
+
+
+
+    // // Products
+    // public function editProducts(Request $request, $id)
+    // {
+    //     $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
+    //     $plan_details = json_decode($plan->plan_details);
+    //     $business_card = BusinessCard::where('card_id', $id)->first();
+
+    //     if ($business_card == null) {
+    //         return view('errors.404');
+    //     } else {
+    //         $products = StoreProduct::where('card_id', $id)->get();
+    //         $media = Medias::where('user_id', Auth::user()->user_id)->orderBy('id', 'desc')->get();
+    //         $settings = Setting::where('status', 1)->first();
+    //         $productCategories = ProductCategory::orderBy('category_name', 'asc')
+    //             ->where('user_id', Auth::id())->get();
+
+    //         return view('user.edit-store.edit-products', compact('plan_details', 'products', 'media', 'settings', 'productCategories'));
+    //     }
+    // }
+
+
     // Update products
+    //     public function updateProducts(Request $request, $id)
+    //     {
+
+    //         $business_card = BusinessCard::where('card_id', $id)->first();
+
+    //         if ($business_card == null) {
+    //             return view('errors.404');
+    //         } else {
+    //             $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
+    //             $plan_details = json_decode($plan->plan_details);
+
+    //             if (isset($request->badge) && isset($request->product_image) && isset($request->product_name) && isset($request->product_subtitle) && isset($request->regular_price) && isset($request->sales_price) && isset($request->product_status)) {
+    //                 if (count($request->badge) <= $plan_details->no_of_services) {
+    //                     StoreProduct::where('card_id', $id)->delete();
+    //                     for ($i = 0; $i < count($request->badge); $i++) {
+    //                         $product = new StoreProduct();
+    //                         $product->card_id = $id;
+    //                         $product->product_id = uniqid();
+    //                         $product->badge = $request->badge[$i];
+    //                         $product->product_image = $request->product_image[$i];
+    //                         $product->product_name = $request->product_name[$i];
+    //                         $product->product_subtitle = $request->product_subtitle[$i];
+    //                         $product->regular_price = $request->regular_price[$i];
+    //                         $product->sales_price = $request->sales_price[$i];
+    //                         $product->product_status = $request->product_status[$i];
+    //                         $product->category_id = $request->category[$i];
+    //                         $product->save();
+    //                     }
+
+    //                     $activeCards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
+
+    //                     if ($activeCards <= $plan_details->no_of_vcards) {
+    //                         BusinessCard::where('user_id', Auth::user()->user_id)->where('card_id', $id)->update([
+    //                             'card_status' => 'activated',
+    //                         ]);
+    //                         alert()->success(trans('Products save successfully.'));
+    //                         return redirect()->route('user.stores');
+    //                     }
+    //                     alert()->success(trans('Products save successfully.'));
+    //                     return redirect()->route('user.stores');
+    //                 } else {
+    //                     alert()->error(trans('You have reached plan limit.'));
+    //                     return redirect()->route('user.edit.products', $id);
+    //                 }
+    //             } else {
+    //                 $activeCards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
+
+    //                 $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
+    //                 $plan_details = json_decode($plan->plan_details);
+
+    //                 if ($activeCards <= $plan_details->no_of_vcards) {
+    //                     BusinessCard::where('user_id', Auth::user()->user_id)->where('card_id', $id)->update([
+    //                         'card_status' => 'activated',
+    //                     ]);
+    //                     alert()->success(trans('Products updated.'));
+    //                     return redirect()->route('user.stores');
+    //                 }
+    //                 alert()->error(trans('You have reached plan limit.'));
+    //                 return redirect()->route('user.edit.products', $id);
+    //             }
+    //         }
+    //     }
     public function updateProducts(Request $request, $id)
     {
 
-        $business_card = BusinessCard::where('card_id', $id)->first();
+        $product = StoreProduct::where('product_id', $id)->first();
 
-        if ($business_card == null) {
-            return view('errors.404');
+        $business_card = BusinessCard::where('card_id', $product->card_id)->first();
+
+
+        $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
+        $plan_details = json_decode($plan->plan_details);
+        $product->card_id = $business_card->card_id;
+        $product->product_id = uniqid();
+        $product->badge = $request->badge;
+        $product->product_image = $request->product_image;
+        $product->product_name = $request->product_name;
+        $product->product_subtitle = $request->product_subtitle;
+        $product->regular_price = $request->regular_price;
+        $product->sales_price = $request->sales_price;
+        $product->product_status = $request->product_status;
+        $product->category_id = $request->category;
+        $product->save();
+
+
+        $activeCards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
+
+        if ($activeCards <= $plan_details->no_of_vcards) {
+            BusinessCard::where('user_id', Auth::user()->user_id)->where('card_id', $product->card_id)->update([
+                'card_status' => 'activated',
+            ]);
+            alert()->success(trans('Products save successfully.'));
+            return redirect()->route('user.stores');
         } else {
-            $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
-            $plan_details = json_decode($plan->plan_details);
-
-            if (isset($request->badge) && isset($request->product_image) && isset($request->product_name) && isset($request->product_subtitle) && isset($request->regular_price) && isset($request->sales_price) && isset($request->product_status)) {
-                if (count($request->badge) <= $plan_details->no_of_services) {
-                    StoreProduct::where('card_id', $id)->delete();
-                    for ($i = 0; $i < count($request->badge); $i++) {
-                        $product = new StoreProduct();
-                        $product->card_id = $id;
-                        $product->product_id = uniqid();
-                        $product->badge = $request->badge[$i];
-                        $product->product_image = $request->product_image[$i];
-                        $product->product_name = $request->product_name[$i];
-                        $product->product_subtitle = $request->product_subtitle[$i];
-                        $product->regular_price = $request->regular_price[$i];
-                        $product->sales_price = $request->sales_price[$i];
-                        $product->product_status = $request->product_status[$i];
-                        $product->category_id = $request->category[$i];
-                        $product->save();
-                    }
-
-                    $activeCards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
-
-                    if ($activeCards <= $plan_details->no_of_vcards) {
-                        BusinessCard::where('user_id', Auth::user()->user_id)->where('card_id', $id)->update([
-                            'card_status' => 'activated',
-                        ]);
-                        alert()->success(trans('Products save successfully.'));
-                        return redirect()->route('user.stores');
-                    }
-                    alert()->success(trans('Products save successfully.'));
-                    return redirect()->route('user.stores');
-                } else {
-                    alert()->error(trans('You have reached plan limit.'));
-                    return redirect()->route('user.edit.products', $id);
-                }
-            } else {
-                $activeCards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
-
-                $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
-                $plan_details = json_decode($plan->plan_details);
-
-                if ($activeCards <= $plan_details->no_of_vcards) {
-                    BusinessCard::where('user_id', Auth::user()->user_id)->where('card_id', $id)->update([
-                        'card_status' => 'activated',
-                    ]);
-                    alert()->success(trans('Products updated.'));
-                    return redirect()->route('user.stores');
-                }
-                alert()->error(trans('You have reached plan limit.'));
-                return redirect()->route('user.edit.products', $id);
-            }
+            alert()->error(trans('You have reached plan limit.'));
+            return redirect()->route('user.edit.products', $id);
         }
+        alert()->success(trans('Products save successfully.'));
+        return redirect()->route('user.stores');
     }
 }

@@ -286,6 +286,9 @@ Route::group(['middleware' => 'Installer'], function () {
             // Edit Store
             Route::get('edit-store/{id}', [StoreController::class, 'editStore'])->name('edit.store');
             Route::post('update-store/{id}', [StoreController::class, 'updateStore'])->name('update.store');
+            Route::get('products-list/{id}', [StoreController::class, 'storeProductsList'])->name('store.products.list');
+            Route::get('add-products/{id}', [StoreController::class, 'addProducts'])->name('add.products');
+            Route::post('store-products/{id}', [StoreController::class, 'storeProducts'])->name('store.products');
             Route::get('edit-products/{id}', [StoreController::class, 'editProducts'])->name('edit.products');
             Route::post('update-products/{id}', [StoreController::class, 'updateProducts'])->name('update.products');
 
