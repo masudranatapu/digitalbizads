@@ -19,6 +19,19 @@
                             {{ __('Add Variant Option') }}
                         </h2>
                     </div>
+                    <!-- Page title actions -->
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="dropdown">
+                            <a type="button" class="btn btn-primary"
+                                href="{{ route('user.product.variants.option', ['product_id' => $product_id, 'variant' => $variant]) }}">
+
+                                <i class="fas fa-arrow-left"></i>&nbsp;
+                                {{ __('Back') }}
+
+                            </a>
+                        </div>
+                    </div>
+
 
                 </div>
             </div>
@@ -38,7 +51,7 @@
                                         <div class="row">
 
                                             <h2 class="page-title my-3">
-                                                {{ __('Products') }}
+                                                {{ __('Add Variant Option') }}
                                             </h2>
 
 
@@ -49,7 +62,7 @@
                                                             class="form-label required">{{ __('Option Name') }}</label>
                                                         <input type="text" name="option_name"
                                                             class="form-control @error('option_name') border-danger @enderror"
-                                                            placeholder="option Name" value="{{ old('option_name') }}"
+                                                            placeholder="Option Name" value="{{ old('option_name') }}"
                                                             required>
                                                         @error('option_name')
                                                             <span class="text-danger">{{ $message }}</span>
@@ -58,10 +71,10 @@
                                                 </div>
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
-                                                        <label class='form-label required'>{{ __('Product Image') }}</label>
+                                                        <label class='form-label required'>{{ __('Option Image') }}</label>
                                                         <div class='input-group mb-2'>
                                                             <input type='text' class='image media-model form-control'
-                                                                name='option_image' placeholder='{{ __('Product Image') }}'
+                                                                name='option_image' placeholder='{{ __('Option Image') }}'
                                                                 value="" required>
                                                             <button class='btn btn-primary btn-md' type='button'
                                                                 onclick="openMedia()">{{ __('Choose image') }}</button>
@@ -76,7 +89,7 @@
                                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
                                                             name="option_stock"
                                                             class="form-control @error('option_stock') border-danger @enderror"
-                                                            placeholder="option Stock" value="{{ old('option_stock') }}"
+                                                            placeholder="Option Stock" value="{{ old('option_stock') }}"
                                                             required>
                                                         @error('option_stock')
                                                             <span class="text-danger">{{ $message }}</span>
@@ -91,7 +104,7 @@
                                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
                                                             name="option_price"
                                                             class="form-control @error('price') border-danger @enderror"
-                                                            placeholder="option Price" value="{{ old('option_price') }}"
+                                                            placeholder="Option Price" value="{{ old('option_price') }}"
                                                             required>
                                                         @error('option_price')
                                                             <span class="text-danger">{{ $message }}</span>

@@ -16,8 +16,20 @@
                             {{ __('Overview') }}
                         </div>
                         <h2 class="page-title">
-                            {{ __('Add Variant Option') }}
+                            {{ __('Edit Variant Option') }}
                         </h2>
+                    </div>
+                    <!-- Page title actions -->
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="dropdown">
+                            <a type="button" class="btn btn-primary"
+                                href="{{ route('user.product.variants.option', ['product_id' => $option->product_id, 'variant' => $option->variant_id]) }}">
+
+                                <i class="fas fa-arrow-left"></i>&nbsp;
+                                {{ __('Back') }}
+
+                            </a>
+                        </div>
                     </div>
 
                 </div>
@@ -37,7 +49,7 @@
                                         <div class="row">
 
                                             <h2 class="page-title my-3">
-                                                {{ __('Products') }}
+                                                {{ __('Edit Variant Option') }}
                                             </h2>
 
 
@@ -48,7 +60,7 @@
                                                             class="form-label required">{{ __('Option Name') }}</label>
                                                         <input type="text" name="option_name"
                                                             class="form-control @error('option_name') border-danger @enderror"
-                                                            placeholder="option Name"
+                                                            placeholder="Option Name"
                                                             value="{{ old('option_name') ?? $option->name }}" required>
                                                         @error('option_name')
                                                             <span class="text-danger">{{ $message }}</span>
@@ -57,10 +69,10 @@
                                                 </div>
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
-                                                        <label class='form-label required'>{{ __('Product Image') }}</label>
+                                                        <label class='form-label required'>{{ __('Option Image') }}</label>
                                                         <div class='input-group mb-2'>
                                                             <input type='text' class='image media-model form-control'
-                                                                name='option_image' placeholder='{{ __('Product Image') }}'
+                                                                name='option_image' placeholder='{{ __('Option Image') }}'
                                                                 value="{{ $option->photo }}" required>
                                                             <button class='btn btn-primary btn-md' type='button'
                                                                 onclick="openMedia()">{{ __('Choose image') }}</button>
@@ -75,7 +87,7 @@
                                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
                                                             name="option_stock"
                                                             class="form-control @error('option_stock') border-danger @enderror"
-                                                            placeholder="option Stock"
+                                                            placeholder="Option Stock"
                                                             value="{{ old('option_stock') ?? $option->stock }}" required>
                                                         @error('option_stock')
                                                             <span class="text-danger">{{ $message }}</span>
@@ -90,7 +102,7 @@
                                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
                                                             name="option_price"
                                                             class="form-control @error('price') border-danger @enderror"
-                                                            placeholder="option Price"
+                                                            placeholder="Option Price"
                                                             value="{{ old('option_price') ?? $option->price }}" required>
                                                         @error('option_price')
                                                             <span class="text-danger">{{ $message }}</span>
