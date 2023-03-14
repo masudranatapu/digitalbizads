@@ -47,6 +47,7 @@
                                             <th>{{ __('SL.No') }}</th>
                                             <th>{{ __('Product ID') }}</th>
                                             <th>{{ __('Product Name') }}</th>
+                                            <th>{{ __('Sales Price') }}</th>
                                             <th>{{ __('Regular Price') }}</th>
                                             <th>{{ __('Category') }}</th>
                                             <th>{{ __('Status') }}</th>
@@ -61,8 +62,8 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $product->product_id }}</td>
                                                     <td>{{ $product->product_name }}</td>
-                                                    <td>{{ $product->regular_price }}
-                                                    </td>
+                                                    <td>{{ $product->sales_price }}</td>
+                                                    <td>{{ $product->regular_price }}</td>
                                                     <td class="text-muted">
                                                         {{ $product->hasCategory->category_name }}</td>
                                                     <td class="text-muted">
@@ -90,6 +91,7 @@
                                                 <td></td>
                                                 <td></td>
                                                 <td>{{ __('No Store Found.') }}</td>
+                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                             </tr>
