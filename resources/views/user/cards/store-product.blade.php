@@ -11,28 +11,25 @@
                             {{ __('Overview') }}
                         </div>
                         <h2 class="page-title">
-                            {{ __('Whatsapp Stores') }}
+                            {{ __('Whatsapp Stores Products') }}
                         </h2>
                     </div>
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none">
                         <div class="dropdown">
+                            <a type="button" href="{{ route('user.products.add', ['id' => $business_cards->card_id]) }}">
+                                <button type="button" class="btn btn btn-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus"
+                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                    {{ __('Create') }}
+                                </button>
+                            </a>
 
-                            @if (count($business_cards->hasProduct) == 0)
-                                <a type="button" href="{{ route('user.create.store') }}">
-                                    <button type="button" class="btn btn btn-primary">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus"
-                                            width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
-                                            stroke="currentColor" fill="none" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        </svg>
-                                        {{ __('Create') }}
-                                    </button>
-                                </a>
-                            @endif
                         </div>
                     </div>
                 </div>
@@ -48,7 +45,7 @@
                                     <thead>
                                         <tr>
                                             <th>{{ __('SL.No') }}</th>
-                                            <th>{{ __('Business ID') }}</th>
+                                            <th>{{ __('Product ID') }}</th>
                                             <th>{{ __('Product Name') }}</th>
                                             <th>{{ __('Regular Price') }}</th>
                                             <th>{{ __('Category') }}</th>
@@ -78,7 +75,11 @@
                                                     <td>
                                                         <div class="btn-list flex-nowrap">
                                                             <a class="btn btn-primary btn-sm"
-                                                                href="{{ route('user.edit.products', ['id' => $product->product_id]) }}">{{ __('Edit') }}</a>
+                                                                href="{{ route('user.products.edit', ['id' => $product->product_id]) }}">{{ __('Edit') }}</a>
+                                                            <button class="btn btn-danger btn-sm"
+                                                                onclick="deleteProduct(this)"
+                                                                data-url="{{ route('user.products.delete', ['id' => $product->product_id]) }}">
+                                                                {{ __('Delete') }}</button>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -122,17 +123,15 @@
                                                                 Actions
                                                             </button>
                                                             <div class="dropdown-menu" style="">
-                                                                <a class="open-qr dropdown-item text-info">
-                                                                    {{ __('Edit') }}
-                                                                </a>
+
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('user.products.edit', ['id' => $product->product_id]) }}">{{ __('Edit') }}</a>
+
+                                                                <a class="dropdown-item text-danger"
+                                                                    href="javascript:void(0)" onclick="deleteProduct(this)"
+                                                                    data-url="{{ route('user.products.delete', ['id' => $product->product_id]) }}">{{ __('Delete') }}</a>
+
                                                                 {{-- <a class="dropdown-item text-success"
-                                                                    href="{{ route('user.edit.store', $row->card_id) }}">{{ __('Edit') }}</a>
-
-                                                                <a class="dropdown-item text-success"
-                                                                    href="{{ route('user.view.preview', $row->card_id) }}"
-                                                                    target="_blank">{{ __('Preview') }}</a>
-
-                                                                <a class="dropdown-item text-success"
                                                                     href="{{ route('card.preview', $row->card_url) }}"
                                                                     target="_blank">{{ __('Live') }}</a>
 
@@ -165,57 +164,41 @@
         @include('user.includes.footer')
     </div>
 
-    <div class="modal
-                                                                    modal-blur fade" id="deleteModal"
-        tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="modal-title">
                         {{ __('Are you sure?') }}</div>
                     <div>
-                        {{ __('If you proceed, you will enabled/disabled this card.') }}
+                        {{ __('If you proceed, you will delete this product.') }}
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link link-secondary me-auto"
                         data-bs-dismiss="modal">{{ __('Cancel') }}</button>
-                    <a class="btn btn-danger" id="plan_id">{{ __('Yes, proceed') }}</a>
+                    <a class="btn btn-danger" id="product_id">{{ __('Yes, proceed') }}</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal modal-blur fade" id="deleteStoreModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="modal-title">
-                        {{ __('Are you sure?') }}</div>
-                    <div>
-                        {{ __('If you proceed, you will delete this store and product also.') }}
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-link link-secondary me-auto"
-                        data-bs-dismiss="modal">{{ __('Cancel') }}</button>
-                    <a class="btn btn-danger" id="delete_store_id">{{ __('Yes, proceed') }}</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <script>
+        function deleteProduct(event) {
 
-    <div class="modal modal-blur fade" id="openQR" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <div class="modal-title">
-                        {{ __('Scan Whatsapp Store') }}</div>
-                </div>
-                <div class="modal-body text-center">
-                    <img id="cardURL">
-                </div>
-            </div>
-        </div>
-    </div>
+            const {
+                url
+            } = event.dataset;
+            console.log(url);
+            $('#deleteModal').modal('show');
+            $('#product_id').prop('href', url);
+
+
+        }
+
+        var myModalEl = document.getElementById('deleteModal')
+        myModalEl.addEventListener('hidden.bs.modal', function(event) {
+            $('#product_id').prop('href', '');
+        })
+    </script>
 @endsection

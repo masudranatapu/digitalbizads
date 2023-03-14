@@ -44,7 +44,7 @@
                     @php
                         $userPlan = getUserPlan();
                         $store = getUserStore();
-
+                        
                     @endphp
                     @if (isset($userPlan['is_whatsapp_store']) && $userPlan['is_whatsapp_store'] == '1')
                         <li class="nav-item dropdown @yield('store-nav')">
@@ -75,10 +75,8 @@
                                 <a href="{{ route('user.product.category.index') }}"
                                     class="dropdown-item {{ request()->routeIs('user.product.category.index') ? 'active' : '' }}">{{ __('Product Category') }}</a>
                                 @if (isset($store))
-                                    <a href="{{ route('user.store.products.list', ['id' => $store->card_id]) }}"
-                                        class="dropdown-item {{ request()->routeIs('user.edit.products.list') ? 'active' : '' }}">{{ __('Product List') }}</a>
-                                    {{-- <a href="{{ route('user.add.products', ['id' => $store->card_id]) }}"
-                                        class="dropdown-item {{ request()->routeIs('user.add.products') ? 'active' : '' }}">{{ __('Product Add') }}</a> --}}
+                                    <a href="{{ route('user.products.list', ['id' => $store->card_id]) }}"
+                                        class="dropdown-item {{ request()->routeIs('user.products.*') ? 'active' : '' }}">{{ __('Product List') }}</a>
                                 @endif
                             </div>
                         </li>

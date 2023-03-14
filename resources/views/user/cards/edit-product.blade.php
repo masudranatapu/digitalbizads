@@ -26,7 +26,7 @@
             <div class="container-xl">
                 <div class="row row-deck row-cards">
                     <div class="col-sm-12 col-lg-12">
-                        <form action="{{ route('user.update.products', ['id' => $products->product_id]) }}" method="post"
+                        <form action="{{ route('user.products.update', ['id' => $products->product_id]) }}" method="post"
                             enctype="multipart/form-data" class="card">
                             @csrf
                             <div class="card-body">
@@ -135,7 +135,7 @@
                                 <div class="col-md-2 col-xl-2 my-3">
                                     <div class="mb-3">
                                         <button type="submit" class="btn btn-primary btn-block" style="width: 178px">
-                                            {{ __('Submit') }}
+                                            {{ __('Update') }}
                                         </button>
                                     </div>
                                 </div>
