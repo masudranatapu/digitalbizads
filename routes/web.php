@@ -32,6 +32,7 @@ use App\Http\Controllers\User\DashboardController as userDashboard;
 use App\Http\Controllers\User\ProductCategoryController;
 use App\Http\Controllers\User\SettingsController as UserSettingsController;
 use App\Http\Controllers\User\TransactionsController as userTransactions;
+use App\Http\Controllers\User\VariantController;
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -292,6 +293,23 @@ Route::group(['middleware' => 'Installer'], function () {
             Route::get('edit-products/{id}', [StoreController::class, 'editProducts'])->name('products.edit');
             Route::post('update-products/{id}', [StoreController::class, 'updateProducts'])->name('products.update');
             Route::get('delete-products/{id}', [StoreController::class, 'deleteProducts'])->name('products.delete');
+
+
+            // Product variant
+            Route::get('product/{product_id}/variants', [VariantController::class, 'index'])->name('product.variants');
+            Route::post('product/{product_id}/variants/store', [VariantController::class, 'store'])->name('product.variants.store');
+            Route::post('product/{variant}/variants/update', [VariantController::class, 'update'])->name('product.variants.update');
+            Route::get('product/{variant}/variants/delete', [VariantController::class, 'delete'])->name('product.variants.delete');
+
+            // Product variant Options
+
+            Route::get('product/{product_id}/variants/{variant}', [VariantController::class, 'optionIndex'])->name('product.variants.option');
+            Route::post('product/{product_id}/variants/store/{variant}', [VariantController::class, 'optionStore'])->name('product.variants.option.store');
+            Route::post('variants/{option}/update', [VariantController::class, 'optionUpdate'])->name('variants.option.update');
+            Route::get('variants/{option}/delete', [VariantController::class, 'optionDelete'])->name('variants.option.delete');
+
+
+
 
             //Addtional Tootls -> QR Maker
             Route::get('tools/qr-maker', [AdditionalController::class, 'qrMaker'])->name('qr-maker');
