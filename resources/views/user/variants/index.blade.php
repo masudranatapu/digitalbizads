@@ -13,7 +13,7 @@
                             {{ __('Overview') }}
                         </div>
                         <h2 class="page-title">
-                            {{ __('Product Category') }}
+                            {{ __('Product Variant') }}
                         </h2>
                     </div>
                     <!-- Page title actions -->
@@ -21,7 +21,7 @@
                         <div class="dropdown">
                             <a type="button" href="javasctipt:void(0)">
                                 <button type="button" class="btn btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#categoryCreate">
+                                    data-bs-target="#variantCreate">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                         stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -48,33 +48,29 @@
                                         <tr>
                                             <th style="width: 10%">{{ __('S.No') }}</th>
                                             <th>{{ __('Name') }}</th>
-                                            {{-- <th>{{ __('Status') }}</th> --}}
+
                                             <th class="w-1">{{ __('Actions') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if (isset($productCategories) && count($productCategories) > 0)
-                                            @foreach ($productCategories as $productCategory)
+                                        @if (isset($productVariants) && count($productVariants) > 0)
+                                            @foreach ($productVariants as $productvariant)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $productCategory->category_name }}</td>
-                                                    {{-- <td>
-                                                        @if ($productCategory->status)
-                                                            <span class="badge bg-green">{{ __('Active') }}</span>
-                                                        @else
-                                                            <span class="badge bg-red">{{ __('Inactive') }}</span>
-                                                        @endif
-                                                    </td> --}}
+                                                    <td>{{ $productvariant->name }}</td>
+
                                                     <td>
                                                         <div class="btn-list flex-nowrap">
                                                             <a class="btn btn-primary btn-sm"
-                                                                data-id="{{ $productCategory->id }}"
-                                                                data-value="{{ $productCategory->category_name }}"
-                                                                onclick="editCategory(this)"
+                                                                data-url="{{ route('user.product.variants.update', ['variant' => $productvariant->id]) }}"
+                                                                data-value="{{ $productvariant->name }}"
+                                                                onclick="editvariant(this)"
                                                                 href="javascript:void(0)">{{ __('Edit') }}</a>
+                                                            <a class="btn btn-primary btn-sm"
+                                                                href="{{ route('user.product.variants.option', ['product_id' => $product_id, 'variant' => $productvariant->id]) }}">{{ __('Option') }}</a>
                                                             <a class="btn btn-danger btn-sm"
-                                                                data-id="{{ $productCategory->id }}"
-                                                                onclick="deleteCategory(this)"
+                                                                data-url="{{ route('user.product.variants.delete', ['variant' => $productvariant->id]) }}"
+                                                                onclick="deletevariant(this)"
                                                                 href="javascript:void(0)">{{ __('Delete') }}</a>
                                                         </div>
                                                     </td>
@@ -85,7 +81,7 @@
 
 
                                                 <td class="text-center" colspan="4">
-                                                    {{ __('No Product Category Found.') }}</td>
+                                                    {{ __('No Product Variant Found.') }}</td>
 
                                             </tr>
                                         @endif
@@ -96,12 +92,12 @@
                     </div>
 
 
-                    @if (isset($productCategories))
+                    @if (isset($productVariants))
                         <div
                             class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none">
                             <div class="row">
 
-                                @foreach ($productCategories as $row)
+                                @foreach ($productVariants as $row)
                                     <div class="">
                                         <div class="card">
                                             <div class="card-body">
@@ -109,7 +105,7 @@
 
                                                     <div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">
                                                         <h3 class="text-left">
-                                                            <td>{{ $row->category_name }}</td>
+                                                            <td>{{ $row->name }}</td>
                                                         </h3>
                                                     </div>
 
@@ -121,17 +117,19 @@
                                                             </button>
                                                             <div class="dropdown-menu" style="">
 
-                                                                <a class="dropdown-item text-dark"
-                                                                    data-id="{{ $row->id }}"
-                                                                    data-value="{{ $row->category_name }}"
-                                                                    onclick="editCategory(this)"
+                                                                <a class="dropdown-item text-info"
+                                                                    data-url="{{ route('user.product.variants.update', ['variant' => $row->id, '']) }}"
+                                                                    data-value="{{ $row->name }}"
+                                                                    onclick="editvariant(this)"
                                                                     href="javascript:void(0)">{{ __('Edit') }}</a>
+                                                                <a class="dropdown-item text-info"
+                                                                    href="#">{{ __('Option') }}</a>
 
 
-                                                                <a class="dropdown-item  text-danger"
-                                                                    data-id="{{ $row->id }}"
-                                                                    onclick="deleteCategory(this)"
-                                                                    href="javascript:void(0)">
+
+                                                                <a class="dropdown-item  text-danger delete-card"
+                                                                    data-url="{{ route('user.product.variants.delete', ['variant' => $row->id]) }}"
+                                                                    onclick="deletevariant(this)" href="javascript:void(0)">
                                                                     {{ __('Delete') }}
                                                                 </a>
                                                             </div>
@@ -152,23 +150,23 @@
         </div>
         @include('user.includes.footer')
     </div>
-    <div class="modal fade" data-bs-backdrop="static" id="categoryCreate" tabindex="-1"
-        aria-labelledby="categoryCreateLabel" aria-hidden="true">
+    <div class="modal fade" data-bs-backdrop="static" id="variantCreate" tabindex="-1" aria-labelledby="variantCreateLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
 
                 {{-- <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button> --}}
 
-                <form action="{{ route('user.product.category.store') }}" method="POST">
+                <form action="{{ route('user.product.variants.store', ['product_id' => $product_id]) }}" method="POST">
                     @csrf
                     <div class="modal-body">
-                        <h5 class="modal-title" id="categoryCreateLabel">Category</h5>
+                        <h5 class="modal-title" id="variantCreateLabel">Variant</h5>
                         <div class="form-group">
-                            <label for="name" class=" form-label required">{{ __('Category Name') }}</label>
-                            <input type="text" name="category_name"
-                                class="form-control @error('name') border-danger @enderror" placeholder="Category Name"
+                            <label for="name" class=" form-label required">{{ __('Variant Name') }}</label>
+                            <input type="text" name="variant_name"
+                                class="form-control @error('name') border-danger @enderror" placeholder="Variant Name"
                                 required>
-                            @error('category_name')
+                            @error('variant_name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -182,8 +180,8 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" data-bs-backdrop="static" id="categoryEdit" tabindex="-1"
-        aria-labelledby="categoryEditLabel" aria-hidden="true">
+    <div class="modal fade" data-bs-backdrop="static" id="variantEdit" tabindex="-1"
+        aria-labelledby="variantEditLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -192,15 +190,14 @@
                 <form id="editForm" action="" method="POST">
                     @csrf
                     <div class="modal-body">
-                        <h5 class="modal-title" id="categoryEditLabel">Category Edit</h5>
+                        <h5 class="modal-title" id="variantEditLabel">Variant Edit</h5>
                         <div class="form-group">
-                            <label for="name" class=" form-label required">{{ __('Category Name') }}</label>
-                            <input type="hidden" name="id" id="category_edit_id"
-                                value="{{ old('category_edit_id') ?? '' }}">
-                            <input type="text" name="category_name_edit" id="category_edit"
-                                class="form-control @error('category_name_edit') border-danger @enderror"
-                                placeholder="Category Name" required>
-                            @error('category_name_edit')
+                            <label for="name" class=" form-label required">{{ __('Variant Name') }}</label>
+
+                            <input type="text" name="variant_name" id="variant_edit" value=""
+                                class="form-control @error('variant_name') border-danger @enderror"
+                                placeholder="Variant Name" required>
+                            @error('variant_name')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -219,12 +216,12 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="modal-title">{{ __('Are you sure?') }}</div>
-                    <div>{{ __('If you proceed, you will delete this category.') }}</div>
+                    <div>{{ __('If you proceed, you will delete this variant.') }}</div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link link-secondary me-auto"
                         data-bs-dismiss="modal">{{ __('Cancel') }}</button>
-                    <a class="btn btn-danger" id="category_id">{{ __('Yes, proceed') }}</a>
+                    <a class="btn btn-danger" id="variant_id">{{ __('Yes, proceed') }}</a>
                 </div>
             </div>
         </div>
@@ -232,35 +229,49 @@
 
     @push('custom-js')
 
-        @error('category_name')
+        @error('variant_name')
             <script>
                 $('document').ready(function() {
-                    $('#categoryCreate').modal('show');
+                    $('#variantCreate').modal('show');
                 })
             </script>
         @enderror
 
         <script>
-            function deleteCategory(event) {
+            function deletevariant(event) {
                 console.log(event);
                 const {
-                    id
+                    url
                 } = event.dataset;
                 $('#deleteModal').modal('show');
-                $('#category_id').prop('href', "{{ route('user.product.category.index') }}/delete/" + id)
+                $('#variant_id').prop('href', url)
             }
 
-            function editCategory(event) {
+            function editvariant(event) {
                 console.log(event);
                 const {
-                    id,
-                    value
+                    value,
+                    url
                 } = event.dataset;
-                $('#category_edit_id').val(id);
-                $('#category_edit').val(value);
-                $('#editForm').prop('action', "{{ route('user.product.category.index') }}/update/" + id)
-                $('#categoryEdit').modal('show');
+
+                $('#variant_edit').val(value);
+                $('#editForm').prop('action', url)
+                $('#variantEdit').modal('show');
             }
+
+            var myModalEl = document.getElementById('variantEdit')
+            myModalEl.addEventListener('hidden.bs.modal', function(event) {
+                $('#editForm').prop('action', '');
+                $('#variant_edit').val('');
+
+
+            })
+            var myModalEl = document.getElementById('deleteModal')
+            myModalEl.addEventListener('hidden.bs.modal', function(event) {
+                $('#variant_id').prop('href', '')
+
+
+            })
         </script>
     @endpush
 @endsection

@@ -65,7 +65,7 @@
                                                     <td>{{ $product->sales_price }}</td>
                                                     <td>{{ $product->regular_price }}</td>
                                                     <td class="text-muted">
-                                                        {{ $product->hasCategory->category_name }}</td>
+                                                        {{ $product->hasCategory->category_name ?? '' }}</td>
                                                     <td class="text-muted">
                                                         @if ($product->product_status != 'instock')
                                                             <span class="badge bg-red">{{ __('Out of stock') }}</span>
@@ -78,7 +78,7 @@
                                                             <a class="btn btn-primary btn-sm"
                                                                 href="{{ route('user.products.edit', ['id' => $product->product_id]) }}">{{ __('Edit') }}</a>
                                                             <a class="btn btn-primary btn-sm"
-                                                                href="#">{{ __('Variants') }}</a>
+                                                                href="{{ route('user.product.variants', ['product_id' => $product->product_id]) }}">{{ __('Variants') }}</a>
                                                             <button class="btn btn-danger btn-sm"
                                                                 onclick="deleteProduct(this)"
                                                                 data-url="{{ route('user.products.delete', ['id' => $product->product_id]) }}">
