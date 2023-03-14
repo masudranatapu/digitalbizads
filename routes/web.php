@@ -304,7 +304,9 @@ Route::group(['middleware' => 'Installer'], function () {
             // Product variant Options
 
             Route::get('product/{product_id}/variants/{variant}', [VariantController::class, 'optionIndex'])->name('product.variants.option');
+            Route::get('product/{product_id}/variants/create/{variant}', [VariantController::class, 'optioncreate'])->name('product.variants.option.create');
             Route::post('product/{product_id}/variants/store/{variant}', [VariantController::class, 'optionStore'])->name('product.variants.option.store');
+            Route::get('variants/{option}/edit', [VariantController::class, 'optionedit'])->name('variants.option.edit');
             Route::post('variants/{option}/update', [VariantController::class, 'optionUpdate'])->name('variants.option.update');
             Route::get('variants/{option}/delete', [VariantController::class, 'optionDelete'])->name('variants.option.delete');
 
