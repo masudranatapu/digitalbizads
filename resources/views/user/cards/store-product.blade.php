@@ -77,6 +77,8 @@
                                                         <div class="btn-list flex-nowrap">
                                                             <a class="btn btn-primary btn-sm"
                                                                 href="{{ route('user.products.edit', ['id' => $product->product_id]) }}">{{ __('Edit') }}</a>
+                                                            <a class="btn btn-primary btn-sm"
+                                                                href="#">{{ __('Variants') }}</a>
                                                             <button class="btn btn-danger btn-sm"
                                                                 onclick="deleteProduct(this)"
                                                                 data-url="{{ route('user.products.delete', ['id' => $product->product_id]) }}">
