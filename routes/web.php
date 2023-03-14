@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\User\AccountController as userAccount;
 use App\Http\Controllers\User\DashboardController as userDashboard;
 use App\Http\Controllers\User\ProductCategoryController;
+use App\Http\Controllers\User\SettingsController as UserSettingsController;
 use App\Http\Controllers\User\TransactionsController as userTransactions;
 use Illuminate\Support\Facades\Artisan;
 
@@ -203,7 +204,13 @@ Route::group(['middleware' => 'Installer'], function () {
             // Business Cards
             Route::get('cards', [CardController::class, 'cards'])->name('cards');
             Route::get('card-status/{id}', [CardController::class, 'cardStatus'])->name('card.status');
+            Route::get('card-delete/{card}', [CardController::class, 'cardDelete'])->name('card.delete');
             Route::get('card-store/{id}/{status}', [CardController::class, 'cardStoreStatus'])->name('card.storestatus');
+            Route::get('card-subscriber/{card}', [CardController::class, 'subscriber'])->name('card.subscriber');
+            Route::post('send-mail-subscriber', [CardController::class, 'sendMail'])->name('card.subscriber.send.mail');
+            Route::get('subscriber-export/{card}', [CardController::class, 'subscriberExport'])->name('card.subscriber.export');
+
+
 
             // Business Store
             Route::get('stores', [CardController::class, 'getStores'])->name('stores');
@@ -279,8 +286,12 @@ Route::group(['middleware' => 'Installer'], function () {
             // Edit Store
             Route::get('edit-store/{id}', [StoreController::class, 'editStore'])->name('edit.store');
             Route::post('update-store/{id}', [StoreController::class, 'updateStore'])->name('update.store');
-            Route::get('edit-products/{id}', [StoreController::class, 'editProducts'])->name('edit.products');
-            Route::post('update-products/{id}', [StoreController::class, 'updateProducts'])->name('update.products');
+            Route::get('products-list/{id}', [StoreController::class, 'storeProductsList'])->name('products.list');
+            Route::get('add-products/{id}', [StoreController::class, 'addProducts'])->name('products.add');
+            Route::post('store-products/{id}', [StoreController::class, 'storeProducts'])->name('products.store');
+            Route::get('edit-products/{id}', [StoreController::class, 'editProducts'])->name('products.edit');
+            Route::post('update-products/{id}', [StoreController::class, 'updateProducts'])->name('products.update');
+            Route::get('delete-products/{id}', [StoreController::class, 'deleteProducts'])->name('products.delete');
 
             //Addtional Tootls -> QR Maker
             Route::get('tools/qr-maker', [AdditionalController::class, 'qrMaker'])->name('qr-maker');
@@ -290,6 +301,20 @@ Route::group(['middleware' => 'Installer'], function () {
             Route::post('tools/dns-lookup', [AdditionalController::class, 'resultDnsLookup'])->name('result.dns-lookup');
             Route::get('tools/ip-lookup', [AdditionalController::class, 'ipLookup'])->name('ip-lookup');
             Route::post('tools/ip-lookup', [AdditionalController::class, 'resultIpLookup'])->name('result.ip-lookup');
+
+
+
+            Route::prefix('/setting')->name('setting.')->group(function () {
+                Route::get('/payment', [UserSettingsController::class, 'payment'])->name('payment');
+                Route::post('/paymentUpdate', [UserSettingsController::class, 'paymentUpdate'])->name('payment.update');
+                Route::get('/tax', [UserSettingsController::class, 'tax'])->name('tax');
+                Route::get('/tax/create', [UserSettingsController::class, 'taxCreate'])->name('tax.create');
+                Route::post('/tax/store', [UserSettingsController::class, 'taxStore'])->name('tax.store');
+                Route::get('/tax/edit/{state}', [UserSettingsController::class, 'taxEdit'])->name('tax.edit');
+                Route::post('/tax/update/{state}', [UserSettingsController::class, 'taxUpdate'])->name('tax.update');
+                Route::get('/tax/status/{state}', [UserSettingsController::class, 'taxStatus'])->name('tax.status');
+                Route::get('/tax/delete/{state}', [UserSettingsController::class, 'taxDelete'])->name('tax.delete');
+            });
         });
 
         // Transactions
@@ -347,6 +372,6 @@ Route::group(['middleware' => 'Installer'], function () {
 });
 
 
-Route::get('{cardurl}', ['as' => 'card.preview', 'uses' => 'HomeController@getPreview']);
+Route::get('{cardurl}', [HomeController::class, 'getPreview'])->name('card.preview');
 Route::post('/place-email-order', [HomeController::class, 'placeEmailOrder'])->name('place.email.order');
 Route::get('download/{id}', [HomeController::class, 'downloadVcard'])->name('download.vCard');

@@ -48,6 +48,7 @@ class PlanController extends Controller
     // Save Plan
     public function savePlan(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'plan_name' => 'required',
             'plan_description' => 'required',
@@ -57,6 +58,7 @@ class PlanController extends Controller
             // 'no_of_galleries' => 'required',
             // 'no_of_features' => 'required',
             // 'no_of_payments' => 'required'
+            'features' => 'sometimes'
         ]);
 
 
@@ -122,6 +124,14 @@ class PlanController extends Controller
         $plan->free_support = $free_support;
         $plan->is_whatsapp_store = $whatsappStore;
         $plan->is_private = $is_private;
+        if (isset($request->features) && count($request->features) > 0) {
+
+            $plan->fearures = json_encode($request->features);
+        } else {
+            $plan->fearures = null;
+        }
+
+
         $plan->save();
         alert()->success(trans('New Plan Created Successfully!'));
         return redirect()->route('admin.add.plan');
@@ -155,11 +165,14 @@ class PlanController extends Controller
             // 'no_of_galleries' => 'required',
             // 'no_of_features' => 'required',
             // 'no_of_payments' => 'required'
+            'features' => 'sometimes'
+
         ]);
 
         if ($validator->fails()) {
 
-            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+            return back()->withErrors($validator)
+                ->withInput();
         }
 
         DB::beginTransaction();
@@ -209,28 +222,31 @@ class PlanController extends Controller
             }
 
 
-            Plan::where('plan_id', $request->plan_id)->update([
-                'plan_name' => $request->plan_name,
-                'plan_description' => $request->plan_description,
-                'recommended' => $recommended,
-                'plan_price' => $request->plan_price,
-                'validity' => $request->validity,
-                'no_of_vcards' => $request->no_of_vcards,
-                'no_of_services' => $request->no_of_services,
-                'no_of_galleries' => $request->no_of_galleries ?? 0,
-                // 'no_of_features' => $request->no_of_features ?? 0,
-                // 'no_of_payments' => $request->no_of_payments ?? 0,
-                'personalized_link' => $personalized_link,
-                'hide_branding' => $hide_branding,
-                'free_setup' => $free_setup,
-                'free_support' => $free_support,
-                'is_whatsapp_store' => $whatsappStore,
-                'is_private' => $is_private
-            ]);
+            $plan = Plan::where('plan_id', $request->plan_id)->first();
 
+            $plan->plan_name = $request->plan_name;
+            $plan->plan_description = $request->plan_description;
+            $plan->recommended = $recommended;
+            $plan->plan_price = $request->plan_price;
+            $plan->validity = $request->validity;
+            $plan->no_of_vcards = $request->no_of_vcards;
+            $plan->no_of_services = $request->no_of_services;
+            $plan->no_of_galleries = $request->no_of_galleries ?? 0;
+            // $plan->no_of_features = $request->no_of_features ?? 0;
+            // $plan->no_of_payments = $request->no_of_payments ?? 0;
+            $plan->personalized_link = $personalized_link;
+            $plan->hide_branding = $hide_branding;
+            $plan->free_setup = $free_setup;
+            $plan->free_support = $free_support;
+            $plan->is_whatsapp_store = $whatsappStore;
+            $plan->is_private = $is_private;
+            if (isset($request->features) && count($request->features) > 0) {
 
-
-            // return redirect()->route('admin.edit.plan', $request->plan_id);
+                $plan->fearures = json_encode($request->features);
+            } else {
+                $plan->fearures = null;
+            }
+            $plan->save();
         } catch (\Exception $e) {
             dd($e->getMessage());
             DB::rollback();

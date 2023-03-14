@@ -18,9 +18,17 @@ use App\BusinessCard;
 use App\BusinessHour;
 use App\StoreProduct;
 use App\BusinessField;
+use App\ProductCategory;
+use App\Subscriber;
+use Maatwebsite\Excel\Facades\Excel;
+
+use App\Mail\SubscriberMail;
+use App\Exports\SubscriberExport;
+
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
@@ -30,6 +38,7 @@ use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+
 
 class CardController extends Controller
 {
@@ -89,6 +98,7 @@ class CardController extends Controller
                 ->get();
 
             $settings = Setting::where('status', 1)->first();
+
 
             return view('user.cards.cards', compact('business_cards', 'settings'));
         } else {
@@ -628,11 +638,12 @@ class CardController extends Controller
                     $shareComponent['whatsapp'] = "https://api.whatsapp.com/send/?phone&text=$shareContent";
 
                     $store_card = BusinessCard::where('is_store_show', 1)->where('user_id', $business_card_details->user_id)->first();
-
+                    $productCategories = ProductCategory::orderBy('category_name', 'asc')
+                        ->where('user_id', Auth::id())->get();
                     if ($card_details->theme_id == "7ccc432a06hty") {
-                        return view('vcard.modern-store-light', compact('card_details', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency', 'store_card'));
+                        return view('vcard.modern-store-light', compact('card_details', 'productCategories', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency', 'store_card'));
                     } else if ($card_details->theme_id == "7ccc432a06hju") {
-                        return view('vcard.modern-store-dark', compact('card_details', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency', 'store_card'));
+                        return view('vcard.modern-store-dark', compact('card_details', 'productCategories', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency', 'store_card'));
                     }
                 } else {
                     alert()->error(trans('Sorry, Please fill basic business details.'));
@@ -1435,5 +1446,41 @@ class CardController extends Controller
                 'logo' => $imagePath
             ]
         );
+    }
+
+
+    public function cardDelete(BusinessCard $card)
+    {
+        StoreProduct::where('card_id', $card->card_id)->delete();
+
+        $card->delete();
+        alert()->success(trans('Your store and store product has successfully deleted'));
+        return redirect()->route('user.stores');
+    }
+
+    public function subscriber($cardId)
+    {
+        $subscriber = Subscriber::where('card_id', $cardId)->get();
+        $settings = Setting::first();
+
+        return view('user.cards.subscriber', compact('subscriber', 'settings', 'cardId'));
+    }
+
+    public function sendMail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required',
+            'subject' => 'required',
+            'message' => 'required',
+        ]);
+
+        Mail::to($request->email)->send(new SubscriberMail($request->subject, $request->message));
+        alert()->success(trans('Your Mail Send Successfully'));
+        return redirect()->back();
+    }
+
+    public function subscriberExport($card)
+    {
+        return Excel::download(new SubscriberExport($card), 'users.xlsx');
     }
 }

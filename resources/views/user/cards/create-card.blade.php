@@ -656,10 +656,16 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
-                                            <label for="facebook" class="form-label">Facebook</label>
-                                            <input type="text" name="facebook"
-                                                data-attr="https://www.facebook.com/" placeholder="facebook username"
-                                                data-type="facebook" value="{{ old('facebook') }}" id="facebook"
+                                            <label for="facebook" class="form-label">Facebook
+                                                <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                    data-bs-title="The profile link look like https://www.facebook.com/user-id">
+                                                    <i class="fa fa-info"></i>
+                                                </button>
+                                            </label>
+                                            <input type="url" name="facebook" data-attr=""
+                                                placeholder="facebook profile link" data-type="facebook"
+                                                value="{{ old('facebook') }}" id="facebook"
                                                 class="social_item_in form-control @error('facebook') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('facebook'))
@@ -670,10 +676,15 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                     </div>
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
-                                            <label for="instagram" class="form-label">Instagram</label>
-                                            <input type="text" name="instagram" id="instagram"
-                                                data-attr="https://www.instagram.com/" data-type="instagram"
-                                                placeholder="instagram username" value="{{ old('instagram') }}"
+                                            <label for="instagram" class="form-label">Instagram <button
+                                                    type="button" class="tooltip_icon" data-bs-toggle="tooltip"
+                                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                    data-bs-title="The profile link look like https://www.instagram.com/user-id">
+                                                    <i class="fa fa-info"></i>
+                                                </button></label>
+                                            <input type="url" name="instagram" id="instagram" data-attr=""
+                                                data-type="instagram" placeholder="instagram profile link"
+                                                value="{{ old('instagram') }}"
                                                 class="social_item_in form-control @error('instagram') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('instagram'))

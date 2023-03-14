@@ -179,7 +179,7 @@
 
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
-                                                    <div class="form-label required">{{ __('Banner') }}</div>
+                                                    <div class="form-label">{{ __('Banner') }}</div>
                                                     <input type="file" class="form-control" name="banner"
                                                         placeholder="{{ __('Banner') }}..."
                                                         value="{{ $business_card->cover }}"
