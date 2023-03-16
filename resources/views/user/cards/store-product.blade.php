@@ -77,12 +77,18 @@
                                                         <div class="btn-list flex-nowrap">
                                                             <a class="btn btn-primary btn-sm"
                                                                 href="{{ route('user.products.edit', ['id' => $product->product_id]) }}">{{ __('Edit') }}</a>
-                                                            <a class="btn btn-primary btn-sm"
-                                                                href="{{ route('user.product.variants', ['product_id' => $product->product_id]) }}">{{ __('Variants') }}</a>
+
+
+
                                                             <button class="btn btn-danger btn-sm"
                                                                 onclick="deleteProduct(this)"
                                                                 data-url="{{ route('user.products.delete', ['id' => $product->product_id]) }}">
                                                                 {{ __('Delete') }}</button>
+                                                            @if ($product->is_variant)
+                                                                <a class="btn btn-primary btn-sm"
+                                                                    href="{{ route('user.product.variants', ['product_id' => $product->product_id]) }}">{{ __('Variants') }}</a>
+                                                            @endif
+
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -130,6 +136,12 @@
 
                                                                 <a class="dropdown-item"
                                                                     href="{{ route('user.products.edit', ['id' => $product->product_id]) }}">{{ __('Edit') }}</a>
+
+                                                                @if ($product->is_variant)
+                                                                    <a class="dropdown-item"
+                                                                        href="{{ route('user.product.variants', ['product_id' => $product->product_id]) }}">{{ __('Variants') }}</a>
+                                                                @endif
+
 
                                                                 <a class="dropdown-item text-danger"
                                                                     href="javascript:void(0)" onclick="deleteProduct(this)"

@@ -295,6 +295,7 @@ class StoreController extends Controller
     public function storeProductsList($card)
     {
         $business_cards = BusinessCard::with('hasProduct')->where('card_id', $card)->first();
+
         $settings = Setting::where('status', 1)->first();
 
 
@@ -328,6 +329,7 @@ class StoreController extends Controller
             'regular_price' => 'required',
             'sales_price' => 'required|lte:regular_price',
             'product_status' => 'required',
+            'product_type' => 'required',
             'category' => 'required',
         ]);
 
@@ -354,6 +356,7 @@ class StoreController extends Controller
                     $product->sales_price = $request->sales_price;
                     $product->product_status = $request->product_status;
                     $product->category_id = $request->category;
+                    $product->is_variant = $request->product_type;
                     $product->save();
 
 
@@ -501,6 +504,7 @@ class StoreController extends Controller
             'regular_price' => 'required',
             'sales_price' => 'required|lte:regular_price',
             'product_status' => 'required',
+            'product_type' => 'required',
             'category' => 'required',
         ]);
 
@@ -521,6 +525,8 @@ class StoreController extends Controller
         $product->sales_price = $request->sales_price;
         $product->product_status = $request->product_status;
         $product->category_id = $request->category;
+        $product->is_variant = $request->product_type;
+
         $product->save();
 
 

@@ -240,11 +240,31 @@
                                                     : {{ $product->hasCategory->category_name ?? '' }}</span>
                                             @endif
                                         </h4>
+                                        @if ($product->is_variant)
+                                            @foreach ($product->hasVariant as $variant)
+                                                @if ($variant->hasOption->count() > 0)
+                                                    <div class="col-span-6 sm:col-span-3 mb-3 mt-3">
+                                                        <label for="country"
+                                                            class="block text-sm font-medium leading-6 text-gray-900">{{ $variant->name }}</label>
+                                                        <select
+                                                            class="block w-full p-2 mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                                                            name="option[]">
+                                                            @foreach ($variant->hasOption as $option)
+                                                                <option data-price="{{ $option->price }}">
+                                                                    {{ $option->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                @endif
+                                            @endforeach
+                                        @endif
                                         @if ($product->product_status == 'instock')
                                             <a onclick="addToCart('{{ $product->product_id }}')"
                                                 class="py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
                                                 style="cursor: pointer;">{{ __('Add') }}</a>
                                         @endif
+
+
                                     </div>
                                 </div>
                             </div>
@@ -630,6 +650,10 @@
         $('#sort_order').change(function() {
             $('.shop_filter').submit();
         })
+
+        $('select[name=option[]]').change(function(e) {
+            console.log(e);
+        });
     </script>
 </body>
 
