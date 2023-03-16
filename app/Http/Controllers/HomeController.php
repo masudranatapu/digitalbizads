@@ -445,4 +445,31 @@ class HomeController extends Controller
 
         return response()->json(['status' => 'success']);
     }
+
+
+    public function productDetails(){
+        return view('pages.product_details');
+    }
+
+
+    public function cartPage(){
+         return view('pages.cart');
+    }
+
+    public function checkout(){
+        return view('pages.checkout');
+    }
+
+    public function checkoutBilling(){
+        return view('pages.checkout_billing');
+    }
+
+    public function checkoutPayment(){
+        return view('pages.checkout_payment');
+    }
+
+
+
+
+
 }

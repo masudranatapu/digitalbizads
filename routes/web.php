@@ -284,6 +284,15 @@ Route::group(['middleware' => 'Installer'], function () {
                 Route::get('/delete/{id}', [ProductCategoryController::class, 'destroy'])->name('destroy');
             });
 
+
+
+
+
+
+
+
+
+
             // Edit Store
             Route::get('edit-store/{id}', [StoreController::class, 'editStore'])->name('edit.store');
             Route::post('update-store/{id}', [StoreController::class, 'updateStore'])->name('update.store');
@@ -393,7 +402,20 @@ Route::group(['middleware' => 'Installer'], function () {
     Route::get('/download/{id}', [ProfileController::class, 'downloadVcard'])->name('download.vCard');
 });
 
+ // product details
+ Route::get('/details/{id}', [HomeController::class, 'productDetails'])->name('product.details');
+// cart
+ Route::get('/cart', [HomeController::class, 'cartPage'])->name('cart');
+
+// checkout
+ Route::get('/checkout', [HomeController::class, 'checkout'])->name('checkout');
+ Route::get('/checkout/billing-address', [HomeController::class, 'checkoutBilling'])->name('checkout.billing');
+ Route::get('/checkout/payment', [HomeController::class, 'checkoutPayment'])->name('checkout.payment');
+
 
 Route::get('{cardurl}', [HomeController::class, 'getPreview'])->name('card.preview');
 Route::post('/place-email-order', [HomeController::class, 'placeEmailOrder'])->name('place.email.order');
 Route::get('download/{id}', [HomeController::class, 'downloadVcard'])->name('download.vCard');
+
+
+
