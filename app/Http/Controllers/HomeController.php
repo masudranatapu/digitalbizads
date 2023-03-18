@@ -447,29 +447,34 @@ class HomeController extends Controller
     }
 
 
-    public function productDetails(){
-        return view('pages.product_details');
+    public function productDetails($id)
+    {
+        $product = StoreProduct::with(['hasStore', 'hasVariant', 'hasCategory'])->find($id);
+
+        $config = DB::table('config')->get();
+        $currency = Currency::where('iso_code', $config['1']->config_value)->first();
+
+        return view('pages.product_details', compact('product', 'currency'));
     }
 
 
-    public function cartPage(){
-         return view('pages.cart');
+    public function cartPage()
+    {
+        return view('pages.cart');
     }
 
-    public function checkout(){
+    public function checkout()
+    {
         return view('pages.checkout');
     }
 
-    public function checkoutBilling(){
+    public function checkoutBilling()
+    {
         return view('pages.checkout_billing');
     }
 
-    public function checkoutPayment(){
+    public function checkoutPayment()
+    {
         return view('pages.checkout_payment');
     }
-
-
-
-
-
 }

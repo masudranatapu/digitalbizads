@@ -120,9 +120,11 @@
                                                             required>
                                                             <option value="" class="d-none">
                                                                 {{ __('Select Product Type') }}</option>
-                                                            <option value='1'>
+                                                            <option @if ($products->is_variant) selected @endif
+                                                                value='1'>
                                                                 {{ __('Variant') }}</option>
-                                                            <option value='0'>
+                                                            <option @if (!$products->is_variant) selected @endif
+                                                                value='0'>
                                                                 {{ __('Non Variant') }}</option>
                                                         </select>
                                                     </div>

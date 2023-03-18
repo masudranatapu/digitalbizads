@@ -17,4 +17,8 @@ class StoreProduct extends Model
     {
         return $this->hasMany(Variants::class, 'product_id', 'product_id')->with('hasOption');
     }
+    public function hasStore(): HasOne
+    {
+        return $this->hasOne(BusinessCard::class, 'card_id', 'card_id');
+    }
 }
