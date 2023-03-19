@@ -233,7 +233,7 @@
                 </div>
             </div>
 
-            <div class="details">
+            {{-- <div class="details">
                 <h3>Details:</h3>
                 <p>
                     Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of
@@ -262,7 +262,7 @@
                     Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
 
                 </p>
-            </div>
+            </div> --}}
         </div>
     </div>
 
