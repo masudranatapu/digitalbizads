@@ -177,7 +177,7 @@
                                                         <div class="size">
                                                             <label for="size"
                                                                 class="form-label">{{ $variant->name }}</label>
-                                                            <select name="option[]" required
+                                                            <select name="option[]"
                                                                 id="{{ str_replace(' ', '_', strtolower(trim($variant->name))) }}"
                                                                 class="form-control">
                                                                 <option value="">Select

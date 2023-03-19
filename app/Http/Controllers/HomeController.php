@@ -502,18 +502,25 @@ class HomeController extends Controller
         } else {
 
             $option = [];
-            if (isset($request->option)) {
+            $variantTotalPrice = 0;
+
+            if (isset($request->option) && count($request->option) > 0) {
 
                 $incomingVariant = $request->option;
 
                 for ($i = 0; $i < count($incomingVariant); $i++) {
-                    $productVariant = VariantOption::find($incomingVariant[$i]);
-                    $option[] = [
-                        "id" => $productVariant->id,
-                        "name" => $productVariant->name,
-                        "price" => $productVariant->price,
 
-                    ];
+                    $productVariant = VariantOption::find($incomingVariant[$i]);
+                    if (isset($productVariant)) {
+
+                        $option[] = [
+                            "id" => $productVariant->id,
+                            "name" => $productVariant->name,
+                            "price" => $productVariant->price,
+
+                        ];
+                        $variantTotalPrice = $variantTotalPrice + $productVariant->price;
+                    }
                 }
             }
 
@@ -521,7 +528,7 @@ class HomeController extends Controller
                 "name" => $product->product_name,
                 "product_id" => $product->product_id,
                 "quantity" => $request->qty,
-                "price" => $product->sales_price ? $product->sales_price : $product->regular_price,
+                "price" => $product->sales_price != $product->regular_price ? ($product->sales_price + $variantTotalPrice) : ($product->regular_price + $variantTotalPrice),
                 "image" => $product->product_image,
                 "option" => $option,
 

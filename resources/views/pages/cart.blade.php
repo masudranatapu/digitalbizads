@@ -104,13 +104,6 @@
                                                 <td class="text-center">{{ getPrice($total) }}</td>
                                                 <td></td>
                                             </tr>
-
-
-
-
-
-
-
                                         </tfoot>
                                     @endif
                                 </table>
@@ -123,9 +116,7 @@
 
             <div class="card shopping_btn">
                 <div class="card-body">
-                    <div class="text-center">
-                        <h4>Subtotal: $340.00</h4>
-                    </div>
+
                     <div class="d-flex justify-content-between">
                         <div class="button">
                             <a href="#" class="btn btn-primary"><i class="fa fa-angle-left"></i> Back to
@@ -140,7 +131,7 @@
 
         </div>
     </div>
-    </div>
+
 
 
 
