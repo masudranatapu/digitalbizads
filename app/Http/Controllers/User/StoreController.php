@@ -355,7 +355,12 @@ class StoreController extends Controller
                     $product->product_subtitle = $request->product_subtitle;
                     $product->regular_price = $request->regular_price;
                     $product->sales_price = $request->sales_price;
-                    $product->product_stock = $request->stock;
+                    if (!$request->product_type) {
+
+                        $product->product_stock = $request->stock;
+                    } else {
+                        $product->product_stock = 0;
+                    }
                     $product->category_id = $request->category;
                     $product->is_variant = $request->product_type;
                     $product->status = $request->status;
@@ -526,7 +531,12 @@ class StoreController extends Controller
         $product->product_subtitle = $request->product_subtitle;
         $product->regular_price = $request->regular_price;
         $product->sales_price = $request->sales_price;
-        $product->product_stock = $request->stock;
+        if (!$request->product_type) {
+
+            $product->product_stock = $request->stock;
+        } else {
+            $product->product_stock = 0;
+        }
         $product->category_id = $request->category;
         $product->is_variant = $request->product_type;
         $product->status = $request->status;
