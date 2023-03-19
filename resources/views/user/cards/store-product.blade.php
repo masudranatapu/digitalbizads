@@ -47,8 +47,8 @@
                                             <th>{{ __('SL.No') }}</th>
                                             <th>{{ __('Product ID') }}</th>
                                             <th>{{ __('Product Name') }}</th>
-                                            <th>{{ __('Sales Price') }}</th>
-                                            <th>{{ __('Regular Price') }}</th>
+                                            <th>{{ __('Sales Price') }} </th>
+                                            <th>{{ __('Regular Price') }} </th>
                                             <th>{{ __('Category') }}</th>
                                             <th>{{ __('Stock') }}</th>
                                             <th>{{ __('Status') }}</th>
@@ -62,9 +62,11 @@
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $product->product_id }}</td>
-                                                    <td>{{ $product->product_name }}</td>
-                                                    <td>{{ $product->sales_price }}</td>
-                                                    <td>{{ $product->regular_price }}</td>
+                                                    <td><a target="_blank"
+                                                            href="{{ getPhoto($product->product_image) }}">{{ $product->product_name }}</a>
+                                                    </td>
+                                                    <td>{{ $product->sales_price . $currency->symbol }}</td>
+                                                    <td>{{ $product->regular_price . $currency->symbol }}</td>
                                                     <td class="text-muted">
                                                         {{ $product->hasCategory->category_name ?? '' }}</td>
                                                     <td class="text-muted">

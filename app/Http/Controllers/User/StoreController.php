@@ -296,15 +296,23 @@ class StoreController extends Controller
     {
         $business_cards = BusinessCard::with('hasProduct')->where('card_id', $card)->first();
 
+        $iso_code = json_decode($business_cards->description, true);
+        $currency = Currency::where('iso_code', $iso_code['currency'])->first();
+
+
         $settings = Setting::where('status', 1)->first();
 
 
-        return view('user.cards.store-product', compact('business_cards', 'settings'));
+        return view('user.cards.store-product', compact('business_cards', 'settings', 'currency'));
     }
 
     public function addProducts($id)
     {
+
         $business_card = BusinessCard::with('hasProduct')->where('card_id', $id)->first();
+        $iso_code = json_decode($business_card->description, true);
+        $currency = Currency::where('iso_code', $iso_code['currency'])->first();
+
 
         if ($business_card == null) {
             return view('errors.404');
@@ -316,7 +324,7 @@ class StoreController extends Controller
             $productCategories = ProductCategory::orderBy('category_name', 'asc')
                 ->where('user_id', Auth::id())->get();
 
-            return view('user.cards.add-product', compact('plan_details',  'media', 'settings', 'productCategories', 'id'));
+            return view('user.cards.add-product', compact('plan_details',  'media', 'settings', 'productCategories', 'id', 'currency'));
         }
     }
     public function storeProducts(Request $request, $id)
@@ -402,15 +410,19 @@ class StoreController extends Controller
     }
     public function editProducts($id)
     {
+
+        $products = StoreProduct::where('product_id', $id)->first();
+        $business_card = BusinessCard::with('hasProduct')->where('card_id', $products->card_id)->first();
+        $iso_code = json_decode($business_card->description, true);
+        $currency = Currency::where('iso_code', $iso_code['currency'])->first();
         $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
         $plan_details = json_decode($plan->plan_details);
-        $products = StoreProduct::where('product_id', $id)->first();
         $media = Medias::where('user_id', Auth::user()->user_id)->orderBy('id', 'desc')->get();
         $settings = Setting::where('status', 1)->first();
         $productCategories = ProductCategory::orderBy('category_name', 'asc')
             ->where('user_id', Auth::id())->get();
 
-        return view('user.cards.edit-product', compact('plan_details', 'products', 'media', 'settings', 'productCategories'));
+        return view('user.cards.edit-product', compact('plan_details', 'products', 'media', 'settings', 'productCategories', 'currency'));
     }
 
 
