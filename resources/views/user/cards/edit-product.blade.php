@@ -100,16 +100,11 @@
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
                                                         <label class='form-label required'
-                                                            for='product_status'>{{ __('Status') }}</label>
-                                                        <select name='product_status' id='product_status'
-                                                            class='form-control' required>
-                                                            <option value='instock'
-                                                                {{ $products->product_status == 'instock' ? 'selected' : '' }}>
-                                                                {{ __('In Stock') }}</option>
-                                                            <option value='outstock'
-                                                                {{ $products->product_status == 'outstock' ? 'selected' : '' }}>
-                                                                {{ __('Out of Stock') }}</option>
-                                                        </select>
+                                                            for='stock'>{{ __('Stock') }}</label>
+                                                        <input type="number"
+                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                                            name="stock" id="stock" class="form-control"
+                                                            value="{{ $product->prduct_stock }}">
                                                     </div>
                                                 </div>
                                                 <div class='col-md-6 col-xl-6'>

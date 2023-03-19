@@ -402,20 +402,18 @@ Route::group(['middleware' => 'Installer'], function () {
     Route::get('/download/{id}', [ProfileController::class, 'downloadVcard'])->name('download.vCard');
 });
 
- // product details
- Route::get('/details/{id}', [HomeController::class, 'productDetails'])->name('product.details');
+// product details
+Route::get('/details/{id}', [HomeController::class, 'productDetails'])->name('product.details');
 // cart
- Route::get('/cart', [HomeController::class, 'cartPage'])->name('cart');
+Route::get('/cart', [HomeController::class, 'cartPage'])->name('cart');
+Route::post('/add-to-cart', [HomeController::class, 'addToCart'])->name('add.to.cart');
 
 // checkout
- Route::get('/checkout', [HomeController::class, 'checkout'])->name('checkout');
- Route::get('/checkout/billing-address', [HomeController::class, 'checkoutBilling'])->name('checkout.billing');
- Route::get('/checkout/payment', [HomeController::class, 'checkoutPayment'])->name('checkout.payment');
+Route::get('/checkout', [HomeController::class, 'checkout'])->name('checkout');
+Route::get('/checkout/billing-address', [HomeController::class, 'checkoutBilling'])->name('checkout.billing');
+Route::get('/checkout/payment', [HomeController::class, 'checkoutPayment'])->name('checkout.payment');
 
 
 Route::get('{cardurl}', [HomeController::class, 'getPreview'])->name('card.preview');
 Route::post('/place-email-order', [HomeController::class, 'placeEmailOrder'])->name('place.email.order');
 Route::get('download/{id}', [HomeController::class, 'downloadVcard'])->name('download.vCard');
-
-
-
