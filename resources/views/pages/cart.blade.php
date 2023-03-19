@@ -37,84 +37,109 @@
                 <div class="card mb-4">
                     <div class="card-body">
                         <div class="table-responsive shopping-cart">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th width="10%">Image</th>
-                                        <th width="25%">Product Name</th>
-                                        <th width="10%">Product Price</th>
-                                        <th width="10%">Quantity</th>
-                                        <th width="10%">Subtotal</th>
-                                        <th width="10%">
-                                            <a class="btn btn-sm btn-primary" href="#">
-                                                <span>Clear Cart</span>
-                                            </a>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody id="cart_view_load">
-                                    @foreach ($cart as $cartItem)
+                            <div class="table-responsive">
+                                <table id="cart" class="table table-hover table-condensed">
+                                    <thead>
                                         <tr>
-                                            <td>
-                                                <a href="#" target="_blank">
-                                                    <img src="{{ getPhoto($cartItem['image']) }}" width="80"
-                                                        alt="">
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <h6>
-                                                    <a href="#" target="_blank">
-                                                        {{ $cartItem['name'] }}</a>
-                                                </h6>
-                                            </td>
-                                            <td>
-                                                {{ $cartItem['price'] }}
-                                            </td>
-                                            <td class="quantify_btn">
-                                                <div class="input-group">
-                                                    <span class="input-type-text"><i class="fa fa-minus"></i></span>
-                                                    <input type="number" class="form-control" name="qty"
-                                                        id="qty" value="1" min="1" max="100"
-                                                        readonly>
-                                                    <span class="input-type-text"><i class="fa fa-plus"></i></span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                $100.00
-                                            </td>
-                                            <td>
-                                                <a href="#" class="btn btn-sm btn-danger"><i
-                                                        class="fa fa-times"></i></a>
-                                            </td>
+                                            <th style="width:10%">Photo</th>
+                                            <th style="width:35%">Product</th>
+                                            <th style="width:15%">Price</th>
+                                            <th style="width:15%">Quantity</th>
+                                            <th style="width:20%" class="text-center">Subtotal</th>
+                                            <th style="width:10%">Remove</th>
                                         </tr>
-                                    @endforeach
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                            $total = 0;
+                                            
+                                        @endphp
+                                        @if (session('cart'))
+                                            @foreach (session('cart') as $id => $details)
+                                                @php
+                                                    $total += $details['price'] * $details['quantity'];
+                                                    $line_total = $details['price'] * $details['quantity'];
+                                                @endphp
 
-                                </tbody>
-                            </table>
+                                                <tr data-id="{{ $id }}" class="align-middle">
+                                                    <td data-th="Photo">
+
+                                                        <img src="{{ getPhoto($details['image']) }}" width="50"
+                                                            class="img-responsive" />
+
+
+                                                    </td>
+                                                    <td data-th="Product">
+                                                        <span>{{ $details['name'] }}</span>
+                                                    </td>
+                                                    <td data-th="Price">{{ getPrice($details['price']) }}</td>
+                                                    <td data-th="Quantity">
+                                                        <input type="number" value="{{ $details['quantity'] }}"
+                                                            class="form-control quantity update-cart allownumericwithoutdecimal" />
+                                                    </td>
+                                                    <td data-th="Subtotal" class="text-center">
+                                                        {{ getPrice($line_total) }}
+                                                    </td>
+                                                    <td class="actions" data-th="">
+                                                        <button class="btn btn-danger btn-sm remove-from-cart"><i
+                                                                class="fas fa-trash"></i></button>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <tr>
+                                                <td class="text-center text-danger" colspan="5">
+                                                    <h4>No product available in the cart</h4>
+
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    </tbody>
+                                    @if (session('cart'))
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="4" class="text-end">
+                                                    <h5><strong> Total : </strong></h5>
+                                                </td>
+                                                <td class="text-center">{{ getPrice($total) }}</td>
+                                                <td></td>
+                                            </tr>
+
+
+
+
+
+
+
+                                        </tfoot>
+                                    @endif
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-
-                <div class="card shopping_btn">
-                    <div class="card-body">
-                        <div class="text-center">
-                            <h4>Subtotal: $340.00</h4>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <div class="button">
-                                <a href="#" class="btn btn-primary"><i class="fa fa-angle-left"></i> Back to
-                                    Shopping</a>
-                            </div>
-                            <div class="button">
-                                <a href="{{ route('checkout') }}" class="btn btn-success">Checkout</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
+
+
+            <div class="card shopping_btn">
+                <div class="card-body">
+                    <div class="text-center">
+                        <h4>Subtotal: $340.00</h4>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="button">
+                            <a href="#" class="btn btn-primary"><i class="fa fa-angle-left"></i> Back to
+                                Shopping</a>
+                        </div>
+                        <div class="button">
+                            <a href="{{ route('checkout') }}" class="btn btn-success">Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
+    </div>
     </div>
 
 
@@ -127,6 +152,57 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(".allownumericwithoutdecimal").on("keypress keyup blur", function(event) {
+            $(this).val($(this).val().replace(/[^\d].+/, ""));
+            if ((event.which < 48 || event.which > 57)) {
+                event.preventDefault();
+            }
+        });
+
+        $(".update-cart").change(function(e) {
+            e.preventDefault();
+            var ele = $(this);
+            $.ajax({
+                url: '{{ route('update.cart') }}',
+                method: "patch",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: ele.parents("tr").attr("data-id"),
+                    quantity: ele.parents("tr").find(".quantity").val()
+                },
+                success: function(response) {
+                    window.location.reload();
+                }
+            });
+        });
+
+
+
+        $(".remove-from-cart").click(function(e) {
+            e.preventDefault();
+            var ele = $(this);
+            if (confirm("Are you sure want to remove?")) {
+                console.log(ele);
+                $.ajax({
+                    url: '{{ route('remove.from.cart') }}',
+                    method: "DELETE",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: ele.parents("tr").attr("data-id")
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        window.location.reload();
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 
 </html>

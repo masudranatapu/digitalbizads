@@ -104,7 +104,7 @@
                                                         <input type="number"
                                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
                                                             name="stock" id="stock" class="form-control"
-                                                            value="{{ $product->prduct_stock }}">
+                                                            value="{{ $products->product_stock }}">
                                                     </div>
                                                 </div>
                                                 <div class='col-md-6 col-xl-6'>
@@ -135,6 +135,21 @@
                                                                     @if ($products->category_id == $productCategorie->id) selected @endif>
                                                                     {{ $productCategorie->category_name }}</option>
                                                             @endforeach
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class='col-md-6 col-xl-6'>
+                                                    <div class='mb-3'>
+                                                        <label class='form-label required'
+                                                            for='product_status'>{{ __('Status') }}</label>
+                                                        <select name='status' id='status' class='form-control'
+                                                            required>
+                                                            <option value="1"
+                                                                @if ($products->status == '1') selected @endif>Active
+                                                            </option>
+                                                            <option value="0"
+                                                                @if ($products->status == '0') selected @endif>Inactive
+                                                            </option>
                                                         </select>
                                                     </div>
                                                 </div>

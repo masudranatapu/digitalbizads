@@ -75,7 +75,7 @@
                                                         <div class='input-group mb-2'>
                                                             <input type='text' class='image media-model form-control'
                                                                 name='option_image' placeholder='{{ __('Option Image') }}'
-                                                                value="" required>
+                                                                value="{{ old('option_image') }}" required>
                                                             <button class='btn btn-primary btn-md' type='button'
                                                                 onclick="openMedia()">{{ __('Choose image') }}</button>
                                                         </div>
@@ -240,7 +240,7 @@
                         // Hidden empty
                         $(".empty").hide();
 
-                        $('#openMediaModel').modal('hide');
+                        $('#openMediaModel').modal('show');
                         $('.image' + currentSelection).val("images/" + response.image_url);
                     });
                 }

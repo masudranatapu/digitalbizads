@@ -172,7 +172,7 @@ class HomeController extends Controller
 
                 if ($business_card_details) {
 
-                    $query = StoreProduct::with('hasCategory')->where('card_id', $card_details->card_id);
+                    $query = StoreProduct::with('hasCategory')->where('card_id', $card_details->card_id)->where('status', true);
 
 
                     if (isset($request->category)) {
@@ -531,5 +531,35 @@ class HomeController extends Controller
         session()->put('cart', $cart);
         Session::flash('success', 'Add to cart successfully');
         return redirect()->back();
+    }
+
+
+    public function update(Request $request)
+
+    {
+
+        if ($request->id && $request->quantity) {
+
+            $cart = session()->get('cart');
+
+            $cart[$request->id]["quantity"] = $request->quantity;
+
+            session()->put('cart', $cart);
+            Toastr::success('Cart updated successfully');
+        }
+    }
+
+    public function remove(Request $request)
+
+    {
+        if ($request->id) {
+            $cart = session()->get('cart');
+            if (isset($cart[$request->id])) {
+                unset($cart[$request->id]);
+                session()->put('cart', $cart);
+            }
+
+            Toastr::error('Product removed from cart successfully');
+        }
     }
 }

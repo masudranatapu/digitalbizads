@@ -238,7 +238,7 @@
                         // Hidden empty
                         $(".empty").hide();
 
-                        $('#openMediaModel').modal('hide');
+                        $('#openMediaModel').modal('show');
                         $('.image' + currentSelection).val("images/" + response.image_url);
                     });
                 }
