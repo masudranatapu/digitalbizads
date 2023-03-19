@@ -19,9 +19,9 @@
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none">
                         <div class="dropdown">
-                            <a type="button" href="javasctipt:void(0)">
-                                <button type="button" class="btn btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#variantCreate">
+                            <a type="button"
+                                href="{{ route('user.product.variants.option.create', ['product_id' => $product_id, 'variant' => $variant]) }}">
+                                <button type="button" class="btn btn btn-primary">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                         stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -48,29 +48,29 @@
                                         <tr>
                                             <th style="width: 10%">{{ __('S.No') }}</th>
                                             <th>{{ __('Name') }}</th>
+                                            <th>{{ __('Stock') }}</th>
+                                            <th>{{ __('Price') }}</th>
                                             {{-- <th>{{ __('Status') }}</th> --}}
                                             <th class="w-1">{{ __('Actions') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{-- @if (isset($productVariants) && count($productVariants) > 0)
-                                            @foreach ($productVariants as $productvariant)
+                                        @if (isset($variantOptions) && count($variantOptions) > 0)
+                                            @foreach ($variantOptions as $variantOption)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $productvariant->name }}</td>
+                                                    <td>{{ $variantOption->name }}</td>
+                                                    <td>{{ $variantOption->stock }}</td>
+                                                    <td>{{ $variantOption->price }}</td>
 
                                                     <td>
                                                         <div class="btn-list flex-nowrap">
                                                             <a class="btn btn-primary btn-sm"
-                                                                data-url="{{ route('user.product.variants.update', ['variant' => $productvariant->id]) }}"
-                                                                data-value="{{ $productvariant->name }}"
-                                                                onclick="editvariant(this)"
-                                                                href="javascript:void(0)">{{ __('Edit') }}</a>
-                                                            <a class="btn btn-primary btn-sm"
-                                                                href="#">{{ __('Option') }}</a>
+                                                                href="{{ route('user.variants.option.edit', ['option' => $variantOption->id]) }}">{{ __('Edit') }}</a>
+
                                                             <a class="btn btn-danger btn-sm"
-                                                                data-url="{{ route('user.product.variants.delete', ['variant' => $productvariant->id]) }}"
-                                                                onclick="deletevariant(this)"
+                                                                data-url="{{ route('user.variants.option.delete', ['option' => $variantOption->id]) }}"
+                                                                onclick="deleteOption(this)"
                                                                 href="javascript:void(0)">{{ __('Delete') }}</a>
                                                         </div>
                                                     </td>
@@ -78,13 +78,11 @@
                                             @endforeach
                                         @else
                                             <tr class="font-weight-bold">
-
-
                                                 <td class="text-center" colspan="4">
-                                                    {{ __('No Product Variant Found.') }}</td>
-
+                                                    {{ __('No Product Variant Found.') }}
+                                                </td>
                                             </tr>
-                                        @endif --}}
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
@@ -92,12 +90,12 @@
                     </div>
 
 
-                    @if (isset($productVariants))
+                    @if (isset($variantOptions))
                         <div
                             class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none">
                             <div class="row">
 
-                                {{-- @foreach ($productVariants as $row)
+                                @foreach ($variantOptions as $row)
                                     <div class="">
                                         <div class="card">
                                             <div class="card-body">
@@ -140,7 +138,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endforeach --}}
+                                @endforeach
                             </div>
 
                         </div>
@@ -150,67 +148,8 @@
         </div>
         @include('user.includes.footer')
     </div>
-    <div class="modal fade" data-bs-backdrop="static" id="variantCreate" tabindex="-1" aria-labelledby="variantCreateLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
 
-                {{-- <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button> --}}
 
-                <form action="{{ route('user.product.variants.store', ['product_id' => $product_id]) }}" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <h5 class="modal-title" id="variantCreateLabel">Variant</h5>
-                        <div class="form-group">
-                            <label for="name" class=" form-label required">{{ __('Variant Name') }}</label>
-                            <input type="text" name="variant_name"
-                                class="form-control @error('name') border-danger @enderror" placeholder="Variant Name"
-                                required>
-                            @error('variant_name')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" data-bs-backdrop="static" id="variantEdit" tabindex="-1" aria-labelledby="variantEditLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                {{-- <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button> --}}
-
-                <form id="editForm" action="" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <h5 class="modal-title" id="variantEditLabel">Variant Edit</h5>
-                        <div class="form-group">
-                            <label for="name" class=" form-label required">{{ __('Variant Name') }}</label>
-
-                            <input type="text" name="variant_name" id="variant_edit" value=""
-                                class="form-control @error('variant_name') border-danger @enderror"
-                                placeholder="Variant Name" required>
-                            @error('variant_name')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Update</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
     <div class="modal modal-blur fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -238,7 +177,7 @@
         @enderror
 
         <script>
-            function deletevariant(event) {
+            function deleteOption(event) {
                 console.log(event);
                 const {
                     url
@@ -247,31 +186,11 @@
                 $('#variant_id').prop('href', url)
             }
 
-            function editvariant(event) {
-                console.log(event);
-                const {
-                    value,
-                    url
-                } = event.dataset;
 
-                $('#variant_edit').val(value);
-                $('#editForm').prop('action', url)
-                $('#variantEdit').modal('show');
-            }
-
-            var myModalEl = document.getElementById('variantEdit')
-            myModalEl.addEventListener('hidden.bs.modal', function(event) {
-                $('#editForm').prop('action', '');
-                $('#variant_edit').val('');
-
-
-            })
             var myModalEl = document.getElementById('deleteModal')
             myModalEl.addEventListener('hidden.bs.modal', function(event) {
                 $('#variant_id').prop('href', '')
-
-
-            })
+            });
         </script>
     @endpush
 @endsection

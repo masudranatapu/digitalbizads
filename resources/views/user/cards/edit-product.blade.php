@@ -115,6 +115,23 @@
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
                                                         <label class='form-label required'
+                                                            for='product_status'>{{ __('Product Type') }}</label>
+                                                        <select name='product_type' id='product_type' class='form-control'
+                                                            required>
+                                                            <option value="" class="d-none">
+                                                                {{ __('Select Product Type') }}</option>
+                                                            <option @if ($products->is_variant) selected @endif
+                                                                value='1'>
+                                                                {{ __('Variant') }}</option>
+                                                            <option @if (!$products->is_variant) selected @endif
+                                                                value='0'>
+                                                                {{ __('Non Variant') }}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class='col-md-6 col-xl-6'>
+                                                    <div class='mb-3'>
+                                                        <label class='form-label required'
                                                             for='product_status'>{{ __('Category') }}</label>
                                                         <select name='category' id='category' class='form-control'
                                                             required>

@@ -50,7 +50,7 @@
                                             <th>{{ __('SL.No') }}</th>
                                             <th>{{ __('Business ID') }}</th>
                                             <th>{{ __('Business Name') }}</th>
-                                            <th>{{ __('Type') }}</th>
+
                                             <th>{{ __('Validity Upto') }}</th>
                                             <th>{{ __('Status') }}</th>
                                             <th class="w-1">{{ __('Actions') }}</th>
@@ -63,7 +63,7 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $business_card->card_id }}</td>
                                                     <td>{{ $business_card->title }}</td>
-                                                    <td>{{ $business_card->card_type == 'vcard' ? 'vCard' : 'WhatsApp Store' }}
+
                                                     </td>
                                                     <td class="text-muted">
                                                         {{ date('d/M/Y', strtotime($business_card->plan_validity)) }}</td>

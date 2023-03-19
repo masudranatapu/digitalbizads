@@ -284,9 +284,20 @@ Route::group(['middleware' => 'Installer'], function () {
                 Route::get('/delete/{id}', [ProductCategoryController::class, 'destroy'])->name('destroy');
             });
 
+
+
+
+
+
+
+
+
+
             // Edit Store
             Route::get('edit-store/{id}', [StoreController::class, 'editStore'])->name('edit.store');
             Route::post('update-store/{id}', [StoreController::class, 'updateStore'])->name('update.store');
+
+            // Product
             Route::get('products-list/{id}', [StoreController::class, 'storeProductsList'])->name('products.list');
             Route::get('add-products/{id}', [StoreController::class, 'addProducts'])->name('products.add');
             Route::post('store-products/{id}', [StoreController::class, 'storeProducts'])->name('products.store');
@@ -304,7 +315,9 @@ Route::group(['middleware' => 'Installer'], function () {
             // Product variant Options
 
             Route::get('product/{product_id}/variants/{variant}', [VariantController::class, 'optionIndex'])->name('product.variants.option');
+            Route::get('product/{product_id}/variants/create/{variant}', [VariantController::class, 'optioncreate'])->name('product.variants.option.create');
             Route::post('product/{product_id}/variants/store/{variant}', [VariantController::class, 'optionStore'])->name('product.variants.option.store');
+            Route::get('variants/{option}/edit', [VariantController::class, 'optionedit'])->name('variants.option.edit');
             Route::post('variants/{option}/update', [VariantController::class, 'optionUpdate'])->name('variants.option.update');
             Route::get('variants/{option}/delete', [VariantController::class, 'optionDelete'])->name('variants.option.delete');
 
@@ -389,7 +402,20 @@ Route::group(['middleware' => 'Installer'], function () {
     Route::get('/download/{id}', [ProfileController::class, 'downloadVcard'])->name('download.vCard');
 });
 
+ // product details
+ Route::get('/details/{id}', [HomeController::class, 'productDetails'])->name('product.details');
+// cart
+ Route::get('/cart', [HomeController::class, 'cartPage'])->name('cart');
+
+// checkout
+ Route::get('/checkout', [HomeController::class, 'checkout'])->name('checkout');
+ Route::get('/checkout/billing-address', [HomeController::class, 'checkoutBilling'])->name('checkout.billing');
+ Route::get('/checkout/payment', [HomeController::class, 'checkoutPayment'])->name('checkout.payment');
+
 
 Route::get('{cardurl}', [HomeController::class, 'getPreview'])->name('card.preview');
 Route::post('/place-email-order', [HomeController::class, 'placeEmailOrder'])->name('place.email.order');
 Route::get('download/{id}', [HomeController::class, 'downloadVcard'])->name('download.vCard');
+
+
+

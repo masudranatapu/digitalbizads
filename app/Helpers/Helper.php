@@ -1,6 +1,7 @@
 <?php
 
 use App\BusinessCard;
+use App\Currency;
 use App\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -325,4 +326,26 @@ if (!function_exists('getUserStore')) {
 
         return $store;
     }
+}
+
+if (!function_exists('getPrice')) {
+    function getPrice($price = null)
+    {
+        $config = DB::table('config')->get();
+        $currency = Currency::where('iso_code', $config['1']->config_value)->first();
+
+        if (isset($price)) {
+
+            $formateCurrency = CurrencyFormat($price);
+            if ($currency->symbol_first) {
+                return   $currency->symbol  . $formateCurrency;
+            } else {
+                return  $formateCurrency . " " . $currency->symbol;
+            }
+        } else {
+
+            return 0;
+        }
+    }
+    # code...
 }

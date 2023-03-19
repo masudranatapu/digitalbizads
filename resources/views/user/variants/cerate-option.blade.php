@@ -16,9 +16,22 @@
                             {{ __('Overview') }}
                         </div>
                         <h2 class="page-title">
-                            {{ __('Add Products') }}
+                            {{ __('Add Variant Option') }}
                         </h2>
                     </div>
+                    <!-- Page title actions -->
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="dropdown">
+                            <a type="button" class="btn btn-primary"
+                                href="{{ route('user.product.variants.option', ['product_id' => $product_id, 'variant' => $variant]) }}">
+
+                                <i class="fas fa-arrow-left"></i>&nbsp;
+                                {{ __('Back') }}
+
+                            </a>
+                        </div>
+                    </div>
+
 
                 </div>
             </div>
@@ -27,8 +40,9 @@
             <div class="container-xl">
                 <div class="row row-deck row-cards">
                     <div class="col-sm-12 col-lg-12">
-                        <form action="{{ route('user.products.store', ['id' => $id]) }}" method="post"
-                            enctype="multipart/form-data" class="card">
+                        <form
+                            action="{{ route('user.product.variants.option.store', ['product_id' => $product_id, 'variant' => $variant]) }}"
+                            method="post" enctype="multipart/form-data" class="card">
                             @csrf
                             <div class="card-body">
                                 <div class="row">
@@ -37,25 +51,30 @@
                                         <div class="row">
 
                                             <h2 class="page-title my-3">
-                                                {{ __('Products') }}
+                                                {{ __('Add Variant Option') }}
                                             </h2>
 
 
                                             <div class='row' id="">
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
-                                                        <label class='form-label required'>{{ __('Product Badge') }}</label>
-                                                        <input type='text' class='form-control' name='badge'
-                                                            placeholder='{{ __('Product Badge') }}...' value=""
+                                                        <label for="name"
+                                                            class="form-label required">{{ __('Option Name') }}</label>
+                                                        <input type="text" name="option_name"
+                                                            class="form-control @error('option_name') border-danger @enderror"
+                                                            placeholder="Option Name" value="{{ old('option_name') }}"
                                                             required>
+                                                        @error('option_name')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
-                                                        <label class='form-label required'>{{ __('Product Image') }}</label>
+                                                        <label class='form-label required'>{{ __('Option Image') }}</label>
                                                         <div class='input-group mb-2'>
                                                             <input type='text' class='image media-model form-control'
-                                                                name='product_image' placeholder='{{ __('Product Image') }}'
+                                                                name='option_image' placeholder='{{ __('Option Image') }}'
                                                                 value="" required>
                                                             <button class='btn btn-primary btn-md' type='button'
                                                                 onclick="openMedia()">{{ __('Choose image') }}</button>
@@ -64,78 +83,35 @@
                                                 </div>
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
-                                                        <label class='form-label required'>{{ __('Product Name') }}</label>
-                                                        <input type='text' class='form-control' name='product_name'
-                                                            placeholder='{{ __('Product Name') }}' value="" required>
-                                                    </div>
-                                                </div>
-                                                <div class='col-md-6 col-xl-6'>
-                                                    <div class='mb-3'>
-                                                        <label
-                                                            class='form-label required'>{{ __('Product Sub Title') }}</label>
-                                                        <textarea class='form-control' name='product_subtitle' data-bs-toggle='autosize'
-                                                            placeholder='{{ __('Product Sub Title') }}...' required></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class='col-md-6 col-xl-6'>
-                                                    <div class='mb-3'><label
-                                                            class='form-label required'>{{ __('Regular Price') }}</label>
-                                                        <input type='number' class='form-control' name='regular_price'
-                                                            min='1' placeholder='{{ __('Regular Price') }}...'
-                                                            value="" min='1' step='.001' required>
-                                                    </div>
-                                                </div>
-                                                <div class='col-md-6 col-xl-6'>
-                                                    <div class='mb-3'>
-                                                        <label class='form-label required'>{{ __('Sales Price') }}</label>
-                                                        <input type='number' class='form-control' name='sales_price'
-                                                            min='1' step='.001' value=""
-                                                            placeholder='{{ __('Sales Price') }}...' required>
-                                                    </div>
-                                                </div>
-                                                <div class='col-md-6 col-xl-6'>
-                                                    <div class='mb-3'>
-                                                        <label class='form-label required'
-                                                            for='product_status'>{{ __('Status') }}</label>
-                                                        <select name='product_status' id='product_status'
-                                                            class='form-control' required>
-                                                            <option value='instock'>
-                                                                {{ __('In Stock') }}</option>
-                                                            <option value='outstock'>
-                                                                {{ __('Out of Stock') }}</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class='col-md-6 col-xl-6'>
-                                                    <div class='mb-3'>
-                                                        <label class='form-label required'
-                                                            for='product_status'>{{ __('Product Type') }}</label>
-                                                        <select name='product_type' id='product_type' class='form-control'
+                                                        <label for="stock"
+                                                            class="form-label required">{{ __('Option Stock') }}</label>
+                                                        <input type="number"
+                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                                            name="option_stock"
+                                                            class="form-control @error('option_stock') border-danger @enderror"
+                                                            placeholder="Option Stock" value="{{ old('option_stock') }}"
                                                             required>
-                                                            <option value="" selected class="d-none">
-                                                                {{ __('Select Product Type') }}</option>
-                                                            <option value='1'>
-                                                                {{ __('Variant') }}</option>
-                                                            <option value='0'>
-                                                                {{ __('Non Variant') }}</option>
-                                                        </select>
+                                                        @error('option_stock')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
-                                                        <label class='form-label required'
-                                                            for='product_status'>{{ __('Category') }}</label>
-                                                        <select name='category' id='category' class='form-control'
+                                                        <label for="price"
+                                                            class="form-label required">{{ __('Option Price') }}</label>
+                                                        <input type="number"
+                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                                            name="option_price"
+                                                            class="form-control @error('price') border-danger @enderror"
+                                                            placeholder="Option Price" value="{{ old('option_price') }}"
                                                             required>
-                                                            @foreach ($productCategories as $productCategorie)
-                                                                <option value='{{ $productCategorie->id }}'>
-                                                                    {{ $productCategorie->category_name }}</option>
-                                                            @endforeach
-                                                        </select>
+                                                        @error('option_price')
+                                                            <span class="text-danger">{{ $message }}</span>
+                                                        @enderror
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>

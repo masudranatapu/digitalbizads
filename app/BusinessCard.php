@@ -14,6 +14,6 @@ class BusinessCard extends Model
 
     public function hasProduct(): HasMany
     {
-        return $this->hasMany(StoreProduct::class, 'card_id', 'card_id')->with('hasCategory');
+        return $this->hasMany(StoreProduct::class, 'card_id', 'card_id')->with(['hasCategory', 'hasVariant']);
     }
 }
