@@ -50,6 +50,7 @@
                                             <th>{{ __('Sales Price') }}</th>
                                             <th>{{ __('Regular Price') }}</th>
                                             <th>{{ __('Category') }}</th>
+                                            <th>{{ __('Stock') }}</th>
                                             <th>{{ __('Status') }}</th>
                                             <th class="w-1">{{ __('Actions') }}</th>
                                         </tr>
@@ -67,10 +68,18 @@
                                                     <td class="text-muted">
                                                         {{ $product->hasCategory->category_name ?? '' }}</td>
                                                     <td class="text-muted">
-                                                        @if ($product->product_status != 'instock')
+
+                                                        @if ($product->product_stock <= 0)
                                                             <span class="badge bg-red">{{ __('Out of stock') }}</span>
                                                         @else
                                                             <span class="badge bg-green">{{ __('In-stock') }}</span>
+                                                        @endif
+                                                    </td>
+                                                    <td class="text-muted">
+                                                        @if ($product->status)
+                                                            <span class="badge bg-green">{{ __('Active') }}</span>
+                                                        @else
+                                                            <span class="badge bg-red">{{ __('In-Active') }}</span>
                                                         @endif
                                                     </td>
                                                     <td>
@@ -86,7 +95,7 @@
                                                                 {{ __('Delete') }}</button>
                                                             @if ($product->is_variant)
                                                                 <a class="btn btn-primary btn-sm"
-                                                                    href="{{ route('user.product.variants', ['product_id' => $product->product_id]) }}">{{ __('Variants') }}</a>
+                                                                    href="{{ route('user.product.variants', ['card_id' => $product->card_id, 'product_id' => $product->product_id]) }}">{{ __('Variants') }}</a>
                                                             @endif
 
                                                         </div>
@@ -139,7 +148,7 @@
 
                                                                 @if ($product->is_variant)
                                                                     <a class="dropdown-item"
-                                                                        href="{{ route('user.product.variants', ['product_id' => $product->product_id]) }}">{{ __('Variants') }}</a>
+                                                                        href="{{ route('user.product.variants', ['card_id' => $product->card_id, 'product_id' => $product->product_id]) }}">{{ __('Variants') }}</a>
                                                                 @endif
 
 

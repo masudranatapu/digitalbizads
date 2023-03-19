@@ -19,6 +19,8 @@
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none">
                         <div class="dropdown">
+                            <a class="btn btn btn-primary" href="{{ route('user.products.list', ['id' => $card_id]) }}">
+                                <i class="fas fa-arrow-left"></i> &nbsp; Back to product</a>
                             <a type="button" href="javasctipt:void(0)">
                                 <button type="button" class="btn btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#variantCreate">
@@ -32,6 +34,7 @@
                                     {{ __('Create') }}
                                 </button>
                             </a>
+
                         </div>
                     </div>
                 </div>

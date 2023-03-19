@@ -328,9 +328,10 @@ class StoreController extends Controller
             'product_subtitle' => 'required',
             'regular_price' => 'required',
             'sales_price' => 'required|lte:regular_price',
-            'product_status' => 'required',
+            'stock' => 'required',
             'product_type' => 'required',
             'category' => 'required',
+            'status' => 'required',
         ]);
 
         $business_card = BusinessCard::with('hasProduct')->where('card_id', $id)->first();
@@ -341,7 +342,7 @@ class StoreController extends Controller
             $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
             $plan_details = json_decode($plan->plan_details);
 
-            if (isset($request->badge) && isset($request->product_image) && isset($request->product_name) && isset($request->product_subtitle) && isset($request->regular_price) && isset($request->sales_price) && isset($request->product_status)) {
+            if (isset($request->badge) && isset($request->product_image) && isset($request->product_name) && isset($request->product_subtitle) && isset($request->regular_price) && isset($request->sales_price) && isset($request->stock)) {
                 if (count($business_card->hasProduct) <= $plan_details->no_of_services) {
 
 
@@ -354,9 +355,15 @@ class StoreController extends Controller
                     $product->product_subtitle = $request->product_subtitle;
                     $product->regular_price = $request->regular_price;
                     $product->sales_price = $request->sales_price;
-                    $product->product_status = $request->product_status;
+                    if (!$request->product_type) {
+
+                        $product->product_stock = $request->stock;
+                    } else {
+                        $product->product_stock = 0;
+                    }
                     $product->category_id = $request->category;
                     $product->is_variant = $request->product_type;
+                    $product->status = $request->status;
                     $product->save();
 
 
@@ -503,9 +510,10 @@ class StoreController extends Controller
             'product_subtitle' => 'required',
             'regular_price' => 'required',
             'sales_price' => 'required|lte:regular_price',
-            'product_status' => 'required',
+            'stock' => 'required',
             'product_type' => 'required',
             'category' => 'required',
+            'status' => 'required',
         ]);
 
         $product = StoreProduct::where('product_id', $id)->first();
@@ -523,9 +531,15 @@ class StoreController extends Controller
         $product->product_subtitle = $request->product_subtitle;
         $product->regular_price = $request->regular_price;
         $product->sales_price = $request->sales_price;
-        $product->product_status = $request->product_status;
+        if (!$request->product_type) {
+
+            $product->product_stock = $request->stock;
+        } else {
+            $product->product_stock = 0;
+        }
         $product->category_id = $request->category;
         $product->is_variant = $request->product_type;
+        $product->status = $request->status;
 
         $product->save();
 

@@ -12,12 +12,12 @@ use Illuminate\Support\Facades\Auth;
 
 class VariantController extends Controller
 {
-    public function index($product_id)
+    public function index($card_id, $product_id)
     {
         $settings = Setting::first();
         $productVariants = Variants::where('product_id', $product_id)->get();
 
-        return view('user.variants.index', compact('settings', 'product_id', 'productVariants'));
+        return view('user.variants.index', compact('settings', 'product_id', 'productVariants', 'card_id'));
     }
 
     public function store(Request $request, $product_id)
@@ -73,6 +73,7 @@ class VariantController extends Controller
             "option_stock" => 'required|integer',
             "option_price" => 'required|integer',
             "option_image" => 'required',
+
         ]);
 
         $variantOption = new VariantOption();
@@ -104,6 +105,8 @@ class VariantController extends Controller
             "option_stock" => 'required|integer',
             "option_price" => 'required|integer',
             "option_image" => 'required',
+
+
         ]);
         $option->name = $request->option_name;
         $option->stock = $request->option_stock;

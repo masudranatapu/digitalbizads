@@ -307,7 +307,7 @@ Route::group(['middleware' => 'Installer'], function () {
 
 
             // Product variant
-            Route::get('product/{product_id}/variants', [VariantController::class, 'index'])->name('product.variants');
+            Route::get('{card_id}/product/{product_id}/variants', [VariantController::class, 'index'])->name('product.variants');
             Route::post('product/{product_id}/variants/store', [VariantController::class, 'store'])->name('product.variants.store');
             Route::post('product/{variant}/variants/update', [VariantController::class, 'update'])->name('product.variants.update');
             Route::get('product/{variant}/variants/delete', [VariantController::class, 'delete'])->name('product.variants.delete');
@@ -406,6 +406,8 @@ Route::group(['middleware' => 'Installer'], function () {
 Route::get('/details/{id}', [HomeController::class, 'productDetails'])->name('product.details');
 // cart
 Route::get('/cart', [HomeController::class, 'cartPage'])->name('cart');
+Route::patch('/update-cart', [HomeController::class, 'update'])->name('update.cart');
+Route::delete('/remove-from-cart', [HomeController::class, 'remove'])->name('remove.from.cart');
 Route::post('/add-to-cart', [HomeController::class, 'addToCart'])->name('add.to.cart');
 
 // checkout
