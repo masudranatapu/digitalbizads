@@ -464,7 +464,7 @@ class HomeController extends Controller
         // Session::forget('cart');
 
         $cart = session()->get('cart');
-        dd($cart);
+
 
 
         return view('pages.cart', compact('cart'));
