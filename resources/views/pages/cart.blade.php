@@ -53,68 +53,42 @@
                                     </tr>
                                 </thead>
                                 <tbody id="cart_view_load">
-                                    <tr>
-                                        <td>
-                                            <a href="#" target="_blank">
-                                                <img src="{{ asset('images/63db60a48038d-63f616f479a1c.jpg') }}"
-                                                    width="80" alt="">
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <h6>
+                                    @foreach ($cart as $cartItem)
+                                        <tr>
+                                            <td>
                                                 <a href="#" target="_blank">
-                                                    Tommy Hilfiger Men's Stainless Steel Bracelet...</a>
-                                            </h6>
-                                        </td>
-                                        <td>
-                                            $455.55
-                                        </td>
-                                        <td class="quantify_btn">
-                                            <div class="input-group">
-                                                <span class="input-type-text"><i class="fa fa-minus"></i></span>
-                                                <input type="number" class="form-control" name="qty" id="qty" value="1"
-                                                    min="1" max="100" readonly>
-                                                <span class="input-type-text"><i class="fa fa-plus"></i></span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            $100.00
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <a href="#" target="_blank">
-                                                <img src="{{ asset('images/63db60a48038d-63f616f479a1c.jpg') }}"
-                                                    width="80" alt="">
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <h6>
-                                                <a href="#" target="_blank">
-                                                    Tommy Hilfiger Men's Stainless Steel Bracelet...</a>
-                                            </h6>
-                                        </td>
-                                        <td>
-                                            $455.55
-                                        </td>
-                                        <td class="quantify_btn">
-                                            <div class="input-group">
-                                                <span class="input-type-text"><i class="fa fa-minus"></i></span>
-                                                <input type="number" class="form-control" name="qty" id="qty" value="1"
-                                                    min="1" max="100" readonly>
-                                                <span class="input-type-text"><i class="fa fa-plus"></i></span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            $100.00
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-danger"><i class="fa fa-times"></i></a>
-                                        </td>
-                                    </tr>
+                                                    <img src="{{ getPhoto($cartItem['image']) }}" width="80"
+                                                        alt="">
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <h6>
+                                                    <a href="#" target="_blank">
+                                                        {{ $cartItem['name'] }}</a>
+                                                </h6>
+                                            </td>
+                                            <td>
+                                                {{ $cartItem['price'] }}
+                                            </td>
+                                            <td class="quantify_btn">
+                                                <div class="input-group">
+                                                    <span class="input-type-text"><i class="fa fa-minus"></i></span>
+                                                    <input type="number" class="form-control" name="qty"
+                                                        id="qty" value="1" min="1" max="100"
+                                                        readonly>
+                                                    <span class="input-type-text"><i class="fa fa-plus"></i></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                $100.00
+                                            </td>
+                                            <td>
+                                                <a href="#" class="btn btn-sm btn-danger"><i
+                                                        class="fa fa-times"></i></a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
                                 </tbody>
                             </table>
                         </div>

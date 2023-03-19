@@ -144,79 +144,91 @@
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <div class="product_info">
-                        <span class="badge badge-success mb-3">{{ $product->badge }}</span>
-                        <h3>
-                            @if ($product->sales_price != $product->regular_price)
-                                <del class="text-dark fw-lighter">
-                                    <span>{{ getPrice($product->regular_price) }}</span>
-                                </del>
+
+                    <form action="{{ route('add.to.cart') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="productId" value="{{ $product->id }}" id="">
+                        <div class="product_info">
+                            <span class="badge badge-success mb-3">{{ $product->badge }}</span>
+                            <h3>
+                                @if ($product->sales_price != $product->regular_price)
+                                    <del class="text-dark fw-lighter">
+                                        <span>{{ getPrice($product->regular_price) }}</span>
+                                    </del>
+                                @endif
+
+                                <span>{{ $currency->symbol }}</span><span
+                                    id="totalPrice">{{ $product->sales_price != $product->regular_price ? CurrencyFormat($product->sales_price) : CurrencyFormat($product->regular_price) }}</span>
+                                <input id="mainPrice" type="hidden"
+                                    value="{{ $product->sales_price != $product->regular_price ? CurrencyFormat($product->sales_price) : CurrencyFormat($product->regular_price) }}">
+                            </h3>
+                            <h2>{{ $product->product_name }}</h2>
+                            <p>
+                                {{ $product->product_subtitle }}
+                            </p>
+                            @if ($product->is_variant)
+
+                                @if (isset($product->hasVariant) && $product->hasVariant->count() > 0)
+                                    <div class="product_variant mb-4">
+                                        <div class="row">
+                                            @foreach ($product->hasVariant as $variant)
+                                                @if (count($variant->hasOption) > 0)
+                                                    <div class="col-6">
+                                                        <div class="size">
+                                                            <label for="size"
+                                                                class="form-label">{{ $variant->name }}</label>
+                                                            <select name="option[]" required
+                                                                id="{{ str_replace(' ', '_', strtolower(trim($variant->name))) }}"
+                                                                class="form-control">
+                                                                <option value="">Select
+                                                                    <span
+                                                                        class="text-lowercase">{{ $variant->name }}</span>
+                                                                </option>
+                                                                @foreach ($variant->hasOption as $option)
+                                                                    @if ($option->stock > 0)
+                                                                        <option value="{{ $option->id }}"
+                                                                            data-price="{{ $option->price }}">
+                                                                            {{ $option->name }}
+                                                                            ({{ getPrice($option->price) }})
+                                                                        </option>
+                                                                    @endif
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endif
+
                             @endif
 
-                            <span>{{ $currency->symbol }}</span><span
-                                id="totalPrice">{{ $product->sales_price != $product->regular_price ? $product->sales_price : $product->regular_price }}</span>
-                            <input id="mainPrice" type="hidden"
-                                value="{{ $product->sales_price != $product->regular_price ? $product->sales_price : $product->regular_price }}">
-                        </h3>
-                        <h2>{{ $product->product_name }}</h2>
-                        <p>
-                            {{ $product->product_subtitle }}
-                        </p>
+                            <ul class="mb-4">
 
-                        @if (isset($product->hasVariant) && $product->hasVariant->count() > 0)
-                            <div class="product_variant mb-4">
-                                <div class="row">
-                                    @foreach ($product->hasVariant as $variant)
-                                        @if (count($variant->hasOption) > 0)
-                                            <div class="col-6">
-                                                <div class="size">
-                                                    <label for="size"
-                                                        class="form-label">{{ $variant->name }}</label>
-                                                    <select name="option[]"
-                                                        id="{{ str_replace(' ', '_', strtolower(trim($variant->name))) }}"
-                                                        class="form-control">
-                                                        <option value="" class="d-none">Select
-                                                            <span class="text-lowercase">{{ $variant->name }}</span>
-                                                        </option>
-                                                        @foreach ($variant->hasOption as $option)
-                                                            <option value="{{ $option->id }}"
-                                                                data-price="{{ $option->price }}">
-                                                                {{ $option->name }} ({{ getPrice($option->price) }})
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        @endif
-                                    @endforeach
+                                <li class=" text-capitalize"><strong>Category:</strong>
+                                    {{ $product->hasCategory->category_name ?? '' }}</li>
+
+                            </ul>
+                        </div>
+
+                        <div class="product_button">
+                            <div class="d-flex">
+                                <div class="qty me-4">
+                                    <div class="input-group">
+                                        <span id="qtySub" class="input-type-text"><i class="fa fa-minus"></i></span>
+                                        <input type="number" class="form-control" name="qty" id="qty"
+                                            value="1" min="1" max="100" readonly>
+                                        <span id="qtyAdd" class="input-type-text"><i class="fa fa-plus"></i></span>
+                                    </div>
+                                    <span class="qtyAlert text-danger"></span>
                                 </div>
-                            </div>
-                        @endif
-
-
-                        <ul class="mb-4">
-
-                            <li class=" text-capitalize"><strong>Category:</strong>
-                                {{ $product->hasCategory->category_name ?? '' }}</li>
-
-                        </ul>
-                    </div>
-
-                    <div class="product_button">
-                        <div class="d-flex">
-                            <div class="qty me-4">
-                                <div class="input-group">
-                                    <span class="input-type-text"><i class="fa fa-minus"></i></span>
-                                    <input type="number" class="form-control" name="qty" id="qty"
-                                        value="1" min="1" max="100" readonly>
-                                    <span class="input-type-text"><i class="fa fa-plus"></i></span>
+                                <div class="add_to_cart">
+                                    <button type="submit" class="btn btn-primary">Add to Cart</button>
                                 </div>
-                            </div>
-                            <div class="add_to_cart">
-                                <a href="#" class="btn btn-primary">Add to Cart</a>
                             </div>
                         </div>
-                    </div>
+                    </form>
 
                 </div>
             </div>
@@ -261,6 +273,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('assets/js/lightgallery.min.js') }}"></script>
     <script src="{{ asset('assets/js/swiper-bundle.min.js') }}"></script>
+    <script src="{{ asset('frontend/whatsapp-store/js/script.js') }}"></script>
+
     <!-- lightgallery  -->
     <script type="text/javascript">
         $(document).ready(function() {
@@ -311,8 +325,34 @@
             let total = price.reduce((partialSum, a) => partialSum + a, 0)
             let mainPrice = $('#mainPrice').val();
             let newPrice = parseInt(total) + parseInt(mainPrice);
-            $('#totalPrice').text(newPrice);
+            $('#totalPrice').text(newPrice.toFixed(2));
         })
+
+        $('#qtyAdd').click(function() {
+            let qty = $('#qty').val();
+            $('#qty').val(parseInt(qty) + 1);
+            $('.qtyAlert').html('');
+
+        })
+        $('#qtySub').click(function() {
+            let qty = parseInt($('#qty').val());
+            if (qty <= 0) {
+                $('.qtyAlert').html('Quantity can not be less then 0');
+                console.log(qty);
+            } else {
+                $('#qty').val(qty - 1);
+                $('.qtyAlert').html('');
+
+            }
+
+        })
+
+        @if (session()->has('success'))
+            successAlert("{{ session()->get('success') }}");
+        @endif
+        @if (session()->has('alert'))
+            successAlert("{{ session()->geT('alert') }}");
+        @endif
     </script>
 </body>
 

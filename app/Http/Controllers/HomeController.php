@@ -13,6 +13,7 @@ use App\BusinessCard;
 use App\BusinessField;
 use App\Mail\OrderEmail;
 use App\ProductCategory;
+use App\VariantOption;
 use App\StoreProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -171,7 +172,7 @@ class HomeController extends Controller
 
                 if ($business_card_details) {
 
-                    $query = StoreProduct::with('hasCategory')->where('card_id', $card_details->card_id)->where('product_status', 'instock');
+                    $query = StoreProduct::with('hasCategory')->where('card_id', $card_details->card_id);
 
 
                     if (isset($request->category)) {
@@ -460,7 +461,13 @@ class HomeController extends Controller
 
     public function cartPage()
     {
-        return view('pages.cart');
+        // Session::forget('cart');
+
+        $cart = session()->get('cart');
+        dd($cart);
+
+
+        return view('pages.cart', compact('cart'));
     }
 
     public function checkout()
@@ -476,5 +483,53 @@ class HomeController extends Controller
     public function checkoutPayment()
     {
         return view('pages.checkout_payment');
+    }
+
+    public function addToCart(Request $request)
+    {
+
+        $id = $request->productId;
+        $product = StoreProduct::findOrFail($id);
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$id])) {
+            if (isset($request->qty)) {
+                $cart[$id]['quantity'] = $request->qty;
+            } else {
+
+                $cart[$id]['quantity']++;
+            }
+        } else {
+
+            $option = [];
+            if (isset($request->option)) {
+
+                $incomingVariant = $request->option;
+
+                for ($i = 0; $i < count($incomingVariant); $i++) {
+                    $productVariant = VariantOption::find($incomingVariant[$i]);
+                    $option[] = [
+                        "id" => $productVariant->id,
+                        "name" => $productVariant->name,
+                        "price" => $productVariant->price,
+
+                    ];
+                }
+            }
+
+            $cart[$id] = [
+                "name" => $product->product_name,
+                "product_id" => $product->product_id,
+                "quantity" => $request->qty,
+                "price" => $product->sales_price ? $product->sales_price : $product->regular_price,
+                "image" => $product->product_image,
+                "option" => $option,
+
+            ];
+        }
+
+        session()->put('cart', $cart);
+        Session::flash('success', 'Add to cart successfully');
+        return redirect()->back();
     }
 }
