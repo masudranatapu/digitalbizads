@@ -67,11 +67,14 @@
                         <div class="checkout_form">
                             <div class="checkout_step mb-4">
                                 <ul>
-                                    <li><a href="{{ route('checkout') }}" class="active">Shipping Address <i
-                                                class="fa fa-angle-right"></i></a></li>
-                                    <li><a href="{{ route('checkout.billing') }}">Billing Address <i
-                                                class="fa fa-angle-right"></i></a></li>
-                                    <li><a href="{{ route('checkout.payment') }}">Payment</a></li>
+                                    <li><a href="{{ route('checkout', ['card_id' => $business_card_details->card_id]) }}"
+                                            class="active">Shipping Address <i class="fa fa-angle-right"></i></a></li>
+                                    <li><a
+                                            href="{{ route('checkout.billing', ['card_id' => $business_card_details->card_id]) }}">Billing
+                                            Address <i class="fa fa-angle-right"></i></a></li>
+                                    <li><a
+                                            href="{{ route('checkout.payment', ['card_id' => $business_card_details->card_id]) }}">Payment</a>
+                                    </li>
                                 </ul>
                             </div>
                             <form action="#" method="post">
@@ -80,16 +83,18 @@
                                         <div class="form-group">
                                             <label for="ship_first_name" class="form-label">First Name <span
                                                     class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" name="ship_first_name" required=""
-                                                id="ship_first_name" value="" placeholder="First Name">
+                                            <input type="text" class="form-control" name="ship_first_name"
+                                                required="" id="ship_first_name" value=""
+                                                placeholder="First Name">
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <div class="form-group">
                                             <label for="ship_last_name" class="form-label">Last Name <span
                                                     class="text-danger">*</span></label>
-                                            <input class="form-control" name="ship_last_name" required="" type="text"
-                                                id="ship_last_name" value="" placeholder="Last Name">
+                                            <input class="form-control" name="ship_last_name" required=""
+                                                type="text" id="ship_last_name" value=""
+                                                placeholder="Last Name">
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-4">
@@ -112,40 +117,42 @@
                                         <div class="form-group">
                                             <label for="ship_address1" class="form-label">Address <span
                                                     class="text-danger">*</span></label>
-                                            <input class="form-control" name="ship_address1" required="" type="text"
-                                                id="ship_address1" value="" placeholder="Address">
+                                            <input class="form-control" name="ship_address1" required=""
+                                                type="text" id="ship_address1" value=""
+                                                placeholder="Address">
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <div class="form-group">
                                             <label for="ship_city" class="form-label">City <span
                                                     class="text-danger">*</span></label>
-                                            <input class="form-control" name="ship_city" required="" type="text"
-                                                id="ship_city" value="" placeholder="City">
+                                            <input class="form-control" name="ship_city" required=""
+                                                type="text" id="ship_city" value="" placeholder="City">
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <div class="form-group">
                                             <label for="ship_state" class="form-label">State <span
                                                     class="text-danger">*</span></label>
-                                            <input class="form-control" name="ship_state" required="" type="text"
-                                                id="ship_state" value="" placeholder="State">
+                                            <input class="form-control" name="ship_state" required=""
+                                                type="text" id="ship_state" value="" placeholder="State">
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <div class="form-group">
                                             <label for="ship_zip" class="form-label">Zip Code <span
                                                     class="text-danger">*</span></label>
-                                            <input class="form-control" name="ship_zip" type="text" required=""
-                                                id="ship_zip" value="" placeholder="Zip Code">
+                                            <input class="form-control" name="ship_zip" type="text"
+                                                required="" id="ship_zip" value="" placeholder="Zip Code">
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <div class="form-group">
                                             <label for="ship_country" class="form-label">Country <span
                                                     class="text-danger">*</span></label>
-                                            <input class="form-control" name="ship_country" type="text" required=""
-                                                id="ship_country" value="" placeholder="Country">
+                                            <input class="form-control" name="ship_country" type="text"
+                                                required="" id="ship_country" value=""
+                                                placeholder="Country">
                                         </div>
                                     </div>
 
@@ -153,20 +160,21 @@
                                         <div class="form-group">
                                             <label for="order_note" class="form-label">Order notes
                                                 (optional)</label>
-                                            <textarea class="form-control" name="order_note" id="order_note"
-                                                placeholder="Order Notes"></textarea>
+                                            <textarea class="form-control" name="order_note" id="order_note" placeholder="Order Notes"></textarea>
                                         </div>
                                     </div>
 
                                     <div class="d-flex justify-content-between paddin-top-1x">
-                                        <a class="btn btn-primary btn-sm" href="{{ route('cart') }}">
+                                        <a class="btn btn-primary btn-sm"
+                                            href="{{ route('cart', ['card_id' => $business_card_details->card_id]) }}">
                                             <span class="hidden-xs-down">
                                                 <i class="fa fa-angle-left"></i>
                                                 Back To Cart
                                             </span>
                                         </a>
 
-                                        <a class="btn btn-primary btn-sm" href="{{ route('checkout.billing') }}">
+                                        <a class="btn btn-primary btn-sm"
+                                            href="{{ route('checkout.billing', ['card_id' => $business_card_details->card_id]) }}">
                                             <span class="hidden-xs-down">
                                                 Continue
                                                 <i class="fa fa-angle-right"></i>

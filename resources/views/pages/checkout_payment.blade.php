@@ -67,11 +67,12 @@
                         <div class="checkout_form">
                             <div class="checkout_step mb-4">
                                 <ul>
-                                    <li><a href="{{ route('checkout') }}" class="active">Shipping Address <i
-                                                class="fa fa-angle-right"></i></a></li>
-                                    <li><a href="{{ route('checkout.billing') }}" class="active">Billing Address <i
-                                                class="fa fa-angle-right"></i></a></li>
-                                    <li><a href="{{ route('checkout.payment') }}" class="active">Payment</a></li>
+                                    <li><a href="{{ route('checkout', ['card_id' => $business_card_details->card_id]) }}"
+                                            class="active">Shipping Address <i class="fa fa-angle-right"></i></a></li>
+                                    <li><a href="{{ route('checkout.billing', ['card_id' => $business_card_details->card_id]) }}"
+                                            class="active">Billing Address <i class="fa fa-angle-right"></i></a></li>
+                                    <li><a href="{{ route('checkout.payment', ['card_id' => $business_card_details->card_id]) }}"
+                                            class="active">Payment</a></li>
                                 </ul>
                             </div>
                             <form action="#" method="post">

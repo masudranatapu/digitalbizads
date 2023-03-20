@@ -22,84 +22,44 @@
     <link rel="stylesheet" href="{{ asset('assets/css/swiper-bundle.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/lightgallery-bundle.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+    <style>
+        .cart {
+            display: block;
+            width: 1.5rem;
+        }
+    </style>
     <script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
 </head>
 
 <body class="antialiased bg-body text-body font-body"
     dir="{{ App::isLocale('ar') || App::isLocale('ur') || App::isLocale('he') ? 'rtl' : 'ltr' }}">
-    {{-- <section>
-        <nav dir="ltr" class="relative">
-            <div class="p-6 flex items-center bg-white shadow"
-                style="@if ($product->hasStore->header_backgroung) background-color: {{ $product->hasStore->header_backgroung }} @endif; @if ($product->hasStore->header_text_color) color: {{ $product->hasStore->header_text_color }} @endif">
-                <a class="flex-shrink-0 text-2xl font-semibold">
-                    @if ($product->hasStore->profile)
-                        <img class="h-10" src="{{ url('/') }}{{ $product->hasStore->profile }}"
-                            alt="{{ $product->hasStore->title }}" width="auto">
-                    @else
-                        {{ $product->hasStore->title }}
-                    @endif
-                </a>
-
-
-                <div class="ml-auto flex">
-
-                    @if ($store_card)
-                        <a href="{{ route('home-locale') }}/{{ $store_card->card_url }}"
-                            style="padding:3px;@if ($product->hasStore->header_text_color) border:1px solid {{ $product->hasStore->header_text_color }} @else #000000 @endif ;">Back
-                            to Bizad </a>&nbsp;&nbsp;
-                    @endif
-
-
-                    <button class="navbar-burger flex items-center">
-                        <span class="relative inline-block">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                stroke="@if ($product->hasStore->header_text_color) {{ $product->hasStore->header_text_color }} @else #000000 @endif ">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                            </svg>
-                            <span
-                                class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full"
-                                id="badge"></span>
-                        </span>
-                    </button>
-                </div>
-            </div>
-        </nav>
-
-        <div class="hidden navbar-menu relative z-50">
-            <div class="navbar-backdrop fixed inset-0 bg-gray-800 opacity-10"></div>
-            <nav
-                class="fixed top-0 left-0 bottom-0 flex flex-col w-3/4 lg:w-80 sm:max-w-xs pt-6 pb-8 bg-white border-r overflow-y-auto">
-                <div class="flex w-full items-center px-6 pb-6 mb-6 lg:border-b border-blue-50">
-                    <a class="text-xl text-dark font-semibold">
-                        <img class="h-8" src="{{ url('/') }}{{ $product->hasStore->profile }}"
-                            alt="{{ $product->hasStore->title }}" width="auto">
+    <section>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm bg-body-tertiary py-4 px-2"
+            style="@if ($business_card_details->header_backgroung) background-color: {{ $business_card_details->header_backgroung }} @endif; @if ($business_card_details->header_text_color) color: {{ $business_card_details->header_text_color }} @endif">
+            <div class="container-fluid d-flex justify-content-between">
+                <div @if ($business_card_details->header_text_color) color: {{ $business_card_details->header_text_color }} @endif>
+                    <a class="navbar-brand" href="{{ route('card.preview', $business_card_details->card_url) }}">
+                        @if ($business_card_details->profile)
+                            <img src="{{ url('/') }}{{ $business_card_details->profile }}"
+                                alt="{{ $business_card_details->title }}" width="40px">
+                        @else
+                            {{ $business_card_details->title }}
+                        @endif
                     </a>
                 </div>
+                <a href="{{ route('cart', ['card_id' => $business_card_details->card_id]) }}" class="nav-link">
+                    <span class="cart">
 
-                <div id="cart_items"></div>
-
-                <div class="pt-6 p-3">
-                    <a onclick="placeOrder()" id="place-order" style="cursor: pointer"
-                        class="block px-4 py-3 mb-3 rounded text-white text-md text-center font-semibold bg-{{ $product->hasStore->theme_color }}-500 hover:bg-{{ $product->hasStore->theme_color }}-600 ">{{ __('Place WhatsApp Order') }}</a>
-                </div>
-                <div class="pt-6 p-3">
-                    <a onclick="placeOrderEmail()" id="place-order-email" style="cursor: pointer"
-                        class="block px-4 py-3 mb-3 rounded text-white text-md text-center font-semibold bg-{{ $product->hasStore->theme_color }}-500 hover:bg-{{ $product->hasStore->theme_color }}-600 ">{{ __('Place Order To Email') }}</a>
-                </div>
-
-                <div id="empty-cart" class="pt-6 p-3">
-                    <p class="px-4 py-4 font-bold mb-4 text-center text-gray-600">{{ __('Your cart is empty.') }}
-                    </p>
-
-                    <a
-                        class="block navbar-backdrop px-4 py-3 mb-3 mt-4 rounded text-white text-md text-center font-semibold bg-{{ $product->hasStore->theme_color }}-500 hover:bg-{{ $product->hasStore->theme_color }}-600 ">{{ __('Start Shopping') }}</a>
-                </div>
-
-            </nav>
-
-        </div>
-    </section> --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="@if ($business_card_details->header_text_color) {{ $business_card_details->header_text_color }} @else #000000 @endif ">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                    </span>
+                </a>
+            </div>
+        </nav>
+    </section>
 
 
     <div class="product_details_section mt-5 mb-5">
@@ -219,7 +179,8 @@
                                         <span id="qtySub" class="input-type-text"><i class="fa fa-minus"></i></span>
                                         <input type="number" class="form-control" name="qty" id="qty"
                                             value="1" min="1" max="100" readonly>
-                                        <span id="qtyAdd" class="input-type-text"><i class="fa fa-plus"></i></span>
+                                        <span id="qtyAdd" class="input-type-text"><i
+                                                class="fa fa-plus"></i></span>
                                     </div>
                                     <span class="qtyAlert text-danger"></span>
                                 </div>

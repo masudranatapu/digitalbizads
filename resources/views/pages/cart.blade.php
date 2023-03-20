@@ -20,13 +20,45 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+    <style>
+        .cart {
+            display: block;
+            width: 1.5rem;
+        }
+    </style>
     <script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
 </head>
 
 <body class="antialiased bg-body text-body font-body"
     dir="{{ App::isLocale('ar') || App::isLocale('ur') || App::isLocale('he') ? 'rtl' : 'ltr' }}">
 
+    <section>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm bg-body-tertiary py-4 px-2"
+            style="@if ($business_card_details->header_backgroung) background-color: {{ $business_card_details->header_backgroung }} @endif; @if ($business_card_details->header_text_color) color: {{ $business_card_details->header_text_color }} @endif">
+            <div class="container-fluid d-flex justify-content-between">
+                <div @if ($business_card_details->header_text_color) color: {{ $business_card_details->header_text_color }} @endif>
+                    <a class="navbar-brand" href="{{ route('card.preview', $business_card_details->card_url) }}">
+                        @if ($business_card_details->profile)
+                            <img src="{{ url('/') }}{{ $business_card_details->profile }}"
+                                alt="{{ $business_card_details->title }}" width="40px">
+                        @else
+                            {{ $business_card_details->title }}
+                        @endif
+                    </a>
+                </div>
+                <a href="{{ route('cart', ['card_id' => $business_card_details->card_id]) }}" class="nav-link">
+                    <span class="cart">
 
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="@if ($business_card_details->header_text_color) {{ $business_card_details->header_text_color }} @else #000000 @endif ">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                    </span>
+                </a>
+            </div>
+        </nav>
+    </section>
 
     <div class="cart_page mt-5 mb-5">
         <div class="container">
@@ -119,11 +151,13 @@
 
                     <div class="d-flex justify-content-between">
                         <div class="button">
-                            <a href="#" class="btn btn-primary"><i class="fa fa-angle-left"></i> Back to
+                            <a href="{{ route('card.preview', $business_card_details->card_url) }}"
+                                class="btn btn-primary"><i class="fa fa-angle-left"></i> Back to
                                 Shopping</a>
                         </div>
                         <div class="button">
-                            <a href="{{ route('checkout') }}" class="btn btn-success">Checkout</a>
+                            <a href="{{ route('checkout', ['card_id' => $business_card_details->card_id]) }}"
+                                class="btn btn-success">Checkout</a>
                         </div>
                     </div>
                 </div>
