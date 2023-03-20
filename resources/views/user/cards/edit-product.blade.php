@@ -19,6 +19,14 @@
                             {{ __('Edit Products') }}
                         </h2>
                     </div>
+                    <!-- Page title actions -->
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="dropdown">
+                            <a class="btn btn btn-primary"
+                                href="{{ route('user.products.list', ['id' => $products->card_id]) }}">
+                                <i class="fas fa-arrow-left"></i> &nbsp; Back</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -51,7 +59,9 @@
                                                 </div>
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
-                                                        <label class='form-label required'>{{ __('Product Image') }}</label>
+                                                        <label class='form-label required'>{{ __('Product Image') }}&nbsp;
+                                                            <span class="text-danger">(Image preferd size: 350px *
+                                                                320px)</span></label>
                                                         <div class='input-group mb-2'>
                                                             <input type='text'
                                                                 class='image{{ $products->id }} media-model form-control'
@@ -81,7 +91,8 @@
                                                 </div>
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'><label
-                                                            class='form-label required'>{{ __('Regular Price') }}</label>
+                                                            class='form-label required'>{{ __('Regular Price') }} <span
+                                                                class="text-danger">({{ $currency->symbol }})</span></label>
                                                         <input type='number' class='form-control' name='regular_price'
                                                             min='1' placeholder='{{ __('Regular Price') }}...'
                                                             value="{{ $products->regular_price }}" min='1'
@@ -90,7 +101,8 @@
                                                 </div>
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
-                                                        <label class='form-label required'>{{ __('Sales Price') }}</label>
+                                                        <label class='form-label required'>{{ __('Sales Price') }} <span
+                                                                class="text-danger">({{ $currency->symbol }})</span></label>
                                                         <input type='number' class='form-control' name='sales_price'
                                                             min='1' step='.001'
                                                             value="{{ $products->sales_price }}"
@@ -111,8 +123,8 @@
                                                     <div class='mb-3'>
                                                         <label class='form-label required'
                                                             for='product_status'>{{ __('Product Type') }}</label>
-                                                        <select name='product_type' id='product_type' class='form-control'
-                                                            required>
+                                                        <select name='product_type' id='product_type'
+                                                            class='form-control' required>
                                                             <option value="" class="d-none">
                                                                 {{ __('Select Product Type') }}</option>
                                                             <option @if ($products->is_variant) selected @endif
