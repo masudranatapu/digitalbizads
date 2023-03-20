@@ -30,7 +30,7 @@
         "paypal/rest-api-sdk-php": "^1.14",
         "rachidlaasri/laravel-installer": "^4.1",
         "razorpay/razorpay": "2.*",
-        "simplesoftwareio/simple-qrcode": "*",
+        "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/laravel-cookie-consent": "^2.12",
         "spatie/laravel-sitemap": "^6.1",
         "stripe/stripe-php": "^7.91",

@@ -62,8 +62,8 @@
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $product->product_id }}</td>
-                                                    <td><a target="_blank"
-                                                            href="{{ getPhoto($product->product_image) }}">{{ $product->product_name }}</a>
+                                                    <td>
+                                                        <a onclick="photoShow(this)" href="javascript:void(0)" data-src="{{ getPhoto($product->product_image) }}" >{{ $product->product_name }}</a>
                                                     </td>
                                                     <td>{{ $product->sales_price . $currency->symbol }}</td>
                                                     <td>{{ $product->regular_price . $currency->symbol }}</td>
@@ -88,8 +88,6 @@
                                                         <div class="btn-list flex-nowrap">
                                                             <a class="btn btn-primary btn-sm"
                                                                 href="{{ route('user.products.edit', ['id' => $product->product_id]) }}">{{ __('Edit') }}</a>
-
-
 
                                                             <button class="btn btn-danger btn-sm"
                                                                 onclick="deleteProduct(this)"
@@ -191,6 +189,22 @@
         @include('user.includes.footer')
     </div>
 
+
+    <div class="modal modal-blur fade" id="photoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="float-end" data-bs-dismiss="modal">{{ __('Close') }}</button>
+                </div>
+                <div class="modal-body">
+                    <img src="" id="product_img" style="width: 100%" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
     <div class="modal modal-blur fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -220,12 +234,21 @@
             $('#deleteModal').modal('show');
             $('#product_id').prop('href', url);
 
-
         }
 
         var myModalEl = document.getElementById('deleteModal')
         myModalEl.addEventListener('hidden.bs.modal', function(event) {
             $('#product_id').prop('href', '');
         })
+
+
+        function photoShow(event) {
+            const {
+                src
+            } = event.dataset;
+
+            $('#photoModal').modal('show');
+            $('#product_img').prop('src', src);
+    }
     </script>
 @endsection

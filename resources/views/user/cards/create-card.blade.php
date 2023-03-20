@@ -702,27 +702,25 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                                 class="form-control cin @error('cashapp') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('cashapp'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('cashapp') }}</span>
+                                                <span class="help-block text-danger">{{ $errors->first('cashapp') }}</span>
                                             @endif
                                         </div>
                                     </div>
                                     @if ($plan_details->personalized_link == '1')
-                                        {{-- <div class="col-6">
+                                    <div class="col-md-6">
                                         <div class="mb-3 form-input">
-                                            <label for="personalized_link" class="form-label">Personalized
-                                                Link <span class="text-danger">*</span></label></label>
+                                            <label for="personalized_link" class="form-label">Personalized Link <span class="text-danger">*</span></label>
                                             <input type="text" placeholder="Personalized Link" name="personalized_link"
                                                 id="personalized_link"
                                                 class="form-control @error('personalized_link') is-invalid @enderror"
                                                 value="{{ old('personalized_link') }}" tabindex="{{ $tabindex++ }}">
-                                            @if ($errors->has('personalized_link'))
-                                            <span class="help-block text-danger">{{ $errors->first('personalized_link')
-                                                }}</span>
-                                            @endif
+                                                @if ($errors->has('personalized_link'))
+                                                <span class="help-block text-danger">{{ $errors->first('personalized_link')
+                                                    }}</span>
+                                                @endif
                                             <span id="status"></span>
                                         </div>
-                                    </div> --}}
+                                    </div>
                                     @endif
                                     {{-- <div class="col-12">
                                         <div class="mb-3 form-input">
@@ -766,10 +764,9 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                         </div>
                                     </div>
 
-                                    <div class="col-12">
+                                    {{-- <div class="col-12">
                                         <div class="mb-3 form-input position-relative">
-                                            <label for="personalized_link" class="form-label">Personalized
-                                                Link</label>
+                                            <label for="personalized_link" class="form-label">Personalized Link</label>
                                             @if (isFreePlan(Auth::user()->id))
                                                 <a href="javascript:void(0)" class="overlay-btn upgrade-plan"
                                                     data-bs-toggle="tooltip" data-bs-placement="top"
@@ -782,12 +779,12 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                                 tabindex="{{ $tabindex++ }}"
                                                 {{ isFreePlan(Auth::user()->id) == true ? 'disabled' : '' }}>
                                             @if ($errors->has('personalized_link'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('personalized_link') }}</span>
+                                                <span class="help-block text-danger">{{ $errors->first('personalized_link') }}</span>
                                             @endif
                                             <span id="status"></span>
                                         </div>
-                                    </div>
+                                    </div> --}}
+
                                     {{-- @endif --}}
                                     <div class="col-12">
                                         <div class="mb-3 form-input position-relative">
