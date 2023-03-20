@@ -60,7 +60,7 @@
                                             <div class='col-md-6 col-xl-6'>
                                                 <div class='mb-3'>
                                                     <label class='form-label required'>{{ __('Product Image') }}&nbsp;
-                                                        <span class="text-danger">(Image preferd size: 350px *
+                                                        <span class="text-dark">(Image preferd size: 350px *
                                                             320px)</span></label>
                                                     <div class='input-group mb-2'>
                                                         <input type='text' class='image media-model form-control'
@@ -90,7 +90,7 @@
                                             <div class='col-md-6 col-xl-6'>
                                                 <div class='mb-3'><label
                                                         class='form-label required'>{{ __('Regular Price') }}<span
-                                                            class="text-danger">({{ $currency->symbol }})</span></label>
+                                                            class="text-dark">({{ $currency->symbol }})</span></label>
                                                     <input type='number' class='form-control' name='regular_price'
                                                         min='1' placeholder='{{ __('Regular Price') }}...'
                                                         min='1' step='.001' required
@@ -100,7 +100,7 @@
                                             <div class='col-md-6 col-xl-6'>
                                                 <div class='mb-3'>
                                                     <label class='form-label required'>{{ __('Sales Price') }} <span
-                                                            class="text-danger">({{ $currency->symbol }})</span></label>
+                                                            class="text-dark">({{ $currency->symbol }})</span></label>
                                                     <input type='number' class='form-control' name='sales_price'
                                                         min='1' step='.001' value="{{ old('sales_price') }}"
                                                         placeholder='{{ __('Sales Price') }}...' required>

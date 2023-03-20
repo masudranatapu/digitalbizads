@@ -14,6 +14,20 @@
                             {{ __('Edit WhatsApp Store') }}
                         </h2>
                     </div>
+
+                    <!-- Page title actions -->
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="dropdown">
+                            <a type="button" class="btn btn-primary" href="{{ route('user.stores') }}">
+
+                                <i class="fas fa-arrow-left"></i>&nbsp;
+                                {{ __('Back') }}
+
+                            </a>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </div>

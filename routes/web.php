@@ -405,15 +405,15 @@ Route::group(['middleware' => 'Installer'], function () {
 // product details
 Route::get('/details/{id}', [HomeController::class, 'productDetails'])->name('product.details');
 // cart
-Route::get('/cart', [HomeController::class, 'cartPage'])->name('cart');
+Route::get('{card_id}/cart/', [HomeController::class, 'cartPage'])->name('cart');
 Route::patch('/update-cart', [HomeController::class, 'update'])->name('update.cart');
 Route::delete('/remove-from-cart', [HomeController::class, 'remove'])->name('remove.from.cart');
 Route::post('/add-to-cart', [HomeController::class, 'addToCart'])->name('add.to.cart');
 
 // checkout
-Route::get('/checkout', [HomeController::class, 'checkout'])->name('checkout');
-Route::get('/checkout/billing-address', [HomeController::class, 'checkoutBilling'])->name('checkout.billing');
-Route::get('/checkout/payment', [HomeController::class, 'checkoutPayment'])->name('checkout.payment');
+Route::get('{card_id}/checkout', [HomeController::class, 'checkout'])->name('checkout');
+Route::get('{card_id}/checkout/billing-address', [HomeController::class, 'checkoutBilling'])->name('checkout.billing');
+Route::get('{card_id}/checkout/payment', [HomeController::class, 'checkoutPayment'])->name('checkout.payment');
 
 
 Route::get('{cardurl}', [HomeController::class, 'getPreview'])->name('card.preview');

@@ -455,34 +455,39 @@ class HomeController extends Controller
         $config = DB::table('config')->get();
         $currency = Currency::where('iso_code', $config['1']->config_value)->first();
 
-        return view('pages.product_details', compact('product', 'currency'));
+        $business_card_details = BusinessCard::where('card_id', $product->card_id)->first();
+
+        return view('pages.product_details', compact('product', 'currency', 'business_card_details'));
     }
 
 
-    public function cartPage()
+    public function cartPage($card_id)
     {
         // Session::forget('cart');
 
+        $business_card_details = BusinessCard::where('card_id', $card_id)->first();
+
+
         $cart = session()->get('cart');
-
-
-
-        return view('pages.cart', compact('cart'));
+        return view('pages.cart', compact('cart', 'business_card_details'));
     }
 
-    public function checkout()
+    public function checkout($card_id)
     {
-        return view('pages.checkout');
+        $business_card_details = BusinessCard::where('card_id', $card_id)->first();
+        return view('pages.checkout', compact('business_card_details'));
     }
 
-    public function checkoutBilling()
+    public function checkoutBilling($card_id)
     {
-        return view('pages.checkout_billing');
+        $business_card_details = BusinessCard::where('card_id', $card_id)->first();
+        return view('pages.checkout_billing', compact('business_card_details'));
     }
 
-    public function checkoutPayment()
+    public function checkoutPayment($card_id)
     {
-        return view('pages.checkout_payment');
+        $business_card_details = BusinessCard::where('card_id', $card_id)->first();
+        return view('pages.checkout_payment', compact('business_card_details'));
     }
 
     public function addToCart(Request $request)
@@ -491,6 +496,11 @@ class HomeController extends Controller
         $id = $request->productId;
         $product = StoreProduct::findOrFail($id);
         $cart = session()->get('cart', []);
+
+
+
+
+
 
         if (isset($cart[$id])) {
             if (isset($request->qty)) {
