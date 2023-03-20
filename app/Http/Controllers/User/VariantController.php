@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Medias;
 use App\Setting;
+use App\StoreProduct;
 use App\VariantOption;
 use App\Variants;
 use Illuminate\Http\Request;
@@ -56,7 +57,10 @@ class VariantController extends Controller
         $settings = Setting::first();
         $variantOptions = VariantOption::where('product_id', $product_id)->where('variant_id', $variant)->get();
 
-        return view('user.variants.options', compact('settings', 'product_id', 'variant', 'variantOptions'));
+        $product = StoreProduct::where('product_id', $product_id)->first();
+
+
+        return view('user.variants.options', compact('settings', 'product_id', 'variant', 'variantOptions', 'product'));
     }
     public function optioncreate($product_id, $variant)
     {
