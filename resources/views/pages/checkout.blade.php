@@ -208,7 +208,8 @@
                                                 name="ship_phone" required="" type="text" id="ship_phone"
                                                 value="@if (old('ship_phone')) {{ old('ship_phone') }}
                                                 @elseif(session()->has('shipping')){{ session('shipping')['ship_phone'] }} @endif"
-                                                placeholder="Phone Number">
+                                                placeholder="Phone Number"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
                                             @error('ship_phone')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -292,12 +293,12 @@
                                                 (optional)</label>
                                             <textarea class="form-control @error('order_note') border-danger @enderror" name="order_note" id="order_note"
                                                 placeholder="Order Notes">
-                                                    @if (old('order_note'))
+@if (old('order_note'))
 {{ old('order_note') }}
 @elseif(session()->has('shipping'))
 {{ session('shipping')['order_note'] }}
 @endif
-                                                    </textarea>
+</textarea>
                                             @error('order_note')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -335,6 +336,15 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('frontend/whatsapp-store/js/script.js') }}"></script>
+    <script>
+        @if (session()->has('success'))
+            successAlert("{{ session()->get('success') }}");
+        @endif
+        @if (session()->has('alert'))
+            successAlert("{{ session()->geT('alert') }}");
+        @endif
+    </script>
 </body>
 
 </html>

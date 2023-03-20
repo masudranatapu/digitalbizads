@@ -200,7 +200,8 @@
                                             <input class="form-control @error('bill_phone') border-danger @enderror"
                                                 name="bill_phone" required="" type="text" id="bill_phone"
                                                 value="@if (old('bill_phone')) {{ old('bill_phone') }}@elseif(session()->has('billing')){{ session('billing')['bill_phone'] }} @endif"
-                                                placeholder="Phone Number">
+                                                placeholder="Phone Number"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
                                             @error('bill_phone')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -304,6 +305,8 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('frontend/whatsapp-store/js/script.js') }}"></script>
+
 </body>
 
 </html>

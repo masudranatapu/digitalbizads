@@ -236,6 +236,7 @@
     <script src="{{ asset('assets/js/swiper-bundle.min.js') }}"></script>
     <script src="{{ asset('frontend/whatsapp-store/js/script.js') }}"></script>
 
+
     <!-- lightgallery  -->
     <script type="text/javascript">
         $(document).ready(function() {

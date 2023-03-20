@@ -15,11 +15,14 @@ use App\Mail\OrderEmail;
 use App\ProductCategory;
 use App\VariantOption;
 use App\StoreProduct;
+use App\Order;
+use App\OrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\SEOMeta;
@@ -597,6 +600,7 @@ class HomeController extends Controller
 
                         $option[] = [
                             "id" => $productVariant->id,
+                            "variant_id" => $productVariant->variant_id,
                             "name" => $productVariant->name,
                             "price" => $productVariant->price,
 
@@ -618,6 +622,8 @@ class HomeController extends Controller
         }
 
         session()->put('cart', $cart);
+        alert()->success(trans('Proudct purchase successfully'));
+
         Session::flash('success', 'Add to cart successfully');
         return redirect()->back();
     }
@@ -634,7 +640,7 @@ class HomeController extends Controller
             $cart[$request->id]["quantity"] = $request->quantity;
 
             session()->put('cart', $cart);
-            Toastr::success('Cart updated successfully');
+            Session::flash('success', 'Update cart successfully');
         }
     }
 
@@ -648,7 +654,7 @@ class HomeController extends Controller
                 session()->put('cart', $cart);
             }
 
-            Toastr::error('Product removed from cart successfully');
+            Session::flash('success', 'Remove form the cart successfully');
         }
     }
 
@@ -688,11 +694,84 @@ class HomeController extends Controller
             'payment_method_types' => ['card'],
         ]);
         $intent = $payment_intent->client_secret;
+        $paymentId = $payment_intent->id;
 
-        return view('pages.stripe', compact('business_card_details', 'intent', 'user'));
+        return view('pages.stripe', compact('business_card_details', 'intent', 'user', 'paymentId'));
     }
 
-    public function checkoutPaymentSrtipeStore(Request $request)
+    public function checkoutPaymentSrtipeStore($card_id, $paymentId)
     {
+        $business_card_details = BusinessCard::where('card_id', $card_id)->first();
+        $user = User::find($business_card_details->user_id);
+        $stripe = new \Stripe\StripeClient($user->stripe_secret_key);
+
+        try {
+            $payment = $stripe->paymentIntents->retrieve($paymentId, []);
+        } catch (\Exception $e) {
+            $payment = new \stdClass();
+            $payment->status = "error";
+        }
+        if ($payment->status == "succeeded") {
+
+            $products = Session::get('cart');
+
+            $totalPrice = 0;
+            $totalQuantity = 0;
+            foreach ($products as $key => $product) {
+
+                $totalPrice += $product['price'] * $product['quantity'];
+                $totalQuantity +=  $product['quantity'];
+            }
+
+            $orderDetails = new Order();
+            $orderDetails->store_id = $card_id;
+            $orderDetails->quantity = $totalQuantity;
+            $orderDetails->total_price = $totalPrice;
+            $orderDetails->payment_fee = 0;
+            $orderDetails->vat = 0;
+            $orderDetails->grand_total = $totalPrice;
+            $orderDetails->order_date = now();
+            $orderDetails->order_date = now();
+            $orderDetails->shipping_details = json_encode(Session::get('shipping'));
+            $orderDetails->billing_details = json_encode(Session::get('billing'));
+            $orderDetails->payment_method = "Stripe";
+            $orderDetails->payment_status = $payment->status == "succeeded" ? 1 : 0;
+            $orderDetails->save();
+            foreach ($products as $key => $product) {
+                $totalPrice = 0;
+                $totalQuantity = 0;
+                $totalPrice += $product['price'] * $product['quantity'];
+                $totalQuantity +=  $product['quantity'];
+
+                $order_id = $orderDetails->id;
+                $product_id = $key;
+
+                if (count($product['option']) > 0) {
+                    foreach ($product['option'] as $option) {
+                        $orderDetails = new OrderDetail();
+                        $orderDetails->order_id = $order_id;
+                        $orderDetails->product_id = $product_id;
+                        $orderDetails->quantity = $product['quantity'];
+                        $orderDetails->unit_price = $product['price'];
+                        $orderDetails->variant_id = $option['variant_id'];
+                        $orderDetails->variant_option_id = $option['id'];
+                        $orderDetails->save();
+                    }
+                }
+            }
+        }
+
+        Session::forget('shipping');
+        Session::forget('billing');
+        Session::forget('cart');
+
+
+
+
+        alert()->success(trans('Proudct purchase successfully'));
+        Session::flash('success', 'Proudct purchase successfully');
+
+
+        return redirect()->route('card.preview', $business_card_details->card_url);
     }
 }

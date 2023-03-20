@@ -417,7 +417,7 @@ Route::get('{card_id}/checkout/billing-address', [HomeController::class, 'checko
 Route::post('{card_id}/checkout/billing-address', [HomeController::class, 'checkoutBillingStore'])->name('checkout.billing.store');
 Route::get('{card_id}/checkout/payment', [HomeController::class, 'checkoutPayment'])->name('checkout.payment');
 Route::get('{card_id}/checkout/payment/stripe', [HomeController::class, 'checkoutPaymentSrtipe'])->name('checkout.payment.stripe');
-Route::get('{card_id}/checkout/payment/stripe', [HomeController::class, 'checkoutPaymentSrtipeStore'])->name('checkout.payment.store');
+Route::post('{card_id}/checkout/payment/stripe/{paymentId}', [HomeController::class, 'checkoutPaymentSrtipeStore'])->name('checkout.payment.stripe.store');
 
 
 Route::get('{cardurl}', [HomeController::class, 'getPreview'])->name('card.preview');

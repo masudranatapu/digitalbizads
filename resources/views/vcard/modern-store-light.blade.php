@@ -635,6 +635,12 @@
         $('#sort_order').change(function() {
             $('.shop_filter').submit();
         })
+        @if (session()->has('success'))
+            successAlert("{{ session()->get('success') }}");
+        @endif
+        @if (session()->has('alert'))
+            successAlert("{{ session()->geT('alert') }}");
+        @endif
     </script>
 </body>
 

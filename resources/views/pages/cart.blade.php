@@ -154,10 +154,13 @@
                                 class="btn btn-primary"><i class="fa fa-angle-left"></i> Back to
                                 Shopping</a>
                         </div>
-                        <div class="button">
-                            <a href="{{ route('checkout', ['card_id' => $business_card_details->card_id]) }}"
-                                class="btn btn-success">Checkout</a>
-                        </div>
+
+                        @if (session()->has('cart') && count(session()->get('cart')) > 0)
+                            <div class="button">
+                                <a href="{{ route('checkout', ['card_id' => $business_card_details->card_id]) }}"
+                                    class="btn btn-success">Checkout</a>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -176,6 +179,8 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('frontend/whatsapp-store/js/script.js') }}"></script>
+
 
     <script>
         $(".allownumericwithoutdecimal").on("keypress keyup blur", function(event) {
@@ -226,6 +231,12 @@
                 });
             }
         });
+        @if (session()->has('success'))
+            successAlert("{{ session()->get('success') }}");
+        @endif
+        @if (session()->has('alert'))
+            successAlert("{{ session()->geT('alert') }}");
+        @endif
     </script>
 </body>
 

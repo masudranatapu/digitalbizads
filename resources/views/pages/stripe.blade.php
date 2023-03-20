@@ -131,7 +131,9 @@
                             <div class="card-body">
                                 <h3 class="card-title">Payment</h3>
                                 <div class="card col-12">
-                                    <form action="{{}}" method="post" id="payment-form">
+                                    <form
+                                        action="{{ route('checkout.payment.stripe.store', ['card_id' => $business_card_details->card_id, 'paymentId' => $paymentId]) }}"
+                                        method="post" id="payment-form">
                                         @csrf
 
                                         <div class="form-group">
@@ -146,7 +148,7 @@
                                                 </div>
                                                 <!-- Used to display form errors. -->
                                                 <div id="card-errors" role="alert"></div>
-                                                <input type="hidden" name="plan" value="" />
+
                                             </div>
                                         </div>
                                         <div class="card-footer">
