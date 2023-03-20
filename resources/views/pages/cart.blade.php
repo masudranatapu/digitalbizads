@@ -84,7 +84,6 @@
                                     <tbody>
                                         @php
                                             $total = 0;
-                                            
                                         @endphp
                                         @if (session('cart'))
                                             @foreach (session('cart') as $id => $details)

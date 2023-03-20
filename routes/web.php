@@ -412,8 +412,12 @@ Route::post('/add-to-cart', [HomeController::class, 'addToCart'])->name('add.to.
 
 // checkout
 Route::get('{card_id}/checkout', [HomeController::class, 'checkout'])->name('checkout');
+Route::post('{card_id}/checkout', [HomeController::class, 'checkoutStore'])->name('checkout.store');
 Route::get('{card_id}/checkout/billing-address', [HomeController::class, 'checkoutBilling'])->name('checkout.billing');
+Route::post('{card_id}/checkout/billing-address', [HomeController::class, 'checkoutBillingStore'])->name('checkout.billing.store');
 Route::get('{card_id}/checkout/payment', [HomeController::class, 'checkoutPayment'])->name('checkout.payment');
+Route::get('{card_id}/checkout/payment/stripe', [HomeController::class, 'checkoutPaymentSrtipe'])->name('checkout.payment.stripe');
+Route::get('{card_id}/checkout/payment/stripe', [HomeController::class, 'checkoutPaymentSrtipeStore'])->name('checkout.payment.store');
 
 
 Route::get('{cardurl}', [HomeController::class, 'getPreview'])->name('card.preview');

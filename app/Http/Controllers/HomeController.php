@@ -484,6 +484,78 @@ class HomeController extends Controller
         return view('pages.checkout_billing', compact('business_card_details'));
     }
 
+    public function checkoutStore(Request $request, $card_id)
+    {
+
+        $request->validate([
+            "ship_first_name" => 'required',
+            "ship_last_name" => 'required',
+            "ship_email" => 'required|email',
+            "ship_phone" => 'required|numeric',
+            "ship_address1" => 'required',
+            "ship_city" => 'required',
+            "ship_state" => 'required',
+            "ship_zip" => 'required',
+            "ship_country" => 'required',
+            "order_note" => 'required'
+        ]);
+
+        Session::forget('shipping');
+
+        $shipingData = [
+            "ship_first_name" => trim($request->ship_first_name),
+            "ship_last_name" => trim($request->ship_last_name),
+            "ship_email" => trim($request->ship_email),
+            "ship_phone" => trim($request->ship_phone),
+            "ship_address1" => trim($request->ship_address1),
+            "ship_city" => trim($request->ship_city),
+            "ship_state" => trim($request->ship_state),
+            "ship_zip" => trim($request->ship_zip),
+            "ship_country" => trim($request->ship_country),
+            "order_note" => trim($request->order_note),
+        ];
+
+        Session::put('shipping', $shipingData);
+
+
+
+        return redirect()->route('checkout.billing', ['card_id' => $card_id]);
+    }
+
+    public function checkoutBillingStore(Request $request, $card_id)
+    {
+
+        $request->validate([
+
+            "bill_first_name" => 'required',
+            "bill_last_name" => 'required',
+            "bill_email" => 'required|email',
+            "bill_phone" => 'required|numeric',
+            "bill_address1" => 'required',
+            "bill_city" => 'required',
+            "bill_state" => 'required',
+            "bill_zip" => 'required',
+            "bill_country" => 'required',
+        ]);
+
+        Session::forget('billing');
+
+        $billingData = [
+            "bill_first_name" => trim($request->bill_first_name),
+            "bill_last_name" => trim($request->bill_last_name),
+            "bill_email" => trim($request->bill_email),
+            "bill_phone" => trim($request->bill_phone),
+            "bill_address1" => trim($request->bill_address1),
+            "bill_city" => trim($request->bill_city),
+            "bill_state" => trim($request->bill_state),
+            "bill_zip" => trim($request->bill_zip),
+            "bill_country" => trim($request->bill_country),
+        ];
+
+        Session::put('billing', $billingData);
+        return redirect()->route('checkout.payment', $card_id);
+    }
+
     public function checkoutPayment($card_id)
     {
         $business_card_details = BusinessCard::where('card_id', $card_id)->first();
@@ -578,5 +650,49 @@ class HomeController extends Controller
 
             Toastr::error('Product removed from cart successfully');
         }
+    }
+
+    public function checkoutPaymentSrtipe($card_id)
+    {
+        $business_card_details = BusinessCard::where('card_id', $card_id)->first();
+        $iso_code = json_decode($business_card_details->description, true);
+        $currency = Currency::where('iso_code', $iso_code['currency'])->first();
+        $shiping = Session::get('shipping');
+        $total = 0;
+        foreach (session('cart') as $id => $details) {
+
+
+            $total += $details['price'] * $details['quantity'];
+            $line_total = $details['price'] * $details['quantity'];
+        }
+
+
+
+        $user = User::find($business_card_details->user_id);
+
+        \Stripe\Stripe::setApiKey($user->stripe_secret_key);
+        $payment_intent = \Stripe\PaymentIntent::create([
+            'description' => "Product purchase",
+            'shipping' => [
+                'name' => $shiping['ship_first_name'],
+                'address' => [
+                    'line1' => $shiping['ship_address1'],
+                    'postal_code' => $shiping['ship_zip'],
+                    'city' => $shiping['ship_city'],
+                    'state' =>  $shiping['ship_state'],
+                    'country' =>  $shiping['ship_city'],
+                ],
+            ],
+            'amount' => intval($total) * 100,
+            'currency' => $currency->iso_code,
+            'payment_method_types' => ['card'],
+        ]);
+        $intent = $payment_intent->client_secret;
+
+        return view('pages.stripe', compact('business_card_details', 'intent', 'user'));
+    }
+
+    public function checkoutPaymentSrtipeStore(Request $request)
+    {
     }
 }
