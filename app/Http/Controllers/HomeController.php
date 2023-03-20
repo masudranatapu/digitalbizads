@@ -562,7 +562,8 @@ class HomeController extends Controller
     public function checkoutPayment($card_id)
     {
         $business_card_details = BusinessCard::where('card_id', $card_id)->first();
-        return view('pages.checkout_payment', compact('business_card_details'));
+        $user = User::find($business_card_details->user_id);
+        return view('pages.checkout_payment', compact('business_card_details', 'user'));
     }
 
     public function addToCart(Request $request)

@@ -154,12 +154,15 @@
                                             alt="Paypal">
                                         <span>Paypal</span>
                                     </a>
-                                    <a
-                                        href="{{ route('checkout.payment.stripe', ['card_id' => $business_card_details->card_id]) }}">
-                                        <img src="{{ asset('assets/images/stripe.png') }}" class="img-fluid"
-                                            alt="Stripe">
-                                        <span>Stripe</span>
-                                    </a>
+
+                                    @if (isset($user->stripe_public_key) && isset($user->stripe_secret_key))
+                                        <a
+                                            href="{{ route('checkout.payment.stripe', ['card_id' => $business_card_details->card_id]) }}">
+                                            <img src="{{ asset('assets/images/stripe.png') }}" class="img-fluid"
+                                                alt="Stripe">
+                                            <span>Stripe</span>
+                                        </a>
+                                    @endif
                                 </div>
                             </form>
                         </div>
