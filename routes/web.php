@@ -346,6 +346,18 @@ Route::group(['middleware' => 'Installer'], function () {
                 Route::get('/tax/status/{state}', [UserSettingsController::class, 'taxStatus'])->name('tax.status');
                 Route::get('/tax/delete/{state}', [UserSettingsController::class, 'taxDelete'])->name('tax.delete');
             });
+
+            Route::prefix('/shipping_area')->name('shipping_area.')->group(function () {
+
+                Route::get('/', [ShippingAreaController::class, 'index'])->name('index');
+                Route::get('/create', [ShippingAreaController::class, 'create'])->name('create');
+                Route::post('store', [ShippingAreaController::class, 'store'])->name('store');
+                Route::get('/{id}/edit', [ShippingAreaController::class, 'edit'])->name('edit');
+                Route::post('/{id}/update', [ShippingAreaController::class, 'update'])->name('tupdate');
+                Route::get('/{id}/delete', [ShippingAreaController::class, 'delete'])->name('delete');
+            });
+
+
         });
 
         // Transactions
