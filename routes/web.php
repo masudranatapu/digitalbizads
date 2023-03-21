@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Payment\OfflineController;
 use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\User\AdditionalController;
+use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\Payment\RazorpayController;
 use App\Http\Controllers\Admin\TransactionsController;
 use App\Http\Controllers\Admin\PaymentMethodController;
@@ -318,6 +319,10 @@ Route::group(['middleware' => 'Installer'], function () {
 
 
 
+            Route::get('{card_id}/orders', [OrderController::class, 'index'])->name('order.index');
+
+
+
 
             //Addtional Tootls -> QR Maker
             Route::get('tools/qr-maker', [AdditionalController::class, 'qrMaker'])->name('qr-maker');
@@ -407,8 +412,12 @@ Route::post('/add-to-cart', [HomeController::class, 'addToCart'])->name('add.to.
 
 // checkout
 Route::get('{card_id}/checkout', [HomeController::class, 'checkout'])->name('checkout');
+Route::post('{card_id}/checkout', [HomeController::class, 'checkoutStore'])->name('checkout.store');
 Route::get('{card_id}/checkout/billing-address', [HomeController::class, 'checkoutBilling'])->name('checkout.billing');
+Route::post('{card_id}/checkout/billing-address', [HomeController::class, 'checkoutBillingStore'])->name('checkout.billing.store');
 Route::get('{card_id}/checkout/payment', [HomeController::class, 'checkoutPayment'])->name('checkout.payment');
+Route::get('{card_id}/checkout/payment/stripe', [HomeController::class, 'checkoutPaymentSrtipe'])->name('checkout.payment.stripe');
+Route::post('{card_id}/checkout/payment/stripe/{paymentId}', [HomeController::class, 'checkoutPaymentSrtipeStore'])->name('checkout.payment.stripe.store');
 
 
 Route::get('{cardurl}', [HomeController::class, 'getPreview'])->name('card.preview');

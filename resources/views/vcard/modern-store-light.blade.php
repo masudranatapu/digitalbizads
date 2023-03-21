@@ -258,6 +258,7 @@
                                             <form action="{{ route('add.to.cart') }}" method="post">
                                                 @csrf
                                                 <input type="hidden" name="productId" value="{{ $product->id }}">
+                                                <input type="hidden" name="qty" value="1">
                                                 <button type="submit"
                                                     class="py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
                                                     style="cursor: pointer;">{{ __('Add') }}</button>
@@ -634,6 +635,12 @@
         $('#sort_order').change(function() {
             $('.shop_filter').submit();
         })
+        @if (session()->has('success'))
+            successAlert("{{ session()->get('success') }}");
+        @endif
+        @if (session()->has('alert'))
+            successAlert("{{ session()->geT('alert') }}");
+        @endif
     </script>
 </body>
 

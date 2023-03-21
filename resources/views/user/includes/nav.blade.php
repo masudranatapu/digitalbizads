@@ -77,6 +77,8 @@
                                 @if (isset($store))
                                     <a href="{{ route('user.products.list', ['id' => $store->card_id]) }}"
                                         class="dropdown-item {{ request()->routeIs('user.products.*') || request()->routeIs('user.product.*') ? 'active' : '' }}">{{ __('Product List') }}</a>
+                                    <a href="{{ route('user.order.index', ['card_id' => $store->card_id]) }}"
+                                        class="dropdown-item {{ request()->routeIs('user.order.*') ? 'active' : '' }}">Order</a>
                                 @endif
                             </div>
                         </li>
