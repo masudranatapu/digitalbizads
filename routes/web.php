@@ -3,6 +3,7 @@
 use App\Setting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WebToolsController;
@@ -12,9 +13,12 @@ use App\Http\Controllers\Admin\PlanController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\User\MediaController;
+use App\Http\Controllers\User\OrderController;
+use App\Http\Controllers\User\StateController;
 use App\Http\Controllers\User\StoreController;
 use App\Http\Controllers\Admin\ThemeController;
 use App\Http\Controllers\Admin\UpdateController;
+use App\Http\Controllers\User\VariantController;
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\User\EditCardController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -24,18 +28,15 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Payment\OfflineController;
 use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\User\AdditionalController;
-use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\Payment\RazorpayController;
 use App\Http\Controllers\Admin\TransactionsController;
 use App\Http\Controllers\Admin\PaymentMethodController;
+use App\Http\Controllers\User\ProductCategoryController;
 use App\Http\Controllers\User\AccountController as userAccount;
 use App\Http\Controllers\User\DashboardController as userDashboard;
-use App\Http\Controllers\User\ProductCategoryController;
+use App\Http\Controllers\User\TransactionsController as userTransactions;
 use App\Http\Controllers\User\SettingsController as UserSettingsController;
 use App\Http\Controllers\User\ShippingAreaController;
-use App\Http\Controllers\User\TransactionsController as userTransactions;
-use App\Http\Controllers\User\VariantController;
-use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
