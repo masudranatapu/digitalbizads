@@ -325,6 +325,7 @@ Route::group(['middleware' => 'Installer'], function () {
 
 
             Route::get('{card_id}/orders', [OrderController::class, 'index'])->name('order.index');
+            Route::get('{card_id}/orders/view/{id}', [OrderController::class, 'view'])->name('order.view');
 
 
 

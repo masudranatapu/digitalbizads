@@ -705,26 +705,29 @@ class HomeController extends Controller
     {
         $business_card_details = BusinessCard::where('card_id', $card_id)->first();
         $user = User::find($business_card_details->user_id);
-        $stripe = new \Stripe\StripeClient($user->stripe_secret_key);
-
+        $totalTransaction = ProductOrderTransaction::count();
         try {
+            $stripe = new \Stripe\StripeClient($user->stripe_secret_key);
             $payment = $stripe->paymentIntents->retrieve($paymentId, []);
 
-            // $productOrderTransaction = new ProductOrderTransaction();
-            // $productOrderTransaction->store_id = $card_id;
-            // $productOrderTransaction->transection_id = ;
-            // $productOrderTransaction->transection_date = now();
-            // $productOrderTransaction->provider ="Stripe" ;
-            // $productOrderTransaction->currency = ;
-            // $productOrderTransaction->trsnsection_amount = ;
-            // $productOrderTransaction->invoice = ;
-            // $productOrderTransaction->invoice_details = json_encode(Session::get('shipping'));
-            // $productOrderTransaction->payment_status = ;
-            // $productOrderTransaction->status = ;
 
+            $productOrderTransaction = new ProductOrderTransaction();
+            $productOrderTransaction->store_id = $card_id;
+            $productOrderTransaction->transection_id = $paymentId;
+            $productOrderTransaction->transection_date = now();
+            $productOrderTransaction->provider = "Stripe";
+            $productOrderTransaction->currency = $payment['currency'];
+            $productOrderTransaction->trsnsection_amount = $payment['amount'] / 100;
+            $productOrderTransaction->invoice = $totalTransaction + 1;
+            $productOrderTransaction->invoice_details = json_encode(Session::get('shipping'));
+            $productOrderTransaction->payment_status = $payment['status'];
+            $productOrderTransaction->status = true;
+            $productOrderTransaction->save();
+            Log::alert("success");
         } catch (\Exception $e) {
             $payment = new \stdClass();
             $payment->status = "error";
+            dd($e->getMessage());
         }
         if ($payment->status == "succeeded") {
 
@@ -739,6 +742,7 @@ class HomeController extends Controller
             }
 
             $orderDetails = new Order();
+            $orderDetails->transaction_id = $productOrderTransaction->id;
             $orderDetails->store_id = $card_id;
             $orderDetails->quantity = $totalQuantity;
             $orderDetails->total_price = $totalPrice;
