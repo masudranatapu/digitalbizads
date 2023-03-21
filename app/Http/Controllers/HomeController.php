@@ -738,42 +738,42 @@ class HomeController extends Controller
                 $totalQuantity +=  $product['quantity'];
             }
 
-            //     $orderDetails = new Order();
-            //     $orderDetails->store_id = $card_id;
-            //     $orderDetails->quantity = $totalQuantity;
-            //     $orderDetails->total_price = $totalPrice;
-            //     $orderDetails->payment_fee = 0;
-            //     $orderDetails->vat = 0;
-            //     $orderDetails->grand_total = $totalPrice;
-            //     $orderDetails->order_date = now();
-            //     $orderDetails->order_date = now();
-            //     $orderDetails->shipping_details = json_encode(Session::get('shipping'));
-            //     $orderDetails->billing_details = json_encode(Session::get('billing'));
-            //     $orderDetails->payment_method = "Stripe";
-            //     $orderDetails->payment_status = $payment->status == "succeeded" ? 1 : 0;
-            //     $orderDetails->save();
-            //     foreach ($products as $key => $product) {
-            //         $totalPrice = 0;
-            //         $totalQuantity = 0;
-            //         $totalPrice += $product['price'] * $product['quantity'];
-            //         $totalQuantity +=  $product['quantity'];
+            $orderDetails = new Order();
+            $orderDetails->store_id = $card_id;
+            $orderDetails->quantity = $totalQuantity;
+            $orderDetails->total_price = $totalPrice;
+            $orderDetails->payment_fee = 0;
+            $orderDetails->vat = 0;
+            $orderDetails->grand_total = $totalPrice;
+            $orderDetails->order_date = now();
+            $orderDetails->order_date = now();
+            $orderDetails->shipping_details = json_encode(Session::get('shipping'));
+            $orderDetails->billing_details = json_encode(Session::get('billing'));
+            $orderDetails->payment_method = "Stripe";
+            $orderDetails->payment_status = $payment->status == "succeeded" ? 1 : 0;
+            $orderDetails->save();
+            foreach ($products as $key => $product) {
+                $totalPrice = 0;
+                $totalQuantity = 0;
+                $totalPrice += $product['price'] * $product['quantity'];
+                $totalQuantity +=  $product['quantity'];
 
-            //         $order_id = $orderDetails->id;
-            //         $product_id = $key;
+                $order_id = $orderDetails->id;
+                $product_id = $key;
 
-            //         if (count($product['option']) > 0) {
-            //             foreach ($product['option'] as $option) {
-            //                 $orderDetails = new OrderDetail();
-            //                 $orderDetails->order_id = $order_id;
-            //                 $orderDetails->product_id = $product_id;
-            //                 $orderDetails->quantity = $product['quantity'];
-            //                 $orderDetails->unit_price = $product['price'];
-            //                 $orderDetails->variant_id = $option['variant_id'];
-            //                 $orderDetails->variant_option_id = $option['id'];
-            //                 $orderDetails->save();
-            //             }
-            //         }
-            //     }
+                if (count($product['option']) > 0) {
+                    foreach ($product['option'] as $option) {
+                        $orderDetails = new OrderDetail();
+                        $orderDetails->order_id = $order_id;
+                        $orderDetails->product_id = $product_id;
+                        $orderDetails->quantity = $product['quantity'];
+                        $orderDetails->unit_price = $product['price'];
+                        $orderDetails->variant_id = $option['variant_id'];
+                        $orderDetails->variant_option_id = $option['id'];
+                        $orderDetails->save();
+                    }
+                }
+            }
         }
 
         // Session::forget('shipping');
