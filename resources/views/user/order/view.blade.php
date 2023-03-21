@@ -31,7 +31,7 @@
                                             <div class="card-body">
                                                 <div class="row">
                                                     @php
-                                                        
+
                                                         $shipping = json_decode($orders->shipping_details, true);
                                                         $billing = json_decode($orders->billing_details, true);
                                                     @endphp
@@ -127,7 +127,6 @@
                                                     <tbody>
                                                         @foreach ($orders->orderDetails as $orderDetails)
                                                             <tr>
-
                                                                 <td>{{ $orderDetails->hasProduct->product_name }}</td>
                                                             </tr>
                                                         @endforeach
