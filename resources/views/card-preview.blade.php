@@ -272,7 +272,7 @@
                     @if (isset($store_details->card_url) && $cardinfo->is_store_show == 1)
                         <a href="{{ URL::to('/') . '/' . $store_details->card_url }}" target="_blank"
                             class="text-decoration-none d-inline-block btn-secondary">
-                            SHOP
+                            {{ $store_details->shop_link_name ?? 'SHOP' }}
                         </a>
                     @endif
                 </div>

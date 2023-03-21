@@ -57,40 +57,37 @@ class StoreController extends Controller
     public function saveStore(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'theme_id' => 'required',
-            'card_color' => 'required',
-            'card_lang' => 'required',
-            'banner' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg',
-            'logo' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg',
-            'title' => 'required',
-            'currency' => 'required',
-            'subtitle' => 'required',
-            'whatsapp_no' => 'sometimes',
-            'whatsapp_msg' => 'required',
-            'email' => 'sometimes'
+            'theme_id'      => 'required',
+            'card_color'    => 'required',
+            'card_lang'     => 'required',
+            'banner'        => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg',
+            'logo'          => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg',
+            'title'         => 'required',
+            'currency'      => 'required',
+            'subtitle'      => 'required',
+            'whatsapp_no'   => 'required',
+            'whatsapp_msg'  => 'required',
+            'email'         => 'required',
+            'personalized_link' => 'sometimes|max:124',
         ]);
 
-        if (!isset($request->email) && !isset($request->whatsapp_no)) {
-
-            return redirect()->back()->withErrors(['error' => 'Please Provide Email or Phone Number'])->withInput();
-        }
 
         if ($validator->fails()) {
-            // alert()->error(trans('Some fields missing or banner/logo size is large.'));
-
             return back()->withErrors($validator)->withInput();
         }
 
+        $user_details = User::where('user_id', Auth::user()->user_id)->first();
+        $plan_details = json_decode($user_details->plan_details);
+
         $cardId = uniqid();
 
-        if ($request->link) {
-            $personalized_link = $request->link;
+        if ($request->personalized_link && ($plan_details->personalized_link == '1') ) {
+            $personalized_link = $request->personalized_link;
         } else {
             $personalized_link = $cardId;
         }
+
         $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
-        $user_details = User::where('user_id', Auth::user()->user_id)->first();
-        $plan_details = json_decode($user_details->plan_details, true);
 
         if ($request->logo) {
             $logo = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->logo->getClientOriginalName()) . '.' . $request->logo->extension();
@@ -103,19 +100,17 @@ class StoreController extends Controller
         }
 
         $store_details = [];
-        $store_details['whatsapp_no'] = $request->whatsapp_no;
-        $store_details['whatsapp_msg'] = $request->whatsapp_msg;
-        $store_details['currency'] = $request->currency;
-        $store_details['email'] = $request->email;
+        $store_details['whatsapp_no']   = $request->whatsapp_no;
+        $store_details['whatsapp_msg']  = $request->whatsapp_msg;
+        $store_details['currency']      = $request->currency;
+        $store_details['email']         = $request->email;
+        $card_url       = strtolower(preg_replace('/\s+/', '-', $personalized_link));
+        $current_card   = BusinessCard::where('card_url', $card_url)->count();
 
-        $card_url = strtolower(preg_replace('/\s+/', '-', $personalized_link));
-
-        $current_card = BusinessCard::where('card_url', $card_url)->count();
-
-        if ($plan_details['no_of_vcards'] == 999) {
+        if ($plan_details->no_of_vcards == 999) {
             $no_cards = 999999;
         } else {
-            $no_cards = $plan_details['no_of_vcards'];
+            $no_cards = $plan_details->no_of_vcards;
         }
 
         if ($current_card == 0) {
@@ -124,28 +119,29 @@ class StoreController extends Controller
                 try {
                     $card_id = $cardId;
                     $card = new BusinessCard();
-                    $card->card_id = $card_id;
-                    $card->user_id = Auth::user()->id;
-                    $card->theme_id = $request->theme_id;
-                    $card->theme_color = $request->card_color;
-                    $card->card_lang = $request->card_lang;
-                    $card->cover = $banner ?? null;
-                    $card->profile = $logo ?? null;
-                    $card->card_url = strtolower(preg_replace('/\s+/', '-', $personalized_link));
-                    $card->card_type = 'store';
-                    $card->title = $request->title;
-                    $card->sub_title = $request->subtitle;
-                    $card->is_store_show = 1;
-                    $card->card_status = "activated";
-                    $card->description = json_encode($store_details);
-                    $card->header_backgroung = $request->header_backgroung ?? '#fff';
-                    $card->header_text_color = $request->header_text_color ?? '#000';
+                    $card->card_id      = $card_id;
+                    $card->user_id      = Auth::user()->id;
+                    $card->theme_id     = $request->theme_id;
+                    $card->theme_color  = $request->card_color;
+                    $card->card_lang    = $request->card_lang;
+                    $card->cover        = $banner ?? null;
+                    $card->profile      = $logo ?? null;
+                    $card->card_url     = strtolower(preg_replace('/\s+/', '-', $personalized_link));
+                    $card->card_type    = 'store';
+                    $card->title        = $request->title;
+                    $card->sub_title    = $request->subtitle;
+                    $card->is_store_show        = 1;
+                    $card->card_status          = "activated";
+                    $card->description          = json_encode($store_details);
+                    $card->header_backgroung    = $request->header_backgroung ?? '#fff';
+                    $card->header_text_color    = $request->header_text_color ?? '#000';
+                    $card->shop_link_name       = $request->shop_link_name ?? 'SHOP';
                     $card->save();
 
                     alert()->success(trans('New WhatsApp Store Created Successfully!'));
                     return redirect()->route('user.stores', $card_id);
                 } catch (\Exception $th) {
-                    dd($th);
+                    // dd($th);
                     alert()->error(trans('Sorry, personalized link was already registered.'));
                     return redirect()->route('user.create.store');
                 }
@@ -228,10 +224,13 @@ class StoreController extends Controller
             if ($business_card->card_type == "store") {
                 $settings = Setting::where('status', 1)->first();
                 $currencies = Currency::get();
-                $plan_details = Plan::where('plan_id', Auth::user()->plan_id)->first();
+
+                $user_details = User::where('user_id', Auth::user()->user_id)->first();
+                $plan_details = json_decode($user_details->plan_details);
                 $store_details = json_decode($business_card->description);
 
-                return view('user.edit-store.edit-store', compact('themes', 'business_card', 'settings', 'plan_details', 'store_details', 'currencies'));
+
+                return view('user.edit-store.edit-store', compact('themes', 'business_card', 'settings', 'plan_details', 'store_details', 'currencies', 'user_details'));
             } else {
                 return redirect()->route('user.edit.card', $id);
             }
@@ -241,17 +240,31 @@ class StoreController extends Controller
     // Update store
     public function updateStore(Request $request, $id)
     {
+
+         $validator = Validator::make($request->all(), [
+            'card_color'        => 'required|string|max:124',
+            'card_lang'         => 'required|string|max:124',
+            'title'             => 'required|string|max:124',
+            'subtitle'          => 'required|string|max:255',
+            'currency'          => 'required|string|max:124',
+            'whatsapp_no'       => 'required|string|max:20',
+            'email'             => 'required|email|max:191',
+            'shop_link_name'    => 'required|string|max:191',
+            'whatsapp_msg'      => 'required|string|max:255',
+            'personalized_link' => 'nullable|string|max:124',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
         $business_card = BusinessCard::where('card_id', $id)->first();
+        $user_details = User::where('user_id', Auth::user()->user_id)->first();
+        $plan_details = json_decode($user_details->plan_details);
 
         if ($business_card == null) {
             return view('errors.404');
         } else {
-            if ($request->link) {
-                $personalized_link = $request->link;
-            } else {
-                $personalized_link = $id;
-            }
-
             $store_details = $data = [];
             $store_details['whatsapp_no']   = $request->whatsapp_no;
             $store_details['whatsapp_msg']  = $request->whatsapp_msg;
@@ -270,22 +283,31 @@ class StoreController extends Controller
                 $data['profile'] = $logo;
             }
 
+            $data['shop_link_name']     = $request->shop_link_name ?? 'SHOP';
             $data['theme_id']           = $request->theme_id;
             $data['theme_color']        = $request->card_color;
             $data['card_lang']          = $request->card_lang;
-            $data['card_url']           = $personalized_link;
             $data['title']              = $request->title;
             $data['sub_title']          = $request->subtitle;
             $data['description']        = $store_details;
             $data['header_backgroung']  = $request->header_backgroung;
             $data['header_text_color']  = $request->header_text_color;
 
-            BusinessCard::where('card_id', $id)->update($data);
+            if ($plan_details->personalized_link == '1') {
+                $checkCardUrl = BusinessCard::where('card_url', $request->personalized_link)->whereNotIn('card_id', [$id])->first();
+                if (!empty($checkCardUrl)) {
+                    alert()->error(trans('Store link must be unique'));
+                    return back()->withInput();
+                }
+                if (!empty($request->personalized_link)) {
+                    $personalized_link = $request->personalized_link;
+                    $data['card_url'] = strtolower(preg_replace('/\s+/', '-', $personalized_link));
+                }
+            }
 
+            BusinessCard::where('card_id', $id)->update($data);
             alert()->success(trans('Store details updated'));
             return redirect()->route('user.stores');
-
-            // return redirect()->route('user.products.edit', $id);
 
         }
     }
@@ -303,7 +325,7 @@ class StoreController extends Controller
         $settings = Setting::where('status', 1)->first();
 
 
-        return view('user.cards.store-product', compact('business_cards', 'settings', 'currency'));
+        return view('user.cards.products', compact('business_cards', 'settings', 'currency'));
     }
 
     public function addProducts($id)
@@ -324,7 +346,7 @@ class StoreController extends Controller
             $productCategories = ProductCategory::orderBy('category_name', 'asc')
                 ->where('user_id', Auth::id())->get();
 
-            return view('user.cards.add-product', compact('plan_details',  'media', 'settings', 'productCategories', 'id', 'currency'));
+            return view('user.cards.product_create', compact('plan_details',  'media', 'settings', 'productCategories', 'id', 'currency'));
         }
     }
     public function storeProducts(Request $request, $id)
@@ -422,7 +444,7 @@ class StoreController extends Controller
         $productCategories = ProductCategory::orderBy('category_name', 'asc')
             ->where('user_id', Auth::id())->get();
 
-        return view('user.cards.edit-product', compact('plan_details', 'products', 'media', 'settings', 'productCategories', 'currency'));
+        return view('user.cards.product_edit', compact('plan_details', 'products', 'media', 'settings', 'productCategories', 'currency'));
     }
 
 

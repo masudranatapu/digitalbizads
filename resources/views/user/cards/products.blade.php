@@ -74,7 +74,7 @@
                                                         @if ($product->product_stock <= 0)
                                                             <span class="badge bg-red">{{ __('Out of stock') }}</span>
                                                         @else
-                                                            <span class="badge bg-green">{{ __('In-stock') }}</span>
+                                                            <span class="badge bg-green">{{ __('In-stock') }} ({{ $product->product_stock }}) </span>
                                                         @endif
                                                     </td>
                                                     <td class="text-muted">
@@ -131,7 +131,11 @@
 
                                                     <div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">
                                                         <h3 class="text-left">
-                                                            <td>{{ $row->product_name }}</td>
+                                                            <td>
+                                                                <a onclick="photoShow(this)" href="javascript:void(0)" data-src="{{ getPhoto($row->product_image) }}" >
+                                                                {{ $row->product_name }}
+                                                                </a>
+                                                            </td>
                                                         </h3>
                                                     </div>
 

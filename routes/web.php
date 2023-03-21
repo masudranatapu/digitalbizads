@@ -288,11 +288,6 @@ Route::group(['middleware' => 'Installer'], function () {
 
 
 
-
-
-
-
-
             // Edit Store
             Route::get('edit-store/{id}', [StoreController::class, 'editStore'])->name('edit.store');
             Route::post('update-store/{id}', [StoreController::class, 'updateStore'])->name('update.store');

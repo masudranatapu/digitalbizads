@@ -35,7 +35,7 @@
             <div class="container-xl">
                 <div class="row row-deck row-cards">
                     <div class="col-sm-12 col-lg-12">
-                        <form action="{{ route('user.update.store', Request::segment(3)) }}" method="post"
+                        <form action="{{ route('user.update.store', $business_card->card_id ) }}" method="post"
                             enctype="multipart/form-data" class="card">
                             @csrf
                             {{-- Create Card --}}
@@ -141,15 +141,14 @@
 
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3 form-input">
-                                                    <label for="header_backgroung" class="form-label">Header background
-                                                        color</label>
+                                                    <label for="header_backgroung" class="form-label">Header background color</label>
                                                     <div class="input-group custome_color">
                                                         <label for="header_backgroung" class="input-group-text">
                                                             <img src="{{ asset('images/color-picker.png') }}"
                                                                 width="25" alt="color picker">
                                                             <input type="color" placeholder="card color"
                                                                 name="header_backgroung" id="header_backgroung"
-                                                                value="{{ $business_card->header_backgroung }}"
+                                                                value="{{ old('header_backgroung') ?? $business_card->header_backgroung }}"
                                                                 class="form-control @error('header_backgroung') is-invalid @enderror"
                                                                 required>
                                                         </label>
@@ -174,7 +173,7 @@
                                                                 width="25" alt="color picker">
                                                             <input type="color" placeholder="card color"
                                                                 name="header_text_color" id="header_text_color"
-                                                                value="{{ $business_card->header_text_color }}"
+                                                                value="{{ old('header_text_color') ?? $business_card->header_text_color }}"
                                                                 class="form-control @error('header_text_color') is-invalid @enderror"
                                                                 required>
                                                         </label>
@@ -183,8 +182,7 @@
                                                     </div>
 
                                                     @if ($errors->has('header_text_color'))
-                                                        <span
-                                                            class="help-block text-danger">{{ $errors->first('header_text_color') }}</span>
+                                                        <span class="help-block text-danger">{{ $errors->first('header_text_color') }}</span>
                                                     @endif
                                                 </div>
                                             </div>
@@ -193,24 +191,18 @@
 
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
-                                                    <div class="form-label">{{ __('Banner') }}</div>
+                                                    <div class="form-label">{{ __('Banner') }} @if($business_card->cover) <a onclick="photoShow(this)" href="javascript:void(0)" data-src="{{ getPhoto($business_card->cover) }}"> Click for show </a> @endif</div>
                                                     <input type="file" class="form-control" name="banner"
-                                                        placeholder="{{ __('Banner') }}..."
-                                                        value="{{ $business_card->cover }}"
-                                                        accept=".jpeg,.jpg,.png,.gif,.svg" />
-                                                    <small
-                                                        class="text-muted">{{ __('Recommended : 1920 x 550 pixels') }}</small>
+                                                        placeholder="{{ __('Banner') }}..." accept=".jpeg,.jpg,.png,.gif,.svg" />
+                                                    <small class="text-muted">{{ __('Recommended : 1920 x 550 pixels') }}</small>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
-                                                    <div class="form-label ">{{ __('Logo') }}</div>
+                                                    <div class="form-label ">{{ __('Logo') }} @if($business_card->profile) <a onclick="photoShow(this)" href="javascript:void(0)" data-src="{{ getPhoto($business_card->profile) }}"> Click for show </a> @endif</div>
                                                     <input type="file" class="form-control" name="logo"
-                                                        placeholder="{{ __('Logo') }}..."
-                                                        value="{{ $business_card->logo }}"
-                                                        accept=".jpeg,.jpg,.png,.gif,.svg" />
-                                                    <small
-                                                        class="text-muted">{{ __('Recommended : 180 x 90 pixels') }}</small>
+                                                        placeholder="{{ __('Logo') }}..." accept=".jpeg,.jpg,.png,.gif,.svg" />
+                                                    <small class="text-muted">{{ __('Recommended : 180 x 90 pixels') }}</small>
                                                 </div>
                                             </div>
 
@@ -221,7 +213,7 @@
                                                         onload="convertToLink(this.value); checkLink()"
                                                         onkeyup="convertToLink(this.value); checkLink()"
                                                         placeholder="{{ __('Store name') }}..."
-                                                        value="{{ $business_card->title }}" required>
+                                                        value="{{ old('title') ?? $business_card->title }}" required>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-xl-6">
@@ -229,7 +221,7 @@
                                                     <label class="form-label required">{{ __('Store greeting') }}</label>
                                                     <input type="text" class="form-control" name="subtitle"
                                                         placeholder="{{ __('Store greeting') }}..."
-                                                        value="{{ $business_card->sub_title }}" required>
+                                                        value="{{ old('sub_title') ?? $business_card->sub_title }}" required>
                                                 </div>
                                             </div>
 
@@ -253,7 +245,7 @@
                                                     <label class="form-label required">{{ __('WhatsApp Number') }}</label>
                                                     <input type="number" class="form-control" name="whatsapp_no"
                                                         placeholder="{{ __('For example: 919876543210 (With country code)') }}..."
-                                                        value="{{ $store_details->whatsapp_no }}">
+                                                        value="{{ old('whatsapp_no') ?? $store_details->whatsapp_no }}">
                                                 </div>
                                             </div>
 
@@ -262,37 +254,48 @@
                                                     <label class="form-label required">{{ __('Email') }}</label>
                                                     <input type="email" class="form-control" name="email"
                                                         placeholder="example@email.com"
-                                                        value="{{ $store_details->email ?? '' }}">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-xl-6">
-                                                <div class="mb-3">
-                                                    <label
-                                                        class="form-label required">{{ __('WhatsApp Footer Text') }}</label>
-                                                    <textarea class="form-control" name="whatsapp_msg" id="whatsapp_msg" cols="10" rows="3"
-                                                        placeholder="{{ __('WhatsApp Footer Text') }}...">{{ $store_details->whatsapp_msg }}</textarea>
+                                                        value="{{ old('email') ?? $store_details->email }}">
                                                 </div>
                                             </div>
 
-                                            @if ($plan_details->personalized_link)
-                                                <div class="col-md-10 col-xl-10">
-                                                    <div class="mb-3">
-                                                        <label
-                                                            class="form-label required">{{ __('Personalized Link') }}</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text">
-                                                                {{ URL::to('/') }}
-                                                            </span>
-                                                            <input type="text" class="form-control" name="link"
-                                                                placeholder="{{ __('Personalized Link') }}"
-                                                                autocomplete="off" id="plink" onkeyup="checkLink()"
-                                                                minlength="3" value="{{ $business_card->card_url }}"
-                                                                required>
-                                                        </div>
-                                                        <p id="status"></p>
-                                                    </div>
+                                            <div class="col-md-6 col-xl-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label required">{{ __('Shop link name') }}</label>
+                                                    <input type="text" class="form-control" name="shop_link_name"
+                                                        placeholder="SHOP"
+                                                        value="{{ old('shop_link_name') ?? $business_card->shop_link_name }}" required >
                                                 </div>
-                                            @endif
+                                            </div>
+
+                                            <div class="col-md-12 col-xl-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label required">{{ __('WhatsApp Footer Text') }}</label>
+                                                    <textarea class="form-control" name="whatsapp_msg" id="whatsapp_msg" cols="10" rows="3"
+                                                        placeholder="{{ __('WhatsApp Footer Text') }}...">{{ old('whatsapp_msg') ?? $store_details->whatsapp_msg }}</textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">{{ __('Store Link') }}</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"> {{ URL::to('/') }} </span>
+                                                        <input type="text" class="form-control"
+                                                            name="personalized_link"
+                                                            placeholder="{{ __('Personalized Link') }}"
+                                                            autocomplete="off"
+                                                            id="personalized_link"
+                                                            minlength="3"
+                                                            value="{{ old('personalized_link') ?? $business_card->card_url }}"
+                                                            {{ $plan_details->personalized_link != '1'  ? 'disabled' : ''}}
+                                                              />
+                                                    </div>
+                                                    @if ($errors->has('personalized_link'))
+                                                        <span class="help-block text-danger">{{ $errors->first('personalized_link') }}</span>
+                                                    @endif
+                                                    <p id="status"></p>
+                                                </div>
+                                            </div>
 
                                         </div>
 
@@ -313,6 +316,23 @@
         </div>
         @include('user.includes.footer')
     </div>
+
+
+    <div class="modal modal-blur fade" id="photoModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="float-end" data-bs-dismiss="modal">{{ __('Close') }}</button>
+                </div>
+                <div class="modal-body">
+                    <img src="" id="product_img" style="width: 100%" />
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @endsection
 
     @push('custom-js')
         <script>
@@ -370,6 +390,17 @@
                 document.getElementById("plink").value = str;
                 //return str;
             }
+
+
+
+            function photoShow(event) {
+                    const {
+                        src
+                    } = event.dataset;
+
+                    $('#photoModal').modal('show');
+                    $('#product_img').prop('src', src);
+            }
         </script>
     @endpush
-@endsection
+

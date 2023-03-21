@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
 use App\Medias;
 use App\Setting;
+use App\Variants;
 use App\StoreProduct;
 use App\VariantOption;
-use App\Variants;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class VariantController extends Controller
@@ -112,11 +112,15 @@ class VariantController extends Controller
 
 
         ]);
+
         $option->name = $request->option_name;
         $option->stock = $request->option_stock;
         $option->price = $request->option_price;
         $option->photo = $request->option_image;
         $option->save();
+        $total_stock = VariantOption::where('product_id',$option->product_id)->sum('stock');
+        StoreProduct::where('product_id',$option->product_id)->update(['product_stock' => $total_stock]);
+
         alert()->success(trans('Product variant option update successfully.'));
         return redirect()->route('user.product.variants.option', ['product_id' => $option->product_id, 'variant' => $option->variant_id]);
     }

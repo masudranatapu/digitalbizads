@@ -548,7 +548,7 @@
                                                 <input type="text" placeholder="ads name" name="adsname"
                                                     id="adsname"
                                                     class="form-control @error('adsname') is-invalid @enderror"
-                                                    tabindex="{{ $tabindex++ }}" value="{{ $card->adsname }}"
+                                                    tabindex="{{ $tabindex++ }}" value="{{ old('adsname') ?? $card->adsname }}"
                                                     required>
                                                 @if ($errors->has('adsname'))
                                                     <span
@@ -567,7 +567,7 @@
                                                             id="theme_color"
                                                             class="form-control @error('theme_color') is-invalid @enderror"
                                                             tabindex="{{ $tabindex++ }}"
-                                                            value="{{ $card->theme_color }}" required>
+                                                            value="{{ old('theme_color') ?? $card->theme_color }}" required>
                                                     </label>
                                                     <input type="text" id="theme_clr_code" class="form-control"
                                                         value="{{ $card->theme_color }}" disabled>
@@ -590,7 +590,7 @@
                                                             alt="color picker">
                                                         <input type="color" placeholder="card color"
                                                             name="header_backgroung" id="header_backgroung"
-                                                            value="{{ $card->header_backgroung }}"
+                                                            value="{{ old('header_backgroung') ?? $card->header_backgroung }}"
                                                             class="form-control @error('header_backgroung') is-invalid @enderror"
                                                             tabindex="{{ $tabindex++ }}" required>
                                                     </label>
@@ -614,7 +614,7 @@
                                                             alt="color picker">
                                                         <input type="color" placeholder="card color"
                                                             name="icon_border_color" id="icon_border_color"
-                                                            value="{{ $card->icon_border_color }}"
+                                                            value="{{ old('icon_border_color') ?? $card->icon_border_color }}"
                                                             class="form-control @error('icon_border_color') is-invalid @enderror"
                                                             tabindex="{{ $tabindex++ }}" required>
                                                     </label>
@@ -639,7 +639,7 @@
                                                             alt="color picker">
                                                         <input type="color" placeholder="card color"
                                                             name="header_text_color" id="header_text_color"
-                                                            value="{{ $card->header_text_color }}"
+                                                            value="{{ old('header_text_color') ?? $card->header_text_color }}"
                                                             class="form-control @error('header_text_color') is-invalid @enderror"
                                                             tabindex="{{ $tabindex++ }}" required>
                                                     </label>
@@ -678,7 +678,7 @@
                                                 <input type="text" placeholder="ads heading" name="text"
                                                     id="text" data-preview="preview_name" data-concat="preview_name"
                                                     class="form-control cin preview_name  @error('text') is-invalid @enderror"
-                                                    tabindex="{{ $tabindex++ }}" value="{{ $card->title }}">
+                                                    tabindex="{{ $tabindex++ }}" value="{{ old('text') ?? $card->title }}">
                                                 @if ($errors->has('text'))
                                                     <span
                                                         class="help-block text-danger">{{ $errors->first('text') }}</span>
@@ -693,8 +693,11 @@
                                                     id="header_font_family">
                                                     @foreach ($font_family as $font_)
                                                         <option value="{{ $font_ }}"
-                                                            {{ $font_ == $card->header_font_family ? 'selected' : '' }}>
-                                                            {{ $font_ }}</option>
+                                                        @if(old('header_font_family'))
+                                                            {{ $font_ == old('header_font_family') ? 'selected' : '' }}
+                                                        @else
+                                                            {{ $font_ == $card->header_font_family ? 'selected' : '' }}
+                                                        @endif>{{ $font_ }}</option>
                                                     @endforeach
                                                 </select>
                                                 @if ($errors->has('header_font_family'))
@@ -851,7 +854,7 @@
                                                         data-type="email" placeholder="your email" id="email"
                                                         class="social_item_in form-control cin @error('email') is-invalid @enderror"
                                                         data-preview="preview_email" tabindex="{{ $tabindex++ }}"
-                                                        value="{{ $card->email }}" required>
+                                                        value="{{ old('email') ?? $card->email }}" required>
                                                     @if ($errors->has('email'))
                                                         <span
                                                             class="help-block text-danger">{{ $errors->first('email') }}</span>
@@ -864,7 +867,7 @@
                                                     <input type="url" name="website" data-type="website"
                                                         placeholder="your website" id="website"
                                                         class="social_item_in form-control cin @error('website') is-invalid @enderror cin"
-                                                        tabindex="{{ $tabindex++ }}" value="{{ $card->website }}">
+                                                        tabindex="{{ $tabindex++ }}" value="{{ old('website') ?? $card->website }}">
                                                     @if ($errors->has('website'))
                                                         <span
                                                             class="help-block text-danger">{{ $errors->first('website') }}</span>
@@ -886,7 +889,7 @@
                                                         placeholder="facebook profile link" id="facebook"
                                                         class="social_item_in form-control @error('facebook') is-invalid @enderror"
                                                         tabindex="{{ $tabindex++ }}"
-                                                        value="{{ getInputValue($card->id, 'facebook') }}">
+                                                        value="{{ old('facebook') ?? getInputValue($card->id, 'facebook') }}">
                                                     @if ($errors->has('facebook'))
                                                         <span
                                                             class="help-block text-danger">{{ $errors->first('facebook') }}</span>
@@ -908,7 +911,7 @@
                                                         data-type="instagram" placeholder="instagram profile link"
                                                         class="social_item_in form-control @error('instagram') is-invalid @enderror"
                                                         tabindex="{{ $tabindex++ }}"
-                                                        value="{{ getInputValue($card->id, 'instagram') }}">
+                                                        value="{{ old('instagram') ?? getInputValue($card->id, 'instagram') }}">
                                                     @if ($errors->has('instagram'))
                                                         <span
                                                             class="help-block text-danger">{{ $errors->first('instagram') }}</span>
@@ -920,7 +923,7 @@
                                                     <label for="cashapp" class="form-label">CashApp</label>
                                                     <input type="text" name="cashapp" data-preview="preview_cashapp"
                                                         id="cashapp" placeholder="cashapp username"
-                                                        value="{{ $card->cashapp }}"
+                                                        value="{{ old('cashapp') ?? $card->cashapp }}"
                                                         class="form-control cin  @error('cashapp') is-invalid @enderror"
                                                         tabindex="{{ $tabindex++ }}">
                                                     @if ($errors->has('cashapp'))
@@ -935,7 +938,7 @@
                                                     <label for="location" class="form-label">Location</label>
                                                     <input type="url" name="location" data-preview="preview_location"
                                                         id="location" placeholder="location"
-                                                        value="{{ $card->location }}"
+                                                        value="{{ old('location') ?? $card->location }}"
                                                         class="social_item_in form-control cin  @error('location') is-invalid @enderror"
                                                         tabindex="{{ $tabindex++ }}" data-attr="" data-type="map">
                                                     @if ($errors->has('location'))
@@ -957,28 +960,30 @@
                                                     @endif
                                                 </div>
                                             </div>
+
                                             <div class="col-12">
-                                                <div class="mb-3 form-input position-relative">
-                                                    <label for="personalized_link" class="form-label">Personalized
-                                                        Link</label>
-                                                    @if (isFreePlan(Auth::user()->id))
-                                                        <a href="javascript:void(0)" class="overlay-btn upgrade-plan"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-custom-class="custom-tooltip"
-                                                            title="Upgrade to a Premium account to access personalized link"></a>
-                                                    @endif
-                                                    <input type="text" placeholder="Personalized Link"
-                                                        name="personalized_link" id="personalized_link"
-                                                        class="form-control @error('gallery_type') is-invalid @enderror"
-                                                        value="{{ $card_url }}" tabindex="{{ $tabindex++ }}"
-                                                        {{ isFreePlan(Auth::user()->id) == true ? 'disabled' : '' }}>
+                                                <div class="mb-3">
+                                                    <label class="form-label required">{{ __('Personalized Link') }}</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"> {{ URL::to('/') }} </span>
+                                                        <input type="text" class="form-control"
+                                                            name="personalized_link"
+                                                            placeholder="{{ __('Personalized Link') }}"
+                                                            autocomplete="off"
+                                                            id="personalized_link"
+                                                            minlength="3"
+                                                            value="{{ old('personalized_link') ?? $card->card_url }}"
+                                                            {{ $plan_details->personalized_link != '1'  ? 'disabled' : ''}}
+                                                              />
+                                                    </div>
                                                     @if ($errors->has('personalized_link'))
-                                                        <span
-                                                            class="help-block text-danger">{{ $errors->first('personalized_link') }}</span>
+                                                        <span class="help-block text-danger">{{ $errors->first('personalized_link') }}</span>
                                                     @endif
-                                                    <span id="status"></span>
+                                                    <p id="status"></p>
                                                 </div>
                                             </div>
+
+
                                             <div class="col-12">
                                                 <div class="mb-3 form-input position-relative">
                                                     <label for="footer_text" class="form-label">Copyright</label>
@@ -991,18 +996,16 @@
                                                     <input type="text" data-preview="preview_copyright"
                                                         name="footer_text" placeholder="copyright" id="footer_text"
                                                         class="form-control cin @error('footer_text') is-invalid @enderror"
-                                                        tabindex="{{ $tabindex++ }}" value="{{ $footer_text }}"
+                                                        tabindex="{{ $tabindex++ }}" value="{{ old('footer_text') ?? $footer_text }}"
                                                         {{ isFreePlan(Auth::user()->id) == true ? 'disabled' : '' }}>
                                                     @if ($errors->has('footer_text'))
-                                                        <span
-                                                            class="help-block text-danger">{{ $errors->first('footer_text') }}</span>
+                                                        <span class="help-block text-danger">{{ $errors->first('footer_text') }}</span>
                                                     @endif
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="mb-3">
-                                            <button type="submit" class="btn btn-primary submitBtn">Update Biz
-                                                Ad</button>
+                                            <button type="submit" class="btn btn-primary submitBtn">Update Biz Ad</button>
                                         </div>
                                 </form>
                             </div>
@@ -1051,6 +1054,8 @@
         </div>
     </div>
     @include('user.cards._upgrade_plan_modal')
+    @endsection
+
     @push('custom-js')
         <script type="text/javascript" src="{{ asset('assets/js/slim.kickstart.min.js') }}"></script>
         <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
@@ -1207,9 +1212,9 @@
                     }).done(function(res) {
                         console.log(res);
                         if (res.status == 'success') {
-                            $('#status').html("<span class='badge mt-2 bg-green'>{{ __('Available') }}</span>");
+                            $('#status').html("<span class='badge mt-2 bg-green'>{{ __('Personalized link is available') }}</span>");
                         } else {
-                            $('#status').html("<span class='badge mt-2 bg-red'>{{ __('Not available') }}</span>");
+                            $('#status').html("<span class='badge mt-2 bg-red'>{{ __('Personalized link is not available') }}</span>");
                         }
                     });
                 } else {
@@ -1495,8 +1500,7 @@
     })
 
     $(function() {
-        var
-            max_file_number = <?php echo $plan_details->no_of_galleries; ?>,
+        var max_file_number = `{{ $plan_details->no_of_galleries }}`,
             $form = $('form'),
             $file_upload = $('#gallery', $form),
             $button = $('.submit', $form);
@@ -1513,6 +1517,9 @@
                     }
                 });
             });
-        </script>
-    @endpush
-@endsection
+
+
+    </script>
+
+@endpush
+

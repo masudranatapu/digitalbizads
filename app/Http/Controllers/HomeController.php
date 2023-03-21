@@ -139,8 +139,6 @@ class HomeController extends Controller
                 ->where('card_status', 'activated')
                 ->where('user_id', $cardinfo->user_id)->first();
 
-
-
             if ($cardinfo->card_type == "vcard") {
                 $cardinfo->gallery = Gallery::where('card_id', $cardinfo->id)->get();
                 $cardinfo->contacts = BusinessField::where('card_id', $cardinfo->id)->get();
@@ -259,89 +257,7 @@ class HomeController extends Controller
     }
 
 
-    // public function downloadVcard(Request $request, $id)
-    // {
-    //     $photo = '';
-    //     $business_card = BusinessCard::query()->where('card_id', $id)->first();
-    //     if ($business_card == null) {
-    //         return view('errors.404');
-    //     } else {
-    //         $card = DB::table('business_cards')->select(
-    //             'business_cards.id',
-    //             'business_cards.profile',
-    //             'business_cards.phone_number',
-    //             'users.dob'
-    //         )
-    //             ->where('business_cards.card_id', $id)
-    //             ->leftJoin('users', 'business_cards.user_id', '=', 'users.id')
-    //             ->first();
-    //         $contacts = DB::table('business_fields as bf')
-    //             ->select('bf.type', 'bf.label', 'bf.icon_image', 'bf.content', 'bf.position')
-    //             ->where('bf.card_id', $card->id)
-    //             ->where('bf.status', 1)
-    //             ->orderBy('bf.position', 'ASC')
-    //             ->get();
-    //         $vcard = new VCard();
-    //         if (!empty($card->card_url)) {
-    //             $vcard_url = URL::to($card->card_url);
-    //             $vcard->addURL($vcard_url);
-    //         }
-    //         // define variables
-    //         if (!empty($card->title2)) {
-    //             $lastname = $card->title2;
-    //         } else {
-    //             $lastname = '';
-    //         }
-    //         $firstname = $card->title;
-    //         $additional = '';
-    //         $prefix = '';
-    //         $suffix = '';
-    //         $url = $card->company_websitelink;
-    //         $vcard->addName($lastname, $firstname, $additional, $prefix, $suffix);
-    //         $vcard->addEmail($card->card_email ?? Auth::user()->email);
 
-    //         if (!empty($card->bio)) {
-    //             $vcard->addNote($card->bio);
-    //         }
-    //         if (!empty($card->phone_number)) {
-    //             $vcard->addPhoneNumber($card->phone_number, 'HOME');
-    //         }
-
-    //         if ($card->designation) {
-    //             $vcard->addRole($card->designation);
-    //             $vcard->addJobtitle($card->designation);
-    //         }
-    //         if (!empty($card->company_name)) {
-    //             $vcard->addCompany($card->company_name);
-    //         }
-    //         if (!empty($card->dob)) {
-    //             $vcard->addBirthday($card->dob);
-    //         }
-
-    //         if (!empty($card->profile) && file_exists(public_path($card->profile))) {
-    //             $profile = str_replace(' ', '%20', public_path($card->profile));
-    //             $vcard->addPhoto($profile);
-    //         }
-    //         // if(!empty($card->logo) && file_exists(public_path($card->logo))){
-    //         //     $logo = str_replace(' ', '%20', public_path($card->logo));
-    //         //     $vcard->addLogo($logo);
-    //         // }
-
-    //         if (!empty($contacts) && count($contacts) > 0) {
-    //             //link,mail,mobile,number,text,username,file,address,app
-    //             foreach ($contacts as $key => $contact) {
-    //                 if ($contact->type == 'mail') {
-    //                     $vcard->addEmail($contact->content, $contact->label);
-    //                 } elseif ($contact->type == 'username') {
-    //                     $vcard->addURL($contact->content, $contact->label);
-    //                 }
-    //             }
-    //         }
-
-    //         // DB::table('business_cards')->where('card_id', $id)->increment('total_vcf_download', 1);
-    //         return Response::make($vcard->getOutput(), 200, $vcard->getHeaders(true));
-    //     }
-    // }
     public function downloadVcard(Request $request, $id)
     {
         $business_card = BusinessCard::select('business_cards.*', 'users.name', 'users.email')

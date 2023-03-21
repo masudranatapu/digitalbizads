@@ -146,17 +146,6 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                         {{ __('Create New DigitalBizAds Card') }}
                     </h2>
                 </div>
-                <!-- Page title actions -->
-                <div class="col-auto ms-auto d-print-none">
-                    <div class="dropdown">
-                        <a type="button" class="btn btn-primary" href="{{ route('user.stores') }}">
-
-                            <i class="fas fa-arrow-left"></i>&nbsp;
-                            {{ __('Back') }}
-
-                        </a>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -713,26 +702,12 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                                 class="form-control cin @error('cashapp') is-invalid @enderror"
                                                 tabindex="{{ $tabindex++ }}">
                                             @if ($errors->has('cashapp'))
-                                                <span class="help-block text-danger">{{ $errors->first('cashapp') }}</span>
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('cashapp') }}</span>
                                             @endif
                                         </div>
                                     </div>
-                                    @if ($plan_details->personalized_link == '1')
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="personalized_link" class="form-label">Personalized Link <span class="text-danger">*</span></label>
-                                            <input type="text" placeholder="Personalized Link" name="personalized_link"
-                                                id="personalized_link"
-                                                class="form-control @error('personalized_link') is-invalid @enderror"
-                                                value="{{ old('personalized_link') }}" tabindex="{{ $tabindex++ }}">
-                                                @if ($errors->has('personalized_link'))
-                                                <span class="help-block text-danger">{{ $errors->first('personalized_link')
-                                                    }}</span>
-                                                @endif
-                                            <span id="status"></span>
-                                        </div>
-                                    </div>
-                                    @endif
+
                                     {{-- <div class="col-12">
                                         <div class="mb-3 form-input">
                                             <label for="footer_text" class="form-label">Copyright</label>
@@ -775,28 +750,30 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                         </div>
                                     </div>
 
-                                    {{-- <div class="col-12">
-                                        <div class="mb-3 form-input position-relative">
-                                            <label for="personalized_link" class="form-label">Personalized Link</label>
-                                            @if (isFreePlan(Auth::user()->id))
-                                                <a href="javascript:void(0)" class="overlay-btn upgrade-plan"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-custom-class="custom-tooltip"
-                                                    title="Upgrade to a Premium account to access personalized link"></a>
-                                            @endif
-                                            <input type="text" placeholder="Personalized Link"
-                                                name="personalized_link" id="personalized_link"
-                                                class="form-control @error('personalized_link') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}"
-                                                {{ isFreePlan(Auth::user()->id) == true ? 'disabled' : '' }}>
+                                    @if($plan_details->personalized_link == '1')
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <label class="form-label required">{{ __('Personalized Link') }}</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text"> {{ URL::to('/') }} </span>
+                                                <input type="text" class="form-control"
+                                                    name="personalized_link"
+                                                    placeholder="{{ __('Personalized Link') }}"
+                                                    autocomplete="off"
+                                                    id="personalized_link"
+                                                    minlength="3"
+                                                    value="{{ old('personalized_link') }}" />
+                                            </div>
                                             @if ($errors->has('personalized_link'))
                                                 <span class="help-block text-danger">{{ $errors->first('personalized_link') }}</span>
                                             @endif
-                                            <span id="status"></span>
+                                            <p id="status"></p>
                                         </div>
-                                    </div> --}}
+                                    </div>
+                                    @endif
 
-                                    {{-- @endif --}}
+
+
                                     <div class="col-12">
                                         <div class="mb-3 form-input position-relative">
                                             <label for="footer_text" class="form-label">Copyright</label>
@@ -861,6 +838,8 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
     </div>
 </div>
 @include('user.cards._upgrade_plan_modal')
+@endsection
+
 @push('custom-js')
     {{-- <script type="text/javascript" src="{{ asset('assets/js/slim.kickstart.min.js') }}"></script> --}}
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
@@ -999,7 +978,6 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
             "use strict";
             var plink = $('#personalized_link').val();
             if (plink.length > 2) {
-
                 $.ajax({
                     url: "{{ route('user.check.link') }}",
                     method: 'POST',
@@ -1009,9 +987,9 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                     },
                 }).done(function(res) {
                     if (res.status == 'success') {
-                        $('#status').html("<span class='badge mt-2 bg-green'>{{ __('Available') }}</span>");
+                        $('#status').html("<span class='text-success'>{{ __('Personalized link is available') }}</span>");
                     } else {
-                        $('#status').html("<span class='badge mt-2 bg-red'>{{ __('Not available') }}</span>");
+                        $('#status').html("<span class='text-danger'>{{ __('Personalized link is not available') }}</span>");
                     }
                 });
             } else {
@@ -1111,7 +1089,7 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
         });
     });
 
-    $('#personalized_link').on('keyup keydown paste', function() {
+    $('#personalized_link').on('input', function() {
         var str = $(this).val();
         str = str.replace(/^\s+|\s+$/g, ''); // trim
         str = str.toLowerCase();
@@ -1124,6 +1102,7 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
         $("#personalized_link").val(str);
         return str;
     })
+
     $('#video_url').on('change', function() {
         var youtube_url = $(this).val();
         var remove_after = youtube_url.split('&')[0];
@@ -1208,12 +1187,12 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
 
 
     $(document).on('input', '#personalized_link', function(e) {
+
         checkLink();
     })
 
     $(function() {
-        var
-            max_file_number = <?php echo $plan_details->no_of_galleries; ?>,
+        var max_file_number =  `{{ $plan_details->no_of_galleries }}`,
             $form = $('form'),
             $file_upload = $('#gallery', $form),
             $button = $('.submit', $form);
@@ -1230,4 +1209,4 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
         });
     </script>
 @endpush
-@endsection
+

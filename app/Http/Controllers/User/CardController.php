@@ -154,7 +154,7 @@ class CardController extends Controller
             return back()->withInput();
         }
         $user_details = User::where('user_id', Auth::user()->user_id)->first();
-        $plan_details = json_decode($user_details->plan_details, true);
+        $plan_details = json_decode($user_details->plan_details);
         if ($request->gallery_type == 'videosource') {
             $validator = Validator::make($request->all(), [
                 'video' => 'required|mimetypes:video/x-ms-asf,video/x-flv,video/mp4,application/x-mpegURL,video/MP2T,video/3gpp,video/quicktime,video/x-msvideo,video/x-ms-wmv,video/avi | max:50000'
@@ -186,7 +186,7 @@ class CardController extends Controller
         }
         $cardId = uniqid();
 
-        if ($plan_details['personalized_link'] == '1') {
+        if ($plan_details->personalized_link == '1') {
             if ($request->personalized_link) {
                 $personalized_link = $request->personalized_link;
             } else {
@@ -197,13 +197,13 @@ class CardController extends Controller
         }
         $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
         $user_details = User::where('user_id', Auth::user()->user_id)->first();
-        $plan_details = json_decode($user_details->plan_details, true);
+        $plan_details = json_decode($user_details->plan_details);
         $card_url = strtolower(preg_replace('/\s+/', '-', $personalized_link));
         $current_card = BusinessCard::where('card_url', $card_url)->count();
-        if ($plan_details['no_of_vcards'] == 999) {
+        if ($plan_details->no_of_vcards == 999) {
             $no_cards = 999999;
         } else {
-            $no_cards = $plan_details['no_of_vcards'];
+            $no_cards = $plan_details->no_of_vcards;
         }
         //     if ($current_card == 0) {
         //         // Checking, If the user plan allowed card creation is less than created card.
@@ -364,18 +364,23 @@ class CardController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $checkCardUrl = BusinessCard::where('card_url', $request->personalized_link)->whereNotIn('id', [$id])->first();
-        if (!empty($checkCardUrl)) {
-            alert()->error(trans('Personalized link must be unique'));
-            return back()->withInput();
+        $user_details = User::where('user_id', Auth::user()->user_id)->first();
+        $plan_details = json_decode($user_details->plan_details);
+
+        if ($plan_details->personalized_link == '1'){
+            $checkCardUrl = BusinessCard::where('card_url', $request->personalized_link)->whereNotIn('id', [$id])->first();
+            if (!empty($checkCardUrl)) {
+                alert()->error(trans('Personalized link must be unique'));
+                return back()->withInput();
+            }
         }
+
 
         if (!empty($request->personalized_link)) {
             $personalized_link = $request->personalized_link;
             $card_url = strtolower(preg_replace('/\s+/', '-', $personalized_link));
         }
-        $user_details = User::where('user_id', Auth::user()->user_id)->first();
-        $plan_details = json_decode($user_details->plan_details, true);
+
         DB::beginTransaction();
         try {
             $card = BusinessCard::findOrFail($id);
@@ -383,7 +388,7 @@ class CardController extends Controller
             $card->theme_id = $request->theme_id;
             $card->theme_color = $request->theme_color;
             $card->card_lang = 'en';
-            if ($plan_details['personalized_link'] == '1' && !empty($card_url)) {
+            if ($plan_details->personalized_link == '1' && !empty($card_url)) {
                 $card->card_url = $card_url;
             } else {
                 $card->card_url = $card->card_id;
@@ -617,7 +622,7 @@ class CardController extends Controller
 
                     // If branding enabled, then show app name.
 
-                    if ($plan_details['hide_branding'] == "1") {
+                    if ($plan_details->hide_branding == "1") {
                         $shareContent = str_replace("{ appName }", $business_name, $shareContent);
                     } else {
                         $shareContent = str_replace("{ appName }", $config[0]->config_value, $shareContent);
@@ -685,7 +690,7 @@ class CardController extends Controller
 
                     // If branding enabled, then show app name.
 
-                    if ($plan_details['hide_branding'] == "1") {
+                    if ($plan_details->hide_branding == "1") {
                         $shareContent = str_replace("{ appName }", $business_name, $shareContent);
                     } else {
                         $shareContent = str_replace("{ appName }", $config[0]->config_value, $shareContent);
@@ -759,7 +764,7 @@ class CardController extends Controller
         }
         $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
         $user_details = User::where('user_id', Auth::user()->user_id)->first();
-        $plan_details = json_decode($user_details->plan_details, true);
+        $plan_details = json_decode($user_details->plan_details);
 
         $logo = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->logo->getClientOriginalName()) . '.' . $request->logo->extension();
         $cover = '/backend/img/vCards/' . 'IMG-' . uniqid() . '-' . str_replace(' ', '-', $request->cover->getClientOriginalName()) . '.' . $request->cover->extension();
@@ -771,10 +776,10 @@ class CardController extends Controller
 
         $current_card = BusinessCard::where('card_url', $card_url)->count();
 
-        if ($plan_details['no_of_vcards'] == 999) {
+        if ($plan_details->no_of_vcards == 999) {
             $no_cards = 999999;
         } else {
-            $no_cards = $plan_details['no_of_vcards'];
+            $no_cards = $plan_details->no_of_vcards;
         }
 
         if ($current_card == 0) {

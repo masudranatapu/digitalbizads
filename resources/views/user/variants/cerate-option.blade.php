@@ -40,8 +40,7 @@
             <div class="container-xl">
                 <div class="row row-deck row-cards">
                     <div class="col-sm-12 col-lg-12">
-                        <form
-                            action="{{ route('user.product.variants.option.store', ['product_id' => $product_id, 'variant' => $variant]) }}"
+                        <form action="{{ route('user.product.variants.option.store', ['product_id' => $product_id, 'variant' => $variant]) }}"
                             method="post" enctype="multipart/form-data" class="card">
                             @csrf
                             <div class="card-body">
