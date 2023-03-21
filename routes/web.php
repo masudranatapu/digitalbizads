@@ -338,14 +338,19 @@ Route::group(['middleware' => 'Installer'], function () {
             Route::prefix('/setting')->name('setting.')->group(function () {
                 Route::get('/payment', [UserSettingsController::class, 'payment'])->name('payment');
                 Route::post('/paymentUpdate', [UserSettingsController::class, 'paymentUpdate'])->name('payment.update');
-                Route::get('/tax', [UserSettingsController::class, 'tax'])->name('tax');
-                Route::get('/tax/create', [UserSettingsController::class, 'taxCreate'])->name('tax.create');
-                Route::post('/tax/store', [UserSettingsController::class, 'taxStore'])->name('tax.store');
-                Route::get('/tax/edit/{state}', [UserSettingsController::class, 'taxEdit'])->name('tax.edit');
-                Route::post('/tax/update/{state}', [UserSettingsController::class, 'taxUpdate'])->name('tax.update');
-                Route::get('/tax/status/{state}', [UserSettingsController::class, 'taxStatus'])->name('tax.status');
-                Route::get('/tax/delete/{state}', [UserSettingsController::class, 'taxDelete'])->name('tax.delete');
+
             });
+
+            Route::prefix('/state')->name('state.')->group(function () {
+                Route::get('/', [StateController::class, 'index'])->name('index');
+                Route::get('/create', [StateController::class, 'taxCreate'])->name('create');
+                Route::post('/store', [StateController::class, 'taxStore'])->name('store');
+                Route::get('/{id}/edit', [StateController::class, 'taxEdit'])->name('edit');
+                Route::post('/{id}/update', [StateController::class, 'taxUpdate'])->name('update');
+                Route::get('/{id}/status', [StateController::class, 'taxStatus'])->name('status');
+                Route::get('/{id}/delete', [StateController::class, 'taxDelete'])->name('delete');
+            });
+
 
             Route::prefix('/shipping_area')->name('shipping_area.')->group(function () {
 
@@ -359,6 +364,7 @@ Route::group(['middleware' => 'Installer'], function () {
 
 
         });
+
 
         // Transactions
         Route::get('transactions', [userTransactions::class, 'indexTransactions'])->name('transactions');

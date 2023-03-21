@@ -179,8 +179,8 @@
                             <a href="{{ route('user.setting.payment') }}"
                                 class="dropdown-item @if (request()->routeIs('user.setting.payment')) active @endif">{{ __('Payment Settings') }}</a>
 
-                            <a href="{{ route('user.setting.tax') }}"
-                                class="dropdown-item @if (request()->routeIs('user.setting.tax*')) active @endif">{{ __('Sate & Tax') }}</a>
+                            <a href="{{ route('user.state.index') }}"
+                                class="dropdown-item @if (request()->routeIs('user.state*')) active @endif">{{ __('Sate & Tax') }}</a>
 
                             <a href="{{ route('user.shipping_area.index') }}"
                                 class="dropdown-item @if (request()->routeIs('user.shipping_area*')) active @endif">{{ __('Shipping Area & cost') }}</a>
