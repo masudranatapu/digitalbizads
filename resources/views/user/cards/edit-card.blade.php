@@ -1,5 +1,5 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
-@section('css')
+@push('css')
     <link href="{{ asset('assets/css/image-uploader.min.css') }}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/croppie.css') }}" />
@@ -34,7 +34,7 @@
             z-index: 999;
         }
     </style>
-@endsection
+@endpush
 @section('content')
     <?php
     $tabindex = 1;

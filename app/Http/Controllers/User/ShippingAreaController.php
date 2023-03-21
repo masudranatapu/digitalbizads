@@ -78,6 +78,7 @@ class ShippingAreaController extends Controller
         $shippingarea->delete();
 
         alert()->success(trans('Shipping area successfully delete'));
+
         return redirect()->back();
 
     }

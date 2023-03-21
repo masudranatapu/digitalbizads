@@ -1,10 +1,10 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
 
-@section('css')
+@push('css')
 <link rel="stylesheet" href="{{ asset('backend/css/lightgallery.min.css') }}" />
 <script src="{{ asset('backend/js/lightgallery.min.js') }}"></script>
 <script src="{{ asset('backend/js/clipboard.min.js') }}"></script>
-@endsection
+@endpush
 @section('content')
 <div class="page-wrapper">
     <div class="container-xl">

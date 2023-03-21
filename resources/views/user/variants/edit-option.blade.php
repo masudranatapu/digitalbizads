@@ -1,9 +1,9 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
 @section('store-nav', 'active')
-@section('css')
+@push('css')
     <link href="{{ asset('backend/css/dropzone.min.css') }}" rel="stylesheet">
     <script src="{{ asset('backend/js/dropzone.min.js') }}"></script>
-@endsection
+@endpush
 
 @section('content')
     <div class="page-wrapper">

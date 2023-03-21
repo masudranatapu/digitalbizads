@@ -4,7 +4,7 @@
     Create New DigitalBizAds Card
 @endsection
 @section('content')
-@section('css')
+@push('css')
     <link href="{{ asset('assets/css/image-uploader.min.css') }}" rel="stylesheet">
     {{--
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" /> --}}
@@ -124,7 +124,7 @@
             }
         }
     </style>
-@endsection
+@endpush
 <?php
 $tabindex = 1;
 $android = stripos($_SERVER['HTTP_USER_AGENT'], 'android');

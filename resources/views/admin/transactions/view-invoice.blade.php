@@ -1,6 +1,6 @@
 @extends('layouts.admin', ['header' => true, 'nav' => true, 'demo' => true])
 
-@section('css')
+@push('css')
 <script src="{{ asset('js/html2pdf.bundle.min.js')}}"></script>
 <script>
     function generatePDF() {
@@ -11,7 +11,7 @@
 		.save();
     }
 </script>
-@endsection
+@endpush
 
 @section('content')
 <div class="page-wrapper">
@@ -113,7 +113,7 @@
                                         {{ __($transaction->billing_details['to_vat_number']) }}</p>
                                     @endif
                                 </address>
-                                <h3>{{ __('INVOICE DATE') }} : 
+                                <h3>{{ __('INVOICE DATE') }} :
                                     {{ date('d-m-Y h:i A', strtotime($transaction->transaction_date)) }}</h3>
                             </div>
                             @if ($transaction->invoice_number > 0)

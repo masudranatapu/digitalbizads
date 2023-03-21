@@ -1,9 +1,9 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
 
-@section('css')
+@push('css')
 <link rel="stylesheet" href="{{ asset('css/all.css') }}" />
 <link rel="stylesheet" href="{{ asset('css/bootstrap-iconpicker.min.css') }}" />
-@endsection
+@endpush
 @section('content')
 <div class="page-wrapper">
     <div class="container-xl">
