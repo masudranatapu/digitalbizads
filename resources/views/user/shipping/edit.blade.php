@@ -68,39 +68,34 @@
                                     <div class="card-body">
                                         <div class="row row-deck row-cards">
                                             <div class="col-sm-12 col-lg-12">
-                                                <div class="card">
+                                                <form action="{{ route('user.shipping_area.update', $shippingarea->id) }}" method="POST">
+                                                    @csrf
                                                     <div class="card-body">
-                                                        <form action="{{ route('user.shipping_area.update', $shippingarea->id) }}" method="POST">
-                                                            @csrf
-                                                            <div class="card-body">
-                                                                <div class="row">
-                                                                    <div class="col-md-4">
-                                                                        <label for="">Area Name <span class="text-danger">*</span></label>
-                                                                        <input type="text" class="form-control @error('name') is-invalid @enderror" required value="{{ $shippingarea->name }}" name="name" placeholder="Area name" autocomplete="off">
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <label for="">Amount </label>
-                                                                        <input type="number" min="0"  class="form-control @error('amount') is-invalid @enderror" required value="{{ $shippingarea->amount }}" name="amount"  placeholder="Amount" autocomplete="off">
-                                                                    </div>
-                                                                    <div class="col-md-4">
-                                                                        <label for="">Status </label>
-                                                                        <select name="status" class="form-control @error('status') is-invalid @enderror" required>
-                                                                            <option class="d-none">Active</option>
-                                                                            <option value="1" @if($shippingarea->status == 1) selected @endif>Active</option>
-                                                                            <option value="0" @if($shippingarea->status == 0) selected @endif>Inactive</option>
-                                                                        </select>
-                                                                    </div>
-                                                                    <div class="col-md-12 text-center mt-4">
-                                                                        <button type="submit" class="btn btn-info">Update</button>
-                                                                    </div>
-                                                                </div>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <label for="">Area Name <span class="text-danger">*</span></label>
+                                                                <input type="text" class="form-control @error('name') is-invalid @enderror" required value="{{ $shippingarea->name }}" name="name" placeholder="Area name" autocomplete="off">
                                                             </div>
-                                                        </form>
+                                                            <div class="col-md-4">
+                                                                <label for="">Amount </label>
+                                                                <input type="number" min="0"  class="form-control @error('amount') is-invalid @enderror" required value="{{ $shippingarea->amount }}" name="amount"  placeholder="Amount" autocomplete="off">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label for="">Status </label>
+                                                                <select name="status" class="form-control @error('status') is-invalid @enderror" required>
+                                                                    <option class="d-none">Active</option>
+                                                                    <option value="1" @if($shippingarea->status == 1) selected @endif>Active</option>
+                                                                    <option value="0" @if($shippingarea->status == 0) selected @endif>Inactive</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-12 text-center mt-4">
+                                                                <button type="submit" class="btn btn-info">Update</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </form>
                                             </div>
                                         </div>
-
                                     </div>
                                     @include('user.includes.footer')
                                 </div>
