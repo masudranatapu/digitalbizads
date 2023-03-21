@@ -36,6 +36,7 @@ use App\Http\Controllers\User\AccountController as userAccount;
 use App\Http\Controllers\User\DashboardController as userDashboard;
 use App\Http\Controllers\User\TransactionsController as userTransactions;
 use App\Http\Controllers\User\SettingsController as UserSettingsController;
+use App\Http\Controllers\User\ShippingAreaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -324,7 +325,6 @@ Route::group(['middleware' => 'Installer'], function () {
 
 
 
-
             //Addtional Tootls -> QR Maker
             Route::get('tools/qr-maker', [AdditionalController::class, 'qrMaker'])->name('qr-maker');
             Route::get('tools/whois-lookup', [AdditionalController::class, 'whoisLookup'])->name('whois-lookup');
@@ -333,9 +333,6 @@ Route::group(['middleware' => 'Installer'], function () {
             Route::post('tools/dns-lookup', [AdditionalController::class, 'resultDnsLookup'])->name('result.dns-lookup');
             Route::get('tools/ip-lookup', [AdditionalController::class, 'ipLookup'])->name('ip-lookup');
             Route::post('tools/ip-lookup', [AdditionalController::class, 'resultIpLookup'])->name('result.ip-lookup');
-
-
-
             Route::prefix('/setting')->name('setting.')->group(function () {
                 Route::get('/payment', [UserSettingsController::class, 'payment'])->name('payment');
                 Route::post('/paymentUpdate', [UserSettingsController::class, 'paymentUpdate'])->name('payment.update');
@@ -352,18 +349,14 @@ Route::group(['middleware' => 'Installer'], function () {
                 Route::get('/{id}/delete', [StateController::class, 'delete'])->name('delete');
             });
 
-
             Route::prefix('/shipping_area')->name('shipping_area.')->group(function () {
-
                 Route::get('/', [ShippingAreaController::class, 'index'])->name('index');
                 Route::get('/create', [ShippingAreaController::class, 'create'])->name('create');
                 Route::post('store', [ShippingAreaController::class, 'store'])->name('store');
                 Route::get('/{id}/edit', [ShippingAreaController::class, 'edit'])->name('edit');
-                Route::post('/{id}/update', [ShippingAreaController::class, 'update'])->name('tupdate');
+                Route::post('/{id}/update', [ShippingAreaController::class, 'update'])->name('update');
                 Route::get('/{id}/delete', [ShippingAreaController::class, 'delete'])->name('delete');
             });
-
-
         });
 
 
