@@ -49,10 +49,10 @@ class TransactionsController extends Controller
         return view('user.billing.index', compact('user', 'settings'));
     }
 
-    public function updateBilling(Request $request) 
+    public function updateBilling(Request $request)
     {
         $id = $request->plan_id;
-        
+
         $selected_plan = Plan::where('plan_id', $id)->where('status', 1)->first();
         $config = DB::table('config')->get();
 

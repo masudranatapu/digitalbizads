@@ -99,7 +99,8 @@
                     </div>
                     {{-- mobile  --}}
                     @if (!empty($shippingarea) && $shippingarea->count() > 0)
-                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none">
+                        <div
+                            class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none">
                             <div class="row">
                                 @foreach ($shippingarea as $row)
                                     <div class="">
