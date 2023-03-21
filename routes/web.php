@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Payment\OfflineController;
 use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\User\AdditionalController;
+use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\Payment\RazorpayController;
 use App\Http\Controllers\Admin\TransactionsController;
 use App\Http\Controllers\Admin\PaymentMethodController;
@@ -320,6 +321,10 @@ Route::group(['middleware' => 'Installer'], function () {
             Route::get('variants/{option}/edit', [VariantController::class, 'optionedit'])->name('variants.option.edit');
             Route::post('variants/{option}/update', [VariantController::class, 'optionUpdate'])->name('variants.option.update');
             Route::get('variants/{option}/delete', [VariantController::class, 'optionDelete'])->name('variants.option.delete');
+
+
+
+            Route::get('{card_id}/orders', [OrderController::class, 'index'])->name('order.index');
 
 
 
