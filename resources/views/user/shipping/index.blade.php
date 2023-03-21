@@ -84,7 +84,7 @@
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>{{ __('No DigitalBizAds Shipping area found.') }}</td>
+                                                <td>{{ __('No DigitalBizAds Shipping area found') }}</td>
                                                 <td></td>
                                                 <td></td>
                                             </tr>
