@@ -14,7 +14,8 @@ class ShippingAreaController extends Controller
     //
     public function index()
     {
-        $shippingarea = ShippingCost::where('user_id', Auth::user()->id)->orderBy('name', 'asc')->latest()->get();
+        $user_id =  Auth::user()->id;
+        $shippingarea = ShippingCost::where('user_id',$user_id)->orderBy('name', 'asc')->latest()->get();
         $settings = Setting::where('status', 1)->first();
         return view('user.shipping.index', compact('shippingarea', 'settings'));
     }
@@ -32,9 +33,9 @@ class ShippingAreaController extends Controller
             'amount' => 'required',
             'status' => 'required',
         ]);
-
+        $user_id =  Auth::user()->id;
         ShippingCost::insert([
-            'user_id' => Auth::user()->id,
+            'user_id' => $user_id,
             'name' => $request->name,
             'amount' => $request->amount,
             'status' => $request->status,
@@ -47,8 +48,9 @@ class ShippingAreaController extends Controller
 
     public function edit($id)
     {
+        $user_id =  Auth::user()->id;
         $settings = Setting::where('status', 1)->first();
-        $shippingarea = ShippingCost::where('id', $id)->first();
+        $shippingarea = ShippingCost::where('user_id', $user_id)->where('id', $id)->first();
         return view('user.shipping.edit', compact('shippingarea', 'settings'));
     }
 
@@ -60,8 +62,10 @@ class ShippingAreaController extends Controller
             'status' => 'required',
         ]);
 
-        ShippingCost::where('id', $id)->update([
-            'user_id' => Auth::user()->id,
+        $user_id =  Auth::user()->id;
+
+        ShippingCost::where('user_id', $user_id)->where('id', $id)->update([
+            'user_id' => $user_id,
             'name' => $request->name,
             'amount' => $request->amount,
             'status' => $request->status,
@@ -74,7 +78,8 @@ class ShippingAreaController extends Controller
 
     public function delete($id)
     {
-        $shippingarea = ShippingCost::where('id', $id)->first();
+        $user_id =  Auth::user()->id;
+        $shippingarea = ShippingCost::where('user_id', $user_id)->where('id', $id)->first();
         $shippingarea->delete();
 
         alert()->success(trans('Shipping area successfully delete'));

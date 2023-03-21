@@ -43,8 +43,8 @@
                                     <thead>
                                         <tr>
                                             <th>{{ __('S.No') }}</th>
-                                            <th>{{ __('User Id') }}</th>
-                                            <th>{{ __('Name') }}</th>
+                                            <th>{{ __('User Name') }}</th>
+                                            <th>{{ __('Area Name') }}</th>
                                             <th>{{ __('Price') }}</th>
                                             <th>{{ __('Status') }}</th>
                                             <th class="w-1">{{ __('Actions') }}</th>
@@ -57,9 +57,11 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $value->user->name ?? Auth::user()->name }}</td>
                                                     <td>{{ $value->name }}</td>
-                                                    <td>{{ $value->amount }}</td>
                                                     <td>
-                                                        @if($value->status == 1)
+                                                        {{ '$' . $value->amount }}
+                                                    </td>
+                                                    <td>
+                                                        @if ($value->status == 1)
                                                             <span class="badge bg-success">Active</span>
                                                         @else
                                                             <span class="badge bg-info">Inactive</span>
@@ -72,7 +74,8 @@
                                                                 {{ __('Edit') }}
                                                             </a>
                                                             <a class="btn btn-danger btn-sm delete-card"
-                                                                href="{{ route('user.shipping_area.delete', $value->id) }}">
+                                                                data-url="{{ route('user.shipping_area.delete', $value->id) }}"
+                                                                href="javascript:;" onclick="deleteShippingArea(this)">
                                                                 {{ __('Delete') }}
                                                             </a>
                                                         </div>
@@ -94,9 +97,84 @@
                             </div>
                         </div>
                     </div>
+                    {{-- mobile  --}}
+                    @if (!empty($shippingarea) && $shippingarea->count() > 0)
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none">
+                            <div class="row">
+                                @foreach ($shippingarea as $row)
+                                    <div class="">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+
+                                                    <div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">
+                                                        <h3 class="text-left">
+                                                            <td>{{ $row->name }} ( {{ '$' . $row->amount }} )</td>
+                                                        </h3>
+                                                    </div>
+
+                                                    <div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7">
+                                                        <div class="dropdown text-end">
+                                                            <button type="button" class="btn btn-primary dropdown-toggle"
+                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                                Actions
+                                                            </button>
+                                                            <div class="dropdown-menu" style="">
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('user.shipping_area.edit', $row->id) }}">
+                                                                    {{ __('Edit') }}
+                                                                </a>
+                                                                <a class="dropdown-item"
+                                                                    data-url="{{ route('user.shipping_area.delete', $row->id) }}"
+                                                                    href="javascript:;" onclick="deleteShippingArea(this)">
+                                                                    {{ __('Delete') }}
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                @endforeach
+                            </div>
+
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
         @include('user.includes.footer')
     </div>
+
+    <div class="modal modal-blur fade" id="deleteShippingArea" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="modal-title">{{ __('Are you sure?') }}</div>
+                    <div id="statusMessage"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-link link-secondary me-auto"
+                        data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <a class="btn btn-danger" id="deleteproceeing">{{ __('Yes, proceed') }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
+
+@push('custom-js')
+    <script>
+        function deleteShippingArea(event) {
+
+            const {
+                url
+            } = event.dataset;
+
+            // console.log(url);
+            $('#deleteShippingArea').modal('show');
+            $('#deleteproceeing').prop('href', url);
+        }
+    </script>
+@endpush
