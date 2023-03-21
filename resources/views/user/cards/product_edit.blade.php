@@ -241,113 +241,116 @@
         </div>
     </div>
 
-    @push('custom-js')
-        <script>
-            var count = {{ isset($products) }};
-            var currentSelection = 0;
-
-            function addProduct() {
-                "use strict";
-                if (count >= {{ $plan_details->no_of_services }}) {
-                    swal({
-                        title: `{{ __('Oops!') }}`,
-                        icon: 'warning',
-                        text: `{{ __('Please add atleast one feature') }}`,
-                        timer: 2000,
-                        buttons: false,
-                    });
-                } else {
-                    count++;
-                    var id = getRandomInt();
-
-                    var selectOpion = "";
-                    selectOpion +=
-                        "</div></div><div class='col-md-6 col-xl-6'><label class='form-label required' for='category'>Category</label><select class='form-control' name='category' id='category'>"
-                    @foreach ($productCategories as $productCategorie)
-                        selectOpion +=
-                            "<option value='{{ $productCategorie->id }}'>{{ $productCategorie->category_name }}</option>";
-                    @endforeach
-
-                    selectOpion += "</select></div>";
-
-
-
-
-
-
-
-                    var products = "<div class='row' id=" + id +
-                        "><div class='col-md-6 col-xl-6'><div class='mb-3'><label class='form-label required'>{{ __('Product Badge') }}</label><input type='text' class='form-control' name='badge'placeholder='{{ __('Product Badge') }}...' required></div></div><div class='col-md-6 col-xl-6'> <div class='mb-3'><label class='form-label required'>{{ __('Product Image') }} </label><div class='input-group mb-2'><input type='text'class='image" +
-                        id +
-                        " media-model form-control' name='product_image' placeholder='{{ __('Product Image') }}' required><button class='btn btn-primary btn-md' type='button' onclick='openMedia(" +
-                        id +
-                        ")'>{{ __('Choose image') }}</button></div></div></div><div class='col-md-6 col-xl-6'> <div class='mb-3'> <label class='form-label required'>{{ __('Product Name') }}</label> <input type='text' class='form-control' name='product_name' placeholder='{{ __('Product Name') }}' required> </div></div><div class='col-md-6 col-xl-6'><div class='mb-3'><label class='form-label required'>{{ __('Product Sub Title') }}</label><textarea class='form-control' name='product_subtitle' data-bs-toggle='autosize' placeholder='{{ __('Product Sub Title') }}...' required></textarea></div></div><div class='col-md-6 col-xl-6'><div class='mb-3'><label class='form-label required'>{{ __('Regular Price') }}</label><input type='number' class='form-control' name='regular_price' min='1' step='.001' placeholder='{{ __('Regular Price') }}...' required></div></div><div class='col-md-6 col-xl-6'><div class='mb-3'><label class='form-label required'>{{ __('Sales Price') }}</label><input type='number' class='form-control' name='sales_price' min='1' step='.001' placeholder='{{ __('Sales Price') }}...' required></div></div><div class='col-md-6 col-xl-6'><div class='mb-3'><label class='form-label required' for='product_status'>{{ __('Status') }}</label><select name='product_status' id='product_status' class='form-control' required><option value='instock'>{{ __('In Stock') }}</option><option value='outstock'>{{ __('Out of Stock') }}</option></select>" +
-                        selectOpion + "<br><div><a href='#' class='btn my-3 btn-danger btn-sm' onclick='removeProduct(" +
-                        id + ")'>{{ __('Remove') }}</a></div></div></div></div> <br></div> </div>";
-                    console.log(products);
-                    $("#more-products").append(products).html();
-                }
-            }
-
-            function removeProduct(id) {
-                "use strict";
-                $("#" + id).remove();
-            }
-
-            function getRandomInt() {
-                min = Math.ceil(0);
-                max = Math.floor(9999999999);
-                return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-            }
-
-            function openMedia(id) {
-                "use strict";
-                currentSelection = id;
-                $('#openMediaModel').modal('show');
-            }
-
-            $(".media_image").on("click", function() {
-                var imgUri = $(this).attr('id');
-                $('#openMediaModel').modal('hide');
-                $('.image' + currentSelection).val(imgUri);
-            });
-
-            function chooseImg(a) {
-                "use strict";
-                var imgUri = $(a).attr('id');
-                $('#openMediaModel').modal('hide');
-                $('.image' + currentSelection).val(imgUri);
-            }
-        </script>
-        <script type="text/javascript">
-            Dropzone.options.dropzone = {
-                maxFilesize: {{ env('SIZE_LIMIT') / 1024 }},
-                acceptedFiles: ".jpeg,.jpg,.png,.gif",
-                init: function() {
-                    this.on("success", function(file, response) {
-                        var uploadImages =
-                            `<div class="col-sm-3 col-lg-3">\
-                    <div class="card card-sm">\
-                        <div class="d-block">\
-                            <div class="media_image card-img-top img-responsive img-responsive-16by9" onclick="chooseImg(this)" id="images/` +
-                            response.image_url +
-                            `" style="background-image: url({{ env('APP_URL') }}/images/` + response
-                            .image_url + `)"></div>\
-                        </div>\
-                    </div>\
-                </div>`;
-
-                        $("#captions").append(uploadImages).html();
-
-                        // Hidden empty
-                        $(".empty").hide();
-
-                        $('#openMediaModel').modal('hide');
-                        $('.image' + currentSelection).val("images/" + response.image_url);
-                    });
-                }
-            };
-        </script>
-    @endpush
     </div>
 @endsection
+
+
+
+@push('custom-js')
+    <script>
+        var count = {{ isset($products) }};
+        var currentSelection = 0;
+
+        function addProduct() {
+            "use strict";
+            if (count >= {{ $plan_details->no_of_services }}) {
+                swal({
+                    title: `{{ __('Oops!') }}`,
+                    icon: 'warning',
+                    text: `{{ __('Please add atleast one feature') }}`,
+                    timer: 2000,
+                    buttons: false,
+                });
+            } else {
+                count++;
+                var id = getRandomInt();
+
+                var selectOpion = "";
+                selectOpion +=
+                    "</div></div><div class='col-md-6 col-xl-6'><label class='form-label required' for='category'>Category</label><select class='form-control' name='category' id='category'>"
+                @foreach ($productCategories as $productCategorie)
+                    selectOpion +=
+                        "<option value='{{ $productCategorie->id }}'>{{ $productCategorie->category_name }}</option>";
+                @endforeach
+
+                selectOpion += "</select></div>";
+
+
+
+
+
+
+
+                var products = "<div class='row' id=" + id +
+                    "><div class='col-md-6 col-xl-6'><div class='mb-3'><label class='form-label required'>{{ __('Product Badge') }}</label><input type='text' class='form-control' name='badge'placeholder='{{ __('Product Badge') }}...' required></div></div><div class='col-md-6 col-xl-6'> <div class='mb-3'><label class='form-label required'>{{ __('Product Image') }} </label><div class='input-group mb-2'><input type='text'class='image" +
+                    id +
+                    " media-model form-control' name='product_image' placeholder='{{ __('Product Image') }}' required><button class='btn btn-primary btn-md' type='button' onclick='openMedia(" +
+                    id +
+                    ")'>{{ __('Choose image') }}</button></div></div></div><div class='col-md-6 col-xl-6'> <div class='mb-3'> <label class='form-label required'>{{ __('Product Name') }}</label> <input type='text' class='form-control' name='product_name' placeholder='{{ __('Product Name') }}' required> </div></div><div class='col-md-6 col-xl-6'><div class='mb-3'><label class='form-label required'>{{ __('Product Sub Title') }}</label><textarea class='form-control' name='product_subtitle' data-bs-toggle='autosize' placeholder='{{ __('Product Sub Title') }}...' required></textarea></div></div><div class='col-md-6 col-xl-6'><div class='mb-3'><label class='form-label required'>{{ __('Regular Price') }}</label><input type='number' class='form-control' name='regular_price' min='1' step='.001' placeholder='{{ __('Regular Price') }}...' required></div></div><div class='col-md-6 col-xl-6'><div class='mb-3'><label class='form-label required'>{{ __('Sales Price') }}</label><input type='number' class='form-control' name='sales_price' min='1' step='.001' placeholder='{{ __('Sales Price') }}...' required></div></div><div class='col-md-6 col-xl-6'><div class='mb-3'><label class='form-label required' for='product_status'>{{ __('Status') }}</label><select name='product_status' id='product_status' class='form-control' required><option value='instock'>{{ __('In Stock') }}</option><option value='outstock'>{{ __('Out of Stock') }}</option></select>" +
+                    selectOpion + "<br><div><a href='#' class='btn my-3 btn-danger btn-sm' onclick='removeProduct(" +
+                    id + ")'>{{ __('Remove') }}</a></div></div></div></div> <br></div> </div>";
+                console.log(products);
+                $("#more-products").append(products).html();
+            }
+        }
+
+        function removeProduct(id) {
+            "use strict";
+            $("#" + id).remove();
+        }
+
+        function getRandomInt() {
+            min = Math.ceil(0);
+            max = Math.floor(9999999999);
+            return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+        }
+
+        function openMedia(id) {
+            "use strict";
+            currentSelection = id;
+            $('#openMediaModel').modal('show');
+        }
+
+        $(".media_image").on("click", function() {
+            var imgUri = $(this).attr('id');
+            $('#openMediaModel').modal('hide');
+            $('.image' + currentSelection).val(imgUri);
+        });
+
+        function chooseImg(a) {
+            "use strict";
+            var imgUri = $(a).attr('id');
+            $('#openMediaModel').modal('hide');
+            $('.image' + currentSelection).val(imgUri);
+        }
+    </script>
+    <script type="text/javascript">
+        Dropzone.options.dropzone = {
+            maxFilesize: {{ env('SIZE_LIMIT') / 1024 }},
+            acceptedFiles: ".jpeg,.jpg,.png,.gif",
+            init: function() {
+                this.on("success", function(file, response) {
+                    var uploadImages =
+                        `<div class="col-sm-3 col-lg-3">\
+                <div class="card card-sm">\
+                    <div class="d-block">\
+                        <div class="media_image card-img-top img-responsive img-responsive-16by9" onclick="chooseImg(this)" id="images/` +
+                        response.image_url +
+                        `" style="background-image: url({{ env('APP_URL') }}/images/` + response
+                        .image_url + `)"></div>\
+                    </div>\
+                </div>\
+            </div>`;
+
+                    $("#captions").append(uploadImages).html();
+
+                    // Hidden empty
+                    $(".empty").hide();
+
+                    $('#openMediaModel').modal('hide');
+                    $('.image' + currentSelection).val("images/" + response.image_url);
+                });
+            }
+        };
+    </script>
+@endpush

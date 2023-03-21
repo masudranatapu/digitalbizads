@@ -230,51 +230,54 @@
         </div>
     </div>
 
-    @push('custom-js')
 
-        @error('variant_name')
-            <script>
-                $('document').ready(function() {
-                    $('#variantCreate').modal('show');
-                })
-            </script>
-        @enderror
+@endsection
 
+
+@push('custom-js')
+
+    @error('variant_name')
         <script>
-            function deletevariant(event) {
-                console.log(event);
-                const {
-                    url
-                } = event.dataset;
-                $('#deleteModal').modal('show');
-                $('#variant_id').prop('href', url)
-            }
-
-            function editvariant(event) {
-                console.log(event);
-                const {
-                    value,
-                    url
-                } = event.dataset;
-
-                $('#variant_edit').val(value);
-                $('#editForm').prop('action', url)
-                $('#variantEdit').modal('show');
-            }
-
-            var myModalEl = document.getElementById('variantEdit')
-            myModalEl.addEventListener('hidden.bs.modal', function(event) {
-                $('#editForm').prop('action', '');
-                $('#variant_edit').val('');
-
-
-            })
-            var myModalEl = document.getElementById('deleteModal')
-            myModalEl.addEventListener('hidden.bs.modal', function(event) {
-                $('#variant_id').prop('href', '')
-
-
+            $('document').ready(function() {
+                $('#variantCreate').modal('show');
             })
         </script>
-    @endpush
-@endsection
+    @enderror
+
+    <script>
+        function deletevariant(event) {
+            console.log(event);
+            const {
+                url
+            } = event.dataset;
+            $('#deleteModal').modal('show');
+            $('#variant_id').prop('href', url)
+        }
+
+        function editvariant(event) {
+            console.log(event);
+            const {
+                value,
+                url
+            } = event.dataset;
+
+            $('#variant_edit').val(value);
+            $('#editForm').prop('action', url)
+            $('#variantEdit').modal('show');
+        }
+
+        var myModalEl = document.getElementById('variantEdit')
+        myModalEl.addEventListener('hidden.bs.modal', function(event) {
+            $('#editForm').prop('action', '');
+            $('#variant_edit').val('');
+
+
+        })
+        var myModalEl = document.getElementById('deleteModal')
+        myModalEl.addEventListener('hidden.bs.modal', function(event) {
+            $('#variant_id').prop('href', '')
+
+
+        })
+    </script>
+@endpush

@@ -109,6 +109,12 @@
 </div>
 </div>
 @include('user.includes.footer')
+
+</div>
+@endsection
+
+
+
 @push('custom-js')
 <script>
     $(".font").hide();
@@ -199,5 +205,3 @@ $(".qr-code").qrcode(qrparams);
 }
 </script>
 @endpush
-</div>
-@endsection

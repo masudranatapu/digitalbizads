@@ -177,89 +177,91 @@
         </div>
     </div>
 
-    @push('custom-js')
-    <script type="text/javascript" src="{{ asset('backend/js/fontawesome-iconpicker.min.js') }}"></script>
-    <script>
-        var count = {{ count($services) }};
-    var currentSelection = 0;
-    function addService() {
-    "use strict";
-    if (count>={{ $plan_details->no_of_services}}) {
-        swal({
-            title: `{{ __('Oops!') }}`,
-            icon: 'warning',
-            text: `{{ __('You have reached your current plan limit.') }}`,
-            timer: 2000,
-            buttons: false,
-        });
-    }
-    else {
-        count++;
-        var id = getRandomInt();
-        var services = "<div class='row' id="+ id +"><div class='col-md-6 col-xl-6'><div class='mb-3'><label class='form-label required'>{{ __('Service Image') }} <span class='text-muted'>({{ __('Recommended : 200 x 200 pixels') }})</span></label><div class='input-group mb-2'><input type='text' class='image"+ id +" media-model form-control' name='service_image[]' placeholder='{{ __('Service Image') }}' required><button class='btn btn-primary btn-md' type='button' onclick='openMedia("+ id +")'>{{ __('Choose image') }}</button></div></div></div><div class='col-md-6 col-xl-6'> <div class='mb-3'> <label class='form-label'>{{ __('Service Name') }}</label> <input type='text' class='form-control' name='service_name[]' placeholder='{{ __('Service Name') }}' required> </div></div><div class='col-md-6 col-xl-6'> <div class='mb-3'> <label class='form-label'>{{ __('Service Description') }}</label> <input type='text' class='form-control' name='service_description[]' placeholder='{{ __('Service Description') }}...' required> </div></div><div class='col-md-6 col-xl-6'> <div class='mb-3'> <label class='form-label' for='enquiry'>{{ __('Enquiry Button') }}</label> <select name='enquiry[]' id='enquiry' class='form-control' required> <option value='Enabled'>{{ __('Enabled') }}</option> <option value='Disabled'>{{ __('Disabled') }}</option> </select> <a href='#' class='btn mt-3 btn-danger btn-sm' onclick='removeService("+id+")'>{{ __('Remove') }}</a>  </div><br></div>";
-        $("#more-services").append(services).html();
-        }
-    }
-
-
-    function removeService(id) {
-    "use strict";
-        $("#"+id).remove();
-        count--;
-    }
-
-    function getRandomInt() {
-        min = Math.ceil(0);
-        max = Math.floor(9999999999);
-        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-    }
-
-    function openMedia(id){
-        "use strict";
-        currentSelection = id;
-        $('#openMediaModel').modal('show');
-    }
-
-    $(".media_image").on( "click", function() {
-        "use strict";
-        var imgUri = $(this).attr('id');
-        $('#openMediaModel').modal('hide');
-        $('.image'+currentSelection).val(imgUri);
-    });
-
-    function chooseImg(a){
-        "use strict";
-        var imgUri = $(a).attr('id');
-        $('#openMediaModel').modal('hide');
-        $('.image'+currentSelection).val(imgUri);
-    }
-    </script>
-
-    <script type="text/javascript">
-        Dropzone.options.dropzone = {
-            maxFilesize  : {{ env('SIZE_LIMIT')/1024 }},
-            acceptedFiles: ".jpeg,.jpg,.png,.gif",
-            init: function() {
-            this.on("success", function(file, response) {
-                var uploadImages = `<div class="col-sm-3 col-lg-3">\
-                    <div class="card card-sm">\
-                        <div class="d-block">\
-                            <div class="media_image card-img-top img-responsive img-responsive-16by9" onclick="chooseImg(this)" id="images/`+response.image_url+`" style="background-image: url({{ env('APP_URL') }}/images/`+response.image_url+`)"></div>\
-                        </div>\
-                    </div>\
-                </div>`;
-
-                $("#captions").append(uploadImages).html();
-
-                // Hidden empty
-                $(".empty").hide();
-
-                $('#openMediaModel').modal('hide');
-                $('.image'+currentSelection).val("images/"+response.image_url);
-            });
-        }
-        };
-    </script>
-    @endpush
 </div>
 @endsection
+
+
+@push('custom-js')
+<script type="text/javascript" src="{{ asset('backend/js/fontawesome-iconpicker.min.js') }}"></script>
+<script>
+    var count = {{ count($services) }};
+var currentSelection = 0;
+function addService() {
+"use strict";
+if (count>={{ $plan_details->no_of_services}}) {
+    swal({
+        title: `{{ __('Oops!') }}`,
+        icon: 'warning',
+        text: `{{ __('You have reached your current plan limit.') }}`,
+        timer: 2000,
+        buttons: false,
+    });
+}
+else {
+    count++;
+    var id = getRandomInt();
+    var services = "<div class='row' id="+ id +"><div class='col-md-6 col-xl-6'><div class='mb-3'><label class='form-label required'>{{ __('Service Image') }} <span class='text-muted'>({{ __('Recommended : 200 x 200 pixels') }})</span></label><div class='input-group mb-2'><input type='text' class='image"+ id +" media-model form-control' name='service_image[]' placeholder='{{ __('Service Image') }}' required><button class='btn btn-primary btn-md' type='button' onclick='openMedia("+ id +")'>{{ __('Choose image') }}</button></div></div></div><div class='col-md-6 col-xl-6'> <div class='mb-3'> <label class='form-label'>{{ __('Service Name') }}</label> <input type='text' class='form-control' name='service_name[]' placeholder='{{ __('Service Name') }}' required> </div></div><div class='col-md-6 col-xl-6'> <div class='mb-3'> <label class='form-label'>{{ __('Service Description') }}</label> <input type='text' class='form-control' name='service_description[]' placeholder='{{ __('Service Description') }}...' required> </div></div><div class='col-md-6 col-xl-6'> <div class='mb-3'> <label class='form-label' for='enquiry'>{{ __('Enquiry Button') }}</label> <select name='enquiry[]' id='enquiry' class='form-control' required> <option value='Enabled'>{{ __('Enabled') }}</option> <option value='Disabled'>{{ __('Disabled') }}</option> </select> <a href='#' class='btn mt-3 btn-danger btn-sm' onclick='removeService("+id+")'>{{ __('Remove') }}</a>  </div><br></div>";
+    $("#more-services").append(services).html();
+    }
+}
+
+
+function removeService(id) {
+"use strict";
+    $("#"+id).remove();
+    count--;
+}
+
+function getRandomInt() {
+    min = Math.ceil(0);
+    max = Math.floor(9999999999);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
+
+function openMedia(id){
+    "use strict";
+    currentSelection = id;
+    $('#openMediaModel').modal('show');
+}
+
+$(".media_image").on( "click", function() {
+    "use strict";
+    var imgUri = $(this).attr('id');
+    $('#openMediaModel').modal('hide');
+    $('.image'+currentSelection).val(imgUri);
+});
+
+function chooseImg(a){
+    "use strict";
+    var imgUri = $(a).attr('id');
+    $('#openMediaModel').modal('hide');
+    $('.image'+currentSelection).val(imgUri);
+}
+</script>
+
+<script type="text/javascript">
+    Dropzone.options.dropzone = {
+        maxFilesize  : {{ env('SIZE_LIMIT')/1024 }},
+        acceptedFiles: ".jpeg,.jpg,.png,.gif",
+        init: function() {
+        this.on("success", function(file, response) {
+            var uploadImages = `<div class="col-sm-3 col-lg-3">\
+                <div class="card card-sm">\
+                    <div class="d-block">\
+                        <div class="media_image card-img-top img-responsive img-responsive-16by9" onclick="chooseImg(this)" id="images/`+response.image_url+`" style="background-image: url({{ env('APP_URL') }}/images/`+response.image_url+`)"></div>\
+                    </div>\
+                </div>\
+            </div>`;
+
+            $("#captions").append(uploadImages).html();
+
+            // Hidden empty
+            $(".empty").hide();
+
+            $('#openMediaModel').modal('hide');
+            $('.image'+currentSelection).val("images/"+response.image_url);
+        });
+    }
+    };
+</script>
+@endpush

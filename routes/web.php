@@ -344,12 +344,12 @@ Route::group(['middleware' => 'Installer'], function () {
 
             Route::prefix('/state')->name('state.')->group(function () {
                 Route::get('/', [StateController::class, 'index'])->name('index');
-                Route::get('/create', [StateController::class, 'taxCreate'])->name('create');
-                Route::post('/store', [StateController::class, 'taxStore'])->name('store');
-                Route::get('/{id}/edit', [StateController::class, 'taxEdit'])->name('edit');
-                Route::post('/{id}/update', [StateController::class, 'taxUpdate'])->name('update');
-                Route::get('/{id}/status', [StateController::class, 'taxStatus'])->name('status');
-                Route::get('/{id}/delete', [StateController::class, 'taxDelete'])->name('delete');
+                Route::get('/create', [StateController::class, 'create'])->name('create');
+                Route::post('/store', [StateController::class, 'store'])->name('store');
+                Route::get('/{id}/edit', [StateController::class, 'edit'])->name('edit');
+                Route::post('/{id}/update', [StateController::class, 'update'])->name('update');
+                Route::get('/{id}/status', [StateController::class, 'status'])->name('status');
+                Route::get('/{id}/delete', [StateController::class, 'delete'])->name('delete');
             });
 
 

@@ -242,15 +242,16 @@
     </div>
 
 
-
-
-    <script>
-        $(document).on('click', '.delete-card', function(e) {
-            var conBox = confirm("Are you sure to delete this ads?");
-            if (conBox) {
-                return true;
-            }
-            return false;
-        })
-    </script>
 @endsection
+
+@push('custom-js')
+<script>
+    $(document).on('click', '.delete-card', function(e) {
+        var conBox = confirm("Are you sure to delete this ads?");
+        if (conBox) {
+            return true;
+        }
+        return false;
+    })
+</script>
+@endpush

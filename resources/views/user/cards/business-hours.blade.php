@@ -268,104 +268,104 @@
         @include('user.includes.footer')
     </div>
 
-
-    @push('custom-js')
-        <script>
-            function displayBusiness() {
-                "use strict";
-                var disp = $('input[name="is_display"]:checked').length;
-                console.log(disp);
-                if (disp == 0) {
-                    $("#business-hrs").show();
-                } else {
-                    $("#business-hrs").hide();
-
-                }
-            }
-
-            function MondayBusiness() {
-                "use strict";
-                var monday = $('input[name="monday_closed"]:checked').length;
-                console.log(monday);
-                if (monday == 0) {
-                    $("#monday-business").show();
-                } else {
-                    $("#monday-business").hide();
-
-                }
-            }
-
-            function TuesdayBusiness() {
-                "use strict";
-                var tuesday = $('input[name="tuesday_closed"]:checked').length;
-                console.log(tuesday);
-                if (tuesday == 0) {
-                    $("#tuesday-business").show();
-                } else {
-                    $("#tuesday-business").hide();
-
-                }
-            }
-
-            function WednesdayBusiness() {
-                "use strict";
-                var wednesday = $('input[name="wednesday_closed"]:checked').length;
-                console.log(wednesday);
-                if (wednesday == 0) {
-                    $("#wednesday-business").show();
-                } else {
-                    $("#wednesday-business").hide();
-
-                }
-            }
-
-            function ThursdayBusiness() {
-                "use strict";
-                var thursday = $('input[name="thursday_closed"]:checked').length;
-                console.log(thursday);
-                if (thursday == 0) {
-                    $("#thursday-business").show();
-                } else {
-                    $("#thursday-business").hide();
-
-                }
-            }
-
-            function FridayBusiness() {
-                "use strict";
-                var friday = $('input[name="friday_closed"]:checked').length;
-                console.log(friday);
-                if (friday == 0) {
-                    $("#friday-business").show();
-                } else {
-                    $("#friday-business").hide();
-
-                }
-            }
-
-            function SaturdayBusiness() {
-                "use strict";
-                var saturday = $('input[name="saturday_closed"]:checked').length;
-                console.log(saturday);
-                if (saturday == 0) {
-                    $("#saturday-business").show();
-                } else {
-                    $("#saturday-business").hide();
-
-                }
-            }
-
-            function SundayBusiness() {
-                "use strict";
-                var sunday = $('input[name="sunday_closed"]:checked').length;
-                console.log(sunday);
-                if (sunday == 0) {
-                    $("#sunday-business").show();
-                } else {
-                    $("#sunday-business").hide();
-
-                }
-            }
-        </script>
-    @endpush
 @endsection
+
+@push('custom-js')
+    <script>
+        function displayBusiness() {
+            "use strict";
+            var disp = $('input[name="is_display"]:checked').length;
+            console.log(disp);
+            if (disp == 0) {
+                $("#business-hrs").show();
+            } else {
+                $("#business-hrs").hide();
+
+            }
+        }
+
+        function MondayBusiness() {
+            "use strict";
+            var monday = $('input[name="monday_closed"]:checked').length;
+            console.log(monday);
+            if (monday == 0) {
+                $("#monday-business").show();
+            } else {
+                $("#monday-business").hide();
+
+            }
+        }
+
+        function TuesdayBusiness() {
+            "use strict";
+            var tuesday = $('input[name="tuesday_closed"]:checked').length;
+            console.log(tuesday);
+            if (tuesday == 0) {
+                $("#tuesday-business").show();
+            } else {
+                $("#tuesday-business").hide();
+
+            }
+        }
+
+        function WednesdayBusiness() {
+            "use strict";
+            var wednesday = $('input[name="wednesday_closed"]:checked').length;
+            console.log(wednesday);
+            if (wednesday == 0) {
+                $("#wednesday-business").show();
+            } else {
+                $("#wednesday-business").hide();
+
+            }
+        }
+
+        function ThursdayBusiness() {
+            "use strict";
+            var thursday = $('input[name="thursday_closed"]:checked').length;
+            console.log(thursday);
+            if (thursday == 0) {
+                $("#thursday-business").show();
+            } else {
+                $("#thursday-business").hide();
+
+            }
+        }
+
+        function FridayBusiness() {
+            "use strict";
+            var friday = $('input[name="friday_closed"]:checked').length;
+            console.log(friday);
+            if (friday == 0) {
+                $("#friday-business").show();
+            } else {
+                $("#friday-business").hide();
+
+            }
+        }
+
+        function SaturdayBusiness() {
+            "use strict";
+            var saturday = $('input[name="saturday_closed"]:checked').length;
+            console.log(saturday);
+            if (saturday == 0) {
+                $("#saturday-business").show();
+            } else {
+                $("#saturday-business").hide();
+
+            }
+        }
+
+        function SundayBusiness() {
+            "use strict";
+            var sunday = $('input[name="sunday_closed"]:checked').length;
+            console.log(sunday);
+            if (sunday == 0) {
+                $("#sunday-business").show();
+            } else {
+                $("#sunday-business").hide();
+
+            }
+        }
+    </script>
+@endpush

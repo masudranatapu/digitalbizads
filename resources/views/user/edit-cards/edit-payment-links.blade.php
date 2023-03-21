@@ -122,13 +122,17 @@
     @include('user.includes.footer')
 </div>
 
+@endsection
+
+
+
 @push('custom-js')
 <script type="text/javascript" src="{{ asset('backend/js/fontawesome-iconpicker.min.js') }}"></script>
 <script>
     var count = {{ count($payments) }};
 
     function addPayment() {
-	"use strict";
+    "use strict";
     if (count>={{ $plan_details->no_of_payments}}) {
          swal({
             title: `{{ __('Oops!') }}`,
@@ -147,7 +151,7 @@
     }
 
     function removePayment(id) {
-	"use strict";
+    "use strict";
         $("#"+id).remove();
         count--;
     }
@@ -185,4 +189,3 @@
     }
 </script>
 @endpush
-@endsection

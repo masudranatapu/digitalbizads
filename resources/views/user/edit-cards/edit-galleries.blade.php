@@ -155,87 +155,90 @@
         </div>
     </div>
 
-    @push('custom-js')
-    <script>
-    var count = {{ count($galleries) }};
-    var currentSelection = 0;
-    function addGallery() {
-        "use strict";
-        if (count>={{ $plan_details->no_of_galleries}}) {
-            swal({
-                title: `{{ __('Oops!') }}`,
-                icon: 'warning',
-                text: `{{ __('You have reached your current plan limit.') }}`,
-                timer: 2000,
-                buttons: false,
-            });
-        }
-    else {
-        count++;
-        var id = getRandomInt();
-        var gallery =
-            "<div class='row' id="+ id +"><div class='col-md-6 col-xl-6'><div class='mb-3'><label class='form-label required'>{{ __('Gallery Image') }} <span class='text-muted'>({{ __('Recommended : 200 x 200 pixels') }})</span></label><div class='input-group mb-2'><input type='text' class='image"+ id +" media-model form-control' name='gallery_image[]' placeholder='{{ __('Gallery Image') }}' required><button class='btn btn-primary btn-md' type='button' onclick='openMedia("+ id +")'>{{ __('Choose image') }}</button></div></div></div><div class='col-md-6 col-xl-6'> <div class='mb-3'> <label class='form-label required'>{{ __('Image Caption') }}</label> <input type='text' class='form-control' name='caption[]' placeholder='{{ __('Image Caption') }}...' required> <a href='#' class='btn mt-3 btn-danger btn-sm' onclick='removeGallery("+id+")'>{{ __('Remove') }}</a> </div><br></div>";
-            $("#more-gallery").append(gallery).html();
-        }
-    }
-
-    function removeGallery(id) {
-    "use strict";
-        $("#"+id).remove();
-    }
-
-    function getRandomInt() {
-        min = Math.ceil(0);
-        max = Math.floor(9999999999);
-        return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-    }
-
-    function openMedia(id){
-        "use strict";
-        currentSelection = id;
-        $('#openMediaModel').modal('show');
-    }
-
-    $(".media_image").on( "click", function() {
-        "use strict";
-        var imgUri = $(this).attr('id');
-        $('#openMediaModel').modal('hide');
-        $('.image'+currentSelection).val(imgUri);
-    });
-
-    function chooseImg(a){
-        "use strict";
-        var imgUri = $(a).attr('id');
-        $('#openMediaModel').modal('hide');
-        $('.image'+currentSelection).val(imgUri);
-    }
-    </script>
-
-    <script type="text/javascript">
-        Dropzone.options.dropzone = {
-            maxFilesize  : {{ env('SIZE_LIMIT')/1024 }},
-            acceptedFiles: ".jpeg,.jpg,.png,.gif",
-            init: function() {
-            this.on("success", function(file, response) {
-                var uploadImages = `<div class="col-sm-3 col-lg-3">\
-                    <div class="card card-sm">\
-                        <div class="d-block">\
-                            <div class="media_image card-img-top img-responsive img-responsive-16by9" onclick="chooseImg(this)" id="images/`+response.image_url+`" style="background-image: url({{ env('APP_URL') }}/images/`+response.image_url+`)"></div>\
-                        </div>\
-                    </div>\
-                </div>`;
-
-                $("#captions").append(uploadImages).html();
-
-                // Hidden empty
-                $(".empty").hide();
-
-                $('#openMediaModel').modal('hide');
-                $('.image'+currentSelection).val("images/"+response.image_url);
-            });
-        }
-        };
-    </script>
-    @endpush
 </div>
 @endsection
+
+
+
+@push('custom-js')
+<script>
+var count = {{ count($galleries) }};
+var currentSelection = 0;
+function addGallery() {
+    "use strict";
+    if (count>={{ $plan_details->no_of_galleries}}) {
+        swal({
+            title: `{{ __('Oops!') }}`,
+            icon: 'warning',
+            text: `{{ __('You have reached your current plan limit.') }}`,
+            timer: 2000,
+            buttons: false,
+        });
+    }
+else {
+    count++;
+    var id = getRandomInt();
+    var gallery =
+        "<div class='row' id="+ id +"><div class='col-md-6 col-xl-6'><div class='mb-3'><label class='form-label required'>{{ __('Gallery Image') }} <span class='text-muted'>({{ __('Recommended : 200 x 200 pixels') }})</span></label><div class='input-group mb-2'><input type='text' class='image"+ id +" media-model form-control' name='gallery_image[]' placeholder='{{ __('Gallery Image') }}' required><button class='btn btn-primary btn-md' type='button' onclick='openMedia("+ id +")'>{{ __('Choose image') }}</button></div></div></div><div class='col-md-6 col-xl-6'> <div class='mb-3'> <label class='form-label required'>{{ __('Image Caption') }}</label> <input type='text' class='form-control' name='caption[]' placeholder='{{ __('Image Caption') }}...' required> <a href='#' class='btn mt-3 btn-danger btn-sm' onclick='removeGallery("+id+")'>{{ __('Remove') }}</a> </div><br></div>";
+        $("#more-gallery").append(gallery).html();
+    }
+}
+
+function removeGallery(id) {
+"use strict";
+    $("#"+id).remove();
+}
+
+function getRandomInt() {
+    min = Math.ceil(0);
+    max = Math.floor(9999999999);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
+
+function openMedia(id){
+    "use strict";
+    currentSelection = id;
+    $('#openMediaModel').modal('show');
+}
+
+$(".media_image").on( "click", function() {
+    "use strict";
+    var imgUri = $(this).attr('id');
+    $('#openMediaModel').modal('hide');
+    $('.image'+currentSelection).val(imgUri);
+});
+
+function chooseImg(a){
+    "use strict";
+    var imgUri = $(a).attr('id');
+    $('#openMediaModel').modal('hide');
+    $('.image'+currentSelection).val(imgUri);
+}
+</script>
+
+<script type="text/javascript">
+    Dropzone.options.dropzone = {
+        maxFilesize  : {{ env('SIZE_LIMIT')/1024 }},
+        acceptedFiles: ".jpeg,.jpg,.png,.gif",
+        init: function() {
+        this.on("success", function(file, response) {
+            var uploadImages = `<div class="col-sm-3 col-lg-3">\
+                <div class="card card-sm">\
+                    <div class="d-block">\
+                        <div class="media_image card-img-top img-responsive img-responsive-16by9" onclick="chooseImg(this)" id="images/`+response.image_url+`" style="background-image: url({{ env('APP_URL') }}/images/`+response.image_url+`)"></div>\
+                    </div>\
+                </div>\
+            </div>`;
+
+            $("#captions").append(uploadImages).html();
+
+            // Hidden empty
+            $(".empty").hide();
+
+            $('#openMediaModel').modal('hide');
+            $('.image'+currentSelection).val("images/"+response.image_url);
+        });
+    }
+    };
+</script>
+@endpush

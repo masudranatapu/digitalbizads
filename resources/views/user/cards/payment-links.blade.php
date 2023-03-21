@@ -54,6 +54,8 @@
     </div>
     @include('user.includes.footer')
 </div>
+@endsection
+
 
 @push('custom-js')
 <script type="text/javascript" src="{{ asset('backend/js/fontawesome-iconpicker.min.js') }}"></script>
@@ -117,4 +119,4 @@
     }
 </script>
 @endpush
-@endsection
+

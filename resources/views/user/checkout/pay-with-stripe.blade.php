@@ -59,85 +59,87 @@
             </div>
         </div>
         @include('user.includes.footer')
-        @push('custom-js')
-            <script src="https://js.stripe.com/v3/"></script>
-            <script>
-                ! function() {
-                    "use strict";
 
-
-                    var style = {
-                        base: {
-                            color: '#32325d',
-                            lineHeight: '18px',
-                            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                            fontSmoothing: 'antialiased',
-                            fontSize: '16px',
-                            '::placeholder': {
-                                color: '#aab7c4'
-                            }
-                        },
-                        invalid: {
-                            color: '#fa755a',
-                            iconColor: '#fa755a'
-                        }
-                    };
-
-                    const stripe = Stripe('{{ $config[9]->config_value }}', {
-                        locale: 'en'
-                    }); // Create a Stripe client.
-                    const elements = stripe.elements(); // Create an instance of Elements.
-                    const cardElement = elements.create('card', {
-                        style: style
-                    }); // Create an instance of the card Element.
-                    const cardButton = document.getElementById('card-button');
-                    const clientSecret = cardButton.dataset.secret;
-
-                    cardElement.mount('#card-element'); // Add an instance of the card Element into the `card-element` <div>.
-
-                    // Handle real-time validation errors from the card Element.
-                    cardElement.addEventListener('change', function(event) {
-                        var displayError = document.getElementById('card-errors');
-                        if (event.error) {
-                            displayError.textContent = event.error.message;
-                        } else {
-                            displayError.textContent = '';
-                        }
-                    });
-
-                    // Handle form submission.
-                    var form = document.getElementById('payment-form');
-
-                    form.addEventListener('submit', function(event) {
-                        event.preventDefault();
-                        $('.card-footer button').html(
-                            '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>'
-                        ).prop('disabled', true);
-
-                        stripe.handleCardPayment(clientSecret, cardElement, {
-                                payment_method_data: {
-                                    //billing_details: { name: cardHolderName.value }
-                                }
-                            })
-                            .then(function(result) {
-                                console.log(result);
-                                if (result.error) {
-                                    // Inform the user if there was an error.
-                                    var errorElement = document.getElementById('card-errors');
-                                    errorElement.textContent = result.error.message;
-                                    $('.card-footer button').html("Pay Now").prop('disabled', false);
-
-                                } else {
-                                    console.log(result);
-                                    form.submit();
-
-                                }
-                            });
-                    });
-
-
-                }();
-            </script>
-        @endpush
     </div>
 @endsection
+
+@push('custom-js')
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    ! function() {
+        "use strict";
+
+
+        var style = {
+            base: {
+                color: '#32325d',
+                lineHeight: '18px',
+                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                fontSmoothing: 'antialiased',
+                fontSize: '16px',
+                '::placeholder': {
+                    color: '#aab7c4'
+                }
+            },
+            invalid: {
+                color: '#fa755a',
+                iconColor: '#fa755a'
+            }
+        };
+
+        const stripe = Stripe('{{ $config[9]->config_value }}', {
+            locale: 'en'
+        }); // Create a Stripe client.
+        const elements = stripe.elements(); // Create an instance of Elements.
+        const cardElement = elements.create('card', {
+            style: style
+        }); // Create an instance of the card Element.
+        const cardButton = document.getElementById('card-button');
+        const clientSecret = cardButton.dataset.secret;
+
+        cardElement.mount('#card-element'); // Add an instance of the card Element into the `card-element` <div>.
+
+        // Handle real-time validation errors from the card Element.
+        cardElement.addEventListener('change', function(event) {
+            var displayError = document.getElementById('card-errors');
+            if (event.error) {
+                displayError.textContent = event.error.message;
+            } else {
+                displayError.textContent = '';
+            }
+        });
+
+        // Handle form submission.
+        var form = document.getElementById('payment-form');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            $('.card-footer button').html(
+                '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>'
+            ).prop('disabled', true);
+
+            stripe.handleCardPayment(clientSecret, cardElement, {
+                    payment_method_data: {
+                        //billing_details: { name: cardHolderName.value }
+                    }
+                })
+                .then(function(result) {
+                    console.log(result);
+                    if (result.error) {
+                        // Inform the user if there was an error.
+                        var errorElement = document.getElementById('card-errors');
+                        errorElement.textContent = result.error.message;
+                        $('.card-footer button').html("Pay Now").prop('disabled', false);
+
+                    } else {
+                        console.log(result);
+                        form.submit();
+
+                    }
+                });
+        });
+
+
+    }();
+</script>
+@endpush

@@ -171,32 +171,33 @@
             </div>
         </div>
     </div>
-
-    @push('custom-js')
-
-        @error('variant_name')
-            <script>
-                $('document').ready(function() {
-                    $('#variantCreate').modal('show');
-                })
-            </script>
-        @enderror
-
-        <script>
-            function deleteOption(event) {
-                console.log(event);
-                const {
-                    url
-                } = event.dataset;
-                $('#deleteModal').modal('show');
-                $('#variant_id').prop('href', url)
-            }
-
-
-            var myModalEl = document.getElementById('deleteModal')
-            myModalEl.addEventListener('hidden.bs.modal', function(event) {
-                $('#variant_id').prop('href', '')
-            });
-        </script>
-    @endpush
 @endsection
+
+
+@push('custom-js')
+
+    @error('variant_name')
+        <script>
+            $('document').ready(function() {
+                $('#variantCreate').modal('show');
+            })
+        </script>
+    @enderror
+
+    <script>
+        function deleteOption(event) {
+            console.log(event);
+            const {
+                url
+            } = event.dataset;
+            $('#deleteModal').modal('show');
+            $('#variant_id').prop('href', url)
+        }
+
+
+        var myModalEl = document.getElementById('deleteModal')
+        myModalEl.addEventListener('hidden.bs.modal', function(event) {
+            $('#variant_id').prop('href', '')
+        });
+    </script>
+@endpush

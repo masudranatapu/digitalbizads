@@ -21,7 +21,7 @@
                     <div class="col-auto ms-auto d-print-none">
                         <div class="dropdown">
 
-                            <a type="button" href="{{ route('user.setting.tax.create') }}">
+                            <a type="button" href="{{ route('user.state.create') }}">
                                 <button type="button" class="btn btn btn-primary">
                                     <i class="fas fa-plus-circle fa-1x"></i> &ensp;
                                     {{ __('Add State Tax') }}
@@ -78,29 +78,30 @@
 
 
                                                             <a class="btn btn-primary btn-sm"
-                                                                href="{{ route('user.setting.tax.edit', ['state' => $row->id]) }}">
+                                                                href="{{ route('user.state.edit', ['id' => $row->id]) }}">
                                                                 {{ __('Edit') }}
                                                             </a>
                                                             @if ($row->status)
                                                                 <a class="btn btn-danger btn-sm" href="javascripy:void(0)"
-                                                                    data-id="{{ $row->id }}"
+                                                                    data-url="{{ route('user.state.status',$row->id) }}"
                                                                     data-status="{{ $row->status }}"
                                                                     onclick="deactiveState(this)">
                                                                     {{ __('Deactive') }}
                                                                 </a>
                                                             @else
                                                                 <a class="btn btn-success btn-sm" href="javascript:void(0)"
-                                                                    data-id="{{ $row->id }}"
+                                                                    data-url="{{ route('user.state.status',$row->id) }}"
                                                                     data-status="{{ $row->status }}"
                                                                     onclick="deactiveState(this)">
                                                                     {{ __('Active') }}
                                                                 </a>
                                                             @endif
 
-                                                            <a class="btn btn-danger btn-sm" data-id="{{ $row->id }}"
+                                                            <a class="btn btn-danger btn-sm" data-url="{{ route('user.state.delete',$row->id) }}"
                                                                 href="javascript:void(0)" onclick="deleteState(this)">
                                                                 {{ __('Delete') }}
                                                             </a>
+
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -145,26 +146,26 @@
                                                             <div class="dropdown-menu" style="">
 
                                                                 <a class="dropdown-item"
-                                                                    href="{{ route('user.setting.tax.edit', ['state' => $row->id]) }}">
+                                                                    href="{{ route('user.state.edit', ['id' => $row->id]) }}">
                                                                     {{ __('Edit') }}
                                                                 </a>
                                                                 @if ($row->status)
                                                                     <a class="dropdown-item" href="javascripy:void(0)"
-                                                                        data-id="{{ $row->id }}"
+                                                                        data-url="{{ route('user.state.status',$row->id) }}"
                                                                         data-status="{{ $row->status }}"
                                                                         onclick="deactiveState(this)">
                                                                         {{ __('Deactive') }}
                                                                     </a>
                                                                 @else
                                                                     <a class="dropdown-item" href="javascript:void(0)"
-                                                                        data-id="{{ $row->id }}"
+                                                                        data-url="{{ route('user.state.status',$row->id) }}"
                                                                         data-status="{{ $row->status }}"
                                                                         onclick="deactiveState(this)">
                                                                         {{ __('Active') }}
                                                                     </a>
                                                                 @endif
 
-                                                                <a class="dropdown-item" data-id="{{ $row->id }}"
+                                                                <a class="dropdown-item" data-url="{{ route('user.state.delete',$row->id) }}"
                                                                     href="javascript:void(0)" onclick="deleteState(this)">
                                                                     {{ __('Delete') }}
                                                                 </a>
@@ -185,8 +186,9 @@
                 </div>
             </div>
         </div>
-        @include('user.includes.footer')
     </div>
+    @include('user.includes.footer')
+</div>
 
     <div class="modal modal-blur fade" id="sendEmailModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-md modal-dialog-centered" role="document">
@@ -219,21 +221,26 @@
 
         </div>
     </div>
-    <div class="modal modal-blur fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <div class="modal modal-blur fade show" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <div class="modal-title">{{ __('Are you sure?') }}</div>
-                    <div>{{ __('If you proceed, you will delete this state.') }}</div>
+                    <div class="modal-title">
+                        {{ __('Are you sure?') }}</div>
+                    <div>
+                        {{ __('If you proceed, you will delete this product.') }}
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-link link-secondary me-auto"
                         data-bs-dismiss="modal">{{ __('Cancel') }}</button>
-                    <a class="btn btn-danger" id="state_id">{{ __('Yes, proceed') }}</a>
+                    <a class="btn btn-danger" id="product_id">{{ __('Yes, proceed') }}</a>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="modal modal-blur fade" id="deactiveModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -250,34 +257,37 @@
         </div>
     </div>
 
-    <script>
-        function deleteState(event) {
-            const {
-                id
-            } = event.dataset;
-            $('#deleteModal').modal('show');
-            $('#state_id').prop('href', "{{ route('user.setting.tax') }}/delete/" + id)
-
-
-        }
-
-        function deactiveState(event) {
-            const {
-                id,
-                status
-            } = event.dataset;
-            $('#deactiveModal').modal('show');
-            if (status) {
-                $('#statusMessage').html("If you proceed, you will deactive this state tax.");
-
-            } else {
-
-                $('#statusMessage').html("If you proceed, you will active this state tax.");
-            }
-
-            $('#state_id_status').prop('href', "{{ route('user.setting.tax') }}/status/" + id)
-
-
-        }
-    </script>
 @endsection
+
+@push('custom-js')
+<script>
+    function deleteState(event) {
+        const {
+            url
+        } = event.dataset;
+        console.log(url);
+        $('#deleteModal').modal('show');
+        $('#product_id').prop('href', url);
+
+
+    }
+
+    function deactiveState(event) {
+        const {
+            url,
+            status
+        } = event.dataset;
+        $('#deactiveModal').modal('show');
+        if (status) {
+            $('#statusMessage').html("If you proceed, you will deactive this state tax.");
+
+        } else {
+
+            $('#statusMessage').html("If you proceed, you will active this state tax.");
+        }
+
+        $('#state_id_status').prop('href', url);
+
+    }
+</script>
+@endpush

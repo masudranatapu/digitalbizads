@@ -185,66 +185,69 @@
         </div>
     </div>
 
-    @push('custom-js')
-        <script>
-            var currentSelection = 0;
 
-
-
-            function getRandomInt() {
-                min = Math.ceil(0);
-                max = Math.floor(9999999999);
-                return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-            }
-
-            function openMedia() {
-                "use strict";
-                $('#openMediaModel').modal('show');
-            }
-
-            $(".media_image").on("click", function() {
-                var imgUri = $(this).attr('id');
-                $('#openMediaModel').modal('hide');
-                $('.image').val(imgUri);
-            });
-
-            function chooseImg(a) {
-                "use strict";
-                console.log(a);
-                var imgUri = $(a).attr('id');
-                $('#openMediaModel').modal('hide');
-                $('.image').val(imgUri);
-            }
-        </script>
-        <script type="text/javascript">
-            Dropzone.options.dropzone = {
-                maxFilesize: {{ env('SIZE_LIMIT') / 1024 }},
-                acceptedFiles: ".jpeg,.jpg,.png,.gif",
-                init: function() {
-                    this.on("success", function(file, response) {
-                        var uploadImages =
-                            `<div class="col-sm-3 col-lg-3">\
-                    <div class="card card-sm">\
-                        <div class="d-block">\
-                            <div class="media_image card-img-top img-responsive img-responsive-16by9" onclick="chooseImg(this)" id="images/` +
-                            response.image_url +
-                            `" style="background-image: url({{ env('APP_URL') }}/images/` + response
-                            .image_url + `)"></div>\
-                        </div>\
-                    </div>\
-                </div>`;
-
-                        $("#captions").append(uploadImages).html();
-
-                        // Hidden empty
-                        $(".empty").hide();
-
-                        $('#openMediaModel').modal('show');
-                        $('.image' + currentSelection).val("images/" + response.image_url);
-                    });
-                }
-            };
-        </script>
-    @endpush
     </div>
 @endsection
+
+
+@push('custom-js')
+    <script>
+        var currentSelection = 0;
+
+
+
+        function getRandomInt() {
+            min = Math.ceil(0);
+            max = Math.floor(9999999999);
+            return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+        }
+
+        function openMedia() {
+            "use strict";
+            $('#openMediaModel').modal('show');
+        }
+
+        $(".media_image").on("click", function() {
+            var imgUri = $(this).attr('id');
+            $('#openMediaModel').modal('hide');
+            $('.image').val(imgUri);
+        });
+
+        function chooseImg(a) {
+            "use strict";
+            console.log(a);
+            var imgUri = $(a).attr('id');
+            $('#openMediaModel').modal('hide');
+            $('.image').val(imgUri);
+        }
+    </script>
+    <script type="text/javascript">
+        Dropzone.options.dropzone = {
+            maxFilesize: {{ env('SIZE_LIMIT') / 1024 }},
+            acceptedFiles: ".jpeg,.jpg,.png,.gif",
+            init: function() {
+                this.on("success", function(file, response) {
+                    var uploadImages =
+                        `<div class="col-sm-3 col-lg-3">\
+                <div class="card card-sm">\
+                    <div class="d-block">\
+                        <div class="media_image card-img-top img-responsive img-responsive-16by9" onclick="chooseImg(this)" id="images/` +
+                        response.image_url +
+                        `" style="background-image: url({{ env('APP_URL') }}/images/` + response
+                        .image_url + `)"></div>\
+                    </div>\
+                </div>\
+            </div>`;
+
+                    $("#captions").append(uploadImages).html();
+
+                    // Hidden empty
+                    $(".empty").hide();
+
+                    $('#openMediaModel').modal('show');
+                    $('.image' + currentSelection).val("images/" + response.image_url);
+                });
+            }
+        };
+    </script>
+@endpush

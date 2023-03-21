@@ -137,7 +137,9 @@
     </div>
 </div>
 
-@section('scripts')
+@endsection
+
+@push('scripts')
 <script>
     "use strict";
     $('#captions').lightGallery({
@@ -166,10 +168,10 @@
          timer: 2000
         });
     });
-    
-    
+
+
     function deleteMedia(mid){
-        
+
         swal({
   title: "{{ __('Are you sure?') }}",
   text: "{{ __('Do you want to remove this file?') }}",
@@ -187,5 +189,4 @@
 
     }
 </script>
-@endsection
-@endsection
+@endpush

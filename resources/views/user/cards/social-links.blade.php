@@ -54,12 +54,16 @@
     @include('user.includes.footer')
 </div>
 
+@endsection
+
+
+
 @push('custom-js')
 <script type="text/javascript" src="{{ asset('backend/js/fontawesome-iconpicker.min.js') }}"></script>
 <script>
     var count = 0;
     function addFeature() {
-	"use strict";
+    "use strict";
     if (count>={{ $plan_details->no_of_features}}) {
     swal({
         title: `{{ __('Oops!') }}`,
@@ -80,7 +84,7 @@
     addFeature();
 
     function removeFeature(id) {
-	"use strict";
+    "use strict";
     if(count == 1){
         swal({
         title: `{{ __('Oops!') }}`,
@@ -147,4 +151,3 @@
     }
 </script>
 @endpush
-@endsection

@@ -26,13 +26,12 @@
     <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/chart.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/sweetalert.min.js') }}"></script>
-    @yield('css')
+    @stack('custom-css')
     <input type="hidden" name="base_url" id="base_url" value="{{ url('/') }}">
 
 </head>
 
-<body class="antialiased"
-    dir="{{ App::isLocale('ar') || App::isLocale('ur') || App::isLocale('he') ? 'rtl' : 'ltr' }}">
+<body class="antialiased" dir="{{ App::isLocale('ar') || App::isLocale('ur') || App::isLocale('he') ? 'rtl' : 'ltr' }}">
 
     {{-- Preloader --}}
     <div class="preloader-wrapper">
@@ -69,7 +68,7 @@
             $('.preloader-wrapper').fadeOut();
         });
     </script>
-    @yield('scripts')
+
     @stack('custom-js')
 </body>
 

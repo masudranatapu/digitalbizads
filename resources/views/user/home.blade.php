@@ -144,8 +144,11 @@
         @include('user.includes.footer')
     </div>
 
-    {{-- Custom JS --}}
-@section('scripts')
+
+
+@endsection
+
+@push('scripts')
     <script>
         "use strict";
         const labels = [
@@ -192,5 +195,4 @@
 
         const businessCardsChart = new Chart(document.getElementById('businessCards'), businessCardsConfig);
     </script>
-@endsection
-@endsection
+@endpush

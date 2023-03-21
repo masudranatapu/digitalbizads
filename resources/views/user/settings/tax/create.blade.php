@@ -113,8 +113,7 @@
                                                             <label for="type" class="form-label">Select Type</label>
                                                             <select name="type" id="" class="form-control"
                                                                 required>
-                                                                <option value="" class="d-none" selected>Select
-                                                                    Type</option>
+
                                                                 <option value="amount">$</option>
                                                                 <option value="percentage">%</option>
                                                             </select>
@@ -129,6 +128,7 @@
                                                             <input type="number" class="form-control" name="amount"
                                                                 required>
                                                         </div>
+                                                        <small class="text-info">Put 0 if state tax is free</small>
                                                     </div>
                                                     <div
                                                         class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2 text-center">

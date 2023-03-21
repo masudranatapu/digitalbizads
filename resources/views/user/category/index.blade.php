@@ -230,37 +230,40 @@
         </div>
     </div>
 
-    @push('custom-js')
 
-        @error('category_name')
-            <script>
-                $('document').ready(function() {
-                    $('#categoryCreate').modal('show');
-                })
-            </script>
-        @enderror
-
-        <script>
-            function deleteCategory(event) {
-                console.log(event);
-                const {
-                    id
-                } = event.dataset;
-                $('#deleteModal').modal('show');
-                $('#category_id').prop('href', "{{ route('user.product.category.index') }}/delete/" + id)
-            }
-
-            function editCategory(event) {
-                console.log(event);
-                const {
-                    id,
-                    value
-                } = event.dataset;
-                $('#category_edit_id').val(id);
-                $('#category_edit').val(value);
-                $('#editForm').prop('action', "{{ route('user.product.category.index') }}/update/" + id)
-                $('#categoryEdit').modal('show');
-            }
-        </script>
-    @endpush
 @endsection
+
+
+@push('custom-js')
+
+    @error('category_name')
+        <script>
+            $('document').ready(function() {
+                $('#categoryCreate').modal('show');
+            })
+        </script>
+    @enderror
+
+    <script>
+        function deleteCategory(event) {
+            console.log(event);
+            const {
+                id
+            } = event.dataset;
+            $('#deleteModal').modal('show');
+            $('#category_id').prop('href', "{{ route('user.product.category.index') }}/delete/" + id)
+        }
+
+        function editCategory(event) {
+            console.log(event);
+            const {
+                id,
+                value
+            } = event.dataset;
+            $('#category_edit_id').val(id);
+            $('#category_edit').val(value);
+            $('#editForm').prop('action', "{{ route('user.product.category.index') }}/update/" + id)
+            $('#categoryEdit').modal('show');
+        }
+    </script>
+@endpush

@@ -169,26 +169,27 @@
         </div>
     </div>
 
-
-
-
-
-    <script>
-        function sendEmail(event) {
-            const {
-                email
-            } =
-            event.dataset;
-
-            $('#sendersubject').val('');
-            $('#senderMessage').val('');
-            $('#senderEmail').val(email);
-
-            $('#sendEmailModal').modal('show');
-
-
-
-
-        }
-    </script>
 @endsection
+
+@push('custom-js')
+
+<script>
+    function sendEmail(event) {
+        const {
+            email
+        } =
+        event.dataset;
+
+        $('#sendersubject').val('');
+        $('#senderMessage').val('');
+        $('#senderEmail').val(email);
+
+        $('#sendEmailModal').modal('show');
+
+
+
+
+    }
+</script>
+
+@endpush

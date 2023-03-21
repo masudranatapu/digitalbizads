@@ -21,7 +21,7 @@
                     <div class="col-auto ms-auto d-print-none">
                         <div class="dropdown">
 
-                            <a type="button" href="{{ route('user.setting.tax') }}">
+                            <a type="button" href="{{ route('user.state.index') }}">
                                 <button type="button" class="btn btn btn-primary">
                                     <i class="fas fa-arrow-left"></i> &ensp;
                                     {{ __('Back') }}
@@ -41,7 +41,7 @@
                         <div class="card">
 
                             <div class="card-body">
-                                <form action="{{ route('user.setting.tax.update', ['state' => $state->id]) }}"
+                                <form action="{{ route('user.state.update', ['id' => $state->id]) }}"
                                     method="post">
                                     @csrf
                                     <div class="row">
@@ -60,7 +60,7 @@
 
                                                 <label for="type" class="form-label">Select Type</label>
                                                 <select name="type" id="" class="form-control" required>
-                                                    <option value="" class="d-none" selected>Select Type</option>
+
                                                     <option {{ $state->tax_type == 'amount' ? 'selected' : '' }}
                                                         value="amount">
                                                         $
@@ -80,6 +80,7 @@
                                                 <input type="number" value="{{ old('amount') ?? $state->amount }}"
                                                     class="form-control" name="amount" required>
                                             </div>
+                                            <small class="text-info">Put 0 if state tax is free</small>
                                         </div>
                                         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2 text-center">
                                             <button class="btn btn-primary">Save</button>
@@ -105,7 +106,7 @@
                                     <div class="card">
 
                                         <div class="card-body">
-                                            <form action="{{ route('user.setting.tax.update', ['state' => $state->id]) }}"
+                                            <form action="{{ route('user.state.update', ['id' => $state->id]) }}"
                                                 method="post">
                                                 @csrf
                                                 <div class="row">
@@ -126,8 +127,7 @@
                                                             <label for="type" class="form-label">Select Type</label>
                                                             <select name="type" id="" class="form-control"
                                                                 required>
-                                                                <option value="" class="d-none" selected>Select Type
-                                                                </option>
+
                                                                 <option
                                                                     {{ $state->tax_type == 'amount' ? 'selected' : '' }}
                                                                     value="amount">
@@ -150,6 +150,7 @@
                                                                 value="{{ old('amount') ?? $state->amount }}"
                                                                 class="form-control" name="amount" required>
                                                         </div>
+                                                        <small class="text-info">Put 0 if state tax is free</small>
                                                     </div>
                                                     <div
                                                         class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-2 text-center">

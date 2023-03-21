@@ -296,62 +296,64 @@
         @include('user.includes.footer')
     </div>
 
-    @push('custom-js')
-        <script>
-            function checkLink() {
-                "use strict";
-                var plink = $('#plink').val();
-                if (plink.length > 2) {
-
-                    $.ajax({
-                        url: "{{ route('user.check.link') }}",
-                        method: 'POST',
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            link: plink
-                        },
-                    }).done(function(res) {
-                        if (res.status == 'success') {
-                            $('#status').html("<span class='badge mt-2 bg-green'>{{ __('Available') }}</span>");
-                        } else {
-                            $('#status').html("<span class='badge mt-2 bg-red'>{{ __('Not available') }}</span>");
-                        }
-                    });
-                } else {
-                    $('#status').html("");
-                }
-            }
-
-            /* Encode string to link */
-            function convertToLink(str) {
-                "use strict";
-                //replace all special characters | symbols with a space
-                str = str.replace(/[`~!@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ')
-                    .toLowerCase();
-
-                // trim spaces at start and end of string
-                str = str.replace(/^\s+|\s+$/gm, '');
-
-                // replace space with dash/hyphen
-                str = str.replace(/\s+/g, '-');
-                document.getElementById("plink").value = str;
-                //return str;
-            }
-
-            $(function() {
-                // show color code
-
-                $('#header_backgroung').on('input', function() {
-                    $('#theme_back_code').val(this.value);
-                });
-
-                $('#header_text_color').on('input', function() {
-                    $('#header_clr_code').val(this.value);
-                });
-
-
-
-            });
-        </script>
-    @endpush
 @endsection
+
+
+@push('custom-js')
+    <script>
+        function checkLink() {
+            "use strict";
+            var plink = $('#plink').val();
+            if (plink.length > 2) {
+
+                $.ajax({
+                    url: "{{ route('user.check.link') }}",
+                    method: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        link: plink
+                    },
+                }).done(function(res) {
+                    if (res.status == 'success') {
+                        $('#status').html("<span class='badge mt-2 bg-green'>{{ __('Available') }}</span>");
+                    } else {
+                        $('#status').html("<span class='badge mt-2 bg-red'>{{ __('Not available') }}</span>");
+                    }
+                });
+            } else {
+                $('#status').html("");
+            }
+        }
+
+        /* Encode string to link */
+        function convertToLink(str) {
+            "use strict";
+            //replace all special characters | symbols with a space
+            str = str.replace(/[`~!@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ')
+                .toLowerCase();
+
+            // trim spaces at start and end of string
+            str = str.replace(/^\s+|\s+$/gm, '');
+
+            // replace space with dash/hyphen
+            str = str.replace(/\s+/g, '-');
+            document.getElementById("plink").value = str;
+            //return str;
+        }
+
+        $(function() {
+            // show color code
+
+            $('#header_backgroung').on('input', function() {
+                $('#theme_back_code').val(this.value);
+            });
+
+            $('#header_text_color').on('input', function() {
+                $('#header_clr_code').val(this.value);
+            });
+
+
+
+        });
+    </script>
+@endpush

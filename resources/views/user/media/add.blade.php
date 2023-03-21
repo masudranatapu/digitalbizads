@@ -41,13 +41,14 @@
     @include('user.includes.footer')
 </div>
 
-@section('scripts')
+@endsection
+
+@push('scripts')
 <script type="text/javascript">
     Dropzone.options.dropzone = {
         maxFilesize  : {{ env('SIZE_LIMIT')/1024 }},
         acceptedFiles: ".jpeg,.jpg,.png,.gif"
     };
 </script>
-@endsection
-@endsection
+@endpush
 

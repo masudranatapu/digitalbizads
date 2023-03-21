@@ -228,31 +228,35 @@
         </div>
     </div>
 
-    <script>
-        function deleteProduct(event) {
-
-            const {
-                url
-            } = event.dataset;
-            console.log(url);
-            $('#deleteModal').modal('show');
-            $('#product_id').prop('href', url);
-
-        }
-
-        var myModalEl = document.getElementById('deleteModal')
-        myModalEl.addEventListener('hidden.bs.modal', function(event) {
-            $('#product_id').prop('href', '');
-        })
-
-
-        function photoShow(event) {
-            const {
-                src
-            } = event.dataset;
-
-            $('#photoModal').modal('show');
-            $('#product_img').prop('src', src);
-    }
-    </script>
 @endsection
+
+
+@push('custom-js')
+<script>
+    function deleteProduct(event) {
+
+        const {
+            url
+        } = event.dataset;
+        console.log(url);
+        $('#deleteModal').modal('show');
+        $('#product_id').prop('href', url);
+
+    }
+
+    var myModalEl = document.getElementById('deleteModal')
+    myModalEl.addEventListener('hidden.bs.modal', function(event) {
+        $('#product_id').prop('href', '');
+    })
+
+
+    function photoShow(event) {
+        const {
+            src
+        } = event.dataset;
+
+        $('#photoModal').modal('show');
+        $('#product_img').prop('src', src);
+}
+</script>
+@endpush
