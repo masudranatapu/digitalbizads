@@ -44,7 +44,7 @@
                                                     <td>
                                                         <div class="btn-list flex-nowrap">
                                                             <a class="btn btn-primary btn-sm"
-                                                                href="javascript:void(0)">{{ __('View') }}</a>
+                                                                href="{{ route('user.order.view', ['card_id' => $card_id, 'id' => $order->id]) }}">{{ __('View') }}</a>
 
                                                         </div>
                                                     </td>
