@@ -223,7 +223,7 @@ class StoreController extends Controller
         } else {
             if ($business_card->card_type == "store") {
                 $settings = Setting::where('status', 1)->first();
-                $currencies = Currency::get();
+                $currencies = Currency::orderBy('name','asc')->get();
 
                 $user_details = User::where('user_id', Auth::user()->user_id)->first();
                 $plan_details = json_decode($user_details->plan_details);

@@ -58,9 +58,9 @@
                                                     <td>{{ $value->user->name ?? Auth::user()->name }}</td>
                                                     <td>{{ $value->name }}</td>
                                                     <td>
-                                                        {{ CurrencyFormat($value->amount) }}
+                                                        {{ $currency_symbol }} {{ number_format($value->amount,2) }}
                                                     </td>
-                                                    <td>
+                                                       <td>
                                                         @if ($value->status == 1)
                                                             <span class="badge bg-success">Active</span>
                                                         @else
