@@ -45,7 +45,7 @@
                         @endif
                     </a>
                 </div>
-                <a href="{{ route('cart', ['card_id' => $business_card_details->card_id]) }}" class="nav-link">
+                <a href="{{ route('cart') }}" class="nav-link">
                     <span class="cart">
 
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -138,18 +138,18 @@
                         <div class="checkout_form">
                             <div class="checkout_step mb-4">
                                 <ul>
-                                    <li><a href="{{ route('checkout', ['card_id' => $business_card_details->card_id]) }}"
+                                    <li><a href="{{ route('checkout') }}"
                                             class="active">Shipping Address <i class="fa fa-angle-right"></i></a></li>
                                     <li><a
-                                            href="{{ route('checkout.billing', ['card_id' => $business_card_details->card_id]) }}">Billing
+                                            href="{{ route('checkout.billing') }}">Billing
                                             Address <i class="fa fa-angle-right"></i></a></li>
                                     <li><a
-                                            href="{{ route('checkout.payment', ['card_id' => $business_card_details->card_id]) }}">Payment</a>
+                                            href="{{ route('checkout.payment') }}">Payment</a>
                                     </li>
                                 </ul>
                             </div>
                             <form
-                                action="{{ route('checkout.store', ['card_id' => $business_card_details->card_id]) }}"
+                                action="{{ route('checkout.store') }}"
                                 method="post">
 
 
@@ -307,7 +307,7 @@
 
                                     <div class="d-flex justify-content-between paddin-top-1x">
                                         <a class="btn btn-primary btn-sm"
-                                            href="{{ route('cart', ['card_id' => $business_card_details->card_id]) }}">
+                                            href="{{ route('cart') }}">
                                             <span class="hidden-xs-down">
                                                 <i class="fa fa-angle-left"></i>
                                                 Back To Cart

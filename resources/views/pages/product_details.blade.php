@@ -35,23 +35,23 @@
     dir="{{ App::isLocale('ar') || App::isLocale('ur') || App::isLocale('he') ? 'rtl' : 'ltr' }}">
     <section>
         <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm bg-body-tertiary py-4 px-2"
-            style="@if ($business_card_details->header_backgroung) background-color: {{ $business_card_details->header_backgroung }} @endif; @if ($business_card_details->header_text_color) color: {{ $business_card_details->header_text_color }} @endif">
+            style="@if ($store->header_backgroung) background-color: {{ $store->header_backgroung }} @endif; @if ($store->header_text_color) color: {{ $store->header_text_color }} @endif">
             <div class="container-fluid d-flex justify-content-between">
-                <div @if ($business_card_details->header_text_color) color: {{ $business_card_details->header_text_color }} @endif>
-                    <a class="navbar-brand" href="{{ route('card.preview', $business_card_details->card_url) }}">
-                        @if ($business_card_details->profile)
-                            <img src="{{ url('/') }}{{ $business_card_details->profile }}"
-                                alt="{{ $business_card_details->title }}" width="40px">
+                <div @if ($store->header_text_color) color: {{ $store->header_text_color }} @endif>
+                    <a class="navbar-brand" href="{{ route('card.preview', $store->card_url) }}">
+                        @if ($store->profile)
+                            <img src="{{ url('/') }}{{ $store->profile }}"
+                                alt="{{ $store->title }}" width="40px">
                         @else
-                            {{ $business_card_details->title }}
+                            {{ $store->title }}
                         @endif
                     </a>
                 </div>
-                <a href="{{ route('cart', ['card_id' => $business_card_details->card_id]) }}" class="nav-link">
+                <a href="{{ route('cart') }}" class="nav-link">
                     <span class="cart">
 
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                            stroke="@if ($business_card_details->header_text_color) {{ $business_card_details->header_text_color }} @else #000000 @endif ">
+                            stroke="@if ($store->header_text_color) {{ $store->header_text_color }} @else #000000 @endif ">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                         </svg>
@@ -105,7 +105,7 @@
                 </div>
                 <div class="col-lg-6">
 
-                    <form action="{{ route('add.to.cart') }}" method="post">
+                    <form action="{{ route('addtocart') }}" method="post">
                         @csrf
                         <input type="hidden" name="productId" value="{{ $product->id }}" id="">
                         <div class="product_info">
@@ -113,14 +113,13 @@
                             <h3>
                                 @if ($product->sales_price != $product->regular_price)
                                     <del class="text-dark fw-lighter">
-                                        <span>{{ getPrice($product->regular_price) }}</span>
+                                        <span>{{ $currency_symbol }} {{ CurrencyFormat($product->regular_price) }}</span>
                                     </del>
                                 @endif
 
-                                <span>{{ $currency->symbol }}</span><span
+                                <span>&nbsp;{{ $currency_symbol }}</span><span
                                     id="totalPrice">{{ $product->sales_price != $product->regular_price ? CurrencyFormat($product->sales_price) : CurrencyFormat($product->regular_price) }}</span>
-                                <input id="mainPrice" type="hidden"
-                                    value="{{ $product->sales_price != $product->regular_price ? CurrencyFormat($product->sales_price) : CurrencyFormat($product->regular_price) }}">
+                                <input id="mainPrice" type="hidden" value="{{ $product->sales_price != $product->regular_price ? CurrencyFormat($product->sales_price) : CurrencyFormat($product->regular_price) }}">
                             </h3>
                             <h2>{{ $product->product_name }}</h2>
                             <p>
@@ -135,15 +134,9 @@
                                                 @if (count($variant->hasOption) > 0)
                                                     <div class="col-6">
                                                         <div class="size">
-                                                            <label for="size"
-                                                                class="form-label">{{ $variant->name }}</label>
-                                                            <select name="option[]"
-                                                                id="{{ str_replace(' ', '_', strtolower(trim($variant->name))) }}"
-                                                                class="form-control">
-                                                                <option value="">Select
-                                                                    <span
-                                                                        class="text-lowercase">{{ $variant->name }}</span>
-                                                                </option>
+                                                            <label for="size" class="form-label">{{ $variant->name }}</label>
+                                                            <select name="option[]" id="{{ str_replace(' ', '_', strtolower(trim($variant->name))) }}" class="form-control" >
+
                                                                 @foreach ($variant->hasOption as $option)
                                                                     @if ($option->stock > 0)
                                                                         <option value="{{ $option->id }}"
@@ -153,6 +146,7 @@
                                                                         </option>
                                                                     @endif
                                                                 @endforeach
+
                                                             </select>
                                                         </div>
                                                     </div>
