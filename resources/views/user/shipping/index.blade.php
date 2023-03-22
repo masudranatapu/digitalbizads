@@ -58,7 +58,7 @@
                                                     <td>{{ $value->user->name ?? Auth::user()->name }}</td>
                                                     <td>{{ $value->name }}</td>
                                                     <td>
-                                                        {{ '$' . $value->amount }}
+                                                        {{ CurrencyFormat($value->amount) }}
                                                     </td>
                                                     <td>
                                                         @if ($value->status == 1)
