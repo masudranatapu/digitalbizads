@@ -21,7 +21,7 @@
                     <div class="col-auto ms-auto d-print-none">
                         <div class="dropdown">
 
-                            <a href="{{ route('user.setting.tax') }}" class="btn btn btn-primary">
+                            <a href="{{ route('user.state.index') }}" class="btn btn btn-primary">
                                 <i class="fas fa-arrow-left"></i> &ensp;
                                 {{ __('Back') }}
 
@@ -40,7 +40,7 @@
                         <div class="card">
 
                             <div class="card-body">
-                                <form action="{{ route('user.setting.tax.store') }}" method="post">
+                                <form action="{{ route('user.state.store') }}" method="post">
                                     @csrf
                                     <div class="row">
 
@@ -94,7 +94,7 @@
                                     <div class="card">
 
                                         <div class="card-body">
-                                            <form action="{{ route('user.setting.tax.store') }}" method="post">
+                                            <form action="{{ route('user.state.store') }}" method="post">
                                                 @csrf
                                                 <div class="row">
 
