@@ -11,7 +11,7 @@
                             {{ __('Overview') }}
                         </div>
                         <h2 class="page-title">
-                            {{ __('Whatsapp Stores Products') }}
+                            {{ __('Products') }}
                         </h2>
                     </div>
                     <!-- Page title actions -->
@@ -26,7 +26,7 @@
                                         <line x1="12" y1="5" x2="12" y2="19"></line>
                                         <line x1="5" y1="12" x2="19" y2="12"></line>
                                     </svg>
-                                    {{ __('Create') }}
+                                    {{ __('Add Product') }}
                                 </button>
                             </a>
 

@@ -16,7 +16,7 @@
                             {{ __('Overview') }}
                         </div>
                         <h2 class="page-title">
-                            {{ __('Edit Products') }}
+                            {{ __('Edit Product') }}
                         </h2>
                     </div>
                     <!-- Page title actions -->
