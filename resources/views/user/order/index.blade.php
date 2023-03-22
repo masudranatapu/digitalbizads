@@ -29,17 +29,37 @@
                                     <thead>
                                         <tr>
                                             <th style="width: 10%">{{ __('S.No') }}</th>
-                                            <th>{{ __('Name') }}</th>
-
+                                            <th>{{ __('User Name') }}</th>
+                                            <th>{{ __('Transection Number') }}</th>
+                                            <th>{{ __('Payment Amount') }}</th>
+                                            <th>{{ __('Currency') }}</th>
+                                            <th>{{ __('Order Date') }}</th>
+                                            <th>{{ __('Payment Status') }}</th>
                                             <th class="w-1">{{ __('Actions') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @if (isset($orders) && count($orders) > 0)
                                             @foreach ($orders as $order)
+                                                @php
+                                                    
+                                                    $shippinfDetails = json_decode($order->shipping_details, true);
+                                                @endphp
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $order->name }}</td>
+                                                    <td>{{ $shippinfDetails['ship_first_name'] . ' ' . $shippinfDetails['ship_last_name'] }}
+                                                    </td>
+                                                    <td>{{ $order->hasTransection->transection_id }}</td>
+                                                    <td>{{ getPrice($order->total_price) }}</td>
+                                                    <td class="text-uppercase">{{ $order->hasTransection->currency }}</td>
+                                                    <td>{{ date('d-M-Y', strtotime($order->order_date)) }}</td>
+                                                    <td>
+                                                        @if ($order->payment_status)
+                                                            <span class="badge bg-green">Success</span>
+                                                        @else
+                                                            <span class="badge bg-danger">Fail</span>
+                                                        @endif
+                                                    </td>
 
                                                     <td>
                                                         <div class="btn-list flex-nowrap">
@@ -54,7 +74,7 @@
                                             <tr class="font-weight-bold">
 
 
-                                                <td class="text-center" colspan="4">
+                                                <td class="text-center" colspan="8">
                                                     {{ __('No Product Variant Found.') }}</td>
 
                                             </tr>
@@ -65,7 +85,7 @@
                         </div>
                     </div>
 
-                    {{--
+
                     @if (isset($orders))
                         <div
                             class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none">
@@ -77,13 +97,25 @@
                                             <div class="card-body">
                                                 <div class="row">
 
-                                                    <div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">
+                                                    <div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7">
                                                         <h3 class="text-left">
-                                                            <td>{{ $row->name }}</td>
+                                                            <td>
+                                                                {{ $shippinfDetails['ship_first_name'] . ' ' . $shippinfDetails['ship_last_name'] }}
+                                                                <p class="m-0">({{ getPrice($order->total_price) }})</p>
+                                                                @if ($order->payment_status)
+                                                                    <p> Payment status: <span
+                                                                            class="text-success">Success</span></p>
+                                                                @else
+                                                                    <p> Payment status: <span
+                                                                            class="text-danger">Fail</span></p>
+                                                                @endif
+                                                            </td>
+
+
                                                         </h3>
                                                     </div>
 
-                                                    <div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7">
+                                                    <div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">
                                                         <div class="dropdown text-end">
                                                             <button type="button" class="btn btn-primary dropdown-toggle"
                                                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -92,20 +124,8 @@
                                                             <div class="dropdown-menu" style="">
 
                                                                 <a class="dropdown-item text-info"
-                                                                    data-url="{{ route('user.product.variants.update', ['variant' => $row->id, '']) }}"
-                                                                    data-value="{{ $row->name }}"
-                                                                    onclick="editvariant(this)"
-                                                                    href="javascript:void(0)">{{ __('Edit') }}</a>
-                                                                <a class="dropdown-item text-info"
-                                                                    href="#">{{ __('Option') }}</a>
+                                                                    href="{{ route('user.order.view', ['card_id' => $card_id, 'id' => $order->id]) }}">{{ __('View') }}</a>
 
-
-
-                                                                <a class="dropdown-item  text-danger delete-card"
-                                                                    data-url="{{ route('user.product.variants.delete', ['variant' => $row->id]) }}"
-                                                                    onclick="deletevariant(this)" href="javascript:void(0)">
-                                                                    {{ __('Delete') }}
-                                                                </a>
                                                             </div>
                                                         </div>
 
@@ -118,7 +138,7 @@
                             </div>
 
                         </div>
-                    @endif --}}
+                    @endif
                 </div>
             </div>
         </div>
