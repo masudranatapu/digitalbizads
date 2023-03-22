@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\BusinessCard;
 use App\Http\Controllers\Controller;
 use App\Setting;
 use App\ShippingCost;
@@ -17,7 +18,14 @@ class ShippingAreaController extends Controller
         $user_id =  Auth::user()->id;
         $shippingarea = ShippingCost::where('user_id',$user_id)->orderBy('name', 'asc')->latest()->get();
         $settings = Setting::where('status', 1)->first();
-        return view('user.shipping.index', compact('shippingarea', 'settings'));
+        $store = BusinessCard::where('user_id',$user_id)->where('card_type','store')->first();
+        $currency_symbol = null;
+        if($store){
+            $store_details = json_decode($store->description);
+            $currency_symbol = $store_details->currency ?? null;
+
+        }
+        return view('user.shipping.index', compact('shippingarea', 'settings','currency_symbol'));
     }
 
     public function create()
