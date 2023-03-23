@@ -23,7 +23,8 @@
                                 <tbody>
                                     @php
                                         $total = 0;
-                                        
+                                        $grandTotal = 0;
+
                                     @endphp
                                     @if (session('cart'))
                                         @foreach (session('cart') as $id => $details)
@@ -44,7 +45,7 @@
                                                 <td data-th="Subtotal" class="text-center">
                                                     {{ getPrice($line_total) }}
                                                 </td>
-
+                                                
                                             </tr>
                                         @endforeach
                                     @else
@@ -188,11 +189,19 @@
                                         <div class="form-group">
                                             <label for="ship_state" class="form-label">State <span
                                                     class="text-danger">*</span></label>
-                                            <input class="form-control @error('ship_state') border-danger @enderror"
-                                                name="ship_state" required="" type="text" id="ship_state"
-                                                value="@if (old('ship_state')) {{ old('ship_state') }}
-                                                @elseif(session()->has('shipping')){{ session('shipping')['ship_state'] }} @endif"
-                                                placeholder="State">
+                                            <select class="form-control @error('ship_state') border-danger @enderror"
+                                                name="ship_state" required="" id="ship_state">
+
+                                                <option value="" class="d-none">Select State</option>
+                                                @foreach ($states as $state)
+                                                    <option value="{{ $state->id }}"
+                                                        @if (old('ship_state')) {{ old('ship_state') == $state->id ? 'selected' : '' }}
+                                                        @elseif(session()->has('shipping')){{ session('shipping')['ship_state'] == $state->id ? 'selected' : '' }} @endif>
+                                                        {{ $state->name }}
+                                                    </option>
+                                                @endforeach
+
+                                            </select>
                                             @error('ship_state')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -212,16 +221,25 @@
                                             @enderror
                                         </div>
                                     </div>
+
                                     <div class="col-md-6 mb-4">
                                         <div class="form-group">
-                                            <label for="ship_country" class="form-label">Country <span
+                                            <label for="ship_state" class="form-label">Shiping Area<span
                                                     class="text-danger">*</span></label>
-                                            <input class="form-control @error('ship_country') border-danger @enderror"
-                                                name="ship_country" type="text" required="" id="ship_country"
-                                                value="@if (old('ship_country')) {{ old('ship_country') }}
-                                                @elseif(session()->has('shipping')){{ session('shipping')['ship_country'] }} @endif"
-                                                placeholder="Country">
-                                            @error('ship_country')
+                                            <select class="form-control @error('ship_area') border-danger @enderror"
+                                                name="ship_area" required="" id="ship_area">
+
+                                                <option value="" class="d-none">Select area</option>
+                                                @foreach ($shippingAreas as $shippingArea)
+                                                    <option value="{{ $shippingArea->id }}"
+                                                        @if (old('ship_area')) {{ old('ship_area') == $shippingArea->id ? 'selected' : '' }}
+                                                        @elseif(session()->has('shipping')){{ session('shipping')['ship_area'] == $shippingArea->id ? 'selected' : '' }} @endif>
+                                                        {{ $shippingArea->name }}
+                                                    </option>
+                                                @endforeach
+
+                                            </select>
+                                            @error('ship_area')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -244,6 +262,20 @@
                                             @enderror
                                         </div>
                                     </div>
+
+                                    <div class="col-md-6 mb-4">
+                                        <div class="form-group">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="same_as_shipping"
+                                                    id="same_as_shipping"
+                                                    @if (session()->has('shipping')) {{ session('shipping')['same_as_shipping'] ? 'checked' : '' }} @endif>
+                                                <label class="form-check-label" for="same_as_shipping">
+                                                    Billing address is same as shipping address.
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
 
                                     <div class="d-flex justify-content-between paddin-top-1x">
                                         <a class="btn btn-primary btn-sm"

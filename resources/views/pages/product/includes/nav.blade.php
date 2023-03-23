@@ -1,6 +1,6 @@
 <section>
     <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm bg-body-tertiary py-4 px-2"
-        style="@if ($business_card_details->header_backgroung) background-color: {{ $business_card_details->header_backgroung }} @endif; @if ($business_card_details->header_text_color) color: {{ $business_card_details->header_text_color }} @endif">
+        style="@if ($business_card_details->header_backgroung) background-color: {{ $business_card_details->header_backgroung }} @endif !important; @if ($business_card_details->header_text_color) color: {{ $business_card_details->header_text_color }} @endif !important">
         <div class="container-fluid d-flex justify-content-between">
             <div @if ($business_card_details->header_text_color) color: {{ $business_card_details->header_text_color }} @endif>
                 <a class="navbar-brand" href="{{ route('card.preview', $business_card_details->card_url) }}">
@@ -8,7 +8,9 @@
                         <img src="{{ url('/') }}{{ $business_card_details->profile }}"
                             alt="{{ $business_card_details->title }}" width="40px">
                     @else
-                        {{ $business_card_details->title }}
+                        <span
+                            style="font-weight: 600; @if ($business_card_details->header_text_color) color: {{ $business_card_details->header_text_color }} @endif !important">
+                            {{ $business_card_details->title }}</span>
                     @endif
                 </a>
             </div>

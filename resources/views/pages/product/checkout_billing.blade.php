@@ -40,7 +40,7 @@
                                                 <td data-th="Quantity">
                                                     {{ $details['quantity'] }}
                                                 </td>
-                                                <td data-th="Subtotal" class="text-center">
+                                                <td data-th="Subtotal" class="text-end">
                                                     {{ getPrice($line_total) }}
                                                 </td>
 
@@ -65,9 +65,54 @@
                                         <td class="text-gray-dark">$0.00</td>
                                     </tr> --}}
                                     <tr>
-                                        <td class="text-lg text-primary">Order total</td>
-                                        <td colspan="3" class="text-lg text-end text-primary grand_total_set">
+                                        <td class="">Order total</td>
+                                        <td colspan="3" class="text-end grand_total_set">
                                             {{ getPrice($total) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Vat
+                                        </td>
+                                        <td colspan="3" data-th="Vat" class="text-end">
+                                            @if (session()->has('tax'))
+                                                {{ getPrice(session()->get('tax')) }}
+                                            @endif
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Shipping Cost
+                                        </td>
+                                        <td colspan="3" data-th="Shipping Cost" class="text-end">
+                                            @if (session()->has('shippingCost'))
+                                                {{ getPrice(session()->get('shippingCost')) }}
+                                            @endif
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="text-lg text-primary">
+                                            Grand Total
+                                        </td>
+                                        <td colspan="3" data-th="Grand Total" class="text-end text-lg text-primary">
+                                            @if (session()->has('tax'))
+                                                @php
+                                                    
+                                                    $total = (int) $total + (int) session()->get('tax');
+                                                @endphp
+                                            @endif
+                                            @if (session()->has('shippingCost'))
+                                                @php
+                                                    
+                                                    $total = (int) $total + (int) session()->get('shippingCost');
+                                                @endphp
+                                            @endif
+                                            {{ getPrice($total) }}
+
+
+                                        </td>
+
                                     </tr>
                                 </tbody>
                             </table>
@@ -199,19 +244,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-md-6 mb-4">
-                                        <div class="form-group">
-                                            <label for="bill_country" class="form-label">Country <span
-                                                    class="text-danger">*</span></label>
-                                            <input class="form-control @error('bill_country') border-danger @enderror"
-                                                name="bill_country" type="text" required="" id="bill_country"
-                                                value="@if (old('bill_country')) {{ old('bill_country') }}@elseif(session()->has('billing')){{ session('billing')['bill_country'] }} @endif"
-                                                placeholder="Country">
-                                            @error('bill_country')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
+
 
 
                                     <div class="d-flex justify-content-between paddin-top-1x">

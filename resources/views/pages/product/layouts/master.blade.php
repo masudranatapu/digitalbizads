@@ -7,8 +7,16 @@
     <title>@yield('title')</title>
     <meta property="og:title" content="{{ $business_card_details->title ?? '' }}" />
     <meta property="og:description" content="{{ $business_card_details->sub_title ?? '' }}" />
-    <link rel="icon" href="{{ url('/') }}{{ $business_card_details->profile }}" sizes="96x96"
-        type="image/png" />
+
+    @php
+        $settings = getSetting();
+    @endphp
+    @if ($business_card_details->profile)
+        <link rel="icon" href="{{ url('/') }}{{ $business_card_details->profile }}" sizes="96x96"
+            type="image/png" />
+    @else
+        <link rel="icon" href="{{ url('/') }}{{ $settings->favicon }}" sizes="96x96" type="image/png" />
+    @endif
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -34,7 +42,7 @@
     </style>
 </head>
 
-<body class="antialiased bg-body text-body font-body"
+<body class="antialiased bg-body text-body font-body bg-body"
     dir="{{ App::isLocale('ar') || App::isLocale('ur') || App::isLocale('he') ? 'rtl' : 'ltr' }}">
 
     @include('pages.product.includes.nav')

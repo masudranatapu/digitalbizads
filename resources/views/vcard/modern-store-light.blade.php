@@ -15,8 +15,13 @@
     {!! JsonLd::generate() !!} --}}
     <meta property="og:title" content="{{ $business_card_details->title ?? '' }}" />
     <meta property="og:description" content="{{ $business_card_details->sub_title ?? '' }}" />
-    <link rel="icon" href="{{ url('/') }}{{ $business_card_details->profile }}" sizes="96x96"
-        type="image/png" />
+
+    @if ($business_card_details->profile)
+        <link rel="icon" href="{{ url('/') }}{{ $business_card_details->profile }}" sizes="96x96"
+            type="image/png" />
+    @else
+        <link rel="icon" href="{{ url('/') }}{{ $settings->favicon }}" sizes="96x96" type="image/png" />
+    @endif
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap">
     <link rel="stylesheet" href="{{ asset('frontend/whatsapp-store/css/tailwind/tailwind.min.css') }}">
@@ -184,7 +189,8 @@
                                 <div class="input-group">
                                     <span class="input-group-text">Sort By:</span>
                                     <select name="sort_order" id="sort_order" class="form-control">
-                                        <option @if ('1' == request()->sort_order) selected @endif value="1">A to Z
+                                        <option @if ('1' == request()->sort_order) selected @endif value="1">A to
+                                            Z
                                         </option>
                                         <option @if ('2' == request()->sort_order) selected @endif value="2">Z to
                                             A
@@ -254,16 +260,6 @@
                                             <a onclick="addToCart('{{ $product->id }}',1)"
                                                 class="py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
                                                 style="cursor: pointer; min-width: 120px;">{{ __('Add to Cart') }}</a>
-
-                                            {{-- <form action="{{ route('add.to.cart') }}" method="post">
-                                                @csrf
-                                                <input type="hidden" name="productId" value="{{ $product->id }}">
-                                                <input type="hidden" name="qty" value="1">
-                                                <button type="submit"
-                                                    class="py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
-                                                    style="cursor: pointer; min-width: 120px;">{{ __('Add to Cart') }}</button>
-
-                                            </form> --}}
                                         @endif
 
                                     </div>

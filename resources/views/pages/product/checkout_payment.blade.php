@@ -42,7 +42,7 @@
                                                 <td data-th="Quantity">
                                                     {{ $details['quantity'] }}
                                                 </td>
-                                                <td data-th="Subtotal" class="text-center">
+                                                <td data-th="Subtotal" class="text-end">
                                                     {{ getPrice($line_total) }}
                                                 </td>
 
@@ -67,9 +67,54 @@
                                         <td class="text-gray-dark">$0.00</td>
                                     </tr> --}}
                                     <tr>
-                                        <td class="text-lg text-primary">Order total</td>
-                                        <td colspan="3" class="text-lg text-end text-primary grand_total_set">
+                                        <td class="">Order total</td>
+                                        <td colspan="3" class="text-end grand_total_set">
                                             {{ getPrice($total) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Vat
+                                        </td>
+                                        <td colspan="3" data-th="Vat" class="text-end">
+                                            @if (session()->has('tax'))
+                                                {{ getPrice(session()->get('tax')) }}
+                                            @endif
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Shipping Cost
+                                        </td>
+                                        <td colspan="3" data-th="Shipping Cost" class="text-end">
+                                            @if (session()->has('shippingCost'))
+                                                {{ getPrice(session()->get('shippingCost')) }}
+                                            @endif
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td class="text-lg text-primary">
+                                            Grand Total
+                                        </td>
+                                        <td colspan="3" data-th="Grand Total" class="text-end text-lg text-primary">
+                                            @if (session()->has('tax'))
+                                                @php
+                                                    
+                                                    $total = (int) $total + (int) session()->get('tax');
+                                                @endphp
+                                            @endif
+                                            @if (session()->has('shippingCost'))
+                                                @php
+                                                    
+                                                    $total = (int) $total + (int) session()->get('shippingCost');
+                                                @endphp
+                                            @endif
+                                            {{ getPrice($total) }}
+
+
+                                        </td>
+
                                     </tr>
                                 </tbody>
                             </table>
@@ -92,7 +137,8 @@
                             <form action="#" method="post">
                                 <div class="payment">
                                     <a href="#">
-                                        <img src="{{ asset('assets/images/paypal.png') }}" class="img-fluid" alt="Paypal">
+                                        <img src="{{ asset('assets/images/paypal.png') }}" class="img-fluid"
+                                            alt="Paypal">
                                         <span>Paypal</span>
                                     </a>
 

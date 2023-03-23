@@ -18,6 +18,7 @@ use App\StoreProduct;
 use App\Order;
 use App\OrderDetail;
 use App\ProductOrderTransaction;
+use App\Variants;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
@@ -47,6 +48,9 @@ class CartController extends Controller
         $cart = session()->get('cart');
 
 
+
+
+
         if ($cart) {
             if (array_keys($cart)[0]) {
                 $prd_id = array_keys($cart);
@@ -66,6 +70,7 @@ class CartController extends Controller
 
 
 
+
         $id = $request->pid;
         $qty = $request->qty;
         $product = StoreProduct::findOrFail($id);
@@ -75,14 +80,18 @@ class CartController extends Controller
         $option = [];
         $variantTotalPrice = 0;
 
-        if (isset($request->varaints)) {
-            $incomingVariant = $request->option;
+
+        if (isset($request->options)) {
+            $incomingVariant = $request->options;
             for ($i = 0; $i < count($incomingVariant); $i++) {
                 $productVariant = VariantOption::find($incomingVariant[$i]);
+                $variant = Variants::find($productVariant->variant_id);
+
                 if (isset($productVariant)) {
                     $option[] = [
                         "id" => $productVariant->id,
                         "variant_id" => $productVariant->variant_id,
+                        "variant_name" => $variant->name,
                         "name" => $productVariant->name,
                         "price" => $productVariant->price,
 
@@ -164,8 +173,9 @@ class CartController extends Controller
 
 
             $total += $details['price'] * $details['quantity'];
-            $line_total = $details['price'] * $details['quantity'];
         }
+        $shippingCost = Session::has('shippingCost') ? Session::get('shippingCost') : 0;
+        $tax = Session::has('tax') ? Session::get('tax') : 0;
 
 
 
@@ -184,7 +194,7 @@ class CartController extends Controller
                     'country' =>  $shiping['ship_city'],
                 ],
             ],
-            'amount' => intval($total) * 100,
+            'amount' => (intval($total) + intval($shippingCost) + intval($tax)) * 100,
             'currency' => $currency->iso_code,
             'payment_method_types' => ['card'],
         ]);
@@ -199,6 +209,8 @@ class CartController extends Controller
         $business_card_details = BusinessCard::where('card_id', $card_id)->first();
         $user = User::find($business_card_details->user_id);
         $totalTransaction = ProductOrderTransaction::count();
+        $shippingCost = Session::has('shippingCost') ? Session::get('shippingCost') : 0;
+        $tax = Session::has('tax') ? Session::get('tax') : 0;
         try {
             $stripe = new \Stripe\StripeClient($user->stripe_secret_key);
             $payment = $stripe->paymentIntents->retrieve($paymentId, []);
@@ -234,41 +246,62 @@ class CartController extends Controller
                 $totalQuantity +=  $product['quantity'];
             }
 
-            $orderDetails = new Order();
-            $orderDetails->transaction_id = $productOrderTransaction->id;
-            $orderDetails->store_id = $card_id;
-            $orderDetails->quantity = $totalQuantity;
-            $orderDetails->total_price = $totalPrice;
-            $orderDetails->payment_fee = 0;
-            $orderDetails->vat = 0;
-            $orderDetails->grand_total = $totalPrice;
-            $orderDetails->order_date = now();
-            $orderDetails->order_date = now();
-            $orderDetails->shipping_details = json_encode(Session::get('shipping'));
-            $orderDetails->billing_details = json_encode(Session::get('billing'));
-            $orderDetails->payment_method = "Stripe";
-            $orderDetails->payment_status = $payment->status == "succeeded" ? 1 : 0;
-            $orderDetails->save();
+            $order = new Order();
+            $order->transaction_id = $productOrderTransaction->id;
+            $order->store_id = $card_id;
+            $order->quantity = $totalQuantity;
+            $order->total_price = $totalPrice;
+            $order->payment_fee = 0;
+            $order->vat = $tax;
+            $order->shipping_cost = $shippingCost;
+            $order->grand_total = $totalPrice;
+            $order->order_date = now();
+            $order->order_date = now();
+            $order->shipping_details = json_encode(Session::get('shipping'));
+            $order->billing_details = json_encode(Session::get('billing'));
+            $order->payment_method = "Stripe";
+            $order->payment_status = $payment->status == "succeeded" ? 1 : 0;
+            $order->save();
             foreach ($products as $key => $product) {
                 $totalPrice = 0;
                 $totalQuantity = 0;
                 $totalPrice += $product['price'] * $product['quantity'];
                 $totalQuantity +=  $product['quantity'];
 
-                $order_id = $orderDetails->id;
+                $order_id = $order->id;
                 $product_id = $key;
 
                 if (count($product['option']) > 0) {
+                    $varints = [];
+                    $optionsDetails = [];
                     foreach ($product['option'] as $option) {
-                        $orderDetails = new OrderDetail();
-                        $orderDetails->order_id = $order_id;
-                        $orderDetails->product_id = $product_id;
-                        $orderDetails->quantity = $product['quantity'];
-                        $orderDetails->unit_price = $product['price'];
-                        $orderDetails->variant_id = $option['variant_id'];
-                        $orderDetails->variant_option_id = $option['id'];
-                        $orderDetails->save();
+
+                        $varints[] = [
+                            "id" => $option['variant_id'],
+                            "name" => $option['variant_name']
+                        ];
+                        $optionsDetails[] = [
+                            "id" => $option['id'],
+                            "name" => $option['name'],
+                        ];
                     }
+                    $orderDetails = new OrderDetail();
+                    $orderDetails->order_id = $order->id;
+                    $orderDetails->product_id = $product_id;
+                    $orderDetails->quantity = $product['quantity'];
+                    $orderDetails->unit_price = $product['price'];
+                    $orderDetails->variant_id = json_encode($varints);
+                    $orderDetails->variant_option_id = json_encode($optionsDetails);
+                    $orderDetails->save();
+                } else {
+                    $orderDetails = new OrderDetail();
+                    $orderDetails->order_id = $order->id;
+                    $orderDetails->product_id = $product_id;
+                    $orderDetails->quantity = $product['quantity'];
+                    $orderDetails->unit_price = $product['price'];
+                    $orderDetails->variant_id = null;
+                    $orderDetails->variant_option_id = null;
+                    $orderDetails->save();
                 }
             }
         }

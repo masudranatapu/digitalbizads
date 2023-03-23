@@ -18,8 +18,15 @@
     <meta property="og:description" content="{{ $business_card_details->sub_title ?? '' }}" />
 
 
-    <link rel="icon" href="{{ url('/') }}{{ $business_card_details->profile }}" sizes="96x96"
-        type="image/png" />
+    @php
+        $settings = getSetting();
+    @endphp
+    @if ($business_card_details->profile)
+        <link rel="icon" href="{{ url('/') }}{{ $business_card_details->profile }}" sizes="96x96"
+            type="image/png" />
+    @else
+        <link rel="icon" href="{{ url('/') }}{{ $settings->favicon }}" sizes="96x96" type="image/png" />
+    @endif
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap">
     <link rel="stylesheet" href="{{ asset('frontend/whatsapp-store/css/tailwind/tailwind.min.css') }}">
@@ -90,11 +97,12 @@
                                 to Bizad </a>&nbsp;&nbsp;
                         @endif
 
-                        <button class="navbar-burger flex items-center text-white">
+                        <a href="{{ route('cart', ['cardUrl' => $business_card_details->card_url]) }}"
+                            class="flex items-center">
                             <span class="relative inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                                     viewBox="0 0 24 24"
-                                    stroke="@if ($business_card_details->header_text_color) {{ $business_card_details->header_text_color }} @else #ffffff @endif">
+                                    stroke="@if ($business_card_details->header_text_color) {{ $business_card_details->header_text_color }} @else #000000 @endif ">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                                 </svg>
@@ -102,7 +110,7 @@
                                     class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full"
                                     id="badge"></span>
                             </span>
-                        </button>
+                        </a>
                     </div>
                 </div>
             </nav>
@@ -185,9 +193,11 @@
                                 <div class="input-group">
                                     <span class="input-group-text">Sort By:</span>
                                     <select name="sort_order" id="sort_order" class="form-control">
-                                        <option @if ('1' == request()->sort_order) selected @endif value="1">A to Z
+                                        <option @if ('1' == request()->sort_order) selected @endif value="1">A to
+                                            Z
                                         </option>
-                                        <option @if ('2' == request()->sort_order) selected @endif value="2">Z to A
+                                        <option @if ('2' == request()->sort_order) selected @endif value="2">Z to
+                                            A
                                         </option>
                                         <option @if ('3' == request()->sort_order) selected @endif value="3">Price
                                             low to high</option>
@@ -240,28 +250,16 @@
                                                     : {{ $product->hasCategory->category_name ?? '' }}</span>
                                             @endif
                                         </h4>
+
+
                                         @if ($product->is_variant)
-                                            @foreach ($product->hasVariant as $variant)
-                                                @if ($variant->hasOption->count() > 0)
-                                                    <div class="col-span-6 sm:col-span-3 mb-3 mt-3">
-                                                        <label for="country"
-                                                            class="block text-sm font-medium leading-6 text-gray-900">{{ $variant->name }}</label>
-                                                        <select
-                                                            class="block w-full p-2 mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                                            name="option[]">
-                                                            @foreach ($variant->hasOption as $option)
-                                                                <option data-price="{{ $option->price }}">
-                                                                    {{ $option->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                @endif
-                                            @endforeach
-                                        @endif
-                                        @if ($product->product_status == 'instock')
-                                            <a onclick="addToCart('{{ $product->product_id }}')"
+                                            <a href="{{ route('product.details', ['id' => $product->id, 'cardUrl' => $business_card_details->card_url]) }}"
+                                                class="text-center py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
+                                                style="cursor: pointer; min-width: 120px; display: inline-block;">{{ __('Choose') }}</a>
+                                        @else
+                                            <a onclick="addToCart('{{ $product->id }}',1)"
                                                 class="py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
-                                                style="cursor: pointer;">{{ __('Add') }}</a>
+                                                style="cursor: pointer; min-width: 120px;">{{ __('Add to Cart') }}</a>
                                         @endif
 
 
@@ -372,36 +370,45 @@
         $("#place-order-email").hide();
         $("#empty-cart").show();
 
-        function addToCart(pid) {
+        function addToCart(pid, qty) {
             "use strict";
-            var productName = $("#" + pid + "_product_name").text();
-            var price = $("#" + pid + "_price").text();
-            var product_image = $("#" + pid + "_product_image").attr("src");
-            var subtitle = $("#" + pid + "_subtitle").text();
 
-            var quantity_increment = false;
-            for (let index = 0; index < cart.length; index++) {
-                if (cart[index].product_id == pid) {
-                    cart[index].qty = cart[index].qty + 1;
-                    quantity_increment = true;
-                    successAlert('{{ __('Cart updated') }}');
-                    updateBadge();
+            // var productName = $("#" + pid + "_product_name").text();
+            // var price = $("#" + pid + "_price").text();
+            // var product_image = $("#" + pid + "_product_image").attr("src");
+            // var subtitle = $("#" + pid + "_subtitle").text();
+            // var quantity_increment = false;
+
+
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('addtocart') }}",
+                data: {
+                    pid: pid,
+                    qty: qty,
+                    variants: [],
+                    options: [],
+                    "_token": "{{ csrf_token() }}",
+                },
+                success: function(data) {
+                    console.log(data);
+                    if (data.status == true) {
+                        successAlert(data.message);
+                    } else {
+                        successAlert('Something wrong please try again');
+                    }
+
+                },
+                error: function(error) {
+                    console.log(error);
+                },
+                complete: function() {
+                    // document.location.reload();
                 }
-            }
-            if (quantity_increment == false) {
-                cart.push({
-                    "product_name": productName,
-                    "price": price,
-                    "product_id": pid,
-                    "currency": currency,
-                    "qty": 1,
-                    "product_image": product_image,
-                    "subtitle": subtitle
-                });
-                successAlert("{{ __('Item added to cart') }}");
-                updateBadge();
-            }
-            updateList();
+
+            });
+
+
 
         }
 

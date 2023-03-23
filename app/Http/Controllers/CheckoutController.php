@@ -2,37 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Plan;
+
 use App\User;
-use Illuminate\Support\Facades\Validator;
-use App\Gallery;
-use App\Setting;
+
+
 use App\Currency;
-use App\Subscriber;
+
 use App\BusinessCard;
-use App\BusinessField;
-use App\Mail\OrderEmail;
-use App\ProductCategory;
-use App\VariantOption;
-use App\StoreProduct;
+
 use App\Order;
 use App\OrderDetail;
 use App\ProductOrderTransaction;
+use App\ShippingCost;
+use App\State;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\URL;
-use Brian2694\Toastr\Facades\Toastr;
-use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use Artesaos\SEOTools\Facades\JsonLd;
-use Artesaos\SEOTools\Facades\SEOMeta;
-use Artesaos\SEOTools\Facades\SEOTools;
-use Artesaos\SEOTools\Facades\OpenGraph;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Response;
+
 use Illuminate\Support\Facades\Session;
-use JeroenDesloovere\VCard\VCard;
+
 
 
 class CheckoutController extends Controller
@@ -42,10 +30,20 @@ class CheckoutController extends Controller
 
     public function checkout($cardUrl)
     {
+
+
+        if (!Session::has('cart')) {
+            alert()->error(trans('No proudct in the cart'));
+            return redirect()->route('card.preview', ['cardurl' => $cardUrl]);
+        }
+
         $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
+        $states = State::where('user_id', $business_card_details->user_id)->where('status', true)->get();
+        $shippingAreas = ShippingCost::where('user_id', $business_card_details->user_id)->where('status', true)->get();
 
 
-        return view('pages.product.checkout', compact('business_card_details'));
+
+        return view('pages.product.checkout', compact('business_card_details', 'states', 'shippingAreas'));
     }
 
     public function checkoutBilling($cardUrl)
@@ -59,6 +57,7 @@ class CheckoutController extends Controller
     {
 
 
+
         $request->validate([
             "ship_first_name" => 'required',
             "ship_last_name" => 'required',
@@ -68,7 +67,7 @@ class CheckoutController extends Controller
             "ship_city" => 'required',
             "ship_state" => 'required',
             "ship_zip" => 'required',
-            "ship_country" => 'required',
+            "ship_area" => 'required',
             "order_note" => 'nullable'
         ]);
 
@@ -83,9 +82,53 @@ class CheckoutController extends Controller
             "ship_city" => trim($request->ship_city),
             "ship_state" => trim($request->ship_state),
             "ship_zip" => trim($request->ship_zip),
-            "ship_country" => trim($request->ship_country),
+            "ship_area" => trim($request->ship_area),
             "order_note" => trim($request->order_note),
+            "same_as_shipping" => isset($request->same_as_shipping) ? true : false,
         ];
+
+        $state = State::find($request->ship_state);
+        $total = 0;
+        if ($state->tax_type == "amount") {
+            Session::forget('tax');
+            Session::put('tax', $state->amount);
+        } elseif ($state->tax_type == "percentage") {
+            foreach (session('cart') as $id => $details) {
+
+
+                $total += $details['price'] * $details['quantity'];
+            }
+
+            $taxAmount = ($total * $state->amount) / 100;
+            Session::forget('tax');
+            Session::put('tax', $taxAmount);
+        }
+        $shippingAreas = ShippingCost::find($request->ship_area);
+        Session::forget('shippingCost');
+        Session::put('shippingCost', $shippingAreas->amount);
+
+
+
+
+        if (isset($request->same_as_shipping)) {
+            $billingData = [
+                "bill_first_name" => trim($request->ship_first_name),
+                "bill_last_name" => trim($request->ship_last_name),
+                "bill_email" => trim($request->ship_email),
+                "bill_phone" => trim($request->ship_phone),
+                "bill_address1" => trim($request->ship_address1),
+                "bill_city" => trim($request->ship_city),
+                "bill_state" => trim($state->name),
+                "bill_zip" => trim($request->ship_zip),
+
+            ];
+
+            Session::put('billing', $billingData);
+        } else {
+            Session::forget('billing');
+        }
+
+
 
         Session::put('shipping', $shipingData);
 
@@ -107,7 +150,7 @@ class CheckoutController extends Controller
             "bill_city" => 'required',
             "bill_state" => 'required',
             "bill_zip" => 'required',
-            "bill_country" => 'required',
+
         ]);
 
         Session::forget('billing');
@@ -121,7 +164,7 @@ class CheckoutController extends Controller
             "bill_city" => trim($request->bill_city),
             "bill_state" => trim($request->bill_state),
             "bill_zip" => trim($request->bill_zip),
-            "bill_country" => trim($request->bill_country),
+
         ];
 
         Session::put('billing', $billingData);
@@ -201,13 +244,15 @@ class CheckoutController extends Controller
         $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
         $user = User::find($business_card_details->user_id);
         $totalTransaction = ProductOrderTransaction::count();
+        $shippingCost = Session::has('shippingCost') ? Session::get('shippingCost') : 0;
+        $tax = Session::has('tax') ? Session::get('tax') : 0;
         try {
             $stripe = new \Stripe\StripeClient($user->stripe_secret_key);
             $payment = $stripe->paymentIntents->retrieve($paymentId, []);
 
 
             $productOrderTransaction = new ProductOrderTransaction();
-            $productOrderTransaction->store_id = $cardUrl;
+            $productOrderTransaction->store_id = $business_card_details->card_id;
             $productOrderTransaction->transection_id = $paymentId;
             $productOrderTransaction->transection_date = now();
             $productOrderTransaction->provider = "Stripe";
@@ -236,41 +281,62 @@ class CheckoutController extends Controller
                 $totalQuantity +=  $product['quantity'];
             }
 
-            $orderDetails = new Order();
-            $orderDetails->transaction_id = $productOrderTransaction->id;
-            $orderDetails->store_id = $cardUrl;
-            $orderDetails->quantity = $totalQuantity;
-            $orderDetails->total_price = $totalPrice;
-            $orderDetails->payment_fee = 0;
-            $orderDetails->vat = 0;
-            $orderDetails->grand_total = $totalPrice;
-            $orderDetails->order_date = now();
-            $orderDetails->order_date = now();
-            $orderDetails->shipping_details = json_encode(Session::get('shipping'));
-            $orderDetails->billing_details = json_encode(Session::get('billing'));
-            $orderDetails->payment_method = "Stripe";
-            $orderDetails->payment_status = $payment->status == "succeeded" ? 1 : 0;
-            $orderDetails->save();
+            $order = new Order();
+            $order->transaction_id = $productOrderTransaction->id;
+            $order->store_id = $business_card_details->card_id;
+            $order->quantity = $totalQuantity;
+            $order->total_price = $totalPrice;
+            $order->payment_fee = 0;
+            $order->vat = $tax;
+            $order->shipping_cost = $shippingCost;
+            $order->grand_total = $totalPrice;
+            $order->order_date = now();
+            $order->order_date = now();
+            $order->shipping_details = json_encode(Session::get('shipping'));
+            $order->billing_details = json_encode(Session::get('billing'));
+            $order->payment_method = "Stripe";
+            $order->payment_status = $payment->status == "succeeded" ? 1 : 0;
+            $order->save();
             foreach ($products as $key => $product) {
                 $totalPrice = 0;
                 $totalQuantity = 0;
                 $totalPrice += $product['price'] * $product['quantity'];
                 $totalQuantity +=  $product['quantity'];
 
-                $order_id = $orderDetails->id;
+                $order_id = $order->id;
                 $product_id = $key;
 
                 if (count($product['option']) > 0) {
+                    $varints = [];
+                    $optionsDetails = [];
                     foreach ($product['option'] as $option) {
-                        $orderDetails = new OrderDetail();
-                        $orderDetails->order_id = $order_id;
-                        $orderDetails->product_id = $product_id;
-                        $orderDetails->quantity = $product['quantity'];
-                        $orderDetails->unit_price = $product['price'];
-                        $orderDetails->variant_id = $option['variant_id'];
-                        $orderDetails->variant_option_id = $option['id'];
-                        $orderDetails->save();
+
+                        $varints[] = [
+                            "id" => $option['variant_id'],
+                            "name" => $option['variant_name']
+                        ];
+                        $optionsDetails[] = [
+                            "id" => $option['id'],
+                            "name" => $option['name'],
+                        ];
                     }
+                    $orderDetails = new OrderDetail();
+                    $orderDetails->order_id = $order->id;
+                    $orderDetails->product_id = $product_id;
+                    $orderDetails->quantity = $product['quantity'];
+                    $orderDetails->unit_price = $product['price'];
+                    $orderDetails->variant_id = json_encode($varints);
+                    $orderDetails->variant_option_id = json_encode($optionsDetails);
+                    $orderDetails->save();
+                } else {
+                    $orderDetails = new OrderDetail();
+                    $orderDetails->order_id = $order->id;
+                    $orderDetails->product_id = $product_id;
+                    $orderDetails->quantity = $product['quantity'];
+                    $orderDetails->unit_price = $product['price'];
+                    $orderDetails->variant_id = null;
+                    $orderDetails->variant_option_id = null;
+                    $orderDetails->save();
                 }
             }
         }
