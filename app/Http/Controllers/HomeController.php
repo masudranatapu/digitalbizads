@@ -417,7 +417,7 @@ class HomeController extends Controller
             "ship_state" => 'required',
             "ship_zip" => 'required',
             "ship_country" => 'required',
-            "order_note" => 'required'
+            "order_note" => 'nullable'
         ]);
 
         Session::forget('shipping');
