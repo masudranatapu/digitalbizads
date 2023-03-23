@@ -40,20 +40,24 @@ class CheckoutController extends Controller
 
 
 
-    public function checkout($card_id)
+    public function checkout($cardUrl)
     {
-        $business_card_details = BusinessCard::where('card_id', $card_id)->first();
-        return view('pages.checkout', compact('business_card_details'));
+        $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
+
+
+        return view('pages.product.checkout', compact('business_card_details'));
     }
 
-    public function checkoutBilling($card_id)
+    public function checkoutBilling($cardUrl)
     {
-        $business_card_details = BusinessCard::where('card_id', $card_id)->first();
-        return view('pages.checkout_billing', compact('business_card_details'));
+        $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
+
+        return view('pages.product.checkout_billing', compact('business_card_details'));
     }
 
-    public function checkoutStore(Request $request, $card_id)
+    public function checkoutStore(Request $request, $cardUrl)
     {
+
 
         $request->validate([
             "ship_first_name" => 'required',
@@ -65,7 +69,7 @@ class CheckoutController extends Controller
             "ship_state" => 'required',
             "ship_zip" => 'required',
             "ship_country" => 'required',
-            "order_note" => 'required'
+            "order_note" => 'nullable'
         ]);
 
         Session::forget('shipping');
@@ -87,10 +91,10 @@ class CheckoutController extends Controller
 
 
 
-        return redirect()->route('checkout.billing', ['card_id' => $card_id]);
+        return redirect()->route('checkout.billing', ['cardUrl' => $cardUrl]);
     }
 
-    public function checkoutBillingStore(Request $request, $card_id)
+    public function checkoutBillingStore(Request $request, $cardUrl)
     {
 
         $request->validate([
@@ -121,23 +125,37 @@ class CheckoutController extends Controller
         ];
 
         Session::put('billing', $billingData);
-        return redirect()->route('checkout.payment', $card_id);
+        return redirect()->route('checkout.payment', $cardUrl);
     }
 
-    public function checkoutPayment($card_id)
+    public function checkoutPayment($cardUrl)
     {
-        $business_card_details = BusinessCard::where('card_id', $card_id)->first();
+        $shipping = Session::has('shipping');
+        $billing = Session::has('billing');
+
+
+
+        if (!$shipping && !$billing) {
+            Session::flash('alert', "Please set billing and shipping address");
+            return redirect()->route('checkout', ['cardUrl' => $cardUrl]);
+        }
+
+        $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
         $user = User::find($business_card_details->user_id);
-        return view('pages.checkout_payment', compact('business_card_details', 'user'));
+
+        return view('pages.product.checkout_payment', compact('business_card_details', 'user'));
     }
 
 
 
 
 
-    public function checkoutPaymentSrtipe($card_id)
+    public function checkoutPaymentSrtipe($cardUrl)
     {
-        $business_card_details = BusinessCard::where('card_id', $card_id)->first();
+
+
+
+        $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
         $iso_code = json_decode($business_card_details->description, true);
         $currency = Currency::where('iso_code', $iso_code['currency'])->first();
         $shiping = Session::get('shipping');
@@ -173,14 +191,14 @@ class CheckoutController extends Controller
         $intent = $payment_intent->client_secret;
         $paymentId = $payment_intent->id;
 
-        return view('pages.stripe', compact('business_card_details', 'intent', 'user', 'paymentId'));
+        return view('pages.product.stripe', compact('business_card_details', 'intent', 'user', 'paymentId'));
     }
 
 
 
-    public function checkoutPaymentSrtipeStore($card_id, $paymentId)
+    public function checkoutPaymentSrtipeStore($cardUrl, $paymentId)
     {
-        $business_card_details = BusinessCard::where('card_id', $card_id)->first();
+        $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
         $user = User::find($business_card_details->user_id);
         $totalTransaction = ProductOrderTransaction::count();
         try {
@@ -189,7 +207,7 @@ class CheckoutController extends Controller
 
 
             $productOrderTransaction = new ProductOrderTransaction();
-            $productOrderTransaction->store_id = $card_id;
+            $productOrderTransaction->store_id = $cardUrl;
             $productOrderTransaction->transection_id = $paymentId;
             $productOrderTransaction->transection_date = now();
             $productOrderTransaction->provider = "Stripe";
@@ -220,7 +238,7 @@ class CheckoutController extends Controller
 
             $orderDetails = new Order();
             $orderDetails->transaction_id = $productOrderTransaction->id;
-            $orderDetails->store_id = $card_id;
+            $orderDetails->store_id = $cardUrl;
             $orderDetails->quantity = $totalQuantity;
             $orderDetails->total_price = $totalPrice;
             $orderDetails->payment_fee = 0;
@@ -270,6 +288,4 @@ class CheckoutController extends Controller
 
         return redirect()->route('card.preview', $business_card_details->card_url);
     }
-
-
 }

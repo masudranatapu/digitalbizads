@@ -39,7 +39,7 @@ class CartController extends Controller
 {
 
 
-    public function cartPage()
+    public function cartPage($cardUrl)
     {
 
         $business_card_details = null;
@@ -47,24 +47,23 @@ class CartController extends Controller
         $cart = session()->get('cart');
 
 
-        if($cart){
-            if(array_keys($cart)[0]){
+        if ($cart) {
+            if (array_keys($cart)[0]) {
                 $prd_id = array_keys($cart);
                 $product = StoreProduct::find($prd_id[0]);
-
-                $business_card_details = BusinessCard::where('card_id', $product->card_id)->first();
-
             }
         }
 
+        $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
 
 
-        return view('pages.cart', compact('cart', 'business_card_details'));
+        return view('pages.product.cart', compact('cart', 'business_card_details'));
     }
 
 
     public function addToCart(Request $request)
     {
+
 
 
         $id = $request->pid;
@@ -76,7 +75,7 @@ class CartController extends Controller
         $option = [];
         $variantTotalPrice = 0;
 
-        if (isset($request->varaints) ) {
+        if (isset($request->varaints)) {
             $incomingVariant = $request->option;
             for ($i = 0; $i < count($incomingVariant); $i++) {
                 $productVariant = VariantOption::find($incomingVariant[$i]);
@@ -91,12 +90,11 @@ class CartController extends Controller
                     $variantTotalPrice = $variantTotalPrice + $productVariant->price;
                 }
             }
-
-        }else{
+        } else {
             if (isset($cart[$id])) {
-                if($cart[$id]['quantity'] == $qty){
+                if ($cart[$id]['quantity'] == $qty) {
                     $data['message']  = 'Product already added';
-                }else{
+                } else {
                     $cart[$id]['quantity'] = $cart[$id]['quantity'] + $qty;
                 }
             } else {
@@ -104,9 +102,9 @@ class CartController extends Controller
             }
         }
 
-        if($option){
+        if ($option) {
             $price = $product->sales_price != $product->regular_price ? ($product->sales_price + $variantTotalPrice) : ($product->regular_price + $variantTotalPrice);
-        }else{
+        } else {
             $price = $product->sales_price;
         }
 
@@ -288,7 +286,4 @@ class CartController extends Controller
 
         return redirect()->route('card.preview', $business_card_details->card_url);
     }
-
-
-
 }

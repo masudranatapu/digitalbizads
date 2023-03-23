@@ -360,22 +360,22 @@ Route::group(['middleware' => 'Installer'], function () {
     Route::get('/download/{id}', [ProfileController::class, 'downloadVcard'])->name('download.vCard');
 });
 // product details
-Route::get('/details/{id}', [HomeController::class, 'productDetails'])->name('product.details');
+Route::get('{cardUrl}/details/{id}', [HomeController::class, 'productDetails'])->name('product.details');
 
 // cart
-Route::get('cart', [CartController::class, 'cartPage'])->name('cart');
+Route::get('{cardUrl}/cart', [CartController::class, 'cartPage'])->name('cart');
 Route::patch('update-cart', [CartController::class, 'cartUpdate'])->name('update.cart');
 Route::delete('remove-from-cart', [CartController::class, 'cartRemove'])->name('remove.from.cart');
 Route::post('addtocart', [CartController::class, 'addToCart'])->name('addtocart');
 
 // checkout
-Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
-Route::post('checkout', [CheckoutController::class, 'checkoutStore'])->name('checkout.store');
-Route::get('checkout/billing-address', [CheckoutController::class, 'checkoutBilling'])->name('checkout.billing');
-Route::post('checkout/billing-address', [CheckoutController::class, 'checkoutBillingStore'])->name('checkout.billing.store');
-Route::get('checkout/payment', [CheckoutController::class, 'checkoutPayment'])->name('checkout.payment');
-Route::get('checkout/payment/stripe', [CheckoutController::class, 'checkoutPaymentSrtipe'])->name('checkout.payment.stripe');
-Route::post('checkout/payment/stripe/{paymentId}', [CheckoutController::class, 'checkoutPaymentSrtipeStore'])->name('checkout.payment.stripe.store');
+Route::get('{cardUrl}/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+Route::post('{cardUrl}/checkout', [CheckoutController::class, 'checkoutStore'])->name('checkout.store');
+Route::get('{cardUrl}/checkout/billing-address', [CheckoutController::class, 'checkoutBilling'])->name('checkout.billing');
+Route::post('{cardUrl}/checkout/billing-address', [CheckoutController::class, 'checkoutBillingStore'])->name('checkout.billing.store');
+Route::get('{cardUrl}/checkout/payment', [CheckoutController::class, 'checkoutPayment'])->name('checkout.payment');
+Route::get('{cardUrl}/checkout/payment/stripe', [CheckoutController::class, 'checkoutPaymentSrtipe'])->name('checkout.payment.stripe');
+Route::post('{cardUrl}/checkout/payment/stripe/{paymentId}', [CheckoutController::class, 'checkoutPaymentSrtipeStore'])->name('checkout.payment.stripe.store');
 
 
 // getpreview

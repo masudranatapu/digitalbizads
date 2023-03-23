@@ -1,4 +1,4 @@
-document.getElementById("year").innerHTML = new Date().getFullYear();
+// document.getElementById("year").innerHTML = new Date().getFullYear();
 
 function successAlert(msg) {
     "use strict";

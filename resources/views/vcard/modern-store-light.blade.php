@@ -87,7 +87,7 @@
                         @endif
 
 
-                        <a href="{{ route('cart') }}"
+                        <a href="{{ route('cart', ['cardUrl' => $business_card_details->card_url]) }}"
                             class="flex items-center">
                             <span class="relative inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
@@ -208,7 +208,8 @@
                             <div class="w-1/1 lg:w-1/3 p-2">
                                 <div class="p-4 bg-white shadow-lg rounded-lg" style="height:100% !important;">
                                     <div class="w-full mb-2">
-                                        <a href="{{ route('product.details', $product->id) }}">
+                                        <a
+                                            href="{{ route('product.details', ['id' => $product->id, 'cardUrl' => $business_card_details->card_url]) }}">
                                             <img class="rounded pb-2" id="{{ $product->id }}_product_image"
                                                 src="{{ asset($product->product_image) }}"
                                                 alt="{{ $product->product_name }}">
@@ -219,8 +220,7 @@
 
                                     <div class="w-full mb-1 mt-1 justify-between items-center">
                                         <div>
-                                            <h3 id="{{ $product->id }}_product_name"
-                                                class="text-sm font-medium">
+                                            <h3 id="{{ $product->id }}_product_name" class="text-sm font-medium">
                                                 <a href="#">{{ $product->product_name }}</a>
                                             </h3>
                                             {{-- <span id="{{ $product->id }}_subtitle"
@@ -231,8 +231,7 @@
                                     <div class="w-full mb-1 justify-between items-center">
                                         <h4 class="text-sm  font-bold"><span
                                                 id="{{ $product->id }}_currency">{{ $currency }}</span>
-                                            <span
-                                                id="{{ $product->id }}_price">{{ $product->sales_price }}</span>
+                                            <span id="{{ $product->id }}_price">{{ $product->sales_price }}</span>
                                             @if ($product->sales_price != $product->regular_price)
                                                 <span class="text-xs line-through text-red-500 font-bold">
                                                     {{ $currency }}{{ $product->regular_price }}</span>
@@ -248,7 +247,7 @@
 
 
                                         @if ($product->is_variant)
-                                            <a href="{{ route('product.details', $product->id) }}"
+                                            <a href="{{ route('product.details', ['id' => $product->id, 'cardUrl' => $business_card_details->card_url]) }}"
                                                 class="text-center py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
                                                 style="cursor: pointer; min-width: 120px; display: inline-block;">{{ __('Choose') }}</a>
                                         @else
@@ -265,7 +264,6 @@
                                                     style="cursor: pointer; min-width: 120px;">{{ __('Add to Cart') }}</button>
 
                                             </form> --}}
-
                                         @endif
 
                                     </div>
@@ -378,7 +376,7 @@
         //     }
         // });
 
-        function addToCart(pid,qty) {
+        function addToCart(pid, qty) {
             "use strict";
 
             // var productName = $("#" + pid + "_product_name").text();
@@ -395,14 +393,14 @@
                     pid: pid,
                     qty: qty,
                     variants: [],
-                    options:[],
+                    options: [],
                     "_token": "{{ csrf_token() }}",
                 },
                 success: function(data) {
                     console.log(data);
                     if (data.status == true) {
                         successAlert(data.message);
-                    }else{
+                    } else {
                         successAlert('Something wrong please try again');
                     }
 

@@ -368,23 +368,19 @@ class HomeController extends Controller
     }
 
 
-    public function productDetails($id)
+    public function productDetails($cardUrl, $id)
     {
-        $product    = StoreProduct::with(['hasStore', 'hasVariant', 'hasCategory'])->find($id);
-        $config     = DB::table('config')->get();
-        $store      = BusinessCard::where('card_id', $product->card_id)->first();
+
+        $product                = StoreProduct::with(['hasStore', 'hasVariant', 'hasCategory'])->find($id);
+        $config                 = DB::table('config')->get();
+        $business_card_details  = BusinessCard::where('card_url', $cardUrl)->first();
         // $currency   = Currency::where('iso_code', $config['1']->config_value)->first();
         $currency_symbol = null;
-        if($store){
-            $store_details = json_decode($store->description);
+        if ($business_card_details) {
+            $store_details = json_decode($business_card_details->description);
             $currency_symbol = $store_details->currency ?? null;
-
         }
 
-        return view('pages.product_details', compact('product', 'store','currency_symbol'));
+        return view('pages.product.product_details', compact('product', 'business_card_details', 'currency_symbol'));
     }
-
-
-
-
 }
