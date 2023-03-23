@@ -36,7 +36,7 @@ class StoreController extends Controller
         $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
 
         $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
-        $currencies = Currency::get();
+        $currencies = Currency::orderBy('name','asc')->get();
         $plan_details = json_decode($plan->plan_details);
 
         if ($plan_details->no_of_vcards == 999) {

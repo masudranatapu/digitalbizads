@@ -4,8 +4,10 @@ use App\Setting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\WebToolsController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\User\CardController;
@@ -29,6 +31,7 @@ use App\Http\Controllers\Payment\OfflineController;
 use App\Http\Controllers\Payment\PaymentController;
 use App\Http\Controllers\User\AdditionalController;
 use App\Http\Controllers\Payment\RazorpayController;
+use App\Http\Controllers\User\ShippingAreaController;
 use App\Http\Controllers\Admin\TransactionsController;
 use App\Http\Controllers\Admin\PaymentMethodController;
 use App\Http\Controllers\User\ProductCategoryController;
@@ -36,7 +39,6 @@ use App\Http\Controllers\User\AccountController as userAccount;
 use App\Http\Controllers\User\DashboardController as userDashboard;
 use App\Http\Controllers\User\TransactionsController as userTransactions;
 use App\Http\Controllers\User\SettingsController as UserSettingsController;
-use App\Http\Controllers\User\ShippingAreaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -200,16 +202,18 @@ Route::group(['middleware' => 'Installer'], function () {
             Route::get('add-media', [MediaController::class, 'addMedia'])->name('add.media');
             Route::post('upload-media', [MediaController::class, 'uploadMedia'])->name('upload.media');
             Route::get('delete-media/{id}', [MediaController::class, 'deleteMedia'])->name('media.delete');
+
             // Upload media images
             Route::post('multiple', [MediaController::class, 'multipleImages'])->name('multiple');
             Route::post('card/store', [CardController::class, 'postStore'])->name('card.store');
             Route::post('card/update/{id}', [CardController::class, 'postUpdate'])->name('card.update');
-            Route::get('card/delete/{id}', [CardController::class, 'getDelete'])->name('card.delete');
+            Route::get('card/delete/{id}', [CardController::class, 'getDelete'])->name('card.delete2');
             Route::post('card/upload_image', ['as' => 'card.upload_image', 'uses' => 'CardController@uploadImage']);
             Route::post('card/upload_logo', ['as' => 'card.upload_logo', 'uses' => 'CardController@uploadLogo']);
             Route::get('create-card', [CardController::class, 'CreateCard'])->name('create.card');
             Route::get('edit-card/{id}', [CardController::class, 'editCard'])->name('edit.card');
             Route::get('card/gallery-delete/{id}', [CardController::class, 'getDeleteGallery'])->name('card.gallery-delete');
+
             // v card
             if (env('APP_TYPE') == 'VCARD' || env('APP_TYPE') == 'BOTH') {
                 // Create Business Card
@@ -255,7 +259,7 @@ Route::group(['middleware' => 'Installer'], function () {
                 Route::get('/', [ProductCategoryController::class, 'index'])->name('index');
                 Route::post('/store', [ProductCategoryController::class, 'store'])->name('store');
                 Route::post('/update/{id}', [ProductCategoryController::class, 'update'])->name('destroy');
-                Route::get('/delete/{id}', [ProductCategoryController::class, 'destroy'])->name('destroy');
+                Route::get('/delete/{id}', [ProductCategoryController::class, 'destroy'])->name('destroy2');
             });
             // Edit Store
             Route::get('edit-store/{id}', [StoreController::class, 'editStore'])->name('edit.store');
@@ -357,19 +361,23 @@ Route::group(['middleware' => 'Installer'], function () {
 });
 // product details
 Route::get('/details/{id}', [HomeController::class, 'productDetails'])->name('product.details');
+
 // cart
-Route::get('{card_id}/cart/', [HomeController::class, 'cartPage'])->name('cart');
-Route::patch('/update-cart', [HomeController::class, 'update'])->name('update.cart');
-Route::delete('/remove-from-cart', [HomeController::class, 'remove'])->name('remove.from.cart');
-Route::post('/add-to-cart', [HomeController::class, 'addToCart'])->name('add.to.cart');
+Route::get('cart', [CartController::class, 'cartPage'])->name('cart');
+Route::patch('update-cart', [CartController::class, 'cartUpdate'])->name('update.cart');
+Route::delete('remove-from-cart', [CartController::class, 'cartRemove'])->name('remove.from.cart');
+Route::post('addtocart', [CartController::class, 'addToCart'])->name('addtocart');
+
 // checkout
-Route::get('{card_id}/checkout', [HomeController::class, 'checkout'])->name('checkout');
-Route::post('{card_id}/checkout', [HomeController::class, 'checkoutStore'])->name('checkout.store');
-Route::get('{card_id}/checkout/billing-address', [HomeController::class, 'checkoutBilling'])->name('checkout.billing');
-Route::post('{card_id}/checkout/billing-address', [HomeController::class, 'checkoutBillingStore'])->name('checkout.billing.store');
-Route::get('{card_id}/checkout/payment', [HomeController::class, 'checkoutPayment'])->name('checkout.payment');
-Route::get('{card_id}/checkout/payment/stripe', [HomeController::class, 'checkoutPaymentSrtipe'])->name('checkout.payment.stripe');
-Route::post('{card_id}/checkout/payment/stripe/{paymentId}', [HomeController::class, 'checkoutPaymentSrtipeStore'])->name('checkout.payment.stripe.store');
+Route::get('checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+Route::post('checkout', [CheckoutController::class, 'checkoutStore'])->name('checkout.store');
+Route::get('checkout/billing-address', [CheckoutController::class, 'checkoutBilling'])->name('checkout.billing');
+Route::post('checkout/billing-address', [CheckoutController::class, 'checkoutBillingStore'])->name('checkout.billing.store');
+Route::get('checkout/payment', [CheckoutController::class, 'checkoutPayment'])->name('checkout.payment');
+Route::get('checkout/payment/stripe', [CheckoutController::class, 'checkoutPaymentSrtipe'])->name('checkout.payment.stripe');
+Route::post('checkout/payment/stripe/{paymentId}', [CheckoutController::class, 'checkoutPaymentSrtipeStore'])->name('checkout.payment.stripe.store');
+
+
 // getpreview
 Route::get('{cardurl}', [HomeController::class, 'getPreview'])->name('card.preview');
 Route::post('/place-email-order', [HomeController::class, 'placeEmailOrder'])->name('place.email.order');

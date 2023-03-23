@@ -46,7 +46,7 @@
                         @endif
                     </a>
                 </div>
-                <a href="{{ route('cart', ['card_id' => $business_card_details->card_id]) }}" class="nav-link">
+                <a href="{{ route('cart') }}" class="nav-link">
                     <span class="cart">
 
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -104,13 +104,12 @@
                                                 <tr data-id="{{ $id }}" class="align-middle">
                                                     <td data-th="Photo">
 
-                                                        <img src="{{ getPhoto($details['image']) }}" width="50"
+                                                        <img src="{{ getPhoto($details['product']['product_image']) }}" width="50"
                                                             class="img-responsive" />
-
 
                                                     </td>
                                                     <td data-th="Product">
-                                                        <span>{{ $details['name'] }}</span>
+                                                        <span>{{ $details['product']['name'] }}</span>
                                                     </td>
                                                     <td data-th="Price">{{ getPrice($details['price']) }}</td>
                                                     <td data-th="Quantity">
@@ -166,7 +165,7 @@
 
                         @if (session()->has('cart') && count(session()->get('cart')) > 0)
                             <div class="button">
-                                <a href="{{ route('checkout', ['card_id' => $business_card_details->card_id]) }}"
+                                <a href="{{ route('checkout') }}"
                                     class="btn btn-success">Checkout</a>
                             </div>
                         @endif
@@ -176,14 +175,6 @@
 
         </div>
     </div>
-
-
-
-
-
-
-
-
 
 
 
@@ -240,6 +231,7 @@
                 });
             }
         });
+
         @if (session()->has('success'))
             successAlert("{{ session()->get('success') }}");
         @endif

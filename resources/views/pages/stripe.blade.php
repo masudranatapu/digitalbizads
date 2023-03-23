@@ -46,7 +46,7 @@
                         @endif
                     </a>
                 </div>
-                <a href="{{ route('cart', ['card_id' => $business_card_details->card_id]) }}" class="nav-link">
+                <a href="{{ route('cart') }}" class="nav-link">
                     <span class="cart">
 
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -131,11 +131,8 @@
                             <div class="card-body">
                                 <h3 class="card-title">Payment</h3>
                                 <div class="card col-12">
-                                    <form
-                                        action="{{ route('checkout.payment.stripe.store', ['card_id' => $business_card_details->card_id, 'paymentId' => $paymentId]) }}"
-                                        method="post" id="payment-form">
+                                    <form action="{{ route('checkout.payment.stripe.store') }}" method="post" id="payment-form">
                                         @csrf
-
                                         <div class="form-group">
                                             <div class="card-header">
                                                 <label for="card-element">

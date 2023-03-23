@@ -87,7 +87,7 @@
                         @endif
 
 
-                        <a href="{{ route('cart') }}"
+                        <a href="{{ route('cart', ['card_id' => $business_card_details->card_id]) }}"
                             class="flex items-center">
                             <span class="relative inline-block">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
@@ -209,7 +209,7 @@
                                 <div class="p-4 bg-white shadow-lg rounded-lg" style="height:100% !important;">
                                     <div class="w-full mb-2">
                                         <a href="{{ route('product.details', $product->id) }}">
-                                            <img class="rounded pb-2" id="{{ $product->id }}_product_image"
+                                            <img class="rounded pb-2" id="{{ $product->product_id }}_product_image"
                                                 src="{{ asset($product->product_image) }}"
                                                 alt="{{ $product->product_name }}">
                                         </a>
@@ -219,20 +219,20 @@
 
                                     <div class="w-full mb-1 mt-1 justify-between items-center">
                                         <div>
-                                            <h3 id="{{ $product->id }}_product_name"
+                                            <h3 id="{{ $product->product_id }}_product_name"
                                                 class="text-sm font-medium">
                                                 <a href="#">{{ $product->product_name }}</a>
                                             </h3>
-                                            {{-- <span id="{{ $product->id }}_subtitle"
-                                                class="text-xs text-gray-500">{{ $product->product_subtitle }}</span> --}}
+                                            <span id="{{ $product->product_id }}_subtitle"
+                                                class="text-xs text-gray-500">{{ $product->product_subtitle }}</span>
                                         </div>
                                     </div>
 
                                     <div class="w-full mb-1 justify-between items-center">
                                         <h4 class="text-sm  font-bold"><span
-                                                id="{{ $product->id }}_currency">{{ $currency }}</span>
+                                                id="{{ $product->product_id }}_currency">{{ $currency }}</span>
                                             <span
-                                                id="{{ $product->id }}_price">{{ $product->sales_price }}</span>
+                                                id="{{ $product->product_id }}_price">{{ $product->sales_price }}</span>
                                             @if ($product->sales_price != $product->regular_price)
                                                 <span class="text-xs line-through text-red-500 font-bold">
                                                     {{ $currency }}{{ $product->regular_price }}</span>
@@ -250,13 +250,13 @@
                                         @if ($product->is_variant)
                                             <a href="{{ route('product.details', $product->id) }}"
                                                 class="text-center py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
-                                                style="cursor: pointer; min-width: 120px; display: inline-block;">{{ __('Choose') }}</a>
+                                                style="cursor: pointer; min-width: 120px; display: inline-block;">{{ __('Chose') }}</a>
                                         @else
-                                            <a onclick="addToCart('{{ $product->id }}',1)"
+                                            {{-- <a onclick="addToCart('{{ $product->product_id }}')"
                                                 class="py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
-                                                style="cursor: pointer; min-width: 120px;">{{ __('Add to Cart') }}</a>
-
-                                            {{-- <form action="{{ route('add.to.cart') }}" method="post">
+                                                style="cursor: pointer;">{{ __('Add') }}</a> --}}
+                                                
+                                            <form action="{{ route('add.to.cart') }}" method="post">
                                                 @csrf
                                                 <input type="hidden" name="productId" value="{{ $product->id }}">
                                                 <input type="hidden" name="qty" value="1">
@@ -264,7 +264,7 @@
                                                     class="py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
                                                     style="cursor: pointer; min-width: 120px;">{{ __('Add to Cart') }}</button>
 
-                                            </form> --}}
+                                            </form>
 
                                         @endif
 
@@ -372,51 +372,37 @@
         $("#place-order-email").hide();
         $("#empty-cart").show();
 
-        // $.ajaxSetup({
-        //     headers: {
-        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //     }
-        // });
-
-        function addToCart(pid,qty) {
+        function addToCart(pid) {
             "use strict";
+            var productName = $("#" + pid + "_product_name").text();
 
-            // var productName = $("#" + pid + "_product_name").text();
-            // var price = $("#" + pid + "_price").text();
-            // var product_image = $("#" + pid + "_product_image").attr("src");
-            // var subtitle = $("#" + pid + "_subtitle").text();
-            // var quantity_increment = false;
+            var price = $("#" + pid + "_price").text();
+            var product_image = $("#" + pid + "_product_image").attr("src");
+            var subtitle = $("#" + pid + "_subtitle").text();
 
-
-            $.ajax({
-                type: 'POST',
-                url: "{{ route('addtocart') }}",
-                data: {
-                    pid: pid,
-                    qty: qty,
-                    variants: [],
-                    options:[],
-                    "_token": "{{ csrf_token() }}",
-                },
-                success: function(data) {
-                    console.log(data);
-                    if (data.status == true) {
-                        successAlert(data.message);
-                    }else{
-                        successAlert('Something wrong please try again');
-                    }
-
-                },
-                error: function(error) {
-                    console.log(error);
-                },
-                complete: function() {
-                    // document.location.reload();
+            var quantity_increment = false;
+            for (let index = 0; index < cart.length; index++) {
+                if (cart[index].product_id == pid) {
+                    cart[index].qty = cart[index].qty + 1;
+                    quantity_increment = true;
+                    successAlert('{{ __('Cart updated') }}');
+                    updateBadge();
                 }
-
-            });
-
-
+            }
+            if (quantity_increment == false) {
+                cart.push({
+                    "product_name": productName,
+                    "price": price,
+                    "product_id": pid,
+                    "currency": currency,
+                    "qty": 1,
+                    "product_image": product_image,
+                    "subtitle": subtitle
+                });
+                successAlert("{{ __('Item added to cart') }}");
+                updateBadge();
+            }
+            updateList();
 
         }
 

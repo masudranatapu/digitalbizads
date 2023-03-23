@@ -46,7 +46,7 @@
                         @endif
                     </a>
                 </div>
-                <a href="{{ route('cart', ['card_id' => $business_card_details->card_id]) }}" class="nav-link">
+                <a href="{{ route('cart') }}" class="nav-link">
                     <span class="cart">
 
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -139,11 +139,11 @@
                         <div class="checkout_form">
                             <div class="checkout_step mb-4">
                                 <ul>
-                                    <li><a href="{{ route('checkout', ['card_id' => $business_card_details->card_id]) }}"
+                                    <li><a href="{{ route('checkout') }}"
                                             class="active">Shipping Address <i class="fa fa-angle-right"></i></a></li>
-                                    <li><a href="{{ route('checkout.billing', ['card_id' => $business_card_details->card_id]) }}"
+                                    <li><a href="{{ route('checkout.billing') }}"
                                             class="active">Billing Address <i class="fa fa-angle-right"></i></a></li>
-                                    <li><a href="{{ route('checkout.payment', ['card_id' => $business_card_details->card_id]) }}"
+                                    <li><a href="{{ route('checkout.payment') }}"
                                             class="active">Payment</a></li>
                                 </ul>
                             </div>
@@ -157,7 +157,7 @@
 
                                     @if (isset($user->stripe_public_key) && isset($user->stripe_secret_key))
                                         <a
-                                            href="{{ route('checkout.payment.stripe', ['card_id' => $business_card_details->card_id]) }}">
+                                            href="{{ route('checkout.payment.stripe') }}">
                                             <img src="{{ asset('assets/images/stripe.png') }}" class="img-fluid"
                                                 alt="Stripe">
                                             <span>Stripe</span>
