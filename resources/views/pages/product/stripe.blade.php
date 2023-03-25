@@ -31,7 +31,7 @@
                                                 $line_total = $details['price'] * $details['quantity'];
                                             @endphp
 
-                                            <tr data-id="{{ $id }}" class="align-middle">
+                                            <tr class="align-middle" data-id="{{ $id }}">
 
                                                 <td data-th="Product">
                                                     <span>{{ $details['product']['product_name'] }}</span>
@@ -41,7 +41,7 @@
                                                     {{ $details['quantity'] }}
                                                 </td>
 
-                                                <td data-th="Subtotal" class="text-center">
+                                                <td class="text-center" data-th="Subtotal">
                                                     {{ getPrice($line_total) }}
                                                 </td>
 
@@ -57,14 +57,14 @@
                                     @endif`
                                     <tr>
                                         <td class="">Order total</td>
-                                        <td colspan="3" class="text-end grand_total_set">
+                                        <td class="text-end grand_total_set" colspan="3">
                                             {{ getPrice($total) }}</td>
                                     </tr>
                                     <tr>
                                         <td>
-                                            Vat
+                                            State Tax
                                         </td>
-                                        <td colspan="3" data-th="Vat" class="text-end">
+                                        <td class="text-end" data-th="Vat" colspan="3">
                                             @if (session()->has('tax'))
                                                 {{ getPrice(session()->get('tax')) }}
                                             @endif
@@ -75,7 +75,7 @@
                                         <td>
                                             Shipping Cost
                                         </td>
-                                        <td colspan="3" data-th="Shipping Cost" class="text-end">
+                                        <td class="text-end" data-th="Shipping Cost" colspan="3">
                                             @if (session()->has('shippingCost'))
                                                 {{ getPrice(session()->get('shippingCost')) }}
                                             @endif
@@ -86,7 +86,7 @@
                                         <td class="text-lg text-primary">
                                             Grand Total
                                         </td>
-                                        <td colspan="3" data-th="Grand Total" class="text-end text-lg text-primary">
+                                        <td class="text-end text-lg text-primary" data-th="Grand Total" colspan="3">
                                             @if (session()->has('tax'))
                                                 @php
                                                     
@@ -100,7 +100,6 @@
                                                 @endphp
                                             @endif
                                             {{ getPrice($total) }}
-
 
                                         </td>
 
@@ -116,9 +115,9 @@
                             <div class="card-body">
                                 <h3 class="card-title">Payment</h3>
                                 <div class="card col-12">
-                                    <form
+                                    <form id="payment-form"
                                         action="{{ route('checkout.payment.stripe.store', ['paymentId' => $paymentId, 'cardUrl' => $business_card_details->card_url]) }}"
-                                        method="post" id="payment-form">
+                                        method="post">
                                         @csrf
                                         <div class="form-group">
                                             <div class="card-header">
@@ -136,8 +135,8 @@
                                             </div>
                                         </div>
                                         <div class="card-footer">
-                                            <button id="card-button" class="btn btn-dark" type="submit"
-                                                data-secret="{{ $intent }}"> {{ __('Pay Now') }} </button>
+                                            <button class="btn btn-dark" id="card-button" data-secret="{{ $intent }}"
+                                                type="submit"> {{ __('Pay Now') }} </button>
                                         </div>
                                     </form>
                                 </div>
@@ -150,9 +149,6 @@
     </div>
 
 @endsection
-
-
-
 
 @push('script')
     <script src="https://js.stripe.com/v3/"></script>
