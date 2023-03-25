@@ -254,7 +254,7 @@
                                                     <label class="form-label required">{{ __('Email') }}</label>
                                                     <input type="email" class="form-control" name="email"
                                                         placeholder="example@email.com"
-                                                        value="{{ old('email') ?? $store_details->email }}">
+                                                        @if(isset($store_details->email)) value="{{ old('email') ?? $store_details->email }}" @endif>
                                                 </div>
                                             </div>
 
