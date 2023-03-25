@@ -6,6 +6,8 @@ use App\BusinessCard;
 use App\Http\Controllers\Controller;
 use App\Order;
 use App\Setting;
+use App\ShippingCost;
+use App\State;
 use App\StoreProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,8 +30,14 @@ class OrderController extends Controller
         $settings = Setting::first();
 
         $orders = Order::with('orderDetails')->where('store_id', $card_id)->where('id', $id)->first();
+        $shipping = json_decode($orders->shipping_details, true);
+        $shippingArea = ShippingCost::find($shipping['ship_area']);
+        $shippingState = State::find($shipping['ship_state']);
+        $shipping['shipping_area'] = $shippingArea->name;
+        $shipping['shipping_states'] = $shippingState->name;
 
 
-        return view('user.order.view', compact('settings', 'orders'));
+
+        return view('user.order.view', compact('settings', 'orders', 'shipping'));
     }
 }

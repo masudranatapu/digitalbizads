@@ -9,7 +9,7 @@ use App\User;
 use App\Currency;
 
 use App\BusinessCard;
-
+use App\Mail\ProductPurchaseMail;
 use App\Order;
 use App\OrderDetail;
 use App\ProductOrderTransaction;
@@ -18,7 +18,7 @@ use App\State;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 
@@ -195,20 +195,27 @@ class CheckoutController extends Controller
 
     public function checkoutPaymentSrtipe($cardUrl)
     {
-
-
-
         $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
         $iso_code = json_decode($business_card_details->description, true);
         $currency = Currency::where('iso_code', $iso_code['currency'])->first();
         $shiping = Session::get('shipping');
         $total = 0;
         foreach (session('cart') as $id => $details) {
-
-
             $total += $details['price'] * $details['quantity'];
-            $line_total = $details['price'] * $details['quantity'];
         }
+
+        //Todo Shipping And Vat Add Korte hobe
+
+        if (session()->has('tax')) {
+            $total = (int) $total + (int) session()->get('tax');
+        }
+        if (session()->has('shippingCost')) {
+
+            $total = (int) $total + (int) session()->get('shippingCost');
+        }
+
+
+
 
 
 
@@ -245,6 +252,8 @@ class CheckoutController extends Controller
         $user = User::find($business_card_details->user_id);
         $totalTransaction = ProductOrderTransaction::count();
         $shippingCost = Session::has('shippingCost') ? Session::get('shippingCost') : 0;
+
+
         $tax = Session::has('tax') ? Session::get('tax') : 0;
         try {
             $stripe = new \Stripe\StripeClient($user->stripe_secret_key);
@@ -349,8 +358,9 @@ class CheckoutController extends Controller
 
 
         alert()->success(trans('Proudct purchase successfully'));
-        Session::flash('success', 'Proudct purchase successfully');
 
+
+        Mail::to(Session::get('shipping')['ship_email'])->send(new ProductPurchaseMail($productOrderTransaction, $order, $orderDetails));
 
         return redirect()->route('card.preview', $business_card_details->card_url);
     }

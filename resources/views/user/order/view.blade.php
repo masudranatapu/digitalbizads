@@ -1,6 +1,22 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
 @section('store-nav', 'active')
 
+@push('custom-css')
+    <link rel="stylesheet" href="{{ asset('assets/css/print.min.css') }}">
+    <style>
+        @media print {
+
+            .card {
+                --tblr-card-border-radius: 4px;
+                box-shadow: rgba(30, 41, 59, 0.04) 0 2px 4px 0;
+                border: 1px solid rgba(98, 105, 118, 0.16);
+                background: var(--tblr-card-bg, #fff);
+                border-radius: var(--tblr-card-border-radius);
+                transition: transform 0.3s ease-out, opacity 0.3s ease-out, box-shadow 0.3s ease-out;
+            }
+        }
+    </style>
+@endpush
 
 @section('content')
     <div class="page-wrapper">
@@ -15,6 +31,17 @@
                         <h2 class="page-title">
                             {{ __('Product Order Details') }}
                         </h2>
+                    </div>
+                    <!-- Page title actions -->
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="dropdown">
+
+                            <button type="button" class="btn btn btn-primary" onclick="printPdf()">
+                                <i class="fas fa-print"></i>&nbsp;
+                                {{ __('Print') }}
+                            </button>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -31,8 +58,7 @@
                                             <div class="card-body">
                                                 <div class="row">
                                                     @php
-                                                        
-                                                        $shipping = json_decode($orders->shipping_details, true);
+
                                                         $billing = json_decode($orders->billing_details, true);
                                                     @endphp
                                                     <div class="col-6">
@@ -62,16 +88,17 @@
                                                             </p>
 
                                                             <p><strong>State :
-                                                                </strong><span>{{ $shipping['ship_state'] ?? 'Not Available' }}</span>
+                                                                </strong><span>{{ $shipping['ship_states'] ?? 'Not Available' }}</span>
                                                             </p>
 
                                                             <p><strong>Zip :
                                                                 </strong><span>{{ $shipping['ship_zip'] ?? 'Not Available' }}</span>
                                                             </p>
 
-                                                            <p><strong>Country :
-                                                                </strong><span>{{ $shipping['ship_country'] ?? 'Not Available' }}</span>
+                                                            <p><strong>Area :
+                                                                </strong><span>{{ $shipping['shipping_area'] ?? 'Not Available' }}</span>
                                                             </p>
+
 
                                                             <p><strong>Note :
                                                                 </strong><span>{{ $shipping['order_note'] ?? 'Not Available' }}</span>
@@ -106,9 +133,7 @@
                                                             <p><strong>Zip:
                                                                 </strong><span>{{ $billing['bill_zip'] ?? 'Not Available' }}</span>
                                                             </p>
-                                                            <p><strong>Country:
-                                                                </strong><span>{{ $billing['bill_country'] ?? 'Not Available' }}</span>
-                                                            </p>
+
                                                             <p><strong>Order Date :
                                                                 </strong><span>{{ date('d-M-Y', strtotime($orders->order_date)) }}</span>
                                                             </p>
@@ -134,7 +159,7 @@
                                                             @php
                                                                 $variant = json_decode($orderDetails->variant_id, true);
                                                                 $variantOption = json_decode($orderDetails->variant_option_id, true);
-                                                                
+
                                                             @endphp
                                                             <tr>
                                                                 <td class="d-flex justify-content-between">
@@ -167,7 +192,7 @@
                                                         </tr>
                                                         <tr class="text-end">
                                                             <th colspan="3">Shipping Cost :</th>
-                                                            <td>{{ getPrice($orders->payment_fee) }}</td>
+                                                            <td>{{ getPrice($orders->shipping_cost) }}</td>
                                                         </tr>
                                                         <tr class="text-end">
                                                             <th colspan="3">Vat :</th>
@@ -194,10 +219,12 @@
                                 <div class="card-body">
                                     <div class="row">
                                         @php
-                                            
+
                                             $shipping = json_decode($orders->shipping_details, true);
                                             $billing = json_decode($orders->billing_details, true);
                                         @endphp
+
+
                                         <div class="col-12">
                                             <address>
 
@@ -225,16 +252,18 @@
                                                 </p>
 
                                                 <p><strong>State :
-                                                    </strong><span>{{ $shipping['ship_state'] ?? 'Not Available' }}</span>
+                                                    </strong><span>{{ $shipping['ship_states'] ?? 'Not Available' }}</span>
                                                 </p>
 
                                                 <p><strong>Zip :
                                                     </strong><span>{{ $shipping['ship_zip'] ?? 'Not Available' }}</span>
                                                 </p>
 
-                                                <p><strong>Country :
-                                                    </strong><span>{{ $shipping['ship_country'] ?? 'Not Available' }}</span>
+                                                <p><strong>Area :
+                                                    </strong><span>{{ $shipping['shipping_area'] ?? 'Not Available' }}</span>
                                                 </p>
+
+
 
                                                 <p><strong>Note :
                                                     </strong><span>{{ $shipping['order_note'] ?? 'Not Available' }}</span>
@@ -270,9 +299,7 @@
                                                 <p><strong>Zip:
                                                     </strong><span>{{ $billing['bill_zip'] ?? 'Not Available' }}</span>
                                                 </p>
-                                                <p><strong>Country:
-                                                    </strong><span>{{ $billing['bill_country'] ?? 'Not Available' }}</span>
-                                                </p>
+
                                                 <p><strong>Order Date :
                                                     </strong><span>{{ date('d-M-Y', strtotime($orders->order_date)) }}</span>
                                                 </p>
@@ -298,7 +325,7 @@
                                                 @php
                                                     $variant = json_decode($orderDetails->variant_id, true);
                                                     $variantOption = json_decode($orderDetails->variant_option_id, true);
-                                                    
+
                                                 @endphp
                                                 <tr>
                                                     <td class="d-flex justify-content-between">
@@ -331,7 +358,7 @@
                                             </tr>
                                             <tr class="text-end">
                                                 <th colspan="3">Shipping Cost :</th>
-                                                <td>{{ getPrice($orders->payment_fee) }}</td>
+                                                <td>{{ getPrice($orders->shipping_cost) }}</td>
                                             </tr>
                                             <tr class="text-end">
                                                 <th colspan="3">Vat :</th>
@@ -340,6 +367,7 @@
                                             <tr class="text-end">
                                                 <th colspan="3">Grand Total :</th>
                                                 <td>{{ getPrice($orders->total_price) }}</td>
+
                                             </tr>
                                         </tbody>
                                     </table>
@@ -352,3 +380,20 @@
         </div>
     </div>
 @endsection
+
+@push('custom-js')
+    <script src="{{ asset('assets/js/print.min.js') }}"></script>
+    <script>
+        function printPdf() {
+
+            printJS({
+                printable: 'invoice',
+                type: 'html',
+                targetStyles: ['*'],
+                maxWidth: 1470,
+
+            })
+
+        }
+    </script>
+@endpush
