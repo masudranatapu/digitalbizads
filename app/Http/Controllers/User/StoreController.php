@@ -36,7 +36,7 @@ class StoreController extends Controller
         $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
 
         $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
-        $currencies = Currency::orderBy('name','asc')->get();
+        $currencies = Currency::orderBy('name','asc')->where('is_active',1)->get();
         $plan_details = json_decode($plan->plan_details);
 
         if ($plan_details->no_of_vcards == 999) {
@@ -223,7 +223,7 @@ class StoreController extends Controller
         } else {
             if ($business_card->card_type == "store") {
                 $settings = Setting::where('status', 1)->first();
-                $currencies = Currency::orderBy('name','asc')->get();
+                $currencies = Currency::orderBy('name','asc')->where('is_active',1)->get();
 
                 $user_details = User::where('user_id', Auth::user()->user_id)->first();
                 $plan_details = json_decode($user_details->plan_details);

@@ -35,7 +35,7 @@ class SettingsController extends Controller
     public function settings()
     {
         $timezonelist = DateTimeZone::listIdentifiers(DateTimeZone::ALL);
-        $currencies = Currency::get();
+        $currencies = Currency::orderBy('name','asc')->where('is_active',1)->get();
         $settings = Setting::first();
         $config = DB::table('config')->get();
 

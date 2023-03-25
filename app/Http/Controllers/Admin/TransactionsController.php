@@ -22,7 +22,7 @@ class TransactionsController extends Controller
         // Queries
         $transactions = Transaction::where('payment_gateway_name', '!=' ,'Offline')->get();
         $settings = Setting::where('status', 1)->first();
-        $currencies = Currency::get();
+        $currencies = Currency::orderBy('name','asc')->where('is_active',1)->get();
 
         // Transactions
         for ($i = 0; $i < count($transactions); $i++) {
@@ -61,7 +61,7 @@ class TransactionsController extends Controller
         $transaction = Transaction::where('gobiz_transaction_id', $id)->first();
         $settings = Setting::where('status', 1)->first();
         $config = DB::table('config')->get();
-        $currencies = Currency::get();
+        $currencies = Currency::orderBy('name','asc')->where('is_active',1)->get();
         $transaction['billing_details'] = json_decode($transaction['invoice_details'], true);
 
         // View
@@ -73,7 +73,7 @@ class TransactionsController extends Controller
         // Queries
         $transactions = Transaction::where('payment_gateway_name', 'Offline')->get();
         $settings = Setting::where('status', 1)->first();
-        $currencies = Currency::get();
+        $currencies = Currency::orderBy('name','asc')->where('is_active',1)->get();
 
         // Transactions
         for ($i = 0; $i < count($transactions); $i++) {

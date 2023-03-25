@@ -25,7 +25,7 @@ class TransactionsController extends Controller
         if($active_plan != null) {
             $transactions = Transaction::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get();
             $settings = Setting::where('status', 1)->first();
-            $currencies = Currency::get();
+            $currencies = Currency::orderBy('name','asc')->where('is_active',1)->get();
 
             return view('user.transactions.index', compact('transactions', 'settings', 'currencies'));
         } else {
@@ -37,7 +37,7 @@ class TransactionsController extends Controller
         $transaction = Transaction::where('gobiz_transaction_id', $id)->first();
         $settings = Setting::where('status', 1)->first();
         $config = DB::table('config')->get();
-        $currencies = Currency::get();
+        $currencies = Currency::orderBy('name','asc')->where('is_active',1)->get();
         $transaction['billing_details'] = json_decode($transaction['invoice_details'], true);
         return view('user.transactions.view-invoice', compact('transaction', 'settings', 'config', 'currencies'));
     }
