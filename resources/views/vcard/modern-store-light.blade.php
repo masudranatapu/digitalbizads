@@ -17,17 +17,17 @@
     <meta property="og:description" content="{{ $business_card_details->sub_title ?? '' }}" />
 
     @if ($business_card_details->profile)
-        <link rel="icon" href="{{ url('/') }}{{ $business_card_details->profile }}" sizes="96x96"
-            type="image/png" />
+        <link type="image/png" href="{{ url('/') }}{{ $business_card_details->profile }}" rel="icon"
+            sizes="96x96" />
     @else
-        <link rel="icon" href="{{ url('/') }}{{ $settings->favicon }}" sizes="96x96" type="image/png" />
+        <link type="image/png" href="{{ url('/') }}{{ $settings->favicon }}" rel="icon" sizes="96x96" />
     @endif
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap">
-    <link rel="stylesheet" href="{{ asset('frontend/whatsapp-store/css/tailwind/tailwind.min.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link href="{{ asset('frontend/whatsapp-store/css/tailwind/tailwind.min.css') }}" rel="stylesheet">
     <script src="{{ asset('frontend/whatsapp-store/js/main.js') }}"></script>
     <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}" />
+    <link href="{{ asset('css/fontawesome.min.css') }}" rel="stylesheet" />
     <script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
     <style>
         .form-control {
@@ -70,7 +70,7 @@
     <div class="">
 
         <section>
-            <nav dir="ltr" class="relative">
+            <nav class="relative" dir="ltr">
                 <div class="p-6 flex items-center bg-white shadow"
                     style="@if ($business_card_details->header_backgroung) background-color: {{ $business_card_details->header_backgroung }} @endif; @if ($business_card_details->header_text_color) color: {{ $business_card_details->header_text_color }} @endif">
                     <a class="flex-shrink-0 text-2xl font-semibold">
@@ -82,7 +82,6 @@
                         @endif
                     </a>
 
-
                     <div class="ml-auto flex">
 
                         @if ($store_card)
@@ -91,19 +90,24 @@
                                 to Bizad </a>&nbsp;&nbsp;
                         @endif
 
-
-                        <a href="{{ route('cart', ['cardUrl' => $business_card_details->card_url]) }}"
-                            class="flex items-center">
+                        <a class="flex items-center"
+                            href="{{ route('cart', ['cardUrl' => $business_card_details->card_url]) }}">
                             <span class="relative inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 24 24"
                                     stroke="@if ($business_card_details->header_text_color) {{ $business_card_details->header_text_color }} @else #000000 @endif ">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                                 </svg>
                                 <span
-                                    class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full"
-                                    id="badge"></span>
+                                    class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold  text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full"
+                                    id="badge">
+                                    @if (session()->has('cart'))
+                                        {{ count(session()->get('cart')) }}
+                                    @else
+                                        <span>0</span>
+                                    @endif
+                                </span>
                             </span>
                         </a>
                     </div>
@@ -124,15 +128,17 @@
                     <div id="cart_items"></div>
 
                     <div class="pt-6 p-3">
-                        <a onclick="placeOrder()" id="place-order" style="cursor: pointer"
-                            class="block px-4 py-3 mb-3 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{ __('Place WhatsApp Order') }}</a>
+                        <a class="block px-4 py-3 mb-3 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 "
+                            id="place-order" style="cursor: pointer"
+                            onclick="placeOrder()">{{ __('Place WhatsApp Order') }}</a>
                     </div>
                     <div class="pt-6 p-3">
-                        <a onclick="placeOrderEmail()" id="place-order-email" style="cursor: pointer"
-                            class="block px-4 py-3 mb-3 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 ">{{ __('Place Order To Email') }}</a>
+                        <a class="block px-4 py-3 mb-3 rounded text-white text-md text-center font-semibold bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 "
+                            id="place-order-email" style="cursor: pointer"
+                            onclick="placeOrderEmail()">{{ __('Place Order To Email') }}</a>
                     </div>
 
-                    <div id="empty-cart" class="pt-6 p-3">
+                    <div class="pt-6 p-3" id="empty-cart">
                         <p class="px-4 py-4 font-bold mb-4 text-center text-gray-600">{{ __('Your cart is empty.') }}
                         </p>
 
@@ -151,7 +157,6 @@
             </div>
         </div>
 
-
         @if ($business_card_details->card_status == 'activated')
 
             @if (isset($business_card_details->cover))
@@ -165,15 +170,14 @@
                 </section>
             @endif
 
-
             <div class="container mx-auto">
-                <form action="{{ url()->current() }}" class="shop_filter">
+                <form class="shop_filter" action="{{ url()->current() }}">
                     <div class="grid grid-cols-2 gap-6">
                         <div class="">
                             <div class="filter_form">
                                 <div class="input-group">
                                     {{-- <span class="input-group-text">Category:</span> --}}
-                                    <select name="category" id="category" class="form-control">
+                                    <select class="form-control" id="category" name="category">
                                         <option value="">All Category</option>
                                         @foreach ($productCategories as $productCategory)
                                             <option value="{{ $productCategory->id }}"
@@ -188,16 +192,16 @@
                             <div class="filter_form float-right">
                                 <div class="input-group">
                                     <span class="input-group-text">Sort By:</span>
-                                    <select name="sort_order" id="sort_order" class="form-control">
-                                        <option @if ('1' == request()->sort_order) selected @endif value="1">A to
+                                    <select class="form-control" id="sort_order" name="sort_order">
+                                        <option value="1" @if ('1' == request()->sort_order) selected @endif>A to
                                             Z
                                         </option>
-                                        <option @if ('2' == request()->sort_order) selected @endif value="2">Z to
+                                        <option value="2" @if ('2' == request()->sort_order) selected @endif>Z to
                                             A
                                         </option>
-                                        <option @if ('3' == request()->sort_order) selected @endif value="3">Price
+                                        <option value="3" @if ('3' == request()->sort_order) selected @endif>Price
                                             low to high</option>
-                                        <option @if ('4' == request()->sort_order) selected @endif value="4">Price
+                                        <option value="4" @if ('4' == request()->sort_order) selected @endif>Price
                                             high to low</option>
                                     </select>
                                 </div>
@@ -207,7 +211,7 @@
                 </form>
             </div>
 
-            <section id="shop" class="py-8">
+            <section class="py-8" id="shop">
                 <div class="container mx-auto">
                     <div class="flex flex-wrap -m-4">
                         @foreach ($products as $product)
@@ -226,7 +230,7 @@
 
                                     <div class="w-full mb-1 mt-1 justify-between items-center">
                                         <div>
-                                            <h3 id="{{ $product->id }}_product_name" class="text-sm font-medium">
+                                            <h3 class="text-sm font-medium" id="{{ $product->id }}_product_name">
                                                 <a href="#">{{ $product->product_name }}</a>
                                             </h3>
                                             {{-- <span id="{{ $product->id }}_subtitle"
@@ -251,15 +255,14 @@
 
                                         </h4>
 
-
                                         @if ($product->is_variant)
-                                            <a href="{{ route('product.details', ['id' => $product->id, 'cardUrl' => $business_card_details->card_url]) }}"
-                                                class="text-center py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
+                                            <a class="text-center py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
+                                                href="{{ route('product.details', ['id' => $product->id, 'cardUrl' => $business_card_details->card_url]) }}"
                                                 style="cursor: pointer; min-width: 120px; display: inline-block;">{{ __('Choose') }}</a>
                                         @else
-                                            <a onclick="addToCart('{{ $product->id }}',1)"
-                                                class="py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
-                                                style="cursor: pointer; min-width: 120px;">{{ __('Add to Cart') }}</a>
+                                            <a class="py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
+                                                style="cursor: pointer; min-width: 120px;"
+                                                onclick="addToCart('{{ $product->id }}',1)">{{ __('Add to Cart') }}</a>
                                         @endif
 
                                     </div>
@@ -278,15 +281,14 @@
 
         <div class="py-8">
 
-
-            <div id="share" class="w-auto border-t px-5 align-middle py-4 border-b">
+            <div class="w-auto border-t px-5 align-middle py-4 border-b" id="share">
                 <p class="text-gray-700 font-semibold text-lg">{{ __('Share on') }}</p>
             </div>
 
             <div class="w-auto ml-6 pb-3 border-t pt-3">
                 <ul class="grid grid-flow-col lg:grid-cols-12 grid-cols-6 grid-rows-1">
 
-                    <a target="_blank" href="{{ $shareComponent['facebook'] }}">
+                    <a href="{{ $shareComponent['facebook'] }}" target="_blank">
                         <li class="flex cursor-pointer items-center">
                             <div
                                 class="flex justify-center items-center content-center bg-gradient-to-br from-{{ $business_card_details->theme_color }}-300 to-{{ $business_card_details->theme_color }}-600 shadow-md hover:shadow-lg h-12 w-12 rounded-full fill-current text-white">
@@ -295,7 +297,7 @@
                         </li>
                     </a>
 
-                    <a target="_blank" href="{{ $shareComponent['twitter'] }}">
+                    <a href="{{ $shareComponent['twitter'] }}" target="_blank">
                         <li class="flex cursor-pointer items-center">
                             <div
                                 class="flex justify-center items-center content-center bg-gradient-to-br from-{{ $business_card_details->theme_color }}-300 to-{{ $business_card_details->theme_color }}-600 shadow-md hover:shadow-lg h-12 w-12 rounded-full fill-current text-white">
@@ -304,7 +306,7 @@
                         </li>
                     </a>
 
-                    <a target="_blank" href="{{ $shareComponent['linkedin'] }}">
+                    <a href="{{ $shareComponent['linkedin'] }}" target="_blank">
                         <li class="flex cursor-pointer items-center">
                             <div
                                 class="flex justify-center items-center content-center bg-gradient-to-br from-{{ $business_card_details->theme_color }}-300 to-{{ $business_card_details->theme_color }}-600 shadow-md hover:shadow-lg h-12 w-12 rounded-full fill-current text-white">
@@ -313,7 +315,7 @@
                         </li>
                     </a>
 
-                    <a target="_blank" href="{{ $shareComponent['telegram'] }}">
+                    <a href="{{ $shareComponent['telegram'] }}" target="_blank">
                         <li class="flex cursor-pointer items-center">
                             <div
                                 class="flex justify-center items-center content-center bg-gradient-to-br from-{{ $business_card_details->theme_color }}-300 to-{{ $business_card_details->theme_color }}-600 shadow-md hover:shadow-lg h-12 w-12 rounded-full fill-current text-white">
@@ -322,7 +324,7 @@
                         </li>
                     </a>
 
-                    <a target="_blank" href="{{ $shareComponent['whatsapp'] }}">
+                    <a href="{{ $shareComponent['whatsapp'] }}" target="_blank">
                         <li class="flex cursor-pointer items-center">
                             <div
                                 class="flex justify-center items-center content-center bg-gradient-to-br from-{{ $business_card_details->theme_color }}-300 to-{{ $business_card_details->theme_color }}-600 shadow-md hover:shadow-lg h-12 w-12 rounded-full fill-current text-white">
@@ -335,10 +337,6 @@
             </div>
 
         </div>
-
-
-
-
 
         @if ($plan_details['hide_branding'] == '1')
             <div class="my-4 mt-12">
@@ -361,7 +359,7 @@
         var whatsAppMessage = "{{ $whatsapp_msg }}";
         var currency = "{{ $currency }}";
 
-        $("#badge").hide();
+        // $("#badge").hide();
         $("#place-order").hide();
         $("#place-order-email").hide();
         $("#empty-cart").show();

@@ -1,5 +1,6 @@
 @extends('pages.product.layouts.master')
 @section('title', 'Checkout')
+
 @section('content')
 
     <div class="checkout_page mt-5 mb-5">
@@ -134,23 +135,35 @@
                                     </li>
                                 </ul>
                             </div>
-                            <form action="#" method="post">
+                            <form id="paymentMethodForm" action="#" method="post">
                                 <div class="payment">
-                                    <a href="#">
-                                        <img class="img-fluid" src="{{ asset('assets/images/paypal.png') }}"
-                                            alt="Paypal">
-                                        <span>Paypal</span>
-                                    </a>
-
+                                    @if (isset($user->paypal_public_key) && isset($user->paypal_secret_key))
+                                        <input id="paypal" name="paymentMethod" type="radio" value="PayPal">
+                                        <label for="paypal">
+                                            {{-- <a href="#"> --}}
+                                            <img class="img-fluid" src="{{ asset('assets/images/paypal.png') }}"
+                                                alt="Paypal">
+                                            <span>Paypal</span>
+                                            {{-- </a> --}}
+                                        </label>
+                                    @endif
                                     @if (isset($user->stripe_public_key) && isset($user->stripe_secret_key))
-                                        <a
-                                            href="{{ route('checkout.payment.stripe', ['cardUrl' => $business_card_details->card_url]) }}">
+                                        <input id="stripe" name="paymentMethod" type="radio" value="Stripe">
+                                        <label for="stripe">
+                                            {{-- <a href="javascript:void(0)"> --}}
                                             <img class="img-fluid" src="{{ asset('assets/images/stripe.png') }}"
                                                 alt="Stripe">
                                             <span>Stripe</span>
-                                        </a>
+                                            {{-- </a> --}}
+                                        </label>
                                     @endif
                                 </div>
+                                <button class="btn btn-primary btn-sm mt-2" type="submit">
+                                    <span class="hidden-xs-down">
+                                        Continue
+                                        <i class="fa fa-angle-right"></i>
+                                    </span>
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -158,5 +171,139 @@
             </div>
         </div>
     </div>
+    <div class="modal modal-blur fade" id="stripeModal" role="dialog" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal modal-dialog-centered" role="document">
+
+            <div class="modal-content rounded p-1">
+
+                <div class="modal-body">
+
+                    <h4 class="modal-title text-left" id="paymentStripeLabel"> {{ __('Card Information') }}</h4>
+
+                    <div class="checkout">
+
+                        <form id="payment-form"
+                            action="{{ route('checkout.payment.stripe.store', ['paymentId' => $paymentId, 'cardUrl' => $business_card_details->card_url]) }}"
+                            method="post">
+                            @csrf
+                            <div class="form-group">
+                                <div class="card-header">
+                                    <label for="card-element">
+                                        {{ __('Please enter your credit card information') }}
+                                    </label>
+
+                                </div>
+                                <div class="card-body mt-2">
+                                    <div id="card-element">
+                                        <!-- A Stripe Element will be inserted here. -->
+                                    </div>
+                                    <!-- Used to display form errors. -->
+                                    <div id="card-errors" role="alert"></div>
+
+                                </div>
+                            </div>
+
+                            <button class="btn btn-dark mt-4 float-end" id="card-button" data-secret="{{ $intent }}"
+                                type="submit">
+                                {{ __('Pay Now') }} </button>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 @endsection
+
+@push('script')
+    <script>
+        $('#paymentMethodForm').submit(function(e) {
+            e.preventDefault()
+            let selectedPaymentMethod = $('input[name="paymentMethod"]:checked', "#paymentMethodForm").val();
+            if (selectedPaymentMethod == "Stripe") {
+                $("#stripeModal").modal('show');
+
+            } else {
+
+            }
+        })
+    </script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        (function() {
+            "use strict";
+            var style = {
+                base: {
+                    color: '#32325d',
+                    lineHeight: '18px',
+                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                    fontSmoothing: 'antialiased',
+                    fontSize: '16px',
+                    '::placeholder': {
+                        color: '#aab7c4'
+                    }
+                },
+                invalid: {
+                    color: '#fa755a',
+                    iconColor: '#fa755a'
+                }
+            };
+
+            const stripe = Stripe('{{ $user->stripe_public_key }}', {
+                locale: 'en'
+            }); // Create a Stripe client.
+            const elements = stripe.elements(); // Create an instance of Elements.
+            const cardElement = elements.create('card', {
+                style: style
+            }); // Create an instance of the card Element.
+            const cardButton = document.getElementById('card-button');
+            const clientSecret = cardButton.dataset.secret;
+
+            cardElement.mount('#card-element'); // Add an instance of the card Element into the `card-element` <div>.
+
+            // Handle real-time validation errors from the card Element.
+            cardElement.addEventListener('change', function(event) {
+                var displayError = document.getElementById('card-errors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                } else {
+                    displayError.textContent = '';
+                }
+            });
+
+            // Handle form submission.
+            var form = document.getElementById('payment-form');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                $('.card-footer button').html(
+                    '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>'
+                ).prop('disabled', true);
+
+                stripe.handleCardPayment(clientSecret, cardElement, {
+                        payment_method_data: {
+                            //billing_details: { name: cardHolderName.value }
+                        }
+                    })
+                    .then(function(result) {
+                        console.log(result);
+                        if (result.error) {
+                            // Inform the user if there was an error.
+                            var errorElement = document.getElementById('card-errors');
+                            errorElement.textContent = result.error.message;
+                            $('.card-footer button').html("Pay Now").prop('disabled', false);
+
+                        } else {
+                            console.log(result);
+                            form.submit();
+
+                        }
+                    });
+            });
+
+
+        })();
+    </script>
+@endpush

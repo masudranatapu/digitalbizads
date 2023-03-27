@@ -49,6 +49,12 @@ class CheckoutController extends Controller
     public function checkoutBilling($cardUrl)
     {
         $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
+        $shipping = Session::has('shipping');
+
+        if (!$shipping) {
+            Session::flash('alert', "Please provide the shipping address");
+            return redirect()->route('checkout', ['cardUrl' => $cardUrl]);
+        }
 
         return view('pages.product.checkout_billing', compact('business_card_details'));
     }
@@ -173,20 +179,60 @@ class CheckoutController extends Controller
 
     public function checkoutPayment($cardUrl)
     {
-        $shipping = Session::has('shipping');
+
         $billing = Session::has('billing');
 
 
 
-        if (!$shipping && !$billing) {
+
+        if (!$billing) {
             Session::flash('alert', "Please set billing and shipping address");
-            return redirect()->route('checkout', ['cardUrl' => $cardUrl]);
+            return redirect()->route('checkout.billing', ['cardUrl' => $cardUrl]);
         }
 
         $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
         $user = User::find($business_card_details->user_id);
+        $iso_code = json_decode($business_card_details->description, true);
+        $currency = Currency::where('iso_code', $iso_code['currency'])->first();
+        $shipping = Session::get('shipping');
+        $total = 0;
+        foreach (session('cart') as $id => $details) {
+            $total += $details['price'] * $details['quantity'];
+        }
 
-        return view('pages.product.checkout_payment', compact('business_card_details', 'user'));
+        //Todo Shipping And Vat Add Korte hobe
+
+        if (session()->has('tax')) {
+            $total = (int) $total + (int) session()->get('tax');
+        }
+        if (session()->has('shippingCost')) {
+
+            $total = (int) $total + (int) session()->get('shippingCost');
+        }
+
+        $user = User::find($business_card_details->user_id);
+
+        \Stripe\Stripe::setApiKey($user->stripe_secret_key);
+        $payment_intent = \Stripe\PaymentIntent::create([
+            'description' => "Product purchase",
+            'shipping' => [
+                'name' => $shipping['ship_first_name'],
+                'address' => [
+                    'line1' => $shipping['ship_address1'],
+                    'postal_code' => $shipping['ship_zip'],
+                    'city' => $shipping['ship_city'],
+                    'state' =>  $shipping['ship_state'],
+                    'country' =>  $shipping['ship_city'],
+                ],
+            ],
+            'amount' => intval($total) * 100,
+            'currency' => $currency->iso_code,
+            'payment_method_types' => ['card'],
+        ]);
+        $intent = $payment_intent->client_secret;
+        $paymentId = $payment_intent->id;
+
+        return view('pages.product.checkout_payment', compact('business_card_details', 'user', 'paymentId', 'intent'));
     }
 
 
@@ -363,23 +409,15 @@ class CheckoutController extends Controller
                 Session::forget('tax');
                 Session::forget('shippingCost');
 
-                dd($business_card_details->card_url);
+
                 return redirect()->route('card.preview', $business_card_details->card_url);
-
-
             } catch (\Throwable $th) {
 
                 dd($th->getMessage());
             }
-
-
-        }else{
+        } else {
             alert()->error(trans('Something wrong.'));
             return redirect()->route('card.preview', $business_card_details->card_url);
         }
-
-
-
-
     }
 }
