@@ -1,9 +1,8 @@
 @extends('pages.product.layouts.master')
 @section('title', 'Product Details')
 @push('css')
-    <link rel="stylesheet" href="{{ asset('assets/css/lightgallery-bundle.css') }}">
+    <link href="{{ asset('assets/css/lightgallery-bundle.css') }}" rel="stylesheet">
 @endpush
-
 
 @section('content')
     <div class="product_details_section mt-5 mb-5">
@@ -12,12 +11,12 @@
                 <div class="col-lg-6">
                     <div class="product_gallery">
                         <div class="product-item__gallery single_product">
-                            <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff"
-                                class="swiper mySwiper2">
+                            <div class="swiper mySwiper2"
+                                style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff">
                                 <div class="swiper-wrapper single_item" id="lightgallery">
 
-                                    <a class="swiper-slide" href=""
-                                        data-src="{{ getPhoto($product->product_image) }}">
+                                    <a class="swiper-slide" data-src="{{ getPhoto($product->product_image) }}"
+                                        href="">
                                         <img src="{{ getPhoto($product->product_image) }}" alt="product-img" />
                                     </a>
 
@@ -26,7 +25,7 @@
                                 <div class="swiper-button-prev"></div>
                             </div>
 
-                            <div thumbsSlider="" class="swiper mySwiper">
+                            <div class="swiper mySwiper" thumbsSlider="">
                                 <div class="swiper-wrapper">
                                     <div class="swiper-slide">
                                         <img src="{{ getPhoto($product->product_image) }}" alt="product-img" />
@@ -50,9 +49,9 @@
                 </div>
                 <div class="col-lg-6">
 
-                    <form action="{{ route('addtocart') }}" method="post" class="addToCartForm">
+                    <form class="addToCartForm" action="{{ route('addtocart') }}" method="post">
                         @csrf
-                        <input type="hidden" name="productId" value="{{ $product->id }}" id="productId">
+                        <input id="productId" name="productId" type="hidden" value="{{ $product->id }}">
                         <div class="product_info">
                             <span class="badge badge-success mb-3">{{ $product->badge }}</span>
                             <h3>
@@ -81,17 +80,17 @@
                                                 @if (count($variant->hasOption) > 0)
                                                     <div class="col-6">
                                                         <div class="size">
-                                                            <label for="size"
-                                                                class="form-label">{{ $variant->name }}</label>
-                                                            <select name="option[]"
+                                                            <label class="form-label"
+                                                                for="size">{{ $variant->name }}</label>
+                                                            <select class="form-control"
                                                                 id="{{ str_replace(' ', '_', strtolower(trim($variant->name))) }}"
-                                                                class="form-control">
+                                                                name="option[]">
 
                                                                 @foreach ($variant->hasOption as $option)
                                                                     @if ($option->stock > 0)
-                                                                        <option value="{{ $option->id }}"
-                                                                            data-price="{{ $option->price }}"
-                                                                            data-variant="{{ $variant->name }}">
+                                                                        <option data-price="{{ $option->price }}"
+                                                                            data-variant="{{ $variant->name }}"
+                                                                            value="{{ $option->id }}">
                                                                             {{ $option->name }}
                                                                             ({{ getPrice($option->price) }})
                                                                         </option>
@@ -121,15 +120,15 @@
                             <div class="d-flex">
                                 <div class="qty me-4">
                                     <div class="input-group">
-                                        <span id="qtySub" class="input-type-text"><i class="fa fa-minus"></i></span>
-                                        <input type="number" class="form-control" name="qty" id="qty"
+                                        <span class="input-type-text" id="qtySub"><i class="fa fa-minus"></i></span>
+                                        <input class="form-control" id="qty" name="qty" type="number"
                                             value="1" min="1" max="100" readonly>
-                                        <span id="qtyAdd" class="input-type-text"><i class="fa fa-plus"></i></span>
+                                        <span class="input-type-text" id="qtyAdd"><i class="fa fa-plus"></i></span>
                                     </div>
                                     <span class="qtyAlert text-danger"></span>
                                 </div>
                                 <div class="add_to_cart">
-                                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                    <button class="btn btn-primary" type="submit">Add to Cart</button>
                                 </div>
                             </div>
                         </div>
@@ -173,13 +172,11 @@
 
 @endsection
 
-
 @push('script')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('assets/js/lightgallery.min.js') }}"></script>
     <script src="{{ asset('assets/js/swiper-bundle.min.js') }}"></script>
     <script src="{{ asset('frontend/whatsapp-store/js/script.js') }}"></script>
-
 
     <!-- lightgallery  -->
     <script type="text/javascript">
@@ -227,7 +224,11 @@
             }).get();
             let price = values.map((ind, element) => {
                 return ind.price ?? 0;
-            })
+            });
+            console.dir({
+                values,
+                price
+            });
             let total = price.reduce((partialSum, a) => partialSum + a, 0)
             let mainPrice = $('#mainPrice').val();
             let newPrice = parseInt(total) + parseInt(mainPrice);
