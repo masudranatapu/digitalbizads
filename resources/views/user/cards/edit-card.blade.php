@@ -719,7 +719,7 @@
                                         <div id="logofield1"></div>
                                         <div class="col-6">
                                             <div class="mb-3 form-input">
-                                                <label class="form-label" for="logo">Photo Or Video <span
+                                                <label class="form-label" for="logo">Logo <span
                                                         class="text-danger">(Recommended size (140x48)</span>
                                                     <button class="tooltip_icon" data-bs-toggle="tooltip"
                                                         data-bs-placement="top" data-bs-custom-class="custom-tooltip"
@@ -741,13 +741,13 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="mb-3 form-input">
-                                                <label class="form-label" for="selectField2">Photo<span
+                                                <label class="form-label" for="selectField2">Banner<span
                                                         class="text-danger">*</span></label></label>
                                                 <select class="form-control" id="selectField2" name="gallery_type"
                                                     tabindex="{{ $tabindex++ }}" required>
                                                     <option value="banner"
                                                         @if ($banner_type == 'banner') selected @endif>
-                                                        Banner</option>
+                                                        Photo</option>
                                                     <option value="videourl"
                                                         @if ($banner_type == 'videourl') selected @endif>Video Url
                                                     </option>

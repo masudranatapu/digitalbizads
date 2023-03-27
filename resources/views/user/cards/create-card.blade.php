@@ -524,7 +524,7 @@
                                         <div class="col-6">
                                             <div class="mb-3 d-none form-input" id="logofield">
                                                 <div id="logofield1"></div>
-                                                <label class="form-label" for="logo">Photo<span
+                                                <label class="form-label" for="logo">Logo<span
                                                         class="text-danger">(Recommended size (140x48)</span>
                                                     <button class="tooltip_icon" data-bs-toggle="tooltip"
                                                         data-bs-placement="top" data-bs-custom-class="custom-tooltip"
@@ -547,12 +547,12 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="mb-3 form-input">
-                                                <label class="form-label" for="selectField2">Photo <span
+                                                <label class="form-label" for="selectField2">Banner <span
                                                         class="text-danger">*</span></label></label>
                                                 <select class="form-control" id="selectField2" name="gallery_type"
                                                     tabindex="{{ $tabindex++ }}" required>
                                                     {{-- <option value="gallery">Gallery</option> --}}
-                                                    <option value="banner">Banner</option>
+                                                    <option value="banner">Photo</option>
                                                     <option value="videourl">Video Url</option>
                                                     <option value="videosource">Uplaod Video</option>
                                                 </select>
