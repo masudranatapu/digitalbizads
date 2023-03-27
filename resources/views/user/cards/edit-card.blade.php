@@ -61,7 +61,7 @@
     }
     [$r, $g, $b] = sscanf($theme_color, '#%02x%02x%02x');
     $theme_bg = "$r, $g, $b,.5";
-    
+
     if (isFreePlan(Auth::user()->id) == false) {
         $footer_text = $card->footer_text;
         $card_url = $card->card_url;
@@ -70,9 +70,9 @@
         $footer_text = 'All Rights Reserved by Digitalbizads.com';
     }
     $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times New Roman', 'Georgia', 'Courier New', 'Brush Script', 'Garamond'];
-    
+
     // dd($font_family);
-    
+
     ?>
     <link href="{{ asset('assets/css/image-uploader.min.css') }}" rel="stylesheet">
     <style>

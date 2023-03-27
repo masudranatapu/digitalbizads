@@ -131,7 +131,7 @@
     $iphone = stripos($_SERVER['HTTP_USER_AGENT'], 'iphone');
     $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
     $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times New Roman', 'Georgia', 'Courier New', 'Brush Script', 'Garamond'];
-    
+
     ?>
     <div class="page-wrapper">
         <div class="container-xl">
@@ -362,7 +362,7 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="mb-3 form-input">
-                                                <label class="form-label" for="adsname">Biz Ad Name <span
+                                                <label class="form-label" for="adsname">Biz Ads Name <span
                                                         class="text-danger">*</span></label>
                                                 <input class="form-control @error('adsname') is-invalid @enderror"
                                                     id="adsname" name="adsname" type="text"
@@ -477,11 +477,11 @@
                                         </div>
                                         <div class="col-6">
                                             <div class="mb-3 form-input">
-                                                <label class="form-label" for="">Logo Or Text(Biz Name) <span
+                                                <label class="form-label" for="">Logo Type(Biz Name) <span
                                                         class="text-danger">*</span></label></label>
                                                 <select class="form-control" id="selectField1" name="headline"
                                                     tabindex="{{ $tabindex++ }}" required>
-                                                    <option value="text">Heading</option>
+                                                    <option value="text">Text</option>
                                                     <option value="logo">Logo</option>
                                                 </select>
                                             </div>
