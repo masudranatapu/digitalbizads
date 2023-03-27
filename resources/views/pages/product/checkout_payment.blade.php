@@ -135,36 +135,48 @@
                                     </li>
                                 </ul>
                             </div>
-                            <form id="paymentMethodForm" action="#" method="post">
-                                <div class="payment">
-                                    @if (isset($user->paypal_public_key) && isset($user->paypal_secret_key))
-                                        <input id="paypal" name="paymentMethod" type="radio" value="PayPal">
-                                        <label for="paypal">
-                                            {{-- <a href="#"> --}}
-                                            <img class="img-fluid" src="{{ asset('assets/images/paypal.png') }}"
-                                                alt="Paypal">
-                                            <span>Paypal</span>
-                                            {{-- </a> --}}
-                                        </label>
+                            @if (
+                                (isset($user->paypal_public_key) && isset($user->paypal_secret_key)) ||
+                                    (isset($user->stripe_public_key) && isset($user->stripe_secret_key)))
+                                <form id="paymentMethodForm" action="#" method="post">
+                                    <div class="payment">
+
+                                        @if (isset($user->paypal_public_key) && isset($user->paypal_secret_key))
+                                            <input id="paypal" name="paymentMethod" type="radio" value="PayPal">
+                                            <label for="paypal">
+                                                {{-- <a href="#"> --}}
+                                                <img class="img-fluid" src="{{ asset('assets/images/paypal.png') }}"
+                                                    alt="Paypal">
+                                                <span>Paypal</span>
+                                                {{-- </a> --}}
+                                            </label>
+                                        @endif
+                                        @if (isset($user->stripe_public_key) && isset($user->stripe_secret_key))
+                                            <input id="stripe" name="paymentMethod" type="radio" value="Stripe">
+                                            <label for="stripe">
+                                                {{-- <a href="javascript:void(0)"> --}}
+                                                <img class="img-fluid" src="{{ asset('assets/images/stripe.png') }}"
+                                                    alt="Stripe">
+                                                <span>Stripe</span>
+                                                {{-- </a> --}}
+                                            </label>
+                                        @endif
+                                    </div>
+                                    @if (
+                                        (isset($user->paypal_public_key) && isset($user->paypal_secret_key)) ||
+                                            (isset($user->stripe_public_key) && isset($user->stripe_secret_key)))
+                                        <button class="btn btn-primary btn-sm mt-2" type="submit">
+                                            <span class="hidden-xs-down">
+                                                Continue
+                                                <i class="fa fa-angle-right"></i>
+                                            </span>
+                                        </button>
                                     @endif
-                                    @if (isset($user->stripe_public_key) && isset($user->stripe_secret_key))
-                                        <input id="stripe" name="paymentMethod" type="radio" value="Stripe">
-                                        <label for="stripe">
-                                            {{-- <a href="javascript:void(0)"> --}}
-                                            <img class="img-fluid" src="{{ asset('assets/images/stripe.png') }}"
-                                                alt="Stripe">
-                                            <span>Stripe</span>
-                                            {{-- </a> --}}
-                                        </label>
-                                    @endif
-                                </div>
-                                <button class="btn btn-primary btn-sm mt-2" type="submit">
-                                    <span class="hidden-xs-down">
-                                        Continue
-                                        <i class="fa fa-angle-right"></i>
-                                    </span>
-                                </button>
-                            </form>
+
+                                </form>
+                            @else
+                                <p class="text-center text-danger">No payment getway available</p>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -181,33 +193,34 @@
                     <h4 class="modal-title text-left" id="paymentStripeLabel"> {{ __('Card Information') }}</h4>
 
                     <div class="checkout">
+                        @if (isset($paymentId))
+                            <form id="payment-form"
+                                action="{{ route('checkout.payment.stripe.store', ['paymentId' => $paymentId, 'cardUrl' => $business_card_details->card_url]) }}"
+                                method="post">
+                                @csrf
+                                <div class="form-group">
+                                    <div class="card-header">
+                                        <label for="card-element">
+                                            {{ __('Please enter your credit card information') }}
+                                        </label>
 
-                        <form id="payment-form"
-                            action="{{ route('checkout.payment.stripe.store', ['paymentId' => $paymentId, 'cardUrl' => $business_card_details->card_url]) }}"
-                            method="post">
-                            @csrf
-                            <div class="form-group">
-                                <div class="card-header">
-                                    <label for="card-element">
-                                        {{ __('Please enter your credit card information') }}
-                                    </label>
-
-                                </div>
-                                <div class="card-body mt-2">
-                                    <div id="card-element">
-                                        <!-- A Stripe Element will be inserted here. -->
                                     </div>
-                                    <!-- Used to display form errors. -->
-                                    <div id="card-errors" role="alert"></div>
+                                    <div class="card-body mt-2">
+                                        <div id="card-element">
+                                            <!-- A Stripe Element will be inserted here. -->
+                                        </div>
+                                        <!-- Used to display form errors. -->
+                                        <div id="card-errors" role="alert"></div>
 
+                                    </div>
                                 </div>
-                            </div>
 
-                            <button class="btn btn-dark mt-4 float-end" id="card-button" data-secret="{{ $intent }}"
-                                type="submit">
-                                {{ __('Pay Now') }} </button>
+                                <button class="btn btn-dark mt-4 float-end" id="card-button"
+                                    data-secret="{{ $intent }}" type="submit">
+                                    {{ __('Pay Now') }} </button>
 
-                        </form>
+                            </form>
+                        @endif
 
                     </div>
                 </div>
