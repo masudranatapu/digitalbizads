@@ -13,8 +13,8 @@
                     </div>
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none">
-                        <button onclick="generatePDF()" class="btn btn-primary" onclick="javascript:window.print();">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                        <button class="btn btn-primary" onclick="generatePDF()" onclick="javascript:window.print();">
+                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -27,8 +27,8 @@
                     </div>
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none">
-                        <button type="button" class="btn btn-primary" onclick="javascript:window.print();">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                        <button class="btn btn-primary" type="button" onclick="javascript:window.print();">
+                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                 viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -153,8 +153,8 @@
                                             </h1>
                                         </div>
                                         <div class="col-2">
-                                            <img src="{{ asset('frontend/assets/elements/paid.png') }}"
-                                                class="img-responsive p-3">
+                                            <img class="img-responsive p-3"
+                                                src="{{ asset('frontend/assets/elements/paid.png') }}">
                                         </div>
                                     </div>
                                 @endif
@@ -190,7 +190,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4" class="strong text-end">{{ __('Subtotal') }}</td>
+                                    <td class="strong text-end" colspan="4">{{ __('Subtotal') }}</td>
                                     <td class="text-end">
                                         @foreach ($currencies as $currency)
                                             @if ($transaction->transaction_currency == $currency->iso_code)
@@ -203,7 +203,7 @@
 
                                 @if ($transaction->billing_details['tax_amount'] > 0)
                                     <tr>
-                                        <td colspan="4" class="strong text-end">
+                                        <td class="strong text-end" colspan="4">
 
                                             {{ __($transaction->billing_details['tax_name']) }} {{ __('Rate') }}
 
@@ -222,9 +222,8 @@
                                     </tr>
                                 @endif
 
-
                                 <tr>
-                                    <td colspan="4" class="font-weight-bold text-uppercase text-end">{{ __('Total') }}
+                                    <td class="font-weight-bold text-uppercase text-end" colspan="4">{{ __('Total') }}
                                     </td>
                                     <td class="font-weight-bold text-end">
                                         @foreach ($currencies as $currency)
@@ -247,7 +246,7 @@
         </div>
     @endsection
 
-    @push('custom-js')
+    @push('script')
         <script src="{{ asset('js/html2pdf.bundle.min.js') }}"></script>
         <script>
             function generatePDF() {

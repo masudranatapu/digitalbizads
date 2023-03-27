@@ -22,14 +22,14 @@
                 <div class="card">
                     <div class="card-body">
                         <h3 class="card-title">{{ __('Choosed Plan') }} : {{ __($plan_details->plan_name) }}</h3>
-                        <button id="rzp-button1" class="btn btn-primary">{{ __('Pay Now') }}</button>
+                        <button class="btn btn-primary" id="rzp-button1">{{ __('Pay Now') }}</button>
                         </p>
                     </div>
                 </div>
             </div>
         </div>
         @include('user.includes.footer')
-        @push('custom-js')
+        @push('script')
             <script type="text/javascript" src="{{ asset('js/razorpay-checkout.js') }}"></script>
             <script>
                 ! function() {

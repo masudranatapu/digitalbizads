@@ -1,7 +1,6 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
 @section('setting-nav', 'active')
 
-
 @section('content')
     <div class="page-wrapper">
         <div class="container-xl">
@@ -22,7 +21,7 @@
                         <div class="dropdown">
 
                             <a type="button" href="{{ route('user.state.create') }}">
-                                <button type="button" class="btn btn btn-primary">
+                                <button class="btn btn btn-primary" type="button">
                                     <i class="fas fa-plus-circle fa-1x"></i> &ensp;
                                     {{ __('Add State Tax') }}
                                 </button>
@@ -71,33 +70,31 @@
 
                                                     </td>
 
-
-
                                                     <td>
                                                         <div class="btn-list flex-nowrap">
-
 
                                                             <a class="btn btn-primary btn-sm"
                                                                 href="{{ route('user.state.edit', ['id' => $row->id]) }}">
                                                                 {{ __('Edit') }}
                                                             </a>
                                                             @if ($row->status)
-                                                                <a class="btn btn-danger btn-sm" href="javascripy:void(0)"
-                                                                    data-url="{{ route('user.state.status',$row->id) }}"
+                                                                <a class="btn btn-danger btn-sm"
+                                                                    data-url="{{ route('user.state.status', $row->id) }}"
                                                                     data-status="{{ $row->status }}"
-                                                                    onclick="deactiveState(this)">
+                                                                    href="javascripy:void(0)" onclick="deactiveState(this)">
                                                                     {{ __('Deactive') }}
                                                                 </a>
                                                             @else
-                                                                <a class="btn btn-success btn-sm" href="javascript:void(0)"
-                                                                    data-url="{{ route('user.state.status',$row->id) }}"
+                                                                <a class="btn btn-success btn-sm"
+                                                                    data-url="{{ route('user.state.status', $row->id) }}"
                                                                     data-status="{{ $row->status }}"
-                                                                    onclick="deactiveState(this)">
+                                                                    href="javascript:void(0)" onclick="deactiveState(this)">
                                                                     {{ __('Active') }}
                                                                 </a>
                                                             @endif
 
-                                                            <a class="btn btn-danger btn-sm" data-url="{{ route('user.state.delete',$row->id) }}"
+                                                            <a class="btn btn-danger btn-sm"
+                                                                data-url="{{ route('user.state.delete', $row->id) }}"
                                                                 href="javascript:void(0)" onclick="deleteState(this)">
                                                                 {{ __('Delete') }}
                                                             </a>
@@ -108,7 +105,7 @@
                                             @endforeach
                                         @else
                                             <tr class="font-weight-bold">
-                                                <td colspan="5" class="text-center text-danger">
+                                                <td class="text-center text-danger" colspan="5">
                                                     {{ __('No state tax found.') }}</td>
                                             </tr>
                                         @endif
@@ -117,8 +114,6 @@
                             </div>
                         </div>
                     </div>
-
-
 
                     @if (!empty($states) && $states->count())
                         <div
@@ -139,8 +134,9 @@
 
                                                     <div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7">
                                                         <div class="dropdown text-end">
-                                                            <button type="button" class="btn btn-primary dropdown-toggle"
-                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <button class="btn btn-primary dropdown-toggle"
+                                                                data-bs-toggle="dropdown" type="button"
+                                                                aria-expanded="false">
                                                                 Actions
                                                             </button>
                                                             <div class="dropdown-menu" style="">
@@ -150,27 +146,28 @@
                                                                     {{ __('Edit') }}
                                                                 </a>
                                                                 @if ($row->status)
-                                                                    <a class="dropdown-item" href="javascripy:void(0)"
-                                                                        data-url="{{ route('user.state.status',$row->id) }}"
+                                                                    <a class="dropdown-item"
+                                                                        data-url="{{ route('user.state.status', $row->id) }}"
                                                                         data-status="{{ $row->status }}"
+                                                                        href="javascripy:void(0)"
                                                                         onclick="deactiveState(this)">
                                                                         {{ __('Deactive') }}
                                                                     </a>
                                                                 @else
-                                                                    <a class="dropdown-item" href="javascript:void(0)"
-                                                                        data-url="{{ route('user.state.status',$row->id) }}"
+                                                                    <a class="dropdown-item"
+                                                                        data-url="{{ route('user.state.status', $row->id) }}"
                                                                         data-status="{{ $row->status }}"
+                                                                        href="javascript:void(0)"
                                                                         onclick="deactiveState(this)">
                                                                         {{ __('Active') }}
                                                                     </a>
                                                                 @endif
 
-                                                                <a class="dropdown-item" data-url="{{ route('user.state.delete',$row->id) }}"
+                                                                <a class="dropdown-item"
+                                                                    data-url="{{ route('user.state.delete', $row->id) }}"
                                                                     href="javascript:void(0)" onclick="deleteState(this)">
                                                                     {{ __('Delete') }}
                                                                 </a>
-
-
 
                                                             </div>
                                                         </div>
@@ -188,9 +185,9 @@
         </div>
     </div>
     @include('user.includes.footer')
-</div>
+    </div>
 
-    <div class="modal modal-blur fade" id="sendEmailModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="sendEmailModal" role="dialog" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-md modal-dialog-centered" role="document">
             @csrf
             <div class="modal-content">
@@ -199,22 +196,22 @@
                     <div class="modal-body">
                         <div class="modal-title">{{ __('Send email to subscriber') }}</div>
                         <div class="form-group">
-                            <label for="email" class=" form-label">Email</label>
-                            <input type="email" id="senderEmail" name="email" class="form-control">
+                            <label class=" form-label" for="email">Email</label>
+                            <input class="form-control" id="senderEmail" name="email" type="email">
                         </div>
                         <div class="form-group">
-                            <label for="subject" class=" form-label">Subject</label>
-                            <input type="subject" id="sendersubject" name="subject" required class="form-control">
+                            <label class=" form-label" for="subject">Subject</label>
+                            <input class="form-control" id="sendersubject" name="subject" type="subject" required>
                         </div>
                         <div class="form-group">
-                            <label for="message" class=" form-label">Message</label>
-                            <textarea id="senderMessage" name="message" required class="form-control" cols="30" rows="10"></textarea>
+                            <label class=" form-label" for="message">Message</label>
+                            <textarea class="form-control" id="senderMessage" name="message" required cols="30" rows="10"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-link link-secondary me-auto"
-                            data-bs-dismiss="modal">{{ __('Cancel') }}</button>
-                        <button type="submit" class="btn btn-danger" id="plan_id">{{ __('Send') }}</button>
+                        <button class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal"
+                            type="button">{{ __('Cancel') }}</button>
+                        <button class="btn btn-danger" id="plan_id" type="submit">{{ __('Send') }}</button>
                     </div>
                 </form>
             </div>
@@ -222,7 +219,7 @@
         </div>
     </div>
 
-    <div class="modal modal-blur fade show" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade show" id="deleteModal" role="dialog" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
@@ -233,15 +230,15 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-link link-secondary me-auto"
-                        data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal"
+                        type="button">{{ __('Cancel') }}</button>
                     <a class="btn btn-danger" id="product_id">{{ __('Yes, proceed') }}</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal modal-blur fade" id="deactiveModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="deactiveModal" role="dialog" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
@@ -249,8 +246,8 @@
                     <div id="statusMessage"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-link link-secondary me-auto"
-                        data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal"
+                        type="button">{{ __('Cancel') }}</button>
                     <a class="btn btn-danger" id="state_id_status">{{ __('Yes, proceed') }}</a>
                 </div>
             </div>
@@ -259,35 +256,35 @@
 
 @endsection
 
-@push('custom-js')
-<script>
-    function deleteState(event) {
-        const {
-            url
-        } = event.dataset;
-        console.log(url);
-        $('#deleteModal').modal('show');
-        $('#product_id').prop('href', url);
+@push('script')
+    <script>
+        function deleteState(event) {
+            const {
+                url
+            } = event.dataset;
+            console.log(url);
+            $('#deleteModal').modal('show');
+            $('#product_id').prop('href', url);
 
 
-    }
-
-    function deactiveState(event) {
-        const {
-            url,
-            status
-        } = event.dataset;
-        $('#deactiveModal').modal('show');
-        if (status) {
-            $('#statusMessage').html("If you proceed, you will deactive this state tax.");
-
-        } else {
-
-            $('#statusMessage').html("If you proceed, you will active this state tax.");
         }
 
-        $('#state_id_status').prop('href', url);
+        function deactiveState(event) {
+            const {
+                url,
+                status
+            } = event.dataset;
+            $('#deactiveModal').modal('show');
+            if (status) {
+                $('#statusMessage').html("If you proceed, you will deactive this state tax.");
 
-    }
-</script>
+            } else {
+
+                $('#statusMessage').html("If you proceed, you will active this state tax.");
+            }
+
+            $('#state_id_status').prop('href', url);
+
+        }
+    </script>
 @endpush

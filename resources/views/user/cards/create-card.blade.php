@@ -849,7 +849,7 @@
     @include('user.cards._upgrade_plan_modal')
 @endsection
 
-@push('custom-js')
+@push('script')
     {{-- <script type="text/javascript" src="{{ asset('assets/js/slim.kickstart.min.js') }}"></script> --}}
     <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('assets/js/card.js') }}"></script>

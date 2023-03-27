@@ -1,6 +1,5 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
 
-
 @section('content')
     <div class="page-wrapper">
         <div class="container-xl">
@@ -21,7 +20,7 @@
                             <div class="dropdown">
 
                                 <a href="{{ route('user.card.subscriber.export', ['card' => $cardId]) }}">
-                                    <button type="button" class="btn btn btn-primary">
+                                    <button class="btn btn btn-primary" type="button">
                                         <i class="fas fa-file-excel"></i> &ensp;
                                         {{ __('Export To Excel') }}
                                     </button>
@@ -56,14 +55,12 @@
                                                     <td>{{ $row->email }}</td>
                                                     <td>{{ date('d-M-Y', strtotime($row->created_at)) }}</td>
 
-
-
                                                     <td>
                                                         <div class="btn-list flex-nowrap">
 
-
-                                                            <a class="btn btn-danger btn-sm" onclick="sendEmail(this)"
-                                                                data-email="{{ $row->email }}" href="javascript:void(0)">
+                                                            <a class="btn btn-danger btn-sm"
+                                                                data-email="{{ $row->email }}" href="javascript:void(0)"
+                                                                onclick="sendEmail(this)">
                                                                 {{ __('Send Mail') }}
                                                             </a>
                                                         </div>
@@ -73,10 +70,8 @@
                                         @else
                                             <tr class="font-weight-bold">
 
-
-                                                <td colspan="3" class="text-center text-danger">
+                                                <td class="text-center text-danger" colspan="3">
                                                     {{ __('No Subscriber Found.') }}</td>
-
 
                                             </tr>
                                         @endif
@@ -85,8 +80,6 @@
                             </div>
                         </div>
                     </div>
-
-
 
                     @if (!empty($subscriber) && $subscriber->count())
                         <div
@@ -107,16 +100,16 @@
 
                                                     <div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7">
                                                         <div class="dropdown text-end">
-                                                            <button type="button" class="btn btn-primary dropdown-toggle"
-                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <button class="btn btn-primary dropdown-toggle"
+                                                                data-bs-toggle="dropdown" type="button"
+                                                                aria-expanded="false">
                                                                 Actions
                                                             </button>
                                                             <div class="dropdown-menu" style="">
 
-
                                                                 <a class="dropdown-item  text-danger delete-card"
-                                                                    href="javascript:void(0)" onclick="sendEmail(this);"
-                                                                    data-email="{{ $row->email }}">
+                                                                    data-email="{{ $row->email }}"
+                                                                    href="javascript:void(0)" onclick="sendEmail(this);">
                                                                     {{ __('Send Mail') }}
                                                                 </a>
                                                             </div>
@@ -137,7 +130,7 @@
         @include('user.includes.footer')
     </div>
 
-    <div class="modal modal-blur fade" id="sendEmailModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="sendEmailModal" role="dialog" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-md modal-dialog-centered" role="document">
             @csrf
             <div class="modal-content">
@@ -146,22 +139,22 @@
                     <div class="modal-body">
                         <div class="modal-title">{{ __('Send email to subscriber') }}</div>
                         <div class="form-group">
-                            <label for="email" class=" form-label">Email</label>
-                            <input type="email" id="senderEmail" name="email" class="form-control">
+                            <label class=" form-label" for="email">Email</label>
+                            <input class="form-control" id="senderEmail" name="email" type="email">
                         </div>
                         <div class="form-group">
-                            <label for="subject" class=" form-label">Subject</label>
-                            <input type="subject" id="sendersubject" name="subject" required class="form-control">
+                            <label class=" form-label" for="subject">Subject</label>
+                            <input class="form-control" id="sendersubject" name="subject" type="subject" required>
                         </div>
                         <div class="form-group">
-                            <label for="message" class=" form-label">Message</label>
-                            <textarea id="senderMessage" name="message" required class="form-control" cols="30" rows="10"></textarea>
+                            <label class=" form-label" for="message">Message</label>
+                            <textarea class="form-control" id="senderMessage" name="message" required cols="30" rows="10"></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-link link-secondary me-auto"
-                            data-bs-dismiss="modal">{{ __('Cancel') }}</button>
-                        <button type="submit" class="btn btn-danger" id="plan_id">{{ __('Send') }}</button>
+                        <button class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal"
+                            type="button">{{ __('Cancel') }}</button>
+                        <button class="btn btn-danger" id="plan_id" type="submit">{{ __('Send') }}</button>
                     </div>
                 </form>
             </div>
@@ -171,25 +164,23 @@
 
 @endsection
 
-@push('custom-js')
+@push('script')
+    <script>
+        function sendEmail(event) {
+            const {
+                email
+            } =
+            event.dataset;
 
-<script>
-    function sendEmail(event) {
-        const {
-            email
-        } =
-        event.dataset;
+            $('#sendersubject').val('');
+            $('#senderMessage').val('');
+            $('#senderEmail').val(email);
 
-        $('#sendersubject').val('');
-        $('#senderMessage').val('');
-        $('#senderEmail').val(email);
-
-        $('#sendEmailModal').modal('show');
-
+            $('#sendEmailModal').modal('show');
 
 
 
-    }
-</script>
 
+        }
+    </script>
 @endpush

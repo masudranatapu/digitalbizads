@@ -1,6 +1,5 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
 
-
 @section('content')
     <div class="page-wrapper">
         <div class="container-xl">
@@ -19,8 +18,8 @@
                     <div class="col-auto ms-auto d-print-none">
                         <div class="dropdown">
                             <a type="button" href="{{ route('user.create.card') }}">
-                                <button type="button" class="btn btn btn-primary">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus"
+                                <button class="btn btn btn-primary" type="button">
+                                    <svg class="icon icon-tabler icon-tabler-plus" xmlns="http://www.w3.org/2000/svg"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                         stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -83,8 +82,6 @@
                                                                     class="fa fa-times"></i> <i class="fa fa-store"></i></a>
                                                         @endif
 
-
-
                                                     </td>
 
                                                     <td>
@@ -104,7 +101,6 @@
                                                                 href="{{ route('user.card.delete', $row->card_id) }}">
                                                                 {{ __('Delete') }}
                                                             </a>
-
 
                                                             {{--
                                                 <a class="btn btn-primary btn-sm" href="{{ URL::to('/')."
@@ -139,8 +135,6 @@
                         </div>
                     </div>
 
-
-
                     @if (!empty($business_cards) && $business_cards->count())
                         <div
                             class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none">
@@ -160,8 +154,9 @@
 
                                                     <div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7">
                                                         <div class="dropdown text-end">
-                                                            <button type="button" class="btn btn-primary dropdown-toggle"
-                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <button class="btn btn-primary dropdown-toggle"
+                                                                data-bs-toggle="dropdown" type="button"
+                                                                aria-expanded="false">
                                                                 Actions
                                                             </button>
                                                             <div class="dropdown-menu" style="">
@@ -212,7 +207,7 @@
         @include('user.includes.footer')
     </div>
 
-    <div class="modal modal-blur fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="deleteModal" role="dialog" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
@@ -220,15 +215,15 @@
                     <div>{{ __('If you proceed, you will enabled/disabled this card.') }}</div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-link link-secondary me-auto"
-                        data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal"
+                        type="button">{{ __('Cancel') }}</button>
                     <a class="btn btn-danger" id="plan_id">{{ __('Yes, proceed') }}</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal modal-blur fade" id="openQR" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="openQR" role="dialog" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -241,17 +236,16 @@
         </div>
     </div>
 
-
 @endsection
 
-@push('custom-js')
-<script>
-    $(document).on('click', '.delete-card', function(e) {
-        var conBox = confirm("Are you sure to delete this ads?");
-        if (conBox) {
-            return true;
-        }
-        return false;
-    })
-</script>
+@push('script')
+    <script>
+        $(document).on('click', '.delete-card', function(e) {
+            var conBox = confirm("Are you sure to delete this ads?");
+            if (conBox) {
+                return true;
+            }
+            return false;
+        })
+    </script>
 @endpush

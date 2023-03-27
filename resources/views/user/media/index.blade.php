@@ -1,6 +1,6 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
 
-@push('custom-css')
+@push('css')
     <link href="{{ asset('backend/css/lightgallery.min.css') }}" rel="stylesheet" />
 @endpush
 @section('content')
@@ -143,7 +143,7 @@
 
 @endsection
 
-@push('custom-js')
+@push('script')
     <script src="{{ asset('backend/js/lightgallery.min.js') }}"></script>
     <script src="{{ asset('backend/js/clipboard.min.js') }}"></script>
     <script>

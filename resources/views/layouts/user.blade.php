@@ -14,7 +14,7 @@
 
     <title>{{ $settings->site_name }}</title>
 
-    <link rel="icon" href="{{ $settings->favicon }}" sizes="96x96" type="image/png" />
+    <link type="image/png" href="{{ $settings->favicon }}" rel="icon" sizes="96x96" />
 
     <!-- CSS files -->
     <link href="{{ asset('backend/css/tabler.min.css') }}" rel="stylesheet" />
@@ -24,18 +24,19 @@
     <link href="{{ asset('backend/css/demo.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('backend/css/styles.css') }}" rel="stylesheet" />
     <link href="{{ asset('backend/css/fontawesome-iconpicker.min.css') }}" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap4.min.css') }}">
+    <link href="{{ asset('css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/chart.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/sweetalert.min.js') }}"></script>
-    @stack('custom-css')
-    <input type="hidden" name="base_url" id="base_url" value="{{ url('/') }}">
+    @stack('css')
+    <input id="base_url" name="base_url" type="hidden" value="{{ url('/') }}">
 
 </head>
 
-<body class="antialiased" dir="{{ App::isLocale('ar') || App::isLocale('ur') || App::isLocale('he') ? 'rtl' : 'ltr' }}">
+<body class="antialiased"
+    dir="{{ App::isLocale('ar') || App::isLocale('ur') || App::isLocale('he') ? 'rtl' : 'ltr' }}">
 
     {{-- Preloader --}}
     <div class="preloader-wrapper">
@@ -43,7 +44,6 @@
             <img src="{{ asset('preloader.gif') }}" alt="{{ config('app.name') }}">
         </div>
     </div>
-
 
     <div id="wrapper">
         @if (isset($header) && $header)
@@ -73,7 +73,7 @@
         });
     </script>
 
-    @stack('custom-js')
+    @stack('script')
 </body>
 
 </html>

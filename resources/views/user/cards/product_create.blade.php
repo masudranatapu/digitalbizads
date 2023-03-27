@@ -34,8 +34,8 @@
         <div class="container-xl">
             <div class="row row-deck row-cards">
                 <div class="col-sm-12 col-lg-12">
-                    <form action="{{ route('user.products.store', ['id' => $id]) }}" method="post"
-                        enctype="multipart/form-data" class="card">
+                    <form class="card" action="{{ route('user.products.store', ['id' => $id]) }}" method="post"
+                        enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
                             <div class="row">
@@ -47,14 +47,13 @@
                                             {{ __('Products') }}
                                         </h2>
 
-
                                         <div class='row' id="">
                                             <div class='col-md-6 col-xl-6'>
                                                 <div class='mb-3'>
                                                     <label class='form-label required'>{{ __('Product Badge') }}</label>
-                                                    <input type='text' class='form-control' name='badge'
-                                                        placeholder='{{ __('Product Badge') }}...'
-                                                        value="{{ old('badge') }}" required>
+                                                    <input class='form-control' name='badge' type='text'
+                                                        value="{{ old('badge') }}"
+                                                        placeholder='{{ __('Product Badge') }}...' required>
                                                 </div>
                                             </div>
                                             <div class='col-md-6 col-xl-6'>
@@ -63,9 +62,9 @@
                                                         <span class="text-dark">(Image preferd size: 350px *
                                                             320px)</span></label>
                                                     <div class='input-group mb-2'>
-                                                        <input type='text' class='image media-model form-control'
-                                                            name='product_image' placeholder='{{ __('Product Image') }}'
-                                                            value="{{ old('product_image') }}" required>
+                                                        <input class='image media-model form-control' name='product_image'
+                                                            type='text' value="{{ old('product_image') }}"
+                                                            placeholder='{{ __('Product Image') }}' required>
                                                         <button class='btn btn-primary btn-md' type='button'
                                                             onclick="openMedia()">{{ __('Choose image') }}</button>
                                                     </div>
@@ -74,9 +73,9 @@
                                             <div class='col-md-6 col-xl-6'>
                                                 <div class='mb-3'>
                                                     <label class='form-label required'>{{ __('Product Name') }}</label>
-                                                    <input type='text' class='form-control' name='product_name'
-                                                        placeholder='{{ __('Product Name') }}' required
-                                                        value={{ old('product_name') }}>
+                                                    <input class='form-control' name='product_name' type='text'
+                                                        value={{ old('product_name') }}
+                                                        placeholder='{{ __('Product Name') }}' required>
                                                 </div>
                                             </div>
                                             <div class='col-md-6 col-xl-6'>
@@ -91,18 +90,18 @@
                                                 <div class='mb-3'><label
                                                         class='form-label required'>{{ __('Regular Price') }}<span
                                                             class="text-dark">({{ $currency->symbol }})</span></label>
-                                                    <input type='number' class='form-control' name='regular_price'
-                                                        min='1' placeholder='{{ __('Regular Price') }}...'
-                                                        min='1' step='.001' required
-                                                        value="{{ old('regular_price') }}">
+                                                    <input class='form-control' name='regular_price' type='number'
+                                                        value="{{ old('regular_price') }}" min='1'
+                                                        placeholder='{{ __('Regular Price') }}...' min='1'
+                                                        step='.001' required>
                                                 </div>
                                             </div>
                                             <div class='col-md-6 col-xl-6'>
                                                 <div class='mb-3'>
                                                     <label class='form-label required'>{{ __('Sales Price') }} <span
                                                             class="text-dark">({{ $currency->symbol }})</span></label>
-                                                    <input type='number' class='form-control' name='sales_price'
-                                                        min='1' step='.001' value="{{ old('sales_price') }}"
+                                                    <input class='form-control' name='sales_price' type='number'
+                                                        value="{{ old('sales_price') }}" min='1' step='.001'
                                                         placeholder='{{ __('Sales Price') }}...' required>
                                                 </div>
                                             </div>
@@ -110,24 +109,23 @@
                                                 <div class='mb-3'>
                                                     <label class='form-label required'
                                                         for='stock'>{{ __('Stock') }}</label>
-                                                    <input type="number"
-                                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
-                                                        name="stock" id="stock" class="form-control"
-                                                        value="{{ old('stock') ?? 0 }}">
+                                                    <input class="form-control" id="stock" name="stock" type="number"
+                                                        value="{{ old('stock') ?? 0 }}"
+                                                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
                                                 </div>
                                             </div>
                                             <div class='col-md-6 col-xl-6'>
                                                 <div class='mb-3'>
                                                     <label class='form-label required'
                                                         for='product_status'>{{ __('Product Type') }}</label>
-                                                    <select name='product_type' id='product_type' class='form-control'
+                                                    <select class='form-control' id='product_type' name='product_type'
                                                         required>
-                                                        <option {{ old('product_type') == '0' ? 'selected' : '' }}
-                                                            value='0'>
+                                                        <option value='0'
+                                                            {{ old('product_type') == '0' ? 'selected' : '' }}>
                                                             {{ __('Non Variant') }}</option>
 
-                                                        <option {{ old('product_type') == '1' ? 'selected' : '' }}
-                                                            value='1'>
+                                                        <option value='1'
+                                                            {{ old('product_type') == '1' ? 'selected' : '' }}>
                                                             {{ __('Variant') }}</option>
 
                                                     </select>
@@ -137,10 +135,10 @@
                                                 <div class='mb-3'>
                                                     <label class='form-label required'
                                                         for='product_status'>{{ __('Category') }}</label>
-                                                    <select name='category' id='category' class='form-control' required>
+                                                    <select class='form-control' id='category' name='category' required>
                                                         @foreach ($productCategories as $productCategorie)
-                                                            <option @if ($productCategorie->id == old('category')) selected @endif
-                                                                value='{{ $productCategorie->id }}'>
+                                                            <option value='{{ $productCategorie->id }}'
+                                                                @if ($productCategorie->id == old('category')) selected @endif>
                                                                 {{ $productCategorie->category_name }}</option>
                                                         @endforeach
                                                     </select>
@@ -150,7 +148,7 @@
                                                 <div class='mb-3'>
                                                     <label class='form-label required'
                                                         for='product_status'>{{ __('Status') }}</label>
-                                                    <select name='status' id='status' class='form-control' required>
+                                                    <select class='form-control' id='status' name='status' required>
                                                         <option value="1"
                                                             @if (old('status') == '1') selected @endif>Active
                                                         </option>
@@ -168,7 +166,7 @@
 
                             <div class="col-md-2 col-xl-2 my-3">
                                 <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary btn-block" style="width: 178px">
+                                    <button class="btn btn-primary btn-block" type="submit" style="width: 178px">
                                         {{ __('Save') }}
                                     </button>
                                 </div>
@@ -183,18 +181,18 @@
 
     @include('user.includes.footer')
 
-    <div class="modal modal-blur fade" id="openMediaModel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="openMediaModel" role="dialog" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ __('Media Library') }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row row-cards" id="captions">
                         {{-- Upload multiple images --}}
                         <div class="col-sm-12 col-lg-12 mb-4">
-                            <form action="{{ route('user.multiple') }}" class="dropzone" id="dropzone"
+                            <form class="dropzone" id="dropzone" action="{{ route('user.multiple') }}"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="dz-message">
@@ -218,8 +216,8 @@
                         @else
                             <div class="empty">
                                 <div class="empty-img"><img
-                                        src="{{ asset('backend/img/undraw_printing_invoices_5r4r.svg') }}" height="128"
-                                        alt="">
+                                        src="{{ asset('backend/img/undraw_printing_invoices_5r4r.svg') }}" alt=""
+                                        height="128">
                                 </div>
                                 <p class="empty-title">{{ __('No media found') }}</p>
                                 <p class="empty-subtitle text-muted">
@@ -230,7 +228,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{ __('Close') }}</button>
+                    <button class="btn me-auto" data-bs-dismiss="modal" type="button">{{ __('Close') }}</button>
                 </div>
             </div>
         </div>
@@ -239,9 +237,7 @@
     </div>
 @endsection
 
-
-
-@push('custom-js')
+@push('script')
     <script>
         var currentSelection = 0;
 

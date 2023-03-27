@@ -21,17 +21,17 @@
 
     @if (isset($setting) && $setting)
         <meta name="google-site-verification" content="{{ $settings->google_key }}">
-        <link rel="icon" href="{{ url('/') }}{{ $settings->favicon }}" sizes="96x96" type="image/png" />
+        <link type="image/png" href="{{ url('/') }}{{ $settings->favicon }}" rel="icon" sizes="96x96" />
     @endif
 
     {!! htmlScriptTagJsApi() !!}
 
     <!-- CSS files -->
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('frontend/css/tailwind.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/sweetalert.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}" />
+    <link href="{{ asset('frontend/css/tailwind.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('frontend/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/sweetalert.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/fontawesome.min.css') }}" rel="stylesheet" />
     <script type="text/javascript" src="{{ asset('js/alpine.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('frontend/js/main.js') }}"></script>
@@ -101,7 +101,7 @@
 
     <script src="{{ asset('frontend/whatsapp-store/js/script.js') }}"></script>
 
-    @stack('custom-js')
+    @stack('script')
 </body>
 
 </html>

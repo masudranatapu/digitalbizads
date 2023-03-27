@@ -34,8 +34,8 @@
             <div class="container-xl">
                 <div class="row row-deck row-cards">
                     <div class="col-sm-12 col-lg-12">
-                        <form action="{{ route('user.products.update', ['id' => $products->product_id]) }}" method="post"
-                            enctype="multipart/form-data" class="card">
+                        <form class="card" action="{{ route('user.products.update', ['id' => $products->product_id]) }}"
+                            method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
                                 <div class="row">
@@ -47,14 +47,13 @@
                                                 {{ __('Products') }}
                                             </h2>
 
-
                                             <div class='row' id="">
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
                                                         <label class='form-label required'>{{ __('Product Badge') }}</label>
-                                                        <input type='text' class='form-control' name='badge'
-                                                            placeholder='{{ __('Product Badge') }}...'
-                                                            value="{{ $products->badge }}" required>
+                                                        <input class='form-control' name='badge' type='text'
+                                                            value="{{ $products->badge }}"
+                                                            placeholder='{{ __('Product Badge') }}...' required>
                                                     </div>
                                                 </div>
                                                 <div class='col-md-6 col-xl-6'>
@@ -63,11 +62,11 @@
                                                             <span class="text-dark">(Image preferd size: 350px *
                                                                 320px)</span></label>
                                                         <div class='input-group mb-2'>
-                                                            <input type='text'
+                                                            <input
                                                                 class='image{{ $products->id }} media-model form-control'
-                                                                name='product_image'
-                                                                placeholder='{{ __('Product Image') }}'
-                                                                value="{{ $products->product_image }}" required>
+                                                                name='product_image' type='text'
+                                                                value="{{ $products->product_image }}"
+                                                                placeholder='{{ __('Product Image') }}' required>
                                                             <button class='btn btn-primary btn-md' type='button'
                                                                 onclick="openMedia({{ $products->id }})">{{ __('Choose image') }}</button>
                                                         </div>
@@ -76,9 +75,9 @@
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
                                                         <label class='form-label required'>{{ __('Product Name') }}</label>
-                                                        <input type='text' class='form-control' name='product_name'
-                                                            placeholder='{{ __('Product Name') }}'
-                                                            value="{{ $products->product_name }}" required>
+                                                        <input class='form-control' name='product_name' type='text'
+                                                            value="{{ $products->product_name }}"
+                                                            placeholder='{{ __('Product Name') }}' required>
                                                     </div>
                                                 </div>
                                                 <div class='col-md-6 col-xl-6'>
@@ -93,9 +92,9 @@
                                                     <div class='mb-3'><label
                                                             class='form-label required'>{{ __('Regular Price') }} <span
                                                                 class="text-dark">({{ $currency->symbol }})</span></label>
-                                                        <input type='number' class='form-control' name='regular_price'
-                                                            min='1' placeholder='{{ __('Regular Price') }}...'
+                                                        <input class='form-control' name='regular_price' type='number'
                                                             value="{{ $products->regular_price }}" min='1'
+                                                            placeholder='{{ __('Regular Price') }}...' min='1'
                                                             step='.001' required>
                                                     </div>
                                                 </div>
@@ -103,35 +102,34 @@
                                                     <div class='mb-3'>
                                                         <label class='form-label required'>{{ __('Sales Price') }} <span
                                                                 class="text-dark">({{ $currency->symbol }})</span></label>
-                                                        <input type='number' class='form-control' name='sales_price'
-                                                            min='1' step='.001'
-                                                            value="{{ $products->sales_price }}"
-                                                            placeholder='{{ __('Sales Price') }}...' required>
+                                                        <input class='form-control' name='sales_price' type='number'
+                                                            value="{{ $products->sales_price }}" min='1'
+                                                            step='.001' placeholder='{{ __('Sales Price') }}...'
+                                                            required>
                                                     </div>
                                                 </div>
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
                                                         <label class='form-label required'
                                                             for='stock'>{{ __('Stock') }}</label>
-                                                        <input type="number"
-                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
-                                                            name="stock" id="stock" class="form-control"
-                                                            value="{{ $products->product_stock }}">
+                                                        <input class="form-control" id="stock" name="stock"
+                                                            type="number" value="{{ $products->product_stock }}"
+                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
                                                     </div>
                                                 </div>
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
                                                         <label class='form-label required'
                                                             for='product_status'>{{ __('Product Type') }}</label>
-                                                        <select name='product_type' id='product_type'
-                                                            class='form-control' required>
-                                                            <option value="" class="d-none">
+                                                        <select class='form-control' id='product_type'
+                                                            name='product_type' required>
+                                                            <option class="d-none" value="">
                                                                 {{ __('Select Product Type') }}</option>
-                                                            <option @if ($products->is_variant) selected @endif
-                                                                value='1'>
+                                                            <option value='1'
+                                                                @if ($products->is_variant) selected @endif>
                                                                 {{ __('Variant') }}</option>
-                                                            <option @if (!$products->is_variant) selected @endif
-                                                                value='0'>
+                                                            <option value='0'
+                                                                @if (!$products->is_variant) selected @endif>
                                                                 {{ __('Non Variant') }}</option>
                                                         </select>
                                                     </div>
@@ -140,7 +138,7 @@
                                                     <div class='mb-3'>
                                                         <label class='form-label required'
                                                             for='product_status'>{{ __('Category') }}</label>
-                                                        <select name='category' id='category' class='form-control'
+                                                        <select class='form-control' id='category' name='category'
                                                             required>
                                                             @foreach ($productCategories as $productCategorie)
                                                                 <option value='{{ $productCategorie->id }}'
@@ -154,7 +152,7 @@
                                                     <div class='mb-3'>
                                                         <label class='form-label required'
                                                             for='product_status'>{{ __('Status') }}</label>
-                                                        <select name='status' id='status' class='form-control'
+                                                        <select class='form-control' id='status' name='status'
                                                             required>
                                                             <option value="1"
                                                                 @if ($products->status == '1') selected @endif>Active
@@ -173,7 +171,7 @@
 
                                 <div class="col-md-2 col-xl-2 my-3">
                                     <div class="mb-3">
-                                        <button type="submit" class="btn btn-primary btn-block" style="width: 178px">
+                                        <button class="btn btn-primary btn-block" type="submit" style="width: 178px">
                                             {{ __('Update') }}
                                         </button>
                                     </div>
@@ -188,18 +186,18 @@
 
     @include('user.includes.footer')
 
-    <div class="modal modal-blur fade" id="openMediaModel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="openMediaModel" role="dialog" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ __('Media Library') }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row row-cards" id="captions">
                         {{-- Upload multiple images --}}
                         <div class="col-sm-12 col-lg-12 mb-4">
-                            <form action="{{ route('user.multiple') }}" class="dropzone" id="dropzone"
+                            <form class="dropzone" id="dropzone" action="{{ route('user.multiple') }}"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="dz-message">
@@ -223,8 +221,8 @@
                         @else
                             <div class="empty">
                                 <div class="empty-img"><img
-                                        src="{{ asset('backend/img/undraw_printing_invoices_5r4r.svg') }}" height="128"
-                                        alt="">
+                                        src="{{ asset('backend/img/undraw_printing_invoices_5r4r.svg') }}" alt=""
+                                        height="128">
                                 </div>
                                 <p class="empty-title">{{ __('No media found') }}</p>
                                 <p class="empty-subtitle text-muted">
@@ -235,7 +233,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{ __('Close') }}</button>
+                    <button class="btn me-auto" data-bs-dismiss="modal" type="button">{{ __('Close') }}</button>
                 </div>
             </div>
         </div>
@@ -244,9 +242,7 @@
     </div>
 @endsection
 
-
-
-@push('custom-js')
+@push('script')
     <script>
         var count = {{ isset($products) }};
         var currentSelection = 0;

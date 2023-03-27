@@ -22,7 +22,7 @@
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none">
                         <div class="dropdown">
-                            <a type="button" class="btn btn-primary"
+                            <a class="btn btn-primary" type="button"
                                 href="{{ route('user.product.variants.option', ['product_id' => $product_id, 'variant' => $variant]) }}">
 
                                 <i class="fas fa-arrow-left"></i>&nbsp;
@@ -32,7 +32,6 @@
                         </div>
                     </div>
 
-
                 </div>
             </div>
         </div>
@@ -40,8 +39,9 @@
             <div class="container-xl">
                 <div class="row row-deck row-cards">
                     <div class="col-sm-12 col-lg-12">
-                        <form action="{{ route('user.product.variants.option.store', ['product_id' => $product_id, 'variant' => $variant]) }}"
-                            method="post" enctype="multipart/form-data" class="card">
+                        <form class="card"
+                            action="{{ route('user.product.variants.option.store', ['product_id' => $product_id, 'variant' => $variant]) }}"
+                            method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
                                 <div class="row">
@@ -53,15 +53,15 @@
                                                 {{ __('Add Variant Option') }}
                                             </h2>
 
-
                                             <div class='row' id="">
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
-                                                        <label for="name"
-                                                            class="form-label required">{{ __('Option Name') }}</label>
-                                                        <input type="text" name="option_name"
+                                                        <label class="form-label required"
+                                                            for="name">{{ __('Option Name') }}</label>
+                                                        <input
                                                             class="form-control @error('option_name') border-danger @enderror"
-                                                            placeholder="Option Name" value="{{ old('option_name') }}"
+                                                            name="option_name" type="text"
+                                                            value="{{ old('option_name') }}" placeholder="Option Name"
                                                             required>
                                                         @error('option_name')
                                                             <span class="text-danger">{{ $message }}</span>
@@ -72,9 +72,10 @@
                                                     <div class='mb-3'>
                                                         <label class='form-label required'>{{ __('Option Image') }}</label>
                                                         <div class='input-group mb-2'>
-                                                            <input type='text' class='image media-model form-control'
-                                                                name='option_image' placeholder='{{ __('Option Image') }}'
-                                                                value="{{ old('option_image') }}" required>
+                                                            <input class='image media-model form-control'
+                                                                name='option_image' type='text'
+                                                                value="{{ old('option_image') }}"
+                                                                placeholder='{{ __('Option Image') }}' required>
                                                             <button class='btn btn-primary btn-md' type='button'
                                                                 onclick="openMedia()">{{ __('Choose image') }}</button>
                                                         </div>
@@ -82,14 +83,14 @@
                                                 </div>
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
-                                                        <label for="stock"
-                                                            class="form-label required">{{ __('Option Stock') }}</label>
-                                                        <input type="number"
-                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
-                                                            name="option_stock"
+                                                        <label class="form-label required"
+                                                            for="stock">{{ __('Option Stock') }}</label>
+                                                        <input
                                                             class="form-control @error('option_stock') border-danger @enderror"
-                                                            placeholder="Option Stock" value="{{ old('option_stock') }}"
-                                                            required>
+                                                            name="option_stock" type="number"
+                                                            value="{{ old('option_stock') }}"
+                                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                                            placeholder="Option Stock" required>
                                                         @error('option_stock')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
@@ -97,14 +98,13 @@
                                                 </div>
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
-                                                        <label for="price"
-                                                            class="form-label required">{{ __('Option Price') }}</label>
-                                                        <input type="number"
+                                                        <label class="form-label required"
+                                                            for="price">{{ __('Option Price') }}</label>
+                                                        <input class="form-control @error('price') border-danger @enderror"
+                                                            name="option_price" type="number"
+                                                            value="{{ old('option_price') }}"
                                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
-                                                            name="option_price"
-                                                            class="form-control @error('price') border-danger @enderror"
-                                                            placeholder="Option Price" value="{{ old('option_price') }}"
-                                                            required>
+                                                            placeholder="Option Price" required>
                                                         @error('option_price')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
@@ -117,7 +117,7 @@
 
                                 <div class="col-md-2 col-xl-2 my-3">
                                     <div class="mb-3">
-                                        <button type="submit" class="btn btn-primary btn-block" style="width: 178px">
+                                        <button class="btn btn-primary btn-block" type="submit" style="width: 178px">
                                             {{ __('Save') }}
                                         </button>
                                     </div>
@@ -132,18 +132,18 @@
 
     @include('user.includes.footer')
 
-    <div class="modal modal-blur fade" id="openMediaModel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="openMediaModel" role="dialog" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ __('Media Library') }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row row-cards" id="captions">
                         {{-- Upload multiple images --}}
                         <div class="col-sm-12 col-lg-12 mb-4">
-                            <form action="{{ route('user.multiple') }}" class="dropzone" id="dropzone"
+                            <form class="dropzone" id="dropzone" action="{{ route('user.multiple') }}"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="dz-message">
@@ -167,8 +167,8 @@
                         @else
                             <div class="empty">
                                 <div class="empty-img"><img
-                                        src="{{ asset('backend/img/undraw_printing_invoices_5r4r.svg') }}" height="128"
-                                        alt="">
+                                        src="{{ asset('backend/img/undraw_printing_invoices_5r4r.svg') }}" alt=""
+                                        height="128">
                                 </div>
                                 <p class="empty-title">{{ __('No media found') }}</p>
                                 <p class="empty-subtitle text-muted">
@@ -179,18 +179,16 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{ __('Close') }}</button>
+                    <button class="btn me-auto" data-bs-dismiss="modal" type="button">{{ __('Close') }}</button>
                 </div>
             </div>
         </div>
     </div>
 
-
     </div>
 @endsection
 
-
-@push('custom-js')
+@push('script')
     <script>
         var currentSelection = 0;
 

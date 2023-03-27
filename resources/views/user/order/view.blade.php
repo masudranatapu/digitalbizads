@@ -1,11 +1,10 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
 @section('store-nav', 'active')
 
-@push('custom-css')
-    <link rel="stylesheet" href="{{ asset('assets/css/print.min.css') }}">
+@push('css')
+    <link href="{{ asset('assets/css/print.min.css') }}" rel="stylesheet">
     <style>
         @media print {
-
             .card {
                 --tblr-card-border-radius: 4px;
                 box-shadow: rgba(30, 41, 59, 0.04) 0 2px 4px 0;
@@ -36,7 +35,7 @@
                     <div class="col-auto ms-auto d-print-none">
                         <div class="dropdown">
 
-                            <button type="button" class="btn btn btn-primary" onclick="printPdf()">
+                            <button class="btn btn btn-primary" type="button" onclick="printPdf()">
                                 <i class="fas fa-print"></i>&nbsp;
                                 {{ __('Print') }}
                             </button>
@@ -58,7 +57,7 @@
                                             <div class="card-body">
                                                 <div class="row">
                                                     @php
-
+                                                        
                                                         $billing = json_decode($orders->billing_details, true);
                                                     @endphp
                                                     <div class="col-6">
@@ -68,8 +67,6 @@
                                                             <p><strong>Name :
                                                                 </strong><span>{{ $shipping['ship_first_name'] . ' ' . $shipping['ship_last_name'] ?? 'Not Available' }}</span>
                                                             </p>
-
-
 
                                                             <p><strong>Email :
                                                                 </strong><span>{{ $shipping['ship_email'] ?? 'Not Available' }}</span>
@@ -99,11 +96,9 @@
                                                                 </strong><span>{{ $shipping['shipping_area'] ?? 'Not Available' }}</span>
                                                             </p>
 
-
                                                             <p><strong>Note :
                                                                 </strong><span>{{ $shipping['order_note'] ?? 'Not Available' }}</span>
                                                             </p>
-
 
                                                         </address>
                                                     </div>
@@ -159,7 +154,7 @@
                                                             @php
                                                                 $variant = json_decode($orderDetails->variant_id, true);
                                                                 $variantOption = json_decode($orderDetails->variant_option_id, true);
-
+                                                                
                                                             @endphp
                                                             <tr>
                                                                 <td class="d-flex justify-content-between">
@@ -219,11 +214,10 @@
                                 <div class="card-body">
                                     <div class="row">
                                         @php
-
+                                            
                                             $shipping = json_decode($orders->shipping_details, true);
                                             $billing = json_decode($orders->billing_details, true);
                                         @endphp
-
 
                                         <div class="col-12">
                                             <address>
@@ -232,8 +226,6 @@
                                                 <p><strong>Name :
                                                     </strong><span>{{ $shipping['ship_first_name'] . ' ' . $shipping['ship_last_name'] ?? 'Not Available' }}</span>
                                                 </p>
-
-
 
                                                 <p><strong>Email :
                                                     </strong><span>{{ $shipping['ship_email'] ?? 'Not Available' }}</span>
@@ -263,12 +255,9 @@
                                                     </strong><span>{{ $shipping['shipping_area'] ?? 'Not Available' }}</span>
                                                 </p>
 
-
-
                                                 <p><strong>Note :
                                                     </strong><span>{{ $shipping['order_note'] ?? 'Not Available' }}</span>
                                                 </p>
-
 
                                             </address>
                                         </div>
@@ -325,7 +314,7 @@
                                                 @php
                                                     $variant = json_decode($orderDetails->variant_id, true);
                                                     $variantOption = json_decode($orderDetails->variant_option_id, true);
-
+                                                    
                                                 @endphp
                                                 <tr>
                                                     <td class="d-flex justify-content-between">
@@ -381,7 +370,7 @@
     </div>
 @endsection
 
-@push('custom-js')
+@push('script')
     <script src="{{ asset('assets/js/print.min.js') }}"></script>
     <script>
         function printPdf() {

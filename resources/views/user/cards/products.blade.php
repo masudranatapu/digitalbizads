@@ -18,8 +18,8 @@
                     <div class="col-auto ms-auto d-print-none">
                         <div class="dropdown">
                             <a type="button" href="{{ route('user.products.add', ['id' => $business_cards->card_id]) }}">
-                                <button type="button" class="btn btn btn-primary">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus"
+                                <button class="btn btn btn-primary" type="button">
+                                    <svg class="icon icon-tabler icon-tabler-plus" xmlns="http://www.w3.org/2000/svg"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                         stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -63,7 +63,9 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $product->product_id }}</td>
                                                     <td>
-                                                        <a onclick="photoShow(this)" href="javascript:void(0)" data-src="{{ getPhoto($product->product_image) }}" >{{ $product->product_name }}</a>
+                                                        <a data-src="{{ getPhoto($product->product_image) }}"
+                                                            href="javascript:void(0)"
+                                                            onclick="photoShow(this)">{{ $product->product_name }}</a>
                                                     </td>
                                                     <td>{{ $product->sales_price . $currency->symbol }}</td>
                                                     <td>{{ $product->regular_price . $currency->symbol }}</td>
@@ -74,7 +76,8 @@
                                                         @if ($product->product_stock <= 0)
                                                             <span class="badge bg-red">{{ __('Out of stock') }}</span>
                                                         @else
-                                                            <span class="badge bg-green">{{ __('In-stock') }} ({{ $product->product_stock }}) </span>
+                                                            <span class="badge bg-green">{{ __('In-stock') }}
+                                                                ({{ $product->product_stock }}) </span>
                                                         @endif
                                                     </td>
                                                     <td class="text-muted">
@@ -90,8 +93,8 @@
                                                                 href="{{ route('user.products.edit', ['id' => $product->product_id]) }}">{{ __('Edit') }}</a>
 
                                                             <button class="btn btn-danger btn-sm"
-                                                                onclick="deleteProduct(this)"
-                                                                data-url="{{ route('user.products.delete', ['id' => $product->product_id]) }}">
+                                                                data-url="{{ route('user.products.delete', ['id' => $product->product_id]) }}"
+                                                                onclick="deleteProduct(this)">
                                                                 {{ __('Delete') }}</button>
                                                             @if ($product->is_variant)
                                                                 <a class="btn btn-primary btn-sm"
@@ -132,8 +135,9 @@
                                                     <div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">
                                                         <h3 class="text-left">
                                                             <td>
-                                                                <a onclick="photoShow(this)" href="javascript:void(0)" data-src="{{ getPhoto($row->product_image) }}" >
-                                                                {{ $row->product_name }}
+                                                                <a data-src="{{ getPhoto($row->product_image) }}"
+                                                                    href="javascript:void(0)" onclick="photoShow(this)">
+                                                                    {{ $row->product_name }}
                                                                 </a>
                                                             </td>
                                                         </h3>
@@ -141,8 +145,9 @@
 
                                                     <div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7">
                                                         <div class="dropdown text-end">
-                                                            <button type="button" class="btn btn-primary dropdown-toggle"
-                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <button class="btn btn-primary dropdown-toggle"
+                                                                data-bs-toggle="dropdown" type="button"
+                                                                aria-expanded="false">
                                                                 Actions
                                                             </button>
                                                             <div class="dropdown-menu" style="">
@@ -155,10 +160,10 @@
                                                                         href="{{ route('user.product.variants', ['card_id' => $product->card_id, 'product_id' => $product->product_id]) }}">{{ __('Variants') }}</a>
                                                                 @endif
 
-
                                                                 <a class="dropdown-item text-danger"
-                                                                    href="javascript:void(0)" onclick="deleteProduct(this)"
-                                                                    data-url="{{ route('user.products.delete', ['id' => $product->product_id]) }}">{{ __('Delete') }}</a>
+                                                                    data-url="{{ route('user.products.delete', ['id' => $product->product_id]) }}"
+                                                                    href="javascript:void(0)"
+                                                                    onclick="deleteProduct(this)">{{ __('Delete') }}</a>
 
                                                                 {{-- <a class="dropdown-item text-success"
                                                                     href="{{ route('card.preview', $row->card_url) }}"
@@ -193,23 +198,21 @@
         @include('user.includes.footer')
     </div>
 
-
-    <div class="modal modal-blur fade" id="photoModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="photoModal" role="dialog" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="float-end" data-bs-dismiss="modal">{{ __('Close') }}</button>
+                    <button class="float-end" data-bs-dismiss="modal" type="button">{{ __('Close') }}</button>
                 </div>
                 <div class="modal-body">
-                    <img src="" id="product_img" style="width: 100%" />
+                    <img id="product_img" src="" style="width: 100%" />
                 </div>
 
             </div>
         </div>
     </div>
 
-
-    <div class="modal modal-blur fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="deleteModal" role="dialog" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
@@ -220,8 +223,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-link link-secondary me-auto"
-                        data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal"
+                        type="button">{{ __('Cancel') }}</button>
                     <a class="btn btn-danger" id="product_id">{{ __('Yes, proceed') }}</a>
                 </div>
             </div>
@@ -230,33 +233,32 @@
 
 @endsection
 
+@push('script')
+    <script>
+        function deleteProduct(event) {
 
-@push('custom-js')
-<script>
-    function deleteProduct(event) {
+            const {
+                url
+            } = event.dataset;
+            console.log(url);
+            $('#deleteModal').modal('show');
+            $('#product_id').prop('href', url);
 
-        const {
-            url
-        } = event.dataset;
-        console.log(url);
-        $('#deleteModal').modal('show');
-        $('#product_id').prop('href', url);
+        }
 
-    }
-
-    var myModalEl = document.getElementById('deleteModal')
-    myModalEl.addEventListener('hidden.bs.modal', function(event) {
-        $('#product_id').prop('href', '');
-    })
+        var myModalEl = document.getElementById('deleteModal')
+        myModalEl.addEventListener('hidden.bs.modal', function(event) {
+            $('#product_id').prop('href', '');
+        })
 
 
-    function photoShow(event) {
-        const {
-            src
-        } = event.dataset;
+        function photoShow(event) {
+            const {
+                src
+            } = event.dataset;
 
-        $('#photoModal').modal('show');
-        $('#product_img').prop('src', src);
-}
-</script>
+            $('#photoModal').modal('show');
+            $('#product_img').prop('src', src);
+        }
+    </script>
 @endpush

@@ -26,8 +26,8 @@
             <div class="container-xl">
                 <div class="row row-deck row-cards">
                     <div class="col-sm-12 col-lg-12">
-                        <form action="{{ route('user.update.products', Request::segment(3)) }}" method="post"
-                            enctype="multipart/form-data" class="card">
+                        <form class="card" action="{{ route('user.update.products', Request::segment(3)) }}"
+                            method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="card-body">
                                 <div class="row">
@@ -45,9 +45,9 @@
                                                         <div class='mb-3'>
                                                             <label
                                                                 class='form-label required'>{{ __('Product Badge') }}</label>
-                                                            <input type='text' class='form-control' name='badge[]'
-                                                                placeholder='{{ __('Product Badge') }}...'
-                                                                value="{{ $products[$i]->badge }}" required>
+                                                            <input class='form-control' name='badge[]' type='text'
+                                                                value="{{ $products[$i]->badge }}"
+                                                                placeholder='{{ __('Product Badge') }}...' required>
                                                         </div>
                                                     </div>
                                                     <div class='col-md-6 col-xl-6'>
@@ -55,11 +55,11 @@
                                                             <label
                                                                 class='form-label required'>{{ __('Product Image') }}</label>
                                                             <div class='input-group mb-2'>
-                                                                <input type='text'
+                                                                <input
                                                                     class='image{{ $products[$i]->id }} media-model form-control'
-                                                                    name='product_image[]'
-                                                                    placeholder='{{ __('Product Image') }}'
-                                                                    value="{{ $products[$i]->product_image }}" required>
+                                                                    name='product_image[]' type='text'
+                                                                    value="{{ $products[$i]->product_image }}"
+                                                                    placeholder='{{ __('Product Image') }}' required>
                                                                 <button class='btn btn-primary btn-md' type='button'
                                                                     onclick="openMedia({{ $products[$i]->id }})">{{ __('Choose image') }}</button>
                                                             </div>
@@ -69,9 +69,9 @@
                                                         <div class='mb-3'>
                                                             <label
                                                                 class='form-label required'>{{ __('Product Name') }}</label>
-                                                            <input type='text' class='form-control' name='product_name[]'
-                                                                placeholder='{{ __('Product Name') }}'
-                                                                value="{{ $products[$i]->product_name }}" required>
+                                                            <input class='form-control' name='product_name[]' type='text'
+                                                                value="{{ $products[$i]->product_name }}"
+                                                                placeholder='{{ __('Product Name') }}' required>
                                                         </div>
                                                     </div>
                                                     <div class='col-md-6 col-xl-6'>
@@ -85,29 +85,28 @@
                                                     <div class='col-md-6 col-xl-6'>
                                                         <div class='mb-3'><label
                                                                 class='form-label required'>{{ __('Regular Price') }}</label>
-                                                            <input type='number' class='form-control'
-                                                                name='regular_price[]' min='1'
-                                                                placeholder='{{ __('Regular Price') }}...'
-                                                                value="{{ $products[$i]->regular_price }}" min='1'
-                                                                step='.001' required>
+                                                            <input class='form-control' name='regular_price[]'
+                                                                type='number' value="{{ $products[$i]->regular_price }}"
+                                                                min='1' placeholder='{{ __('Regular Price') }}...'
+                                                                min='1' step='.001' required>
                                                         </div>
                                                     </div>
                                                     <div class='col-md-6 col-xl-6'>
                                                         <div class='mb-3'>
                                                             <label
                                                                 class='form-label required'>{{ __('Sales Price') }}</label>
-                                                            <input type='number' class='form-control' name='sales_price[]'
-                                                                min='1' step='.001'
-                                                                value="{{ $products[$i]->sales_price }}"
-                                                                placeholder='{{ __('Sales Price') }}...' required>
+                                                            <input class='form-control' name='sales_price[]' type='number'
+                                                                value="{{ $products[$i]->sales_price }}" min='1'
+                                                                step='.001' placeholder='{{ __('Sales Price') }}...'
+                                                                required>
                                                         </div>
                                                     </div>
                                                     <div class='col-md-6 col-xl-6'>
                                                         <div class='mb-3'>
                                                             <label class='form-label required'
                                                                 for='product_status'>{{ __('Status') }}</label>
-                                                            <select name='product_status[]' id='product_status'
-                                                                class='form-control' required>
+                                                            <select class='form-control' id='product_status'
+                                                                name='product_status[]' required>
                                                                 <option value='instock'
                                                                     {{ $products[$i]->product_status == 'instock' ? 'selected' : '' }}>
                                                                     {{ __('In Stock') }}</option>
@@ -115,7 +114,7 @@
                                                                     {{ $products[$i]->product_status == 'outstock' ? 'selected' : '' }}>
                                                                     {{ __('Out of Stock') }}</option>
                                                             </select>
-                                                            <a href='#' class='btn mt-3 btn-danger btn-sm'
+                                                            <a class='btn mt-3 btn-danger btn-sm' href='#'
                                                                 onclick='removeProduct({{ $i }})'>{{ __('Remove') }}</a>
                                                         </div>
                                                     </div>
@@ -123,7 +122,7 @@
                                                         <div class='mb-3'>
                                                             <label class='form-label required'
                                                                 for='product_status'>{{ __('Category') }}</label>
-                                                            <select name='category[]' id='category' class='form-control'
+                                                            <select class='form-control' id='category' name='category[]'
                                                                 required>
                                                                 @foreach ($productCategories as $productCategorie)
                                                                     <option value='{{ $productCategorie->id }}'
@@ -139,14 +138,13 @@
                                     </div>
                                 </div>
 
-                                <div id="more-products" class="row"></div>
+                                <div class="row" id="more-products"></div>
 
                                 <div class="col-lg-12">
-                                    <button type="button" onclick="addProduct()" class="btn btn-primary">
+                                    <button class="btn btn-primary" type="button" onclick="addProduct()">
                                         {{ __('Add One More Product') }}
                                     </button>
                                 </div>
-
 
                                 <div class="col-md-2 col-xl-2 my-3">
                                     <div class="mb-3">
@@ -154,7 +152,7 @@
                                             {{ __('Skip & Continue') }}
                                         </a> --}}
 
-                                        <button type="submit" class="btn btn-primary btn-block" style="width: 178px">
+                                        <button class="btn btn-primary btn-block" type="submit" style="width: 178px">
                                             {{ __('Submit') }}
                                         </button>
                                     </div>
@@ -169,18 +167,18 @@
     </div>
     @include('user.includes.footer')
 
-    <div class="modal modal-blur fade" id="openMediaModel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="openMediaModel" role="dialog" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">{{ __('Media Library') }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="row row-cards" id="captions">
                         {{-- Upload multiple images --}}
                         <div class="col-sm-12 col-lg-12 mb-4">
-                            <form action="{{ route('user.multiple') }}" class="dropzone" id="dropzone"
+                            <form class="dropzone" id="dropzone" action="{{ route('user.multiple') }}"
                                 enctype="multipart/form-data">
                                 @csrf
                                 <div class="dz-message">
@@ -204,8 +202,8 @@
                         @else
                             <div class="empty">
                                 <div class="empty-img"><img
-                                        src="{{ asset('backend/img/undraw_printing_invoices_5r4r.svg') }}" height="128"
-                                        alt="">
+                                        src="{{ asset('backend/img/undraw_printing_invoices_5r4r.svg') }}" alt=""
+                                        height="128">
                                 </div>
                                 <p class="empty-title">{{ __('No media found') }}</p>
                                 <p class="empty-subtitle text-muted">
@@ -216,7 +214,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">{{ __('Close') }}</button>
+                    <button class="btn me-auto" data-bs-dismiss="modal" type="button">{{ __('Close') }}</button>
                 </div>
             </div>
         </div>
@@ -224,8 +222,7 @@
     </div>
 @endsection
 
-
-@push('custom-js')
+@push('script')
     <script>
         var count = {{ count($products) }};
         var currentSelection = 0;

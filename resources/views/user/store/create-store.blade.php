@@ -18,7 +18,7 @@
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none">
                         <div class="dropdown">
-                            <a type="button" class="btn btn-primary" href="{{ route('user.stores') }}">
+                            <a class="btn btn-primary" type="button" href="{{ route('user.stores') }}">
 
                                 <i class="fas fa-arrow-left"></i>&nbsp;
                                 {{ __('Back') }}
@@ -34,8 +34,8 @@
             <div class="container-xl">
                 <div class="row row-deck row-cards">
                     <div class="col-sm-12 col-lg-12">
-                        <form action="{{ route('user.save.store') }}" method="post" enctype="multipart/form-data"
-                            class="card">
+                        <form class="card" action="{{ route('user.save.store') }}" method="post"
+                            enctype="multipart/form-data">
                             @csrf
                             {{-- Create Card --}}
                             <div class="card-body">
@@ -46,15 +46,15 @@
                                                 @foreach ($themes as $theme)
                                                     <div class="col-lg-6 col-sm-6 col-md-6 col-6">
                                                         <label class="form-imagecheck mb-2">
-                                                            <input type="radio" name="theme_id"
-                                                                value="{{ $theme->theme_id }}" class="form-imagecheck-input"
-                                                                required checked />
+                                                            <input class="form-imagecheck-input" name="theme_id"
+                                                                type="radio" value="{{ $theme->theme_id }}" required
+                                                                checked />
                                                             <span
                                                                 class="form-imagecheck-figure text-center font-weight-bold">
-                                                                <img src="{{ asset('backend/img/vCards/' . $theme->theme_thumbnail) }}"
-                                                                    class="w-100 h-100 object-cover"
-                                                                    alt="{{ $theme->theme_name }}"
-                                                                    class="form-imagecheck-image">
+                                                                <img class="w-100 h-100 object-cover"
+                                                                    class="form-imagecheck-image"
+                                                                    src="{{ asset('backend/img/vCards/' . $theme->theme_thumbnail) }}"
+                                                                    alt="{{ $theme->theme_name }}">
                                                                 <span class="badge bg-dark">{{ $theme->theme_name }}</span>
                                                             </span>
                                                         </label>
@@ -71,44 +71,44 @@
                                                     <div class="row g-2">
                                                         <div class="col-auto">
                                                             <label class="form-colorinput">
-                                                                <input name="card_color" type="radio" value="blue"
-                                                                    class="form-colorinput-input" required checked />
+                                                                <input class="form-colorinput-input" name="card_color"
+                                                                    type="radio" value="blue" required checked />
                                                                 <span class="form-colorinput-color bg-blue"></span>
                                                             </label>
                                                         </div>
                                                         <div class="col-auto">
                                                             <label class="form-colorinput form-colorinput-light">
-                                                                <input name="card_color" type="radio" value="indigo"
-                                                                    class="form-colorinput-input" required />
+                                                                <input class="form-colorinput-input" name="card_color"
+                                                                    type="radio" value="indigo" required />
                                                                 <span class="form-colorinput-color bg-indigo"></span>
                                                             </label>
                                                         </div>
                                                         <div class="col-auto">
                                                             <label class="form-colorinput">
-                                                                <input name="card_color" type="radio" value="green"
-                                                                    class="form-colorinput-input" required />
+                                                                <input class="form-colorinput-input" name="card_color"
+                                                                    type="radio" value="green" required />
                                                                 <span class="form-colorinput-color bg-green"></span>
                                                             </label>
                                                         </div>
 
                                                         <div class="col-auto">
                                                             <label class="form-colorinput">
-                                                                <input name="card_color" type="radio" value="red"
-                                                                    class="form-colorinput-input" required />
+                                                                <input class="form-colorinput-input" name="card_color"
+                                                                    type="radio" value="red" required />
                                                                 <span class="form-colorinput-color bg-red"></span>
                                                             </label>
                                                         </div>
                                                         <div class="col-auto">
                                                             <label class="form-colorinput">
-                                                                <input name="card_color" type="radio" value="purple"
-                                                                    class="form-colorinput-input" required />
+                                                                <input class="form-colorinput-input" name="card_color"
+                                                                    type="radio" value="purple" required />
                                                                 <span class="form-colorinput-color bg-purple"></span>
                                                             </label>
                                                         </div>
                                                         <div class="col-auto">
                                                             <label class="form-colorinput form-colorinput-light">
-                                                                <input name="card_color" type="radio" value="gray"
-                                                                    class="form-colorinput-input" required />
+                                                                <input class="form-colorinput-input" name="card_color"
+                                                                    type="radio" value="gray" required />
                                                                 <span class="form-colorinput-color bg-muted"></span>
                                                             </label>
                                                         </div>
@@ -119,7 +119,7 @@
                                                 <div class="mb-3">
                                                     <label class="form-label" for="card_lang">{{ __('Language') }} <span
                                                             class="text-danger">*</span></label>
-                                                    <select name="card_lang" id="card_lang" class="form-control" required>
+                                                    <select class="form-control" id="card_lang" name="card_lang" required>
                                                         @foreach (config('app.languages') as $langLocale => $langName)
                                                             <option class="dropdown-item" value="{{ $langLocale }}"
                                                                 {{ $langLocale == 'en' ? 'selected' : '' }}>
@@ -130,22 +130,21 @@
                                                 </div>
                                             </div>
 
-
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3 form-input">
-                                                    <label for="header_backgroung" class="form-label">Header background
+                                                    <label class="form-label" for="header_backgroung">Header background
                                                         color</label>
                                                     <div class="input-group custome_color">
-                                                        <label for="header_backgroung" class="input-group-text">
+                                                        <label class="input-group-text" for="header_backgroung">
                                                             <img src="{{ asset('images/color-picker.png') }}"
-                                                                width="25" alt="color picker">
-                                                            <input type="color" placeholder="card color"
-                                                                name="header_backgroung" id="header_backgroung"
-                                                                value="#fff"
+                                                                alt="color picker" width="25">
+                                                            <input
                                                                 class="form-control @error('header_backgroung') is-invalid @enderror"
+                                                                id="header_backgroung" name="header_backgroung"
+                                                                type="color" value="#fff" placeholder="card color"
                                                                 required>
                                                         </label>
-                                                        <input type="text" id="theme_back_code" class="form-control"
+                                                        <input class="form-control" id="theme_back_code" type="text"
                                                             value="#fff" disabled>
                                                     </div>
                                                     @if ($errors->has('header_backgroung'))
@@ -157,19 +156,19 @@
 
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3 form-input">
-                                                    <label for="header_text_color" class="form-label">Headline
+                                                    <label class="form-label" for="header_text_color">Headline
                                                         Color</label>
                                                     <div class="input-group custome_color">
-                                                        <label for="header_text_color" class="input-group-text">
+                                                        <label class="input-group-text" for="header_text_color">
                                                             <img src="{{ asset('images/color-picker.png') }}"
-                                                                width="25" alt="color picker">
-                                                            <input type="color" placeholder="card color"
-                                                                name="header_text_color" id="header_text_color"
-                                                                value="#000"
+                                                                alt="color picker" width="25">
+                                                            <input
                                                                 class="form-control @error('header_text_color') is-invalid @enderror"
+                                                                id="header_text_color" name="header_text_color"
+                                                                type="color" value="#000" placeholder="card color"
                                                                 required>
                                                         </label>
-                                                        <input type="text" id="header_clr_code" class="form-control"
+                                                        <input class="form-control" id="header_clr_code" type="text"
                                                             value="#000" disabled>
                                                     </div>
                                                     @if ($errors->has('header_text_color'))
@@ -179,13 +178,12 @@
                                                 </div>
                                             </div>
 
-
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
                                                     <div class="form-label">{{ __('Banner') }} <span
                                                             class="text-muted">({{ __('Recommended : 1920 x 550 pixels') }})</span>
                                                     </div>
-                                                    <input type="file" class="form-control" name="banner"
+                                                    <input class="form-control" name="banner" type="file"
                                                         placeholder="{{ __('Banner') }}..."
                                                         accept=".jpeg,.jpg,.png,.gif,.svg" />
                                                 </div>
@@ -195,7 +193,7 @@
                                                     <div class="form-label ">{{ __('Logo') }} <span
                                                             class="text-muted">({{ __('Recommended: 180 x 90 pixels') }})</span>
                                                     </div>
-                                                    <input type="file" class="form-control" name="logo"
+                                                    <input class="form-control" name="logo" type="file"
                                                         placeholder="{{ __('Logo') }}..."
                                                         accept=".jpeg,.jpg,.png,.gif,.svg" />
                                                 </div>
@@ -204,17 +202,17 @@
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
                                                     <label class="form-label required">{{ __('Store name') }}</label>
-                                                    <input type="text" class="form-control" name="title"
+                                                    <input class="form-control" name="title" type="text"
+                                                        value="{{ old('title') }}"
                                                         onload="convertToLink(this.value); checkLink()"
                                                         onkeyup="convertToLink(this.value); checkLink()"
-                                                        placeholder="{{ __('Store name') }}..." required
-                                                        value="{{ old('title') }}">
+                                                        placeholder="{{ __('Store name') }}..." required>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
                                                     <label class="form-label required">{{ __('Store greeting') }}</label>
-                                                    <input type="text" class="form-control" name="subtitle"
+                                                    <input class="form-control" name="subtitle" type="text"
                                                         value="{{ old('subtitle') }}"
                                                         placeholder="{{ __('Ex: Welcome to') }}..." required>
                                                 </div>
@@ -224,7 +222,7 @@
                                                 <div class="mb-3">
                                                     <label class="form-label required"
                                                         for="currency">{{ __('Currency') }}</label>
-                                                    <select name="currency" id="currency" class="form-control" required>
+                                                    <select class="form-control" id="currency" name="currency" required>
                                                         @foreach ($currencies as $currency)
                                                             <option value="{{ $currency->iso_code }}">
                                                                 {{ $currency->name }} ({{ $currency->symbol }})</option>
@@ -235,7 +233,7 @@
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
                                                     <label class="form-label">{{ __('WhatsApp Number') }}</label>
-                                                    <input type="number" class="form-control" name="whatsapp_no"
+                                                    <input class="form-control" name="whatsapp_no" type="number"
                                                         value="{{ old('whatsapp_no') }}"
                                                         placeholder="{{ __('For example: 919876543210 (With country code)') }}...">
                                                 </div>
@@ -243,7 +241,7 @@
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
                                                     <label class="form-label required">{{ __('Email') }}</label>
-                                                    <input type="email" class="form-control" name="email"
+                                                    <input class="form-control" name="email" type="email"
                                                         value="{{ old('email') ?? Auth::user()->email }}"
                                                         placeholder="example@email.com">
                                                 </div>
@@ -266,10 +264,11 @@
                                                             <span class="input-group-text">
                                                                 {{ URL::to('/') }}
                                                             </span>
-                                                            <input type="text" class="form-control" name="link"
+                                                            <input class="form-control" id="plink" name="link"
+                                                                type="text"
                                                                 placeholder="{{ __('Personalized Link') }}"
-                                                                autocomplete="off" id="plink" onkeyup="checkLink()"
-                                                                minlength="3" required>
+                                                                autocomplete="off" onkeyup="checkLink()" minlength="3"
+                                                                required>
                                                         </div>
                                                         <p id="status"></p>
                                                     </div>
@@ -280,7 +279,7 @@
 
                                         <div class="col-md-4 col-xl-4 my-3">
                                             <div class="mb-3">
-                                                <button type="submit" class="btn btn-primary">
+                                                <button class="btn btn-primary" type="submit">
                                                     {{ __('Save') }}
                                                 </button>
                                             </div>
@@ -295,11 +294,9 @@
         </div>
         @include('user.includes.footer')
     </div>
-
 @endsection
 
-
-@push('custom-js')
+@push('script')
     <script>
         function checkLink() {
             "use strict";

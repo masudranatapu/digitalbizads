@@ -23,8 +23,8 @@
                     <div class="card-body">
                         <h3 class="card-title">{{ $plan_details->plan_name }}</h3>
                         <div class="card col-12">
-                            <form action="{{ route('stripe.payment.status', $paymentId) }}" method="post"
-                                id="payment-form">
+                            <form id="payment-form" action="{{ route('stripe.payment.status', $paymentId) }}"
+                                method="post">
                                 @csrf
 
                                 <div class="form-group">
@@ -39,12 +39,12 @@
                                         </div>
                                         <!-- Used to display form errors. -->
                                         <div id="card-errors" role="alert"></div>
-                                        <input type="hidden" name="plan" value="" />
+                                        <input name="plan" type="hidden" value="" />
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button id="card-button" class="btn btn-dark" type="submit"
-                                        data-secret="{{ $intent }}"> {{ __('Pay Now') }} </button>
+                                    <button class="btn btn-dark" id="card-button" data-secret="{{ $intent }}"
+                                        type="submit"> {{ __('Pay Now') }} </button>
                                 </div>
                             </form>
                         </div>
@@ -63,83 +63,83 @@
     </div>
 @endsection
 
-@push('custom-js')
-<script src="https://js.stripe.com/v3/"></script>
-<script>
-    ! function() {
-        "use strict";
+@push('script')
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        ! function() {
+            "use strict";
 
 
-        var style = {
-            base: {
-                color: '#32325d',
-                lineHeight: '18px',
-                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                fontSmoothing: 'antialiased',
-                fontSize: '16px',
-                '::placeholder': {
-                    color: '#aab7c4'
+            var style = {
+                base: {
+                    color: '#32325d',
+                    lineHeight: '18px',
+                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                    fontSmoothing: 'antialiased',
+                    fontSize: '16px',
+                    '::placeholder': {
+                        color: '#aab7c4'
+                    }
+                },
+                invalid: {
+                    color: '#fa755a',
+                    iconColor: '#fa755a'
                 }
-            },
-            invalid: {
-                color: '#fa755a',
-                iconColor: '#fa755a'
-            }
-        };
+            };
 
-        const stripe = Stripe('{{ $config[9]->config_value }}', {
-            locale: 'en'
-        }); // Create a Stripe client.
-        const elements = stripe.elements(); // Create an instance of Elements.
-        const cardElement = elements.create('card', {
-            style: style
-        }); // Create an instance of the card Element.
-        const cardButton = document.getElementById('card-button');
-        const clientSecret = cardButton.dataset.secret;
+            const stripe = Stripe('{{ $config[9]->config_value }}', {
+                locale: 'en'
+            }); // Create a Stripe client.
+            const elements = stripe.elements(); // Create an instance of Elements.
+            const cardElement = elements.create('card', {
+                style: style
+            }); // Create an instance of the card Element.
+            const cardButton = document.getElementById('card-button');
+            const clientSecret = cardButton.dataset.secret;
 
-        cardElement.mount('#card-element'); // Add an instance of the card Element into the `card-element` <div>.
+            cardElement.mount('#card-element'); // Add an instance of the card Element into the `card-element` <div>.
 
-        // Handle real-time validation errors from the card Element.
-        cardElement.addEventListener('change', function(event) {
-            var displayError = document.getElementById('card-errors');
-            if (event.error) {
-                displayError.textContent = event.error.message;
-            } else {
-                displayError.textContent = '';
-            }
-        });
+            // Handle real-time validation errors from the card Element.
+            cardElement.addEventListener('change', function(event) {
+                var displayError = document.getElementById('card-errors');
+                if (event.error) {
+                    displayError.textContent = event.error.message;
+                } else {
+                    displayError.textContent = '';
+                }
+            });
 
-        // Handle form submission.
-        var form = document.getElementById('payment-form');
+            // Handle form submission.
+            var form = document.getElementById('payment-form');
 
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            $('.card-footer button').html(
-                '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>'
-            ).prop('disabled', true);
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                $('.card-footer button').html(
+                    '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>'
+                ).prop('disabled', true);
 
-            stripe.handleCardPayment(clientSecret, cardElement, {
-                    payment_method_data: {
-                        //billing_details: { name: cardHolderName.value }
-                    }
-                })
-                .then(function(result) {
-                    console.log(result);
-                    if (result.error) {
-                        // Inform the user if there was an error.
-                        var errorElement = document.getElementById('card-errors');
-                        errorElement.textContent = result.error.message;
-                        $('.card-footer button').html("Pay Now").prop('disabled', false);
-
-                    } else {
+                stripe.handleCardPayment(clientSecret, cardElement, {
+                        payment_method_data: {
+                            //billing_details: { name: cardHolderName.value }
+                        }
+                    })
+                    .then(function(result) {
                         console.log(result);
-                        form.submit();
+                        if (result.error) {
+                            // Inform the user if there was an error.
+                            var errorElement = document.getElementById('card-errors');
+                            errorElement.textContent = result.error.message;
+                            $('.card-footer button').html("Pay Now").prop('disabled', false);
 
-                    }
-                });
-        });
+                        } else {
+                            console.log(result);
+                            form.submit();
+
+                        }
+                    });
+            });
 
 
-    }();
-</script>
+        }();
+    </script>
 @endpush
