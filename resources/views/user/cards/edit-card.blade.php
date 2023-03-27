@@ -741,7 +741,7 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="mb-3 form-input">
-                                                <label class="form-label" for="selectField2">Photo Or Video <span
+                                                <label class="form-label" for="selectField2">Photo<span
                                                         class="text-danger">*</span></label></label>
                                                 <select class="form-control" id="selectField2" name="gallery_type"
                                                     tabindex="{{ $tabindex++ }}" required>

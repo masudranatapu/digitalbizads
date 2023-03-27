@@ -524,7 +524,7 @@
                                         <div class="col-6">
                                             <div class="mb-3 d-none form-input" id="logofield">
                                                 <div id="logofield1"></div>
-                                                <label class="form-label" for="logo">Photo Or Video<span
+                                                <label class="form-label" for="logo">Photo<span
                                                         class="text-danger">(Recommended size (140x48)</span>
                                                     <button class="tooltip_icon" data-bs-toggle="tooltip"
                                                         data-bs-placement="top" data-bs-custom-class="custom-tooltip"
