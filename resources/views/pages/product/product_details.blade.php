@@ -222,8 +222,10 @@
             var values = $("select[name^='option[]']").map(function(idx, ele) {
                 return $(ele).children('option:selected').data();
             }).get();
-            let price = values.map((ind, element) => {
-                return ind.price ?? 0;
+            let price = values.map(({
+                price
+            }, element) => {
+                return parseFloat(price.toFixed(2)) ?? 0;
             });
             console.dir({
                 values,
