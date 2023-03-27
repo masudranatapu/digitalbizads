@@ -4,711 +4,724 @@
     Create New DigitalBizAds Card
 @endsection
 @section('content')
-@push('css')
-    <link href="{{ asset('assets/css/image-uploader.min.css') }}" rel="stylesheet">
-    {{--
+    @push('css')
+        <link href="{{ asset('assets/css/image-uploader.min.css') }}" rel="stylesheet">
+        {{--
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" /> --}}
-    <link rel="stylesheet" href="{{ asset('css/croppie.css') }}" />
-    <style>
-        span.error {
-            color: #E53935;
-            padding: 2px 0px;
-        }
-
-        a.social-contact.disabled {
-            opacity: .3;
-        }
-
-        .purchase_btn a {
-            padding: 10px 27px;
-            font-size: 20px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 500;
-            color: #ffffff;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            display: block;
-            background: #ffc107;
-            transition: all 0.3s ease-in-out;
-            -webkit-transition: all 0.3s ease-in-out;
-            -moz-transition: all 0.3s ease-in-out;
-            -ms-transition: all 0.3s ease-in-out;
-            -o-transition: all 0.3s ease-in-out;
-        }
-
-        .social_share {
-            margin-bottom: 20px;
-        }
-
-        .social_share img {
-            width: 75%;
-            height: 75%;
-        }
-
-        .modal-header .btn-close {
-            width: 25px;
-            height: 25px;
-        }
-
-        .gallery-btn {
-            position: absolute;
-            top: 13px;
-            right: 52px;
-            font-size: 20px;
-        }
-
-        .loading-spinner {
-            display: none;
-        }
-
-        .loading-spinner.active {
-            display: inline-block;
-        }
-
-        button.delete-image.btn-danger.photo-delete {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-        }
-
-        a.overlay-btn {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-            z-index: 999;
-        }
-
-        .login_btn {
-            position: absolute;
-            top: 6px;
-            right: 0;
-        }
-
-        .save_contact a {
-            padding: 12px 10px;
-            font-size: 13px;
-            font-family: 'Inter';
-            font-weight: 700;
-            text-align: center;
-            width: 40%;
-            border-radius: 6px;
-            color: #fff;
-            background: #212121;
-            -webkit-transition: all 0.4s ease;
-            box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-        }
-
-        .purchase_btn.save_contact {
-            text-align: center;
-            margin-bottom: 33px;
-            margin-top: -19px;
-            z-index: 5;
-            position: relative;
-        }
-
-        .purchase_btn a:hover {
-            background: #ffffff !important;
-            color: #000000;
-        }
-
-        @media screen and (max-width:380px) {
-            .save_contact a {
-                padding: 12px 3px;
-                font-size: 11px;
-                width: 44%;
+        <link href="{{ asset('css/croppie.css') }}" rel="stylesheet" />
+        <style>
+            span.error {
+                color: #E53935;
+                padding: 2px 0px;
             }
-        }
-    </style>
-@endpush
-<?php
-$tabindex = 1;
-$android = stripos($_SERVER['HTTP_USER_AGENT'], 'android');
-$iphone = stripos($_SERVER['HTTP_USER_AGENT'], 'iphone');
-$ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
-$font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times New Roman', 'Georgia', 'Courier New', 'Brush Script', 'Garamond'];
 
-?>
-<div class="page-wrapper">
-    <div class="container-xl">
-        <!-- Page title -->
-        <div class="page-header d-print-none">
-            <div class="row align-items-center">
-                <div class="col">
-                    <div class="page-pretitle">
-                        {{ __('Overview') }}
+            a.social-contact.disabled {
+                opacity: .3;
+            }
+
+            .purchase_btn a {
+                padding: 10px 27px;
+                font-size: 20px;
+                font-family: 'Poppins', sans-serif;
+                font-weight: 500;
+                color: #ffffff;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                display: block;
+                background: #ffc107;
+                transition: all 0.3s ease-in-out;
+                -webkit-transition: all 0.3s ease-in-out;
+                -moz-transition: all 0.3s ease-in-out;
+                -ms-transition: all 0.3s ease-in-out;
+                -o-transition: all 0.3s ease-in-out;
+            }
+
+            .social_share {
+                margin-bottom: 20px;
+            }
+
+            .social_share img {
+                width: 75%;
+                height: 75%;
+            }
+
+            .modal-header .btn-close {
+                width: 25px;
+                height: 25px;
+            }
+
+            .gallery-btn {
+                position: absolute;
+                top: 13px;
+                right: 52px;
+                font-size: 20px;
+            }
+
+            .loading-spinner {
+                display: none;
+            }
+
+            .loading-spinner.active {
+                display: inline-block;
+            }
+
+            button.delete-image.btn-danger.photo-delete {
+                position: absolute;
+                top: 4px;
+                right: 4px;
+            }
+
+            a.overlay-btn {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+                z-index: 999;
+            }
+
+            .login_btn {
+                position: absolute;
+                top: 6px;
+                right: 0;
+            }
+
+            .save_contact a {
+                padding: 12px 10px;
+                font-size: 13px;
+                font-family: 'Inter';
+                font-weight: 700;
+                text-align: center;
+                width: 40%;
+                border-radius: 6px;
+                color: #fff;
+                background: #212121;
+                -webkit-transition: all 0.4s ease;
+                box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+            }
+
+            .purchase_btn.save_contact {
+                text-align: center;
+                margin-bottom: 33px;
+                margin-top: -19px;
+                z-index: 5;
+                position: relative;
+            }
+
+            .purchase_btn a:hover {
+                background: #ffffff !important;
+                color: #000000;
+            }
+
+            @media screen and (max-width:380px) {
+                .save_contact a {
+                    padding: 12px 3px;
+                    font-size: 11px;
+                    width: 44%;
+                }
+            }
+        </style>
+    @endpush
+    <?php
+    $tabindex = 1;
+    $android = stripos($_SERVER['HTTP_USER_AGENT'], 'android');
+    $iphone = stripos($_SERVER['HTTP_USER_AGENT'], 'iphone');
+    $ipad = stripos($_SERVER['HTTP_USER_AGENT'], 'ipad');
+    $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times New Roman', 'Georgia', 'Courier New', 'Brush Script', 'Garamond'];
+    
+    ?>
+    <div class="page-wrapper">
+        <div class="container-xl">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <div class="page-pretitle">
+                            {{ __('Overview') }}
+                        </div>
+                        <h2 class="page-title">
+                            {{ __('Create New DigitalBizAds Card') }}
+                        </h2>
                     </div>
-                    <h2 class="page-title">
-                        {{ __('Create New DigitalBizAds Card') }}
-                    </h2>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="page-body">
-        <div class="container-xl">
-            <div class="row row-deck row-cards">
-                <div class="col-md-5 col-xl-5">
-                    <div class="card_preview_sec">
-                        <div class="card_wrapper">
-                            <div class="card_template">
-                                <!-- title -->
-                                <div class="card_title p-2" id="titleDiv">
-                                    <h2 class="">
-                                        <span id="preview_name" class="shop-title">Express T-Shirts</span>
-                                        <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
-                                            data-bs-target="#galleryModal">
-                                            <i class="fas fa-images"></i>
-                                        </a>
-                                        <a href="javascript:void(0)" class="float-end login_btn">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <line x1="3" y1="12" x2="21" y2="12">
-                                                </line>
-                                                <line x1="3" y1="6" x2="21" y2="6">
-                                                </line>
-                                                <line x1="3" y1="18" x2="21" y2="18">
-                                                </line>
-                                            </svg>
-                                        </a>
-                                    </h2>
-                                </div>
-                                <div class="card_title p-2 pt-3 d-none" id="logoDiv">
-                                    <h2 class="">
-                                        <div>
-                                            <img src="{{ asset('assets/images/bizads.png') }}" width="140"
-                                                id="previewLogo" alt="logo">
-                                        </div>
-                                        <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
-                                            data-bs-target="#galleryModal">
-                                            <i class="fas fa-images"></i>
-                                        </a>
-
-                                        <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
-                                            data-bs-target="#loginModal">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
-                                                viewBox="0 0 24 24" fill="none" stroke="#ffff" stroke-width="1"
-                                                stroke-linecap="round" stroke-linejoin="round">
-                                                <line x1="3" y1="12" x2="21" y2="12">
-                                                </line>
-                                                <line x1="3" y1="6" x2="21" y2="6">
-                                                </line>
-                                                <line x1="3" y1="18" x2="21" y2="18">
-                                                </line>
-                                            </svg>
-                                        </a>
-                                    </h2>
-                                </div>
-                                <!-- slider -->
-                                <div class="carousel_slider" id="digitalbizSlider">
-                                    <img src="{{ asset('backend/img') }}/3.jpg" class="d-block w-100" alt="image">
-                                </div>
-                                <!-- Video -->
-                                <div class="video_wrapper d-none" id="digitaBizSourc">
-                                    <div class="ratio ratio-1x1">
-                                        <video autoplay="" loop="" muted="" id="video_preview"
-                                            playsinline="" data-wf-ignore="true" data-object-fit="cover" controls>
-                                            <source src="{{ asset('assets/video.mp4') }}" type="video/mp4">
-                                            <source src="{{ asset('assets/video.mp4') }}" type="video/ogg">
-                                        </video>
+        <div class="page-body">
+            <div class="container-xl">
+                <div class="row row-deck row-cards">
+                    <div class="col-md-5 col-xl-5">
+                        <div class="card_preview_sec">
+                            <div class="card_wrapper">
+                                <div class="card_template">
+                                    <!-- title -->
+                                    <div class="card_title p-2" id="titleDiv">
+                                        <h2 class="">
+                                            <span class="shop-title" id="preview_name">Express T-Shirts</span>
+                                            <a class="gallery-btn" data-bs-toggle="modal" data-bs-target="#galleryModal"
+                                                href="javascript:void(0)">
+                                                <i class="fas fa-images"></i>
+                                            </a>
+                                            <a class="float-end login_btn" href="javascript:void(0)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                                    viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <line x1="3" y1="12" x2="21" y2="12">
+                                                    </line>
+                                                    <line x1="3" y1="6" x2="21" y2="6">
+                                                    </line>
+                                                    <line x1="3" y1="18" x2="21" y2="18">
+                                                    </line>
+                                                </svg>
+                                            </a>
+                                        </h2>
                                     </div>
-                                </div>
+                                    <div class="card_title p-2 pt-3 d-none" id="logoDiv">
+                                        <h2 class="">
+                                            <div>
+                                                <img id="previewLogo" src="{{ asset('assets/images/bizads.png') }}"
+                                                    alt="logo" width="140">
+                                            </div>
+                                            <a class="gallery-btn" data-bs-toggle="modal" data-bs-target="#galleryModal"
+                                                href="javascript:void(0)">
+                                                <i class="fas fa-images"></i>
+                                            </a>
 
-                                <div class="video_wrapper d-none" id="digitalBizEmbad">
-                                    <div class="ratio ratio-1x1">
-                                        <iframe width="100%" height="315" id="youtube_video_preview"
-                                            src="https://www.youtube.com/embed/Fhskvloj1gE"
-                                            title="YouTube video player" frameborder="0"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                            allowfullscreen></iframe>
+                                            <a class="float-end login_btn" data-bs-toggle="modal"
+                                                data-bs-target="#loginModal" href="javascript:void(0)">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
+                                                    viewBox="0 0 24 24" fill="none" stroke="#ffff" stroke-width="1"
+                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                    <line x1="3" y1="12" x2="21" y2="12">
+                                                    </line>
+                                                    <line x1="3" y1="6" x2="21" y2="6">
+                                                    </line>
+                                                    <line x1="3" y1="18" x2="21" y2="18">
+                                                    </line>
+                                                </svg>
+                                            </a>
+                                        </h2>
                                     </div>
-                                </div>
-
-                                <!-- purchase button -->
-                                <div class="purchase_btn save_contact">
-                                    <a href="javascript:void(0)"
-                                        class="text-decoration-none save-contact d-inline-block">Save Contact
-                                    </a>
-                                    <a href="javascript:void(0)"
-                                        class="text-decoration-none d-inline-block btn-secondary">
-                                        SHOP
-                                    </a>
-                                </div>
-
-                                <!-- social medai -->
-                                <div class="social_wrapper mb-3">
-                                    <div class="section_heading text-center mb-3">
-                                        <h4>Connect With Me</h4>
+                                    <!-- slider -->
+                                    <div class="carousel_slider" id="digitalbizSlider">
+                                        <img class="d-block w-100" src="{{ asset('backend/img') }}/3.jpg" alt="image">
                                     </div>
-
-                                    <div class="social_wrapper">
-                                        <div class="row row-cols-4 row-cols-sm-5 g-3">
-                                            <!-- social icon -->
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a href="" class="social-contact phone_number"
-                                                        target="_blank">
-                                                        <i class="fa fa-phone"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <!-- social icon -->
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a href="" class="social-contact user_email"
-                                                        target="_blank">
-                                                        <i class="fa fa-envelope"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <!-- social icon -->
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a href="" class="social-contact website" target="_blank">
-                                                        <i class="fa fa-globe"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <!-- Qr code icon -->
-                                            <div class="col">
-                                                <div class="social_item qrcode_icon">
-                                                    <a href="javascript:void(0)">
-                                                        <img src="{{ asset('backend/img') }}/icon/qr-code.svg"
-                                                            alt="qr-code">
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <!-- social icon -->
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a href="" class="social-contact facebook"
-                                                        target="_blank">
-                                                        <i class="fab fa-facebook"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <!-- social icon -->
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a href="" class="social-contact instagram"
-                                                        target="_blank">
-                                                        <i class="fab fa-instagram"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a href="" class="social-contact about" target="_blank">
-                                                        <i class="fas fa-user"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="social_item">
-                                                    <a href="" class="social-contact map" target="_blank">
-                                                        <i class="fas fa-map-marker"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
+                                    <!-- Video -->
+                                    <div class="video_wrapper d-none" id="digitaBizSourc">
+                                        <div class="ratio ratio-1x1">
+                                            <video id="video_preview" data-wf-ignore="true" data-object-fit="cover"
+                                                autoplay="" loop="" muted="" playsinline="" controls>
+                                                <source src="{{ asset('assets/video.mp4') }}" type="video/mp4">
+                                                <source src="{{ asset('assets/video.mp4') }}" type="video/ogg">
+                                            </video>
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- subscribe -->
-                                <div class="subscribe mb-3">
-                                    <form action="javascript:void(0)" method="">
-                                        <div class="input-group">
-                                            <input type="text" name="email" id="email" class="form-control"
-                                                placeholder="Enter your emaill..." required="">
-                                            <button type="submit"
-                                                class="input-group-text btn btn-primary subscribe-btn">Subscribe</button>
+                                    <div class="video_wrapper d-none" id="digitalBizEmbad">
+                                        <div class="ratio ratio-1x1">
+                                            <iframe id="youtube_video_preview"
+                                                src="https://www.youtube.com/embed/Fhskvloj1gE"
+                                                title="YouTube video player" width="100%" height="315"
+                                                frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                allowfullscreen></iframe>
                                         </div>
-                                    </form>
-                                </div>
+                                    </div>
 
-                                <!-- copyright -->
-                                <div class="bottom_content text-center pb-3">
-                                    <p>CashApp: <span id="preview_cashapp">$SBOWEN2005</span> </p>
-                                </div>
-                                <div class="text-center text-light pb-3">
+                                    <!-- purchase button -->
+                                    <div class="purchase_btn save_contact">
+                                        <a class="text-decoration-none save-contact d-inline-block"
+                                            href="javascript:void(0)">Save Contact
+                                        </a>
+                                        <a class="text-decoration-none d-inline-block btn-secondary"
+                                            href="javascript:void(0)">
+                                            SHOP
+                                        </a>
+                                    </div>
+
+                                    <!-- social medai -->
+                                    <div class="social_wrapper mb-3">
+                                        <div class="section_heading text-center mb-3">
+                                            <h4>Connect With Me</h4>
+                                        </div>
+
+                                        <div class="social_wrapper">
+                                            <div class="row row-cols-4 row-cols-sm-5 g-3">
+                                                <!-- social icon -->
+                                                <div class="col">
+                                                    <div class="social_item">
+                                                        <a class="social-contact phone_number" href=""
+                                                            target="_blank">
+                                                            <i class="fa fa-phone"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <!-- social icon -->
+                                                <div class="col">
+                                                    <div class="social_item">
+                                                        <a class="social-contact user_email" href=""
+                                                            target="_blank">
+                                                            <i class="fa fa-envelope"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <!-- social icon -->
+                                                <div class="col">
+                                                    <div class="social_item">
+                                                        <a class="social-contact website" href="" target="_blank">
+                                                            <i class="fa fa-globe"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <!-- Qr code icon -->
+                                                <div class="col">
+                                                    <div class="social_item qrcode_icon">
+                                                        <a href="javascript:void(0)">
+                                                            <img src="{{ asset('backend/img') }}/icon/qr-code.svg"
+                                                                alt="qr-code">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <!-- social icon -->
+                                                <div class="col">
+                                                    <div class="social_item">
+                                                        <a class="social-contact facebook" href=""
+                                                            target="_blank">
+                                                            <i class="fab fa-facebook"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <!-- social icon -->
+                                                <div class="col">
+                                                    <div class="social_item">
+                                                        <a class="social-contact instagram" href=""
+                                                            target="_blank">
+                                                            <i class="fab fa-instagram"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="social_item">
+                                                        <a class="social-contact about" href="" target="_blank">
+                                                            <i class="fas fa-user"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="social_item">
+                                                        <a class="social-contact map" href="" target="_blank">
+                                                            <i class="fas fa-map-marker"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- subscribe -->
+                                    <div class="subscribe mb-3">
+                                        <form action="javascript:void(0)" method="">
+                                            <div class="input-group">
+                                                <input class="form-control" id="email" name="email" type="text"
+                                                    placeholder="Enter your emaill..." required="">
+                                                <button class="input-group-text btn btn-primary subscribe-btn"
+                                                    type="submit">Subscribe</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <!-- copyright -->
+                                    <div class="bottom_content text-center pb-3">
+                                        <p>CashApp: <span id="preview_cashapp">$SBOWEN2005</span> </p>
+                                    </div>
                                     <div class="text-center text-light pb-3">
-                                        @if (isFreePlan(Auth::user()->id))
-                                            <p>All Rights Reserved by Digitalbizads.com</p>
-                                        @else
-                                            <p id="preview_copyright">© Copyright</p>
-                                        @endif
+                                        <div class="text-center text-light pb-3">
+                                            @if (isFreePlan(Auth::user()->id))
+                                                <p>All Rights Reserved by Digitalbizads.com</p>
+                                            @else
+                                                <p id="preview_copyright">© Copyright</p>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-7 col-xl-7">
-                    <div class="card card_form">
-                        <div class="card-body">
-                            <form action="{{ route('user.card.store') }}" method="post" id="card-form"
-                                novalidate="novalidate" enctype="multipart/form-data">
-                                @csrf
-                                <input type="hidden" name="upload_image_url" id="upload_image_url"
-                                    value="{{ route('user.card.upload_image') }}" />
-                                <input type="hidden" name="upload_logo_url" id="upload_logo_url"
-                                    value="{{ route('user.card.upload_logo') }}" />
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="adsname" class="form-label">Biz Ad Name <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" placeholder="ads name" name="adsname"
-                                                id="adsname"
-                                                class="form-control @error('adsname') is-invalid @enderror"
-                                                value="{{ old('adsname') }}" tabindex="{{ $tabindex++ }}">
-                                            @if ($errors->has('adsname'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('adsname') }}</span>
-                                            @endif
+                    <div class="col-md-7 col-xl-7">
+                        <div class="card card_form">
+                            <div class="card-body">
+                                <form id="card-form" action="{{ route('user.card.store') }}" method="post"
+                                    novalidate="novalidate" enctype="multipart/form-data">
+                                    @csrf
+                                    <input id="upload_image_url" name="upload_image_url" type="hidden"
+                                        value="{{ route('user.card.upload_image') }}" />
+                                    <input id="upload_logo_url" name="upload_logo_url" type="hidden"
+                                        value="{{ route('user.card.upload_logo') }}" />
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input">
+                                                <label class="form-label" for="adsname">Biz Ad Name <span
+                                                        class="text-danger">*</span></label>
+                                                <input class="form-control @error('adsname') is-invalid @enderror"
+                                                    id="adsname" name="adsname" type="text"
+                                                    value="{{ old('adsname') }}" tabindex="{{ $tabindex++ }}"
+                                                    placeholder="ads name">
+                                                @if ($errors->has('adsname'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('adsname') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input" id="textfield">
+                                                <label class="form-label">Biz Ad B/G Color</label>
+                                                <div class="input-group custome_color">
+                                                    <label class="input-group-text" for="theme_color">
+                                                        <img src="{{ asset('images/color-picker.png') }}"
+                                                            alt="color picker" width="25">
+                                                        <input
+                                                            class="form-control @error('theme_color') is-invalid @enderror"
+                                                            id="theme_color" name="theme_color" type="color"
+                                                            value="{{ old('theme_color') ?? '#ffc107' }}"
+                                                            tabindex="{{ $tabindex++ }}" placeholder="card color"
+                                                            required>
+                                                    </label>
+                                                    <input class="form-control" id="theme_clr_code" type="text"
+                                                        value="#ffc107" disabled>
+                                                </div>
+                                                @if ($errors->has('theme_color'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('theme_color') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input">
+                                                <label class="form-label" for="header_backgroung">Biz Name B/G
+                                                    Color</label>
+                                                <div class="input-group custome_color">
+                                                    <label class="input-group-text" for="header_backgroung">
+                                                        <img src="{{ asset('images/color-picker.png') }}"
+                                                            alt="color picker" width="25">
+                                                        <input
+                                                            class="form-control @error('header_backgroung') is-invalid @enderror"
+                                                            id="header_backgroung" name="header_backgroung"
+                                                            type="color"
+                                                            value="{{ old('header_backgroung') ?? ' #ffc107' }}"
+                                                            tabindex="{{ $tabindex++ }}" placeholder="card color"
+                                                            required>
+                                                    </label>
+                                                    <input class="form-control" id="theme_back_code" type="text"
+                                                        value="#ffc107" disabled>
+                                                </div>
+                                                @if ($errors->has('header_backgroung'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('header_backgroung') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input">
+                                                <label class="form-label" for="icon_border_color">Icon Border
+                                                    Color</label>
+                                                <div class="input-group custome_color">
+                                                    <label class="input-group-text" for="icon_border_color">
+                                                        <img src="{{ asset('images/color-picker.png') }}"
+                                                            alt="color picker" width="25">
+                                                        <input
+                                                            class="form-control @error('icon_border_color') is-invalid @enderror"
+                                                            id="icon_border_color" name="icon_border_color"
+                                                            type="color"
+                                                            value="{{ old('icon_border_color') ?? ' #ffc107' }}"
+                                                            tabindex="{{ $tabindex++ }}" placeholder="card color"
+                                                            required>
+                                                    </label>
+                                                    <input class="form-control" id="icon_border_color_code"
+                                                        type="text" value="#ffc107" disabled>
+                                                </div>
+                                                @if ($errors->has('icon_border_color'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('icon_border_color') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input" id="textfield">
+                                                <label class="form-label" for="header_text_color">Biz Ad Name Text
+                                                    Color</label>
+                                                <div class="input-group custome_color">
+                                                    <label class="input-group-text" for="header_text_color">
+                                                        <img src="{{ asset('images/color-picker.png') }}"
+                                                            alt="color picker" width="25">
+                                                        <input
+                                                            class="form-control @error('header_text_color') is-invalid @enderror"
+                                                            id="header_text_color" name="header_text_color"
+                                                            type="color"
+                                                            value="{{ old('header_text_color') ?? '#ffffff' }}"
+                                                            tabindex="{{ $tabindex++ }}" placeholder="card color"
+                                                            required>
+                                                    </label>
+                                                    <input class="form-control" id="header_clr_code" type="text"
+                                                        value="#ffffff">
+                                                </div>
+                                                @if ($errors->has('header_text_color'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('header_text_color') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input">
+                                                <label class="form-label" for="">Logo Or Text(Biz Name) <span
+                                                        class="text-danger">*</span></label></label>
+                                                <select class="form-control" id="selectField1" name="headline"
+                                                    tabindex="{{ $tabindex++ }}" required>
+                                                    <option value="text">Heading</option>
+                                                    <option value="logo">Logo</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="headline">
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input">
+                                                <label class="form-label" for="text">Biz Ad Name</label>
+                                                <input
+                                                    class="form-control cin preview_name @error('text') is-invalid @enderror"
+                                                    id="text" name="text" data-preview="preview_name"
+                                                    data-concat="preview_name" type="text"
+                                                    value="{{ old('text') }}" tabindex="{{ $tabindex++ }}"
+                                                    placeholder="Biz Ad Name">
+                                                @if ($errors->has('text'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('text') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input">
+                                                <label class="form-label" for="header_font_family">Biz Ad Name
+                                                    Font</label>
+                                                <select class="form-control" id="header_font_family"
+                                                    name="header_font_family">
+                                                    @foreach ($font_family as $font_)
+                                                        <option value="{{ $font_ }}">{{ $font_ }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @if ($errors->has('header_font_family'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('header_font_family') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="mb-3 d-none form-input" id="logofield">
+                                                <div id="logofield1"></div>
+                                                <label class="form-label" for="logo">Photo Or Video<span
+                                                        class="text-danger">(Recommended size (140x48)</span>
+                                                    <button class="tooltip_icon" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                        data-bs-title="Let us design your BizAd Advertisement to properly fit to the correct size or have your designer do it, Thanks Admin"
+                                                        type="button">
+                                                        <i class="fa fa-info"></i>
+                                                    </button>
+                                                </label>
+                                                <input class="form-control @error('logo') is-invalid @enderror"
+                                                    id="logo" name="logo" type="file"
+                                                    tabindex="{{ $tabindex++ }}" onchange="readURL(this);">
+                                                @if ($errors->has('logo'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('logo') }}</span>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input" id="textfield">
-                                            <label class="form-label">Biz Ad Color</label>
-                                            <div class="input-group custome_color">
-                                                <label for="theme_color" class="input-group-text">
-                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
-                                                        alt="color picker">
-                                                    <input type="color" placeholder="card color" name="theme_color"
-                                                        id="theme_color"
-                                                        value="{{ old('theme_color') ?? '#ffc107' }}"
-                                                        class="form-control @error('theme_color') is-invalid @enderror"
-                                                        tabindex="{{ $tabindex++ }}" required>
-                                                </label>
-                                                <input type="text" id="theme_clr_code" class="form-control"
-                                                    value="#ffc107" disabled>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input">
+                                                <label class="form-label" for="selectField2">Photo <span
+                                                        class="text-danger">*</span></label></label>
+                                                <select class="form-control" id="selectField2" name="gallery_type"
+                                                    tabindex="{{ $tabindex++ }}" required>
+                                                    {{-- <option value="gallery">Gallery</option> --}}
+                                                    <option value="banner">Banner</option>
+                                                    <option value="videourl">Video Url</option>
+                                                    <option value="videosource">Uplaod Video</option>
+                                                </select>
                                             </div>
-                                            @if ($errors->has('theme_color'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('theme_color') }}</span>
-                                            @endif
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="header_backgroung" class="form-label">Header background
-                                                color</label>
-                                            <div class="input-group custome_color">
-                                                <label for="header_backgroung" class="input-group-text">
-                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
-                                                        alt="color picker">
-                                                    <input type="color" placeholder="card color"
-                                                        name="header_backgroung" id="header_backgroung"
-                                                        value="{{ old('header_backgroung') ?? ' #ffc107' }}"
-                                                        class="form-control @error('header_backgroung') is-invalid @enderror"
-                                                        tabindex="{{ $tabindex++ }}" required>
+                                        <div class="col-6">
+                                            <div class="mb-3 form-input" id="galleryfield">
+                                                <div id="galleryfield1"></div>
+                                                <label class="form-label" for="banner">Banner <span
+                                                        class="text-danger">(Recommended size (450x600)</span>
+                                                    <button class="tooltip_icon" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                        data-bs-title="Let us design your BizAd Advertisement to properly fit to the correct size or have your designer do it, Thanks Admin"
+                                                        type="button">
+                                                        <i class="fa fa-info"></i>
+                                                    </button>
                                                 </label>
-                                                <input type="text" id="theme_back_code" class="form-control"
-                                                    value="#ffc107" disabled>
+                                                <input class="form-control @error('banner') is-invalid @enderror"
+                                                    id="banner" name="banner" type="file"
+                                                    tabindex="{{ $tabindex++ }}" required>
+                                                @if ($errors->has('banner'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('banner') }}</span>
+                                                @endif
                                             </div>
-                                            @if ($errors->has('header_backgroung'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('header_backgroung') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="icon_border_color" class="form-label">Icon Border
-                                                Color</label>
-                                            <div class="input-group custome_color">
-                                                <label for="icon_border_color" class="input-group-text">
-                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
-                                                        alt="color picker">
-                                                    <input type="color" placeholder="card color"
-                                                        name="icon_border_color" id="icon_border_color"
-                                                        value="{{ old('icon_border_color') ?? ' #ffc107' }}"
-                                                        class="form-control @error('icon_border_color') is-invalid @enderror"
-                                                        tabindex="{{ $tabindex++ }}" required>
-                                                </label>
-                                                <input type="text" id="icon_border_color_code"
-                                                    class="form-control" value="#ffc107" disabled>
+                                            <div class="mb-3 d-none form-input" id="videourl">
+                                                <label class="form-label" for="video">Video Url</label>
+                                                <input class="form-control @error('video') is-invalid @enderror"
+                                                    id="video_url" name="video" type="url"
+                                                    value="{{ old('video') }}" tabindex="{{ $tabindex++ }}"
+                                                    placeholder="your video url">
+                                                @if ($errors->has('video'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('video') }}</span>
+                                                @endif
                                             </div>
-                                            @if ($errors->has('icon_border_color'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('icon_border_color') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input" id="textfield">
-                                            <label for="header_text_color" class="form-label">Headline Color/Icon
-                                                Color</label>
-                                            <div class="input-group custome_color">
-                                                <label for="header_text_color" class="input-group-text">
-                                                    <img src="{{ asset('images/color-picker.png') }}" width="25"
-                                                        alt="color picker">
-                                                    <input type="color" placeholder="card color"
-                                                        name="header_text_color" id="header_text_color"
-                                                        value="{{ old('header_text_color') ?? '#ffffff' }}"
-                                                        class="form-control @error('header_text_color') is-invalid @enderror"
-                                                        tabindex="{{ $tabindex++ }}" required>
-                                                </label>
-                                                <input type="text" id="header_clr_code" class="form-control"
-                                                    value="#ffffff">
+                                            <div class="mb-3 form-input d-none" id="videosource">
+                                                <label class="form-label" for="video">Uplaod Video</label>
+                                                <input class="form-control @error('video') is-invalid @enderror"
+                                                    id="video_file" name="video" type="file"
+                                                    tabindex="{{ $tabindex++ }}" placeholder="upload your video">
+                                                @if ($errors->has('video'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('video') }}</span>
+                                                @endif
                                             </div>
-                                            @if ($errors->has('header_text_color'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('header_text_color') }}</span>
-                                            @endif
                                         </div>
                                     </div>
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="" class="form-label">Select Logo/Heading <span
-                                                    class="text-danger">*</span></label></label>
-                                            <select id="selectField1" name="headline" class="form-control"
-                                                tabindex="{{ $tabindex++ }}" required>
-                                                <option value="text">Heading</option>
-                                                <option value="logo">Logo</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row" id="headline">
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="text" class="form-label">Heading</label>
-                                            <input type="text" placeholder="ads heading" name="text"
-                                                data-preview="preview_name" data-concat="preview_name" id="text"
-                                                value="{{ old('text') }}"
-                                                class="form-control cin preview_name @error('text') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}">
-                                            @if ($errors->has('text'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('text') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="header_font_family" class="form-label">Heading Font
-                                                Family</label>
-                                            <select class="form-control" name="header_font_family"
-                                                id="header_font_family">
-                                                @foreach ($font_family as $font_)
-                                                    <option value="{{ $font_ }}">{{ $font_ }}</option>
-                                                @endforeach
-                                            </select>
-                                            @if ($errors->has('header_font_family'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('header_font_family') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="mb-3 d-none form-input" id="logofield">
-                                            <div id="logofield1"></div>
-                                            <label for="logo" class="form-label">Logo <span
-                                                    class="text-danger">(Recommended size (140x48)</span>
-                                                <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                                    data-bs-title="Let us design your BizAd Advertisement to properly fit to the correct size or have your designer do it, Thanks Admin">
-                                                    <i class="fa fa-info"></i>
-                                                </button>
-                                            </label>
-                                            <input type="file" name="logo" id="logo"
-                                                onchange="readURL(this);"
-                                                class="form-control @error('logo') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}">
-                                            @if ($errors->has('logo'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('logo') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="selectField2" class="form-label">Banner or Video <span
-                                                    class="text-danger">*</span></label></label>
-                                            <select id="selectField2" name="gallery_type" class="form-control"
-                                                tabindex="{{ $tabindex++ }}" required>
-                                                {{-- <option value="gallery">Gallery</option> --}}
-                                                <option value="banner">Banner</option>
-                                                <option value="videourl">Video Url</option>
-                                                <option value="videosource">Uplaod Video</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="mb-3 form-input" id="galleryfield">
-                                            <div id="galleryfield1"></div>
-                                            <label for="banner" class="form-label">Banner <span
-                                                    class="text-danger">(Recommended size (450x600)</span>
-                                                <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                                    data-bs-title="Let us design your BizAd Advertisement to properly fit to the correct size or have your designer do it, Thanks Admin">
-                                                    <i class="fa fa-info"></i>
-                                                </button>
-                                            </label>
-                                            <input type="file" name="banner" id="banner"
-                                                class="form-control @error('banner') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" required>
-                                            @if ($errors->has('banner'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('banner') }}</span>
-                                            @endif
-                                        </div>
-                                        <div class="mb-3 d-none form-input" id="videourl">
-                                            <label for="video" class="form-label">Video Url</label>
-                                            <input type="url" name="video" placeholder="your video url"
-                                                value="{{ old('video') }}" id="video_url"
-                                                class="form-control @error('video') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}">
-                                            @if ($errors->has('video'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('video') }}</span>
-                                            @endif
-                                        </div>
-                                        <div class="mb-3 form-input d-none" id="videosource">
-                                            <label for="video" class="form-label">Uplaod Video</label>
-                                            <input type="file" name="video" placeholder="upload your video"
-                                                id="video_file"
-                                                class="form-control @error('video') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}">
-                                            @if ($errors->has('video'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('video') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <div class="input-field">
-                                                <label class="active">Gallery<span class="img-note d-inline-block">
-                                                        {{-- <i class="la la-bell"
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <div class="input-field">
+                                                    <label class="active">Gallery<span class="img-note d-inline-block">
+                                                            {{-- <i class="la la-bell"
                                                             aria-hidden="true"></i>{{trans('form.image_size')}} 800 x
                                                         800 pixels</span> --}}
-                                                </label>
-                                                <div class="prod_def_photo_upload" style="padding-top: .5rem;"
-                                                    title="Click for photo upload"></div>
+                                                    </label>
+                                                    <div class="prod_def_photo_upload" title="Click for photo upload"
+                                                        style="padding-top: .5rem;"></div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="phone_number" class="form-label">Phone <span
-                                                    class="text-danger">*</span></label></label>
-                                            <input type="number" name="phone_number" id="phone"
-                                                data-attr="tel:" data-type="phone_number" placeholder="your phone"
-                                                value="{{ old('phone_number') }}" data-preview="preview_phone_number"
-                                                class="social_item_in form-control cin @error('phone') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" required>
-                                            @if ($errors->has('phone_number'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('phone_number') }}</span>
-                                            @endif
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="mb-3 form-input">
+                                                <label class="form-label" for="phone_number">Phone <span
+                                                        class="text-danger">*</span></label></label>
+                                                <input
+                                                    class="social_item_in form-control cin @error('phone') is-invalid @enderror"
+                                                    id="phone" name="phone_number" data-attr="tel:"
+                                                    data-type="phone_number" data-preview="preview_phone_number"
+                                                    type="number" value="{{ old('phone_number') }}"
+                                                    tabindex="{{ $tabindex++ }}" placeholder="your phone" required>
+                                                @if ($errors->has('phone_number'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('phone_number') }}</span>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="email" class="form-label">Email <span
-                                                    class="text-danger">*</span></label></label>
-                                            <input type="email" name="email" data-attr="mailto:"
-                                                placeholder="your email" data-type="user_email" data-type="email"
-                                                id="email" value="{{ old('email') }}"
-                                                class="social_item_in form-control cin @error('email') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" data-preview="preview_email" required>
-                                            @if ($errors->has('email'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('email') }}</span>
-                                            @endif
+                                        <div class="col-md-6">
+                                            <div class="mb-3 form-input">
+                                                <label class="form-label" for="email">Email <span
+                                                        class="text-danger">*</span></label></label>
+                                                <input
+                                                    class="social_item_in form-control cin @error('email') is-invalid @enderror"
+                                                    id="email" name="email" data-attr="mailto:"
+                                                    data-type="user_email" data-type="email" data-preview="preview_email"
+                                                    type="email" value="{{ old('email') }}"
+                                                    tabindex="{{ $tabindex++ }}" placeholder="your email" required>
+                                                @if ($errors->has('email'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('email') }}</span>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="website" class="form-label">Website</label>
-                                            <input type="url" name="website" data-attr=""
-                                                placeholder="your website" data-type="website"
-                                                value="{{ old('website') }}" id="website"
-                                                class="social_item_in form-control cin  @error('website') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}"
-                                                data-preview="preview_company_websitelink" id="company_websitelink">
-                                            @if ($errors->has('website'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('website') }}</span>
-                                            @endif
+                                        <div class="col-md-6">
+                                            <div class="mb-3 form-input">
+                                                <label class="form-label" for="website">Website</label>
+                                                <input
+                                                    class="social_item_in form-control cin  @error('website') is-invalid @enderror"
+                                                    id="website" id="company_websitelink" name="website"
+                                                    data-attr="" data-type="website"
+                                                    data-preview="preview_company_websitelink" type="url"
+                                                    value="{{ old('website') }}" tabindex="{{ $tabindex++ }}"
+                                                    placeholder="your website">
+                                                @if ($errors->has('website'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('website') }}</span>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="facebook" class="form-label">Facebook
-                                                <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                                    data-bs-title="The profile link look like https://www.facebook.com/user-id">
-                                                    <i class="fa fa-info"></i>
-                                                </button>
-                                            </label>
-                                            <input type="url" name="facebook" data-attr=""
-                                                placeholder="facebook profile link" data-type="facebook"
-                                                value="{{ old('facebook') }}" id="facebook"
-                                                class="social_item_in form-control @error('facebook') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}">
-                                            @if ($errors->has('facebook'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('facebook') }}</span>
-                                            @endif
+                                        <div class="col-md-6">
+                                            <div class="mb-3 form-input">
+                                                <label class="form-label" for="facebook">Facebook
+                                                    <button class="tooltip_icon" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                        data-bs-title="The profile link look like https://www.facebook.com/user-id"
+                                                        type="button">
+                                                        <i class="fa fa-info"></i>
+                                                    </button>
+                                                </label>
+                                                <input
+                                                    class="social_item_in form-control @error('facebook') is-invalid @enderror"
+                                                    id="facebook" name="facebook" data-attr="" data-type="facebook"
+                                                    type="url" value="{{ old('facebook') }}"
+                                                    tabindex="{{ $tabindex++ }}" placeholder="facebook profile link">
+                                                @if ($errors->has('facebook'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('facebook') }}</span>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="instagram" class="form-label">Instagram <button
-                                                    type="button" class="tooltip_icon" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                                    data-bs-title="The profile link look like https://www.instagram.com/user-id">
-                                                    <i class="fa fa-info"></i>
-                                                </button></label>
-                                            <input type="url" name="instagram" id="instagram" data-attr=""
-                                                data-type="instagram" placeholder="instagram profile link"
-                                                value="{{ old('instagram') }}"
-                                                class="social_item_in form-control @error('instagram') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}">
-                                            @if ($errors->has('instagram'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('instagram') }}</span>
-                                            @endif
+                                        <div class="col-md-6">
+                                            <div class="mb-3 form-input">
+                                                <label class="form-label" for="instagram">Instagram <button
+                                                        class="tooltip_icon" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                        data-bs-title="The profile link look like https://www.instagram.com/user-id"
+                                                        type="button">
+                                                        <i class="fa fa-info"></i>
+                                                    </button></label>
+                                                <input
+                                                    class="social_item_in form-control @error('instagram') is-invalid @enderror"
+                                                    id="instagram" name="instagram" data-attr="" data-type="instagram"
+                                                    type="url" value="{{ old('instagram') }}"
+                                                    tabindex="{{ $tabindex++ }}" placeholder="instagram profile link">
+                                                @if ($errors->has('instagram'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('instagram') }}</span>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="mb-3 form-input">
-                                            <label for="cashapp" class="form-label">CashApp</label>
-                                            <input type="text" name="cashapp" id="cashapp"
-                                                placeholder="cashapp username" value="{{ old('cashapp') }}"
-                                                data-preview="preview_cashapp"
-                                                class="form-control cin @error('cashapp') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}">
-                                            @if ($errors->has('cashapp'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('cashapp') }}</span>
-                                            @endif
+                                        <div class="col-md-6">
+                                            <div class="mb-3 form-input">
+                                                <label class="form-label" for="cashapp">CashApp</label>
+                                                <input class="form-control cin @error('cashapp') is-invalid @enderror"
+                                                    id="cashapp" name="cashapp" data-preview="preview_cashapp"
+                                                    type="text" value="{{ old('cashapp') }}"
+                                                    tabindex="{{ $tabindex++ }}" placeholder="cashapp username">
+                                                @if ($errors->has('cashapp'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('cashapp') }}</span>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    {{-- <div class="col-12">
+                                        {{-- <div class="col-12">
                                         <div class="mb-3 form-input">
                                             <label for="footer_text" class="form-label">Copyright</label>
                                             <input type="text" name="footer_text" placeholder="copyright"
@@ -722,113 +735,110 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                                             @endif
                                         </div>
                                     </div> --}}
-                                    <div class="col-md-12">
-                                        <div class="mb-3 form-input">
-                                            <label for="location" class="form-label">Location</label>
-                                            <input type="text" name="location" id="location"
-                                                placeholder="location" value="{{ old('location') }}"
-                                                data-preview="preview_location"
-                                                class="social_item_in form-control cin @error('location') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}" data-attr="" data-type="map">
-                                            @if ($errors->has('location'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('location') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="mb-3 form-input">
-                                            <label for="about_us" class="form-label">About Your Bussiness</label>
-                                            <textarea type="text" name="about_us" id="about_us" data-type="about" placeholder="About Your Bussiness"
-                                                cols="30" rows="10" data-preview="preview_about_us"
-                                                class="social_item_in form-control cin @error('about_us') is-invalid @enderror" tabindex="{{ $tabindex++ }}"
-                                                data-attr="">{{ old('about_us') }}</textarea>
-                                            @if ($errors->has('about_us'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('about_us') }}</span>
-                                            @endif
-                                        </div>
-                                    </div>
-
-                                    @if($plan_details->personalized_link == '1')
-                                    <div class="col-12">
-                                        <div class="mb-3">
-                                            <label class="form-label required">{{ __('Personalized Link') }}</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text"> {{ URL::to('/') }} </span>
-                                                <input type="text" class="form-control"
-                                                    name="personalized_link"
-                                                    placeholder="{{ __('Personalized Link') }}"
-                                                    autocomplete="off"
-                                                    id="personalized_link"
-                                                    minlength="3"
-                                                    value="{{ old('personalized_link') }}" />
+                                        <div class="col-md-12">
+                                            <div class="mb-3 form-input">
+                                                <label class="form-label" for="location">Location</label>
+                                                <input
+                                                    class="social_item_in form-control cin @error('location') is-invalid @enderror"
+                                                    id="location" name="location" data-preview="preview_location"
+                                                    data-attr="" data-type="map" type="text"
+                                                    value="{{ old('location') }}" tabindex="{{ $tabindex++ }}"
+                                                    placeholder="location">
+                                                @if ($errors->has('location'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('location') }}</span>
+                                                @endif
                                             </div>
-                                            @if ($errors->has('personalized_link'))
-                                                <span class="help-block text-danger">{{ $errors->first('personalized_link') }}</span>
-                                            @endif
-                                            <p id="status"></p>
                                         </div>
-                                    </div>
-                                    @endif
-
-
-
-                                    <div class="col-12">
-                                        <div class="mb-3 form-input position-relative">
-                                            <label for="footer_text" class="form-label">Copyright</label>
-                                            @if (isFreePlan(Auth::user()->id))
-                                                <a href="javascript:void(0)" class="overlay-btn upgrade-plan"
-                                                    data-bs-toggle="tooltip" data-bs-placement="top"
-                                                    data-bs-custom-class="custom-tooltip"
-                                                    title="Upgrade to a Premium account to access custom Copyright"></a>
-                                            @endif
-                                            <input type="text" data-preview="preview_copyright" name="footer_text"
-                                                placeholder="copyright" id="footer_text"
-                                                class="form-control cin @error('footer_text') is-invalid @enderror"
-                                                tabindex="{{ $tabindex++ }}"
-                                                {{ isFreePlan(Auth::user()->id) == true ? 'disabled' : '' }}>
-                                            @if ($errors->has('footer_text'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('footer_text') }}</span>
-                                            @endif
+                                        <div class="col-md-12">
+                                            <div class="mb-3 form-input">
+                                                <label class="form-label" for="about_us">About Your Bussiness</label>
+                                                <textarea class="social_item_in form-control cin @error('about_us') is-invalid @enderror" id="about_us"
+                                                    name="about_us" data-type="about" data-preview="preview_about_us" data-attr="" type="text"
+                                                    tabindex="{{ $tabindex++ }}" placeholder="About Your Bussiness" cols="30" rows="10">{{ old('about_us') }}</textarea>
+                                                @if ($errors->has('about_us'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('about_us') }}</span>
+                                                @endif
+                                            </div>
                                         </div>
+
+                                        @if ($plan_details->personalized_link == '1')
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label
+                                                        class="form-label required">{{ __('Personalized Link') }}</label>
+                                                    <div class="input-group">
+                                                        <span class="input-group-text"> {{ URL::to('/') }} </span>
+                                                        <input class="form-control" id="personalized_link"
+                                                            name="personalized_link" type="text"
+                                                            value="{{ old('personalized_link') }}"
+                                                            placeholder="{{ __('Personalized Link') }}"
+                                                            autocomplete="off" minlength="3" />
+                                                    </div>
+                                                    @if ($errors->has('personalized_link'))
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('personalized_link') }}</span>
+                                                    @endif
+                                                    <p id="status"></p>
+                                                </div>
+                                            </div>
+                                        @endif
+
+                                        <div class="col-12">
+                                            <div class="mb-3 form-input position-relative">
+                                                <label class="form-label" for="footer_text">Copyright</label>
+                                                @if (isFreePlan(Auth::user()->id))
+                                                    <a class="overlay-btn upgrade-plan" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                        href="javascript:void(0)"
+                                                        title="Upgrade to a Premium account to access custom Copyright"></a>
+                                                @endif
+                                                <input class="form-control cin @error('footer_text') is-invalid @enderror"
+                                                    id="footer_text" name="footer_text" data-preview="preview_copyright"
+                                                    type="text" tabindex="{{ $tabindex++ }}"
+                                                    placeholder="copyright"
+                                                    {{ isFreePlan(Auth::user()->id) == true ? 'disabled' : '' }}>
+                                                @if ($errors->has('footer_text'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('footer_text') }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
+
                                     </div>
-
-
-                                </div>
-                                <div class="mb-3">
-                                    <button type="submit" class="btn btn-primary submit submitBtn">Create Your Biz
-                                        Ad</button>
-                                </div>
-                            </form>
+                                    <div class="mb-3">
+                                        <button class="btn btn-primary submit submitBtn" type="submit">Create Your Biz
+                                            Ad</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        @include('user.includes.footer')
     </div>
-    @include('user.includes.footer')
-</div>
-<!-- Social Modal modal -->
-<div class="share_modal email_modal">
-    <div class="modal animate__animated animate__fadeIn" id="SocialModal" tabindex="-1" data-bs-backdrop="static"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content ">
-                <div class="modal-header">
-                    <h5 class="modal-title">{{ __('Share Your Card') }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal_body">
-                    <div id="social-links">
-                        <div>
-                            <label class="py-2" for="send_to">Send To</label>
-                            <div class="input-group">
-                                <input type="text" name="send_to" id="send_to"
-                                    class="form-control @error('send_to') is-invalid @enderror"
-                                    placeholder="Send to phone no" required>
-                                <a href="javascript:void(0)" class="input-group-text btn btn-dark sendto-btn">Send</a>
+    <!-- Social Modal modal -->
+    <div class="share_modal email_modal">
+        <div class="modal animate__animated animate__fadeIn" id="SocialModal" data-bs-backdrop="static"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ __('Share Your Card') }}</h5>
+                        <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
+                    </div>
+                    <div class="modal_body">
+                        <div id="social-links">
+                            <div>
+                                <label class="py-2" for="send_to">Send To</label>
+                                <div class="input-group">
+                                    <input class="form-control @error('send_to') is-invalid @enderror" id="send_to"
+                                        name="send_to" type="text" placeholder="Send to phone no" required>
+                                    <a class="input-group-text btn btn-dark sendto-btn" href="javascript:void(0)">Send</a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -836,8 +846,7 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
             </div>
         </div>
     </div>
-</div>
-@include('user.cards._upgrade_plan_modal')
+    @include('user.cards._upgrade_plan_modal')
 @endsection
 
 @push('custom-js')
@@ -987,9 +996,11 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
                     },
                 }).done(function(res) {
                     if (res.status == 'success') {
-                        $('#status').html("<span class='text-success'>{{ __('Personalized link is available') }}</span>");
+                        $('#status').html(
+                            "<span class='text-success'>{{ __('Personalized link is available') }}</span>");
                     } else {
-                        $('#status').html("<span class='text-danger'>{{ __('Personalized link is not available') }}</span>");
+                        $('#status').html(
+                            "<span class='text-danger'>{{ __('Personalized link is not available') }}</span>");
                     }
                 });
             } else {
@@ -1192,7 +1203,7 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
     })
 
     $(function() {
-        var max_file_number =  `{{ $plan_details->no_of_galleries }}`,
+        var max_file_number = `{{ $plan_details->no_of_galleries }}`,
             $form = $('form'),
             $file_upload = $('#gallery', $form),
             $button = $('.submit', $form);
@@ -1209,4 +1220,3 @@ $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times 
         });
     </script>
 @endpush
-

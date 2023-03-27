@@ -1,8 +1,8 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
 @push('css')
     <link href="{{ asset('assets/css/image-uploader.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/slim.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/croppie.css') }}" />
+    <link type="text/css" href="{{ asset('assets/css/slim.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/croppie.css') }}" rel="stylesheet" />
     <style>
         .loading-spinner {
             display: none;
@@ -61,7 +61,7 @@
     }
     [$r, $g, $b] = sscanf($theme_color, '#%02x%02x%02x');
     $theme_bg = "$r, $g, $b,.5";
-
+    
     if (isFreePlan(Auth::user()->id) == false) {
         $footer_text = $card->footer_text;
         $card_url = $card->card_url;
@@ -70,9 +70,9 @@
         $footer_text = 'All Rights Reserved by Digitalbizads.com';
     }
     $font_family = ['Arial ', 'Verdana', 'Poppins', 'Tahoma', 'Trebuchet M', 'Times New Roman', 'Georgia', 'Courier New', 'Brush Script', 'Garamond'];
-
+    
     // dd($font_family);
-
+    
     ?>
     <link href="{{ asset('assets/css/image-uploader.min.css') }}" rel="stylesheet">
     <style>
@@ -258,30 +258,30 @@
                                         <h2>
                                             @if (!empty($card->logo))
                                                 <div class="d-block" id="logoDiv">
-                                                    <img src="{{ asset($card->logo) }}" id="previewLogo" alt="logo">
+                                                    <img id="previewLogo" src="{{ asset($card->logo) }}" alt="logo">
                                                 </div>
                                                 <div class="d-none" id="titleDiv">
-                                                    <span id="preview_name" class="shop-title"
+                                                    <span class="shop-title" id="preview_name"
                                                         style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">
                                                         <span>Express T-Shirts</span>
                                                     </span>
                                                 </div>
                                             @elseif ($card->title)
                                                 <div class="d-block" id="titleDiv">
-                                                    <span id="preview_name" class="shop-title"
+                                                    <span class="shop-title" id="preview_name"
                                                         style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">{{ $card->title }}</span>
                                                 </div>
                                                 <div class="d-none" id="logoDiv">
-                                                    <img src="{{ asset('assets/images/bizads.png') }}" id="previewLogo"
-                                                        width="140" alt="logo">
+                                                    <img id="previewLogo" src="{{ asset('assets/images/bizads.png') }}"
+                                                        alt="logo" width="140">
                                                 </div>
                                             @else
                                                 <div class="d-block" id="logoDiv">
-                                                    <img src="{{ asset('assets/images/bizads.png') }}" id="previewLogo"
-                                                        width="140" alt="logo">
+                                                    <img id="previewLogo" src="{{ asset('assets/images/bizads.png') }}"
+                                                        alt="logo" width="140">
                                                 </div>
                                                 <div class="d-none" id="titleDiv">
-                                                    <span id="preview_name" class="shop-title"
+                                                    <span class="shop-title" id="preview_name"
                                                         style="color:{{ $card->header_text_color ?? '#ffffff' }}; ">
                                                         <span>Express T-Shirts</span>
                                                     </span>
@@ -289,13 +289,13 @@
                                             @endif
                                         </h2>
                                         <div class="header_left">
-                                            <a href="javascript:void(0)" class="gallery-btn" data-bs-toggle="modal"
-                                                data-bs-target="#galleryModal">
+                                            <a class="gallery-btn" data-bs-toggle="modal" data-bs-target="#galleryModal"
+                                                href="javascript:void(0)">
                                                 <i class="fas fa-images" style="color:{{ $card->header_text_color }};"></i>
                                             </a>
 
-                                            <a href="javascript:void(0)" class="float-end login_btn" data-bs-toggle="modal"
-                                                data-bs-target="#loginModal">
+                                            <a class="float-end login_btn" data-bs-toggle="modal"
+                                                data-bs-target="#loginModal" href="javascript:void(0)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35"
                                                     viewBox="0 0 24 24" fill="none"
                                                     stroke="{{ $card->header_text_color }}" stroke-width="1"
@@ -316,7 +316,7 @@
                                             @if ($card->banner_type == 'videourl')
                                                 <div class="video_wrapper" id="digitalBizEmbad">
                                                     <div class="ratio ratio-1x1">
-                                                        <iframe width="100%" src="{{ $card->banner_content }}"
+                                                        <iframe src="{{ $card->banner_content }}" width="100%"
                                                             frameborder="0"
                                                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                                             allowfullscreen></iframe>
@@ -326,8 +326,8 @@
                                                 <!-- Video -->
                                                 <div class="video_wrapper" id="digitaBizSourc">
                                                     <div class="ratio ratio-1x1">
-                                                        <video autoplay="" loop="" muted=""
-                                                            playsinline="" data-wf-ignore="true" data-object-fit="cover"
+                                                        <video data-wf-ignore="true" data-object-fit="cover"
+                                                            autoplay="" loop="" muted="" playsinline=""
                                                             controls>
                                                             <source src="{{ $card->banner_content }}" type="video/mp4">
                                                             <source src="{{ $card->banner_content }}" type="video/ogg">
@@ -336,29 +336,30 @@
                                                 </div>
                                             @elseif ($card->banner_type == 'banner')
                                                 <div class="" id="digitalbizSlider">
-                                                    <img src="{{ asset($card->banner_content) }}" class="d-block w-100"
+                                                    <img class="d-block w-100" src="{{ asset($card->banner_content) }}"
                                                         alt="image">
                                                 </div>
                                             @endif
                                         @else
                                             <div id="digitalbizSlider">
-                                                <img src="{{ asset('backend/img') }}/1.jpg" class="d-block w-100"
+                                                <img class="d-block w-100" src="{{ asset('backend/img') }}/1.jpg"
                                                     alt="image">
                                             </div>
                                         @endif
                                         <div class="video_wrapper d-none" id="digitalBizEmbad">
                                             <div class="ratio ratio-1x1">
-                                                <iframe width="100%" height="315" id="youtube_video_preview"
+                                                <iframe id="youtube_video_preview"
                                                     src="https://www.youtube.com/embed/Fhskvloj1gE"
-                                                    title="YouTube video player" frameborder="0"
+                                                    title="YouTube video player" width="100%" height="315"
+                                                    frameborder="0"
                                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                                     allowfullscreen></iframe>
                                             </div>
                                         </div>
                                         <div class="video_wrapper d-none" id="digitaBizSourc">
                                             <div class="ratio ratio-1x1">
-                                                <video autoplay="" loop="" muted="" playsinline=""
-                                                    id="video_preview" data-wf-ignore="true" data-object-fit="cover"
+                                                <video id="video_preview" data-wf-ignore="true" data-object-fit="cover"
+                                                    autoplay="" loop="" muted="" playsinline=""
                                                     controls>
                                                     <source src="{{ asset('assets/video.mp4') }}" type="video/mp4">
                                                     <source src="{{ asset('assets/video.mp4') }}" type="video/ogg">
@@ -366,19 +367,18 @@
                                             </div>
                                         </div>
                                         <div class="d-none" id="digitalbizSlider">
-                                            <img src="{{ asset('backend/img') }}/1.jpg" class="d-block w-100"
+                                            <img class="d-block w-100" src="{{ asset('backend/img') }}/1.jpg"
                                                 alt="image">
                                         </div>
                                     </div>
                                     <!-- purchase button -->
                                     <div class="purchase_btn save_contact">
-                                        <a href="javascript:void(0)"
-                                            class="text-decoration-none save-contact d-inline-block"
-                                            style="background-color: {{ $theme_color }}">Save Contact
+                                        <a class="text-decoration-none save-contact d-inline-block"
+                                            href="javascript:void(0)" style="background-color: {{ $theme_color }}">Save
+                                            Contact
                                         </a>
-                                        <a href="javascript:void(0)"
-                                            class="text-decoration-none shop-button d-inline-block btn-secondary"
-                                            style="background-color: {{ $theme_color }}">
+                                        <a class="text-decoration-none shop-button d-inline-block btn-secondary"
+                                            href="javascript:void(0)" style="background-color: {{ $theme_color }}">
                                             SHOP
                                         </a>
                                     </div>
@@ -424,8 +424,8 @@
                                                 <!-- Qr code icon -->
                                                 <div class="col">
                                                     <div class="social_item qrcode_icon">
-                                                        <a href="javascript:void(0)" target="_blank"
-                                                            data-bs-toggle="modal" data-bs-target="#qrcodeModal">
+                                                        <a data-bs-toggle="modal" data-bs-target="#qrcodeModal"
+                                                            href="javascript:void(0)" target="_blank">
                                                             <img src="{{ asset('assets/images/icon/qr-code.svg') }}"
                                                                 alt="qr-code">
                                                         </a>
@@ -481,7 +481,7 @@
                                                     @endforeach
                                                     <div class="col">
                                                         <div class="social_item">
-                                                            <a href="{{ $card->location }}" class="social-contact map"
+                                                            <a class="social-contact map" href="{{ $card->location }}"
                                                                 target="__blank">
                                                                 <i class="fas fa-map-marker"></i>
                                                             </a>
@@ -491,7 +491,7 @@
                                                     @if (isset($card->about_us))
                                                         <div class="col">
                                                             <div class="social_item">
-                                                                <a href="javascript:void(0)" class="social-contact about"
+                                                                <a class="social-contact about" href="javascript:void(0)"
                                                                     target="_blank">
                                                                     <i class="fas fa-user"></i>
                                                                 </a>
@@ -507,10 +507,10 @@
                                     <div class="subscribe mb-3">
                                         <form action="javascript:void(0)" method="">
                                             <div class="input-group">
-                                                <input type="text" name="email" id="email" class="form-control"
+                                                <input class="form-control" id="email" name="email" type="text"
                                                     placeholder="Enter your emaill..." required="">
-                                                <button type="submit"
-                                                    class="input-group-text btn btn-primary subscribe-btn"
+                                                <button class="input-group-text btn btn-primary subscribe-btn"
+                                                    type="submit"
                                                     style="background-color: {{ $theme_color }}">Subscribe</button>
                                             </div>
                                         </form>
@@ -533,23 +533,22 @@
                     <div class="col-md-7 col-xl-7">
                         <div class="card card_form">
                             <div class="card-body">
-                                <form action="{{ route('user.card.update', $card->id) }}" method="post" id="card-form"
+                                <form id="card-form" action="{{ route('user.card.update', $card->id) }}" method="post"
                                     novalidate="novalidate" enctype="multipart/form-data">
                                     @csrf
-                                    <input type="hidden" name="upload_image_url" id="upload_image_url"
+                                    <input id="upload_image_url" name="upload_image_url" type="hidden"
                                         value="{{ route('user.card.upload_image') }}" />
-                                    <input type="hidden" name="upload_logo_url" id="upload_logo_url"
+                                    <input id="upload_logo_url" name="upload_logo_url" type="hidden"
                                         value="{{ route('user.card.upload_logo') }}" />
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="mb-3 form-input">
-                                                <label for="adsname" class="form-label">Biz Ads Name <span
+                                                <label class="form-label" for="adsname">Biz Ads Name <span
                                                         class="text-danger">*</span></label></label>
-                                                <input type="text" placeholder="ads name" name="adsname"
-                                                    id="adsname"
-                                                    class="form-control @error('adsname') is-invalid @enderror"
-                                                    tabindex="{{ $tabindex++ }}" value="{{ old('adsname') ?? $card->adsname }}"
-                                                    required>
+                                                <input class="form-control @error('adsname') is-invalid @enderror"
+                                                    id="adsname" name="adsname" type="text"
+                                                    value="{{ old('adsname') ?? $card->adsname }}"
+                                                    tabindex="{{ $tabindex++ }}" placeholder="ads name" required>
                                                 @if ($errors->has('adsname'))
                                                     <span
                                                         class="help-block text-danger">{{ $errors->first('adsname') }}</span>
@@ -558,18 +557,19 @@
                                         </div>
                                         <div class="col-6">
                                             <div class="mb-3 form-input" id="textfield">
-                                                <label for="color" class="form-label">Biz Ad Color</label>
+                                                <label class="form-label" for="color">Biz Ad B/G Color</label>
                                                 <div class="input-group custome_color">
-                                                    <label for="theme_color" class="input-group-text">
-                                                        <img src="{{ asset('images/color-picker.png') }}" width="25"
-                                                            alt="color picker">
-                                                        <input type="color" placeholder="card color" name="theme_color"
-                                                            id="theme_color"
+                                                    <label class="input-group-text" for="theme_color">
+                                                        <img src="{{ asset('images/color-picker.png') }}"
+                                                            alt="color picker" width="25">
+                                                        <input
                                                             class="form-control @error('theme_color') is-invalid @enderror"
-                                                            tabindex="{{ $tabindex++ }}"
-                                                            value="{{ old('theme_color') ?? $card->theme_color }}" required>
+                                                            id="theme_color" name="theme_color" type="color"
+                                                            value="{{ old('theme_color') ?? $card->theme_color }}"
+                                                            tabindex="{{ $tabindex++ }}" placeholder="card color"
+                                                            required>
                                                     </label>
-                                                    <input type="text" id="theme_clr_code" class="form-control"
+                                                    <input class="form-control" id="theme_clr_code" type="text"
                                                         value="{{ $card->theme_color }}" disabled>
                                                 </div>
                                                 @if ($errors->has('color'))
@@ -582,19 +582,21 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="mb-3 form-input">
-                                                <label for="header_backgroung" class="form-label">Header background
-                                                    color</label>
+                                                <label class="form-label" for="header_backgroung">Biz Name B/G
+                                                    Color</label>
                                                 <div class="input-group custome_color">
-                                                    <label for="header_backgroung" class="input-group-text">
-                                                        <img src="{{ asset('images/color-picker.png') }}" width="25"
-                                                            alt="color picker">
-                                                        <input type="color" placeholder="card color"
-                                                            name="header_backgroung" id="header_backgroung"
-                                                            value="{{ old('header_backgroung') ?? $card->header_backgroung }}"
+                                                    <label class="input-group-text" for="header_backgroung">
+                                                        <img src="{{ asset('images/color-picker.png') }}"
+                                                            alt="color picker" width="25">
+                                                        <input
                                                             class="form-control @error('header_backgroung') is-invalid @enderror"
-                                                            tabindex="{{ $tabindex++ }}" required>
+                                                            id="header_backgroung" name="header_backgroung"
+                                                            type="color"
+                                                            value="{{ old('header_backgroung') ?? $card->header_backgroung }}"
+                                                            tabindex="{{ $tabindex++ }}" placeholder="card color"
+                                                            required>
                                                     </label>
-                                                    <input type="text" id="theme_back_code" class="form-control"
+                                                    <input class="form-control" id="theme_back_code" type="text"
                                                         value="{{ $card->header_backgroung }}" disabled>
                                                 </div>
 
@@ -606,21 +608,22 @@
                                         </div>
                                         <div class="col-6">
                                             <div class="mb-3 form-input">
-                                                <label for="icon_border_color" class="form-label">Icon Border
+                                                <label class="form-label" for="icon_border_color">Icon Border
                                                     Color</label>
                                                 <div class="input-group custome_color">
-                                                    <label for="icon_border_color" class="input-group-text">
-                                                        <img src="{{ asset('images/color-picker.png') }}" width="25"
-                                                            alt="color picker">
-                                                        <input type="color" placeholder="card color"
-                                                            name="icon_border_color" id="icon_border_color"
-                                                            value="{{ old('icon_border_color') ?? $card->icon_border_color }}"
+                                                    <label class="input-group-text" for="icon_border_color">
+                                                        <img src="{{ asset('images/color-picker.png') }}"
+                                                            alt="color picker" width="25">
+                                                        <input
                                                             class="form-control @error('icon_border_color') is-invalid @enderror"
-                                                            tabindex="{{ $tabindex++ }}" required>
+                                                            id="icon_border_color" name="icon_border_color"
+                                                            type="color"
+                                                            value="{{ old('icon_border_color') ?? $card->icon_border_color }}"
+                                                            tabindex="{{ $tabindex++ }}" placeholder="card color"
+                                                            required>
                                                     </label>
-                                                    <input type="text" id="icon_border_color_code"
-                                                        class="form-control" value="{{ $card->icon_border_color }}"
-                                                        disabled>
+                                                    <input class="form-control" id="icon_border_color_code"
+                                                        type="text" value="{{ $card->icon_border_color }}" disabled>
                                                 </div>
 
                                                 @if ($errors->has('icon_border_color'))
@@ -631,19 +634,21 @@
                                         </div>
                                         <div class="col-6">
                                             <div class="mb-3 form-input" id="textfield">
-                                                <label for="header_text_color" class="form-label">Headline Color/Icon
+                                                <label class="form-label" for="header_text_color">Biz Ad Name Text
                                                     Color</label>
                                                 <div class="input-group custome_color">
-                                                    <label for="header_text_color" class="input-group-text">
-                                                        <img src="{{ asset('images/color-picker.png') }}" width="25"
-                                                            alt="color picker">
-                                                        <input type="color" placeholder="card color"
-                                                            name="header_text_color" id="header_text_color"
-                                                            value="{{ old('header_text_color') ?? $card->header_text_color }}"
+                                                    <label class="input-group-text" for="header_text_color">
+                                                        <img src="{{ asset('images/color-picker.png') }}"
+                                                            alt="color picker" width="25">
+                                                        <input
                                                             class="form-control @error('header_text_color') is-invalid @enderror"
-                                                            tabindex="{{ $tabindex++ }}" required>
+                                                            id="header_text_color" name="header_text_color"
+                                                            type="color"
+                                                            value="{{ old('header_text_color') ?? $card->header_text_color }}"
+                                                            tabindex="{{ $tabindex++ }}" placeholder="card color"
+                                                            required>
                                                     </label>
-                                                    <input type="text" id="header_clr_code" class="form-control"
+                                                    <input class="form-control" id="header_clr_code" type="text"
                                                         value="{{ $card->header_text_color }}" disabled>
                                                 </div>
 
@@ -655,9 +660,9 @@
                                         </div>
                                         <div class="col-6">
                                             <div class="mb-3 form-input">
-                                                <label for="selectField1" class="form-label">Select Logo/Heading <span
+                                                <label class="form-label" for="selectField1">Logo Or Text(Biz Name) <span
                                                         class="text-danger">*</span></label></label>
-                                                <select id="selectField1" name="headline" class="form-control"
+                                                <select class="form-control" id="selectField1" name="headline"
                                                     tabindex="{{ $tabindex++ }}" required>
                                                     <option value="text"
                                                         @if (!empty($card->title)) selected @endif>Heading
@@ -674,11 +679,13 @@
 
                                         <div class="col-6">
                                             <div class="mb-3 form-input">
-                                                <label for="text" class="form-label">Heading</label>
-                                                <input type="text" placeholder="ads heading" name="text"
-                                                    id="text" data-preview="preview_name" data-concat="preview_name"
+                                                <label class="form-label" for="text">Biz Ad Name</label>
+                                                <input
                                                     class="form-control cin preview_name  @error('text') is-invalid @enderror"
-                                                    tabindex="{{ $tabindex++ }}" value="{{ old('text') ?? $card->title }}">
+                                                    id="text" name="text" data-preview="preview_name"
+                                                    data-concat="preview_name" type="text"
+                                                    value="{{ old('text') ?? $card->title }}"
+                                                    tabindex="{{ $tabindex++ }}" placeholder="ads heading">
                                                 @if ($errors->has('text'))
                                                     <span
                                                         class="help-block text-danger">{{ $errors->first('text') }}</span>
@@ -687,17 +694,16 @@
                                         </div>
                                         <div class="col-6">
                                             <div class="mb-3 form-input">
-                                                <label for="header_font_family" class="form-label">Heading Font
-                                                    Family</label>
-                                                <select class="form-control" name="header_font_family"
-                                                    id="header_font_family">
+                                                <label class="form-label" for="header_font_family">Biz Ad Name
+                                                    Font</label>
+                                                <select class="form-control" id="header_font_family"
+                                                    name="header_font_family">
                                                     @foreach ($font_family as $font_)
                                                         <option value="{{ $font_ }}"
-                                                        @if(old('header_font_family'))
-                                                            {{ $font_ == old('header_font_family') ? 'selected' : '' }}
+                                                            @if (old('header_font_family')) {{ $font_ == old('header_font_family') ? 'selected' : '' }}
                                                         @else
-                                                            {{ $font_ == $card->header_font_family ? 'selected' : '' }}
-                                                        @endif>{{ $font_ }}</option>
+                                                            {{ $font_ == $card->header_font_family ? 'selected' : '' }} @endif>
+                                                            {{ $font_ }}</option>
                                                     @endforeach
                                                 </select>
                                                 @if ($errors->has('header_font_family'))
@@ -713,18 +719,18 @@
                                         <div id="logofield1"></div>
                                         <div class="col-6">
                                             <div class="mb-3 form-input">
-                                                <label for="logo" class="form-label">Logo <span
+                                                <label class="form-label" for="logo">Photo Or Video <span
                                                         class="text-danger">(Recommended size (140x48)</span>
-                                                    <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
+                                                    <button class="tooltip_icon" data-bs-toggle="tooltip"
                                                         data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                                        data-bs-title="Let us design your BizAd Advertisement to properly fit to the correct size or have your designer do it, Thanks Admin">
+                                                        data-bs-title="Let us design your BizAd Advertisement to properly fit to the correct size or have your designer do it, Thanks Admin"
+                                                        type="button">
                                                         <i class="fa fa-info"></i>
                                                     </button>
                                                 </label>
-                                                <input type="file" name="logo" id="logo"
-                                                    onchange="readURL(this);"
-                                                    class="form-control @error('logo') is-invalid @enderror"
-                                                    tabindex="{{ $tabindex++ }}">
+                                                <input class="form-control @error('logo') is-invalid @enderror"
+                                                    id="logo" name="logo" type="file"
+                                                    tabindex="{{ $tabindex++ }}" onchange="readURL(this);">
                                                 @if ($errors->has('logo'))
                                                     <span
                                                         class="help-block text-danger">{{ $errors->first('logo') }}</span>
@@ -735,9 +741,9 @@
                                     <div class="row">
                                         <div class="col-6">
                                             <div class="mb-3 form-input">
-                                                <label for="selectField2" class="form-label">Banner or Video <span
+                                                <label class="form-label" for="selectField2">Photo Or Video <span
                                                         class="text-danger">*</span></label></label>
-                                                <select id="selectField2" name="gallery_type" class="form-control"
+                                                <select class="form-control" id="selectField2" name="gallery_type"
                                                     tabindex="{{ $tabindex++ }}" required>
                                                     <option value="banner"
                                                         @if ($banner_type == 'banner') selected @endif>
@@ -755,16 +761,17 @@
                                             <div class="mb-3 form-input {{ $banner_type == 'banner' ? 'd-block' : 'd-none' }}"
                                                 id="galleryfield">
                                                 <div id="galleryfield1"></div>
-                                                <label for="banner" class="form-label">Banner<span
+                                                <label class="form-label" for="banner">Photo<span
                                                         class="text-danger">(Recommended size (450x600)</span>
-                                                    <button type="button" class="tooltip_icon" data-bs-toggle="tooltip"
+                                                    <button class="tooltip_icon" data-bs-toggle="tooltip"
                                                         data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                                        data-bs-title="Let us design your BizAd Advertisement to properly fit to the correct size or have your designer do it, Thanks Admin">
+                                                        data-bs-title="Let us design your BizAd Advertisement to properly fit to the correct size or have your designer do it, Thanks Admin"
+                                                        type="button">
                                                         <i class="fa fa-info"></i>
                                                     </button>
                                                 </label>
-                                                <input type="file" name="banner" id="banner"
-                                                    class="form-control @error('banner') is-invalid @enderror"
+                                                <input class="form-control @error('banner') is-invalid @enderror"
+                                                    id="banner" name="banner" type="file"
                                                     tabindex="{{ $tabindex++ }}">
                                                 @if ($errors->has('gallery'))
                                                     <span
@@ -773,11 +780,10 @@
                                             </div>
                                             <div class="mb-3 form-input {{ $banner_type == 'videourl' ? 'd-block' : 'd-none' }}"
                                                 id="videourl">
-                                                <label for="video" class="form-label">Video Url</label>
-                                                <input type="url" name="video" placeholder="your video url"
-                                                    id="video_url"
-                                                    class="form-control @error('video') is-invalid @enderror"
-                                                    tabindex="{{ $tabindex++ }}" value="">
+                                                <label class="form-label" for="video">Video Url</label>
+                                                <input class="form-control @error('video') is-invalid @enderror"
+                                                    id="video_url" name="video" type="url" value=""
+                                                    tabindex="{{ $tabindex++ }}" placeholder="your video url">
                                                 @if ($errors->has('video'))
                                                     <span
                                                         class="help-block text-danger">{{ $errors->first('video') }}</span>
@@ -785,11 +791,10 @@
                                             </div>
                                             <div class="mb-3 form-input {{ $banner_type == 'videosource' ? 'd-block' : 'd-none' }}"
                                                 id="videosource">
-                                                <label for="video" class="form-label">Uplaod Video</label>
-                                                <input type="file" name="video" placeholder="upload your video"
-                                                    id="video_file"
-                                                    class="form-control @error('video') is-invalid @enderror"
-                                                    tabindex="{{ $tabindex++ }}">
+                                                <label class="form-label" for="video">Uplaod Video</label>
+                                                <input class="form-control @error('video') is-invalid @enderror"
+                                                    id="video_file" name="video" type="file"
+                                                    tabindex="{{ $tabindex++ }}" placeholder="upload your video">
                                                 @if ($errors->has('video'))
                                                     <span
                                                         class="help-block text-danger">{{ $errors->first('video') }}</span>
@@ -809,12 +814,12 @@
                                                             @foreach ($card->gallery as $photo)
                                                                 <div class="col" id="photo_div_{{ $photo->id }}">
                                                                     <div class="position-relative">
-                                                                        <img src="{{ asset($photo->content) }}"
-                                                                            class="img-fluid" width="100%"
-                                                                            height="auto">
-                                                                        <button type="button"
+                                                                        <img class="img-fluid"
+                                                                            src="{{ asset($photo->content) }}"
+                                                                            width="100%" height="auto">
+                                                                        <button
                                                                             class="delete-image btn btn-sm btn-danger photo-delete"
-                                                                            data-id="{{ $photo->id }}">
+                                                                            data-id="{{ $photo->id }}" type="button">
                                                                             <i class="iui-close"></i>
                                                                         </button>
                                                                     </div>
@@ -832,14 +837,14 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="mb-3 form-input">
-                                                    <label for="phone_number" class="form-label">Phone <span
+                                                    <label class="form-label" for="phone_number">Phone <span
                                                             class="text-danger">*</span></label></label>
-                                                    <input type="number" name="phone_number" data-type="phone_number"
-                                                        data-preview="preview_phone_number" id="phone"
-                                                        placeholder="your phone"
+                                                    <input
                                                         class="social_item_in form-control cin @error('phone') is-invalid @enderror"
-                                                        tabindex="{{ $tabindex++ }}" value="{{ $card->phone_number }}"
-                                                        required>
+                                                        id="phone" name="phone_number" data-type="phone_number"
+                                                        data-preview="preview_phone_number" type="number"
+                                                        value="{{ $card->phone_number }}" tabindex="{{ $tabindex++ }}"
+                                                        placeholder="your phone" required>
                                                     @if ($errors->has('phone_number'))
                                                         <span
                                                             class="help-block text-danger">{{ $errors->first('phone_number') }}</span>
@@ -848,13 +853,14 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="mb-3 form-input">
-                                                    <label for="email" class="form-label">Email <span
+                                                    <label class="form-label" for="email">Email <span
                                                             class="text-danger">*</span></label></label>
-                                                    <input type="email" name="email" data-type="user_email"
-                                                        data-type="email" placeholder="your email" id="email"
+                                                    <input
                                                         class="social_item_in form-control cin @error('email') is-invalid @enderror"
-                                                        data-preview="preview_email" tabindex="{{ $tabindex++ }}"
-                                                        value="{{ old('email') ?? $card->email }}" required>
+                                                        id="email" name="email" data-type="user_email"
+                                                        data-type="email" data-preview="preview_email" type="email"
+                                                        value="{{ old('email') ?? $card->email }}"
+                                                        tabindex="{{ $tabindex++ }}" placeholder="your email" required>
                                                     @if ($errors->has('email'))
                                                         <span
                                                             class="help-block text-danger">{{ $errors->first('email') }}</span>
@@ -863,11 +869,12 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="mb-3 form-input">
-                                                    <label for="website" class="form-label">Website</label>
-                                                    <input type="url" name="website" data-type="website"
-                                                        placeholder="your website" id="website"
+                                                    <label class="form-label" for="website">Website</label>
+                                                    <input
                                                         class="social_item_in form-control cin @error('website') is-invalid @enderror cin"
-                                                        tabindex="{{ $tabindex++ }}" value="{{ old('website') ?? $card->website }}">
+                                                        id="website" name="website" data-type="website" type="url"
+                                                        value="{{ old('website') ?? $card->website }}"
+                                                        tabindex="{{ $tabindex++ }}" placeholder="your website">
                                                     @if ($errors->has('website'))
                                                         <span
                                                             class="help-block text-danger">{{ $errors->first('website') }}</span>
@@ -877,19 +884,21 @@
 
                                             <div class="col-md-6">
                                                 <div class="mb-3 form-input">
-                                                    <label for="facebook" class="form-label">Facebook
-                                                        <button type="button" class="tooltip_icon"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-custom-class="custom-tooltip"
-                                                            data-bs-title="The profile link look like https://www.facebook.com/user-id">
+                                                    <label class="form-label" for="facebook">Facebook
+                                                        <button class="tooltip_icon" data-bs-toggle="tooltip"
+                                                            data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                            data-bs-title="The profile link look like https://www.facebook.com/user-id"
+                                                            type="button">
                                                             <i class="fa fa-info"></i>
                                                         </button>
                                                     </label>
-                                                    <input type="url" name="facebook" data-type="facebook"
-                                                        placeholder="facebook profile link" id="facebook"
+                                                    <input
                                                         class="social_item_in form-control @error('facebook') is-invalid @enderror"
+                                                        id="facebook" name="facebook" data-type="facebook"
+                                                        type="url"
+                                                        value="{{ old('facebook') ?? getInputValue($card->id, 'facebook') }}"
                                                         tabindex="{{ $tabindex++ }}"
-                                                        value="{{ old('facebook') ?? getInputValue($card->id, 'facebook') }}">
+                                                        placeholder="facebook profile link">
                                                     @if ($errors->has('facebook'))
                                                         <span
                                                             class="help-block text-danger">{{ $errors->first('facebook') }}</span>
@@ -899,19 +908,21 @@
 
                                             <div class="col-md-6">
                                                 <div class="mb-3 form-input">
-                                                    <label for="instagram" class="form-label">Instagram
-                                                        <button type="button" class="tooltip_icon"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-custom-class="custom-tooltip"
-                                                            data-bs-title="The profile link look like https://www.instagram.com/user-id">
+                                                    <label class="form-label" for="instagram">Instagram
+                                                        <button class="tooltip_icon" data-bs-toggle="tooltip"
+                                                            data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                            data-bs-title="The profile link look like https://www.instagram.com/user-id"
+                                                            type="button">
                                                             <i class="fa fa-info"></i>
                                                         </button>
                                                     </label>
-                                                    <input type="url" name="instagram" id="instagram"
-                                                        data-type="instagram" placeholder="instagram profile link"
+                                                    <input
                                                         class="social_item_in form-control @error('instagram') is-invalid @enderror"
+                                                        id="instagram" name="instagram" data-type="instagram"
+                                                        type="url"
+                                                        value="{{ old('instagram') ?? getInputValue($card->id, 'instagram') }}"
                                                         tabindex="{{ $tabindex++ }}"
-                                                        value="{{ old('instagram') ?? getInputValue($card->id, 'instagram') }}">
+                                                        placeholder="instagram profile link">
                                                     @if ($errors->has('instagram'))
                                                         <span
                                                             class="help-block text-danger">{{ $errors->first('instagram') }}</span>
@@ -920,12 +931,12 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="mb-3 form-input">
-                                                    <label for="cashapp" class="form-label">CashApp</label>
-                                                    <input type="text" name="cashapp" data-preview="preview_cashapp"
-                                                        id="cashapp" placeholder="cashapp username"
-                                                        value="{{ old('cashapp') ?? $card->cashapp }}"
+                                                    <label class="form-label" for="cashapp">CashApp</label>
+                                                    <input
                                                         class="form-control cin  @error('cashapp') is-invalid @enderror"
-                                                        tabindex="{{ $tabindex++ }}">
+                                                        id="cashapp" name="cashapp" data-preview="preview_cashapp"
+                                                        type="text" value="{{ old('cashapp') ?? $card->cashapp }}"
+                                                        tabindex="{{ $tabindex++ }}" placeholder="cashapp username">
                                                     @if ($errors->has('cashapp'))
                                                         <span
                                                             class="help-block text-danger">{{ $errors->first('cashapp') }}</span>
@@ -935,12 +946,13 @@
 
                                             <div class="col-md-12">
                                                 <div class="mb-3 form-input">
-                                                    <label for="location" class="form-label">Location</label>
-                                                    <input type="url" name="location" data-preview="preview_location"
-                                                        id="location" placeholder="location"
-                                                        value="{{ old('location') ?? $card->location }}"
+                                                    <label class="form-label" for="location">Location</label>
+                                                    <input
                                                         class="social_item_in form-control cin  @error('location') is-invalid @enderror"
-                                                        tabindex="{{ $tabindex++ }}" data-attr="" data-type="map">
+                                                        id="location" name="location" data-preview="preview_location"
+                                                        data-attr="" data-type="map" type="url"
+                                                        value="{{ old('location') ?? $card->location }}"
+                                                        tabindex="{{ $tabindex++ }}" placeholder="location">
                                                     @if ($errors->has('location'))
                                                         <span
                                                             class="help-block text-danger">{{ $errors->first('location') }}</span>
@@ -949,11 +961,10 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="mb-3 form-input">
-                                                    <label for="about_us" class="form-label">About Your Bussiness</label>
-                                                    <textarea type="text" cols="30" rows="10" name="about_us" id="about_us" data-type="about"
-                                                        placeholder="About Your Bussiness" data-preview="preview_about_us"
-                                                        class="social_item_in form-control cin @error('about_us') is-invalid @enderror" tabindex="{{ $tabindex++ }}"
-                                                        data-attr="">{{ old('about_us') ?? $card->about_us }}</textarea>
+                                                    <label class="form-label" for="about_us">About Your Bussiness</label>
+                                                    <textarea class="social_item_in form-control cin @error('about_us') is-invalid @enderror" id="about_us"
+                                                        name="about_us" data-type="about" data-preview="preview_about_us" data-attr="" type="text"
+                                                        tabindex="{{ $tabindex++ }}" cols="30" rows="10" placeholder="About Your Bussiness">{{ old('about_us') ?? $card->about_us }}</textarea>
                                                     @if ($errors->has('about_us'))
                                                         <span
                                                             class="help-block text-danger">{{ $errors->first('about_us') }}</span>
@@ -963,49 +974,51 @@
 
                                             <div class="col-12">
                                                 <div class="mb-3">
-                                                    <label class="form-label required">{{ __('Personalized Link') }}</label>
+                                                    <label
+                                                        class="form-label required">{{ __('Personalized Link') }}</label>
                                                     <div class="input-group">
                                                         <span class="input-group-text"> {{ URL::to('/') }} </span>
-                                                        <input type="text" class="form-control"
-                                                            name="personalized_link"
-                                                            placeholder="{{ __('Personalized Link') }}"
-                                                            autocomplete="off"
-                                                            id="personalized_link"
-                                                            minlength="3"
+                                                        <input class="form-control" id="personalized_link"
+                                                            name="personalized_link" type="text"
                                                             value="{{ old('personalized_link') ?? $card->card_url }}"
-                                                            {{ $plan_details->personalized_link != '1'  ? 'disabled' : ''}}
-                                                              />
+                                                            placeholder="{{ __('Personalized Link') }}"
+                                                            autocomplete="off" minlength="3"
+                                                            {{ $plan_details->personalized_link != '1' ? 'disabled' : '' }} />
                                                     </div>
                                                     @if ($errors->has('personalized_link'))
-                                                        <span class="help-block text-danger">{{ $errors->first('personalized_link') }}</span>
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('personalized_link') }}</span>
                                                     @endif
                                                     <p id="status"></p>
                                                 </div>
                                             </div>
 
-
                                             <div class="col-12">
                                                 <div class="mb-3 form-input position-relative">
-                                                    <label for="footer_text" class="form-label">Copyright</label>
+                                                    <label class="form-label" for="footer_text">Copyright</label>
                                                     @if (isFreePlan(Auth::user()->id))
-                                                        <a href="javascript:void(0)" class="overlay-btn upgrade-plan"
-                                                            data-bs-toggle="tooltip" data-bs-placement="top"
-                                                            data-bs-custom-class="custom-tooltip"
+                                                        <a class="overlay-btn upgrade-plan" data-bs-toggle="tooltip"
+                                                            data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                            href="javascript:void(0)"
                                                             title="Upgrade to a Premium account to access custom Copyright"></a>
                                                     @endif
-                                                    <input type="text" data-preview="preview_copyright"
-                                                        name="footer_text" placeholder="copyright" id="footer_text"
+                                                    <input
                                                         class="form-control cin @error('footer_text') is-invalid @enderror"
-                                                        tabindex="{{ $tabindex++ }}" value="{{ old('footer_text') ?? $footer_text }}"
+                                                        id="footer_text" name="footer_text"
+                                                        data-preview="preview_copyright" type="text"
+                                                        value="{{ old('footer_text') ?? $footer_text }}"
+                                                        tabindex="{{ $tabindex++ }}" placeholder="copyright"
                                                         {{ isFreePlan(Auth::user()->id) == true ? 'disabled' : '' }}>
                                                     @if ($errors->has('footer_text'))
-                                                        <span class="help-block text-danger">{{ $errors->first('footer_text') }}</span>
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('footer_text') }}</span>
                                                     @endif
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="mb-3">
-                                            <button type="submit" class="btn btn-primary submitBtn">Update Biz Ad</button>
+                                            <button class="btn btn-primary submitBtn" type="submit">Update Biz
+                                                Ad</button>
                                         </div>
                                 </form>
                             </div>
@@ -1018,13 +1031,13 @@
     </div>
 
     <div class="share_modal email_modal">
-        <div class="modal animate__animated animate__fadeIn" id="SocialModal" tabindex="-1" data-bs-backdrop="static"
-            aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal animate__animated animate__fadeIn" id="SocialModal" data-bs-backdrop="static"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content ">
                     <div class="modal-header">
                         <h5 class="modal-title">{{ __('Share Your Card') }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                     </div>
                     <div class="modal_body">
                         <div id="social-links">
@@ -1040,11 +1053,10 @@
                                 @endif
                                 <label class="py-2" for="send_to">Send To</label>
                                 <div class="input-group">
-                                    <input type="text" name="send_to" id="send_to"
-                                        class="form-control @error('send_to') is-invalid @enderror"
-                                        placeholder="Send to phone no" required>
-                                    <a href="{{ $sms_attr }}"
-                                        class="input-group-text btn btn-dark sendto-btn">Send</a>
+                                    <input class="form-control @error('send_to') is-invalid @enderror" id="send_to"
+                                        name="send_to" type="text" placeholder="Send to phone no" required>
+                                    <a class="input-group-text btn btn-dark sendto-btn"
+                                        href="{{ $sms_attr }}">Send</a>
                                 </div>
                             </div>
                         </div>
@@ -1054,177 +1066,181 @@
         </div>
     </div>
     @include('user.cards._upgrade_plan_modal')
-    @endsection
+@endsection
 
-    @push('custom-js')
-        <script type="text/javascript" src="{{ asset('assets/js/slim.kickstart.min.js') }}"></script>
-        <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-        <script src="{{ asset('assets/js/card.js') }}"></script>
-        <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
-        {{-- <script src="{{ asset('js/croppie.js') }}"></script> --}}
-        {{-- @include('image_crop') --}}
-        <script>
-            $(document).on('click', '.upgrade-plan', function(e) {
-                e.preventDefault();
-                $('#planModal').modal('show');
-            })
-            $(function() {
-                // show color code
+@push('custom-js')
+    <script type="text/javascript" src="{{ asset('assets/js/slim.kickstart.min.js') }}"></script>
+    <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('assets/js/card.js') }}"></script>
+    <script src="{{ asset('assets/js/image-uploader.min.js') }}"></script>
+    {{-- <script src="{{ asset('js/croppie.js') }}"></script> --}}
+    {{-- @include('image_crop') --}}
+    <script>
+        $(document).on('click', '.upgrade-plan', function(e) {
+            e.preventDefault();
+            $('#planModal').modal('show');
+        })
+        $(function() {
+            // show color code
 
-                $('#theme_color').on('input', function() {
-                    $('#theme_clr_code').val(this.value);
-                });
-
-                $('#header_backgroung').on('input', function() {
-                    $('#theme_back_code').val(this.value);
-                });
-
-                $('#header_text_color').on('input', function() {
-                    $('#header_clr_code').val(this.value);
-                });
-                $('.prod_def_photo_upload').imageUploader();
-
+            $('#theme_color').on('input', function() {
+                $('#theme_clr_code').val(this.value);
             });
 
-            function hexToRgb(hex) {
-                const normal = hex.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
-                if (normal) return normal.slice(1).map(e => parseInt(e, 16));
-                const shorthand = hex.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i);
-                if (shorthand) return shorthand.slice(1).map(e => 0x11 * parseInt(e, 16));
-                return null;
-            }
-
-            $(document).on('input', '#theme_color,#theme_clr_code', function(e) {
-                var current_color = $("#theme_color").val();
-                console.log(current_color);
-                let hex2rgb = hexToRgb(current_color);
-                let rgb = hex2rgb.toString();
-                $('.social_item').find('i').css('background-color', 'rgba(' + rgb + ',.5' + ')');
-                $('.subscribe-btn').css({
-                    'background-color': current_color
-                });
-                $('.purchase_btn').find('a').css({
-                    'background-color': 'rgba(' + rgb + ',.5' + ')'
-                });
-                $('.card_template').css({
-                    'background-color': 'rgba(' + rgb + ',.5' + ')'
-                });
-                $('.carousel-control-prev,.carousel-control-next').css({
-                    'background-color': current_color
-                });
-            })
-
-
-            $(document).on('input', '#header_backgroung', function(e) {
-                var current_color = $("#header_backgroung").val();
-                $('.card_title').css({
-                    'background-color': current_color
-                });
-            })
-
-            $(document).on('input', '#theme_back_code', function(e) {
-                var current_color = $("#theme_back_code").val();
-                $("#header_backgroung").val(current_color);
-                $('.card_title').css({
-                    'background-color': current_color
-                });
-            })
-
-            $(document).on('input', '#header_text_color', function(e) {
-                var current_color = $("#header_text_color").val();
-                $('.gallery-btn').find('i').css('color', current_color);
-                $('.social-contact').find('i').css('color', current_color);
-                $('.login_btn').find('svg').attr('stroke', current_color);
-                $('#preview_name').css({
-                    'color': current_color
-                });
-
-                $('.save-contact').css('color', current_color);
-                $('.shop-button').css('color', current_color);
-
-            })
-
-            $(document).on('input', '#icon_border_color', function(e) {
-                $('#icon_border_color_code').val(this.value);
-                var current_color = $("#icon_border_color").val();
-                $('.social_item').find('i').css('border-color', current_color);
-            })
-
-            $(document).on('change', '#header_font_family', function(e) {
-                var font = $("#header_font_family").val();
-                $('.shop-title').css('font-family', font);
-            })
-
-
-            $(document).ready(function() {
-                // logo and text field
-                $("#selectField1").change(function() {
-                    var selected = $(this).val();
-                    if (selected === "logo") {
-                        $('#headline').addClass('d-none');
-                        $('#logofield').removeClass('d-none');
-                    } else {
-                        $('#headline').removeClass('d-none');
-                        $('#logofield').addClass('d-none');
-                    }
-                });
-                // gallery and video fiedl  digitalbizSlider  digitalBizEmbad digitaBizSourc
-                $("#selectField2").change(function() {
-                    var selected2 = $(this).val();
-                    if (selected2 === "videourl") {
-                        $('#galleryfield').addClass('d-none');
-                        $('#videourl').removeClass('d-none');
-                        $('#videosource').addClass('d-none');
-                        $('#digitalBizEmbad').addClass('d-block').removeClass('d-none');
-                        $('#digitalbizSlider').addClass('d-none').removeClass('d-block');
-                        $('#digitaBizSourc').addClass('d-none').removeClass('d-block');
-                    } else if (selected2 === "videosource") {
-                        $('#galleryfield').addClass('d-none');
-                        $('#videourl').addClass('d-none');
-                        $('#videosource').removeClass('d-none');
-                        $('#digitalBizEmbad').addClass('d-none').removeClass('d-block');
-                        $('#digitalbizSlider').addClass('d-none').removeClass('d-block');
-                        $('#digitaBizSourc').addClass('d-block').removeClass('d-none');
-                    } else {
-                        $('#galleryfield').removeClass('d-none');
-                        $('#videourl').addClass('d-none');
-                        $('#videosource').addClass('d-none');
-                        $('#digitalBizEmbad').addClass('d-none').removeClass('d-block');
-                        $('#digitalbizSlider').addClass('d-block').removeClass('d-none');
-                        $('#digitaBizSourc').addClass('d-none').removeClass('d-block');
-                    }
-                });
+            $('#header_backgroung').on('input', function() {
+                $('#theme_back_code').val(this.value);
             });
 
+            $('#header_text_color').on('input', function() {
+                $('#header_clr_code').val(this.value);
+            });
+            $('.prod_def_photo_upload').imageUploader();
 
-            function checkLink() {
-                "use strict";
-                var plink = $('#personalized_link').val();
-                if (plink.length > 2) {
+        });
 
-                    $.ajax({
-                        url: "{{ route('user.check.link') }}",
-                        method: 'POST',
-                        data: {
-                            _token: "{{ csrf_token() }}",
-                            link: plink
-                        },
-                    }).done(function(res) {
-                        console.log(res);
-                        if (res.status == 'success') {
-                            $('#status').html("<span class='badge mt-2 bg-green'>{{ __('Personalized link is available') }}</span>");
-                        } else {
-                            $('#status').html("<span class='badge mt-2 bg-red'>{{ __('Personalized link is not available') }}</span>");
-                        }
-                    });
+        function hexToRgb(hex) {
+            const normal = hex.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
+            if (normal) return normal.slice(1).map(e => parseInt(e, 16));
+            const shorthand = hex.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i);
+            if (shorthand) return shorthand.slice(1).map(e => 0x11 * parseInt(e, 16));
+            return null;
+        }
+
+        $(document).on('input', '#theme_color,#theme_clr_code', function(e) {
+            var current_color = $("#theme_color").val();
+            console.log(current_color);
+            let hex2rgb = hexToRgb(current_color);
+            let rgb = hex2rgb.toString();
+            $('.social_item').find('i').css('background-color', 'rgba(' + rgb + ',.5' + ')');
+            $('.subscribe-btn').css({
+                'background-color': current_color
+            });
+            $('.purchase_btn').find('a').css({
+                'background-color': 'rgba(' + rgb + ',.5' + ')'
+            });
+            $('.card_template').css({
+                'background-color': 'rgba(' + rgb + ',.5' + ')'
+            });
+            $('.carousel-control-prev,.carousel-control-next').css({
+                'background-color': current_color
+            });
+        })
+
+
+        $(document).on('input', '#header_backgroung', function(e) {
+            var current_color = $("#header_backgroung").val();
+            $('.card_title').css({
+                'background-color': current_color
+            });
+        })
+
+        $(document).on('input', '#theme_back_code', function(e) {
+            var current_color = $("#theme_back_code").val();
+            $("#header_backgroung").val(current_color);
+            $('.card_title').css({
+                'background-color': current_color
+            });
+        })
+
+        $(document).on('input', '#header_text_color', function(e) {
+            var current_color = $("#header_text_color").val();
+            $('.gallery-btn').find('i').css('color', current_color);
+            $('.social-contact').find('i').css('color', current_color);
+            $('.login_btn').find('svg').attr('stroke', current_color);
+            $('#preview_name').css({
+                'color': current_color
+            });
+
+            $('.save-contact').css('color', current_color);
+            $('.shop-button').css('color', current_color);
+
+        })
+
+        $(document).on('input', '#icon_border_color', function(e) {
+            $('#icon_border_color_code').val(this.value);
+            var current_color = $("#icon_border_color").val();
+            $('.social_item').find('i').css('border-color', current_color);
+        })
+
+        $(document).on('change', '#header_font_family', function(e) {
+            var font = $("#header_font_family").val();
+            $('.shop-title').css('font-family', font);
+        })
+
+
+        $(document).ready(function() {
+            // logo and text field
+            $("#selectField1").change(function() {
+                var selected = $(this).val();
+                if (selected === "logo") {
+                    $('#headline').addClass('d-none');
+                    $('#logofield').removeClass('d-none');
                 } else {
-                    $('#status').html("");
+                    $('#headline').removeClass('d-none');
+                    $('#logofield').addClass('d-none');
                 }
+            });
+            // gallery and video fiedl  digitalbizSlider  digitalBizEmbad digitaBizSourc
+            $("#selectField2").change(function() {
+                var selected2 = $(this).val();
+                if (selected2 === "videourl") {
+                    $('#galleryfield').addClass('d-none');
+                    $('#videourl').removeClass('d-none');
+                    $('#videosource').addClass('d-none');
+                    $('#digitalBizEmbad').addClass('d-block').removeClass('d-none');
+                    $('#digitalbizSlider').addClass('d-none').removeClass('d-block');
+                    $('#digitaBizSourc').addClass('d-none').removeClass('d-block');
+                } else if (selected2 === "videosource") {
+                    $('#galleryfield').addClass('d-none');
+                    $('#videourl').addClass('d-none');
+                    $('#videosource').removeClass('d-none');
+                    $('#digitalBizEmbad').addClass('d-none').removeClass('d-block');
+                    $('#digitalbizSlider').addClass('d-none').removeClass('d-block');
+                    $('#digitaBizSourc').addClass('d-block').removeClass('d-none');
+                } else {
+                    $('#galleryfield').removeClass('d-none');
+                    $('#videourl').addClass('d-none');
+                    $('#videosource').addClass('d-none');
+                    $('#digitalBizEmbad').addClass('d-none').removeClass('d-block');
+                    $('#digitalbizSlider').addClass('d-block').removeClass('d-none');
+                    $('#digitaBizSourc').addClass('d-none').removeClass('d-block');
+                }
+            });
+        });
+
+
+        function checkLink() {
+            "use strict";
+            var plink = $('#personalized_link').val();
+            if (plink.length > 2) {
+
+                $.ajax({
+                    url: "{{ route('user.check.link') }}",
+                    method: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        link: plink
+                    },
+                }).done(function(res) {
+                    console.log(res);
+                    if (res.status == 'success') {
+                        $('#status').html(
+                            "<span class='badge mt-2 bg-green'>{{ __('Personalized link is available') }}</span>"
+                        );
+                    } else {
+                        $('#status').html(
+                            "<span class='badge mt-2 bg-red'>{{ __('Personalized link is not available') }}</span>"
+                        );
+                    }
+                });
+            } else {
+                $('#status').html("");
             }
-            /* Encode string to link */
-            function convertToLink(str) {
-                "use strict";
-                str = str.replace(/[`~!@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ')
+        }
+        /* Encode string to link */
+        function convertToLink(str) {
+            "use strict";
+            str = str.replace(/[`~!@#$%^&*()_\-+=\[\]{};:'"\\|\/,.<>?\s]/g, ' ')
             .toLowerCase();
         str = str.replace(/^\s+|\s+$/gm, '');
         str = str.replace(/\s+/g, '-');
@@ -1510,16 +1526,12 @@
             var number_of_images = $(this)[0].files.length;
             if (number_of_images > max_file_number) {
                 alert(`You can upload maximum ${max_file_number} files.`);
-                        $(this).val('');
-                        $button.prop('disabled', 'disabled');
-                    } else {
-                        $button.prop('disabled', false);
-                    }
-                });
+                    $(this).val('');
+                    $button.prop('disabled', 'disabled');
+                } else {
+                    $button.prop('disabled', false);
+                }
             });
-
-
+        });
     </script>
-
 @endpush
-
