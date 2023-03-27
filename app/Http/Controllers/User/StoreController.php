@@ -36,7 +36,7 @@ class StoreController extends Controller
         $cards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
 
         $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
-        $currencies = Currency::orderBy('name','asc')->where('is_active',1)->get();
+        $currencies = Currency::orderBy('name', 'asc')->where('is_active', 1)->get();
         $plan_details = json_decode($plan->plan_details);
 
         if ($plan_details->no_of_vcards == 999) {
@@ -81,7 +81,7 @@ class StoreController extends Controller
 
         $cardId = uniqid();
 
-        if ($request->personalized_link && ($plan_details->personalized_link == '1') ) {
+        if ($request->personalized_link && ($plan_details->personalized_link == '1')) {
             $personalized_link = $request->personalized_link;
         } else {
             $personalized_link = $cardId;
@@ -223,7 +223,7 @@ class StoreController extends Controller
         } else {
             if ($business_card->card_type == "store") {
                 $settings = Setting::where('status', 1)->first();
-                $currencies = Currency::orderBy('name','asc')->where('is_active',1)->get();
+                $currencies = Currency::orderBy('name', 'asc')->where('is_active', 1)->get();
 
                 $user_details = User::where('user_id', Auth::user()->user_id)->first();
                 $plan_details = json_decode($user_details->plan_details);
@@ -241,7 +241,7 @@ class StoreController extends Controller
     public function updateStore(Request $request, $id)
     {
 
-         $validator = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'card_color'        => 'required|string|max:124',
             'card_lang'         => 'required|string|max:124',
             'title'             => 'required|string|max:124',
@@ -308,7 +308,6 @@ class StoreController extends Controller
             BusinessCard::where('card_id', $id)->update($data);
             alert()->success(trans('Store details updated'));
             return redirect()->route('user.stores');
-
         }
     }
 
@@ -318,8 +317,15 @@ class StoreController extends Controller
     {
         $business_cards = BusinessCard::with('hasProduct')->where('card_id', $card)->first();
 
+
+
         $iso_code = json_decode($business_cards->description, true);
         $currency = Currency::where('iso_code', $iso_code['currency'])->first();
+
+
+
+
+
 
 
         $settings = Setting::where('status', 1)->first();

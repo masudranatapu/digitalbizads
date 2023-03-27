@@ -6,7 +6,7 @@
                     <li class="nav-item {{ request()->is('user/dashboard') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('user.dashboard') }}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                     stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -23,7 +23,7 @@
                     <li class="nav-item {{ request()->is('user/cards') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('user.cards') }}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-id"
+                                <svg class="icon icon-tabler icon-tabler-id" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -44,14 +44,14 @@
                     @php
                         $userPlan = getUserPlan();
                         $store = getUserStore();
-
+                        
                     @endphp
                     @if (isset($userPlan['is_whatsapp_store']) && $userPlan['is_whatsapp_store'] == '1')
                         <li class="nav-item dropdown @yield('store-nav')">
-                            <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown"
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#navbar-extra"
                                 role="button" aria-expanded="false">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-id"
+                                    <svg class="icon icon-tabler icon-tabler-id" xmlns="http://www.w3.org/2000/svg"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                         stroke="currentColor" fill="none" stroke-linecap="round"
                                         stroke-linejoin="round">
@@ -70,22 +70,22 @@
                                 </span>
                             </a>
                             <div class="dropdown-menu">
-                                <a href="{{ route('user.stores') }}"
-                                    class="dropdown-item {{ request()->routeIs('user.stores') ? 'active' : '' }}">{{ __('Store List') }}</a>
-                                <a href="{{ route('user.product.category.index') }}"
-                                    class="dropdown-item {{ request()->routeIs('user.product.category.index') ? 'active' : '' }}">{{ __('Product Category') }}</a>
+                                <a class="dropdown-item {{ request()->routeIs('user.stores') ? 'active' : '' }}"
+                                    href="{{ route('user.stores') }}">{{ __('Store List') }}</a>
+                                <a class="dropdown-item {{ request()->routeIs('user.product.category.index') ? 'active' : '' }}"
+                                    href="{{ route('user.product.category.index') }}">{{ __('Product Category') }}</a>
                                 @if (isset($store))
-                                    <a href="{{ route('user.products.list', ['id' => $store->card_id]) }}"
-                                        class="dropdown-item {{ request()->routeIs('user.products.*') || request()->routeIs('user.product.*') ? 'active' : '' }}">{{ __('Product List') }}</a>
-                                    <a href="{{ route('user.order.index', ['card_id' => $store->card_id]) }}"
-                                        class="dropdown-item {{ request()->routeIs('user.order.*') ? 'active' : '' }}">Order</a>
+                                    <a class="dropdown-item {{ request()->routeIs('user.products.*') || request()->routeIs('user.product.variants*') ? 'active' : '' }}"
+                                        href="{{ route('user.products.list', ['id' => $store->card_id]) }}">{{ __('Product List') }}</a>
+                                    <a class="dropdown-item {{ request()->routeIs('user.order.*') ? 'active' : '' }}"
+                                        href="{{ route('user.order.index', ['card_id' => $store->card_id]) }}">Order</a>
                                 @endif
                             </div>
                         </li>
                         <li class="nav-item {{ request()->is('user/media') ? 'active' : '' }}">
                             <a class="nav-link" href="{{ route('user.media') }}">
                                 <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-photo"
+                                    <svg class="icon icon-tabler icon-tabler-photo" xmlns="http://www.w3.org/2000/svg"
                                         width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                         stroke="currentColor" fill="none" stroke-linecap="round"
                                         stroke-linejoin="round">
@@ -105,14 +105,10 @@
                         </li>
                     @endif
 
-
-
-
-
                     <li class="nav-item {{ request()->is('user/plans') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('user.plans') }}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-id"
+                                <svg class="icon icon-tabler icon-tabler-id" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                     stroke="currentColor" fill="none" stroke-linecap="round"
                                     stroke-linejoin="round">
@@ -133,7 +129,7 @@
                     <li class="nav-item {{ request()->is('user/transactions') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('user.transactions') }}">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
+                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
                                     stroke-linecap="round" stroke-linejoin="round">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -151,7 +147,7 @@
                         </a>
                     </li>
                     <li class="nav-item dropdown @yield('setting-nav')">
-                        <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#navbar-extra"
                             role="button" aria-expanded="false">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                 {{-- <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-id"
@@ -168,7 +164,6 @@
                                     <line x1="7" y1="16" x2="17" y2="16"></line>
                                 </svg> --}}
 
-
                                 <i class="fa-solid fa-sliders"></i>
                             </span>
                             <span class="nav-link-title">
@@ -176,14 +171,14 @@
                             </span>
                         </a>
                         <div class="dropdown-menu ">
-                            <a href="{{ route('user.setting.payment') }}"
-                                class="dropdown-item @if (request()->routeIs('user.setting.payment')) active @endif">{{ __('Payment Settings') }}</a>
+                            <a class="dropdown-item @if (request()->routeIs('user.setting.payment')) active @endif"
+                                href="{{ route('user.setting.payment') }}">{{ __('Payment Settings') }}</a>
 
-                            <a href="{{ route('user.state.index') }}"
-                                class="dropdown-item @if (request()->routeIs('user.state*')) active @endif">{{ __('Sate & Tax') }}</a>
+                            <a class="dropdown-item @if (request()->routeIs('user.state*')) active @endif"
+                                href="{{ route('user.state.index') }}">{{ __('Sate & Tax') }}</a>
 
-                            <a href="{{ route('user.shipping_area.index') }}"
-                                class="dropdown-item @if (request()->routeIs('user.shipping_area*')) active @endif">{{ __('Shipping Area & cost') }}</a>
+                            <a class="dropdown-item @if (request()->routeIs('user.shipping_area*')) active @endif"
+                                href="{{ route('user.shipping_area.index') }}">{{ __('Shipping Area & cost') }}</a>
                         </div>
                     </li>
 
