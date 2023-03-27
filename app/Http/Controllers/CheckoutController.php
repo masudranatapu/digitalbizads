@@ -212,25 +212,32 @@ class CheckoutController extends Controller
 
         $user = User::find($business_card_details->user_id);
 
-        \Stripe\Stripe::setApiKey($user->stripe_secret_key);
-        $payment_intent = \Stripe\PaymentIntent::create([
-            'description' => "Product purchase",
-            'shipping' => [
-                'name' => $shipping['ship_first_name'],
-                'address' => [
-                    'line1' => $shipping['ship_address1'],
-                    'postal_code' => $shipping['ship_zip'],
-                    'city' => $shipping['ship_city'],
-                    'state' =>  $shipping['ship_state'],
-                    'country' =>  $shipping['ship_city'],
+        if (isset($user->stripe_secret_key)) {
+            \Stripe\Stripe::setApiKey($user->stripe_secret_key);
+            $payment_intent = \Stripe\PaymentIntent::create([
+                'description' => "Product purchase",
+                'shipping' => [
+                    'name' => $shipping['ship_first_name'],
+                    'address' => [
+                        'line1' => $shipping['ship_address1'],
+                        'postal_code' => $shipping['ship_zip'],
+                        'city' => $shipping['ship_city'],
+                        'state' =>  $shipping['ship_state'],
+                        'country' =>  $shipping['ship_city'],
+                    ],
                 ],
-            ],
-            'amount' => intval($total) * 100,
-            'currency' => $currency->iso_code,
-            'payment_method_types' => ['card'],
-        ]);
-        $intent = $payment_intent->client_secret;
-        $paymentId = $payment_intent->id;
+                'amount' => intval($total) * 100,
+                'currency' => $currency->iso_code,
+                'payment_method_types' => ['card'],
+            ]);
+            $intent = $payment_intent->client_secret;
+            $paymentId = $payment_intent->id;
+        } else {
+            $intent = null;
+            $paymentId = null;
+        }
+
+
 
         return view('pages.product.checkout_payment', compact('business_card_details', 'user', 'paymentId', 'intent'));
     }
