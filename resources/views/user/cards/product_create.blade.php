@@ -74,8 +74,8 @@
                                                 <div class='mb-3'>
                                                     <label class='form-label required'>{{ __('Product Name') }}</label>
                                                     <input class='form-control' name='product_name' type='text'
-                                                        value={{ old('product_name') }}
-                                                        placeholder='{{ __('Product Name') }}' required>
+                                                        value="{{ old('product_name') }}"
+                                                        placeholder="{{ __('Product Name') }}" required>
                                                 </div>
                                             </div>
                                             <div class='col-md-6 col-xl-6'>
