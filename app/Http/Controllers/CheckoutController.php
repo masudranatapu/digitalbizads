@@ -215,9 +215,6 @@ class CheckoutController extends Controller
 
         $billing = Session::has('billing');
 
-
-
-
         if (!$billing) {
             Session::flash('alert', "Please set billing and shipping address");
             return redirect()->route('checkout.billing', ['cardUrl' => $cardUrl]);

@@ -178,6 +178,16 @@
     <script src="{{ asset('assets/js/swiper-bundle.min.js') }}"></script>
     <script src="{{ asset('frontend/whatsapp-store/js/script.js') }}"></script>
 
+    @if ($product->is_variant)
+
+    <script>
+         $(document).ready(function() {
+            getVariantPrice();
+         })
+    </script>
+
+    @endif
+
     <!-- lightgallery  -->
     <script type="text/javascript">
         $(document).ready(function() {
@@ -219,23 +229,33 @@
 
     <script>
         $("select[name^='option[]']").change(function() {
+            getVariantPrice();
+
+        })
+
+
+        function  getVariantPrice() {
             var values = $("select[name^='option[]']").map(function(idx, ele) {
                 return $(ele).children('option:selected').data();
             }).get();
-            let price = values.map(({
+
+            var price = values.map(({
                 price
             }, element) => {
-                return parseFloat(price.toFixed(2)) ?? 0;
+                return parseFloat(price);
             });
+
             console.dir({
                 values,
                 price
             });
-            let total = price.reduce((partialSum, a) => partialSum + a, 0)
-            let mainPrice = $('#mainPrice').val();
-            let newPrice = parseInt(total) + parseInt(mainPrice);
+            var total = price.reduce((partialSum, a) => partialSum + a, 0);
+
+            var mainPrice = parseFloat($('#mainPrice').val());
+            var newPrice = total+mainPrice;
             $('#totalPrice').text(newPrice.toFixed(2));
-        })
+        }
+
 
         $('#qtyAdd').click(function() {
             let qty = $('#qty').val();

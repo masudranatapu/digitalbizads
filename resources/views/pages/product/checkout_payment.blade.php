@@ -100,13 +100,13 @@
                                             @if (session()->has('tax'))
                                                 @php
 
-                                                    $total = (int) $total + (int) session()->get('tax');
+                                                    $total = $total + session()->get('tax');
                                                 @endphp
                                             @endif
                                             @if (session()->has('shippingCost'))
                                                 @php
 
-                                                    $total = (int) $total + (int) session()->get('shippingCost');
+                                                    $total = $total + session()->get('shippingCost');
                                                 @endphp
                                             @endif
                                             {{ getPrice($total) }}
