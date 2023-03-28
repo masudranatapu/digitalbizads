@@ -231,8 +231,6 @@
                 return parseFloat(price);
             });
 
-            console.log(price);
-            return false;
             console.dir({
                 values,
                 price
