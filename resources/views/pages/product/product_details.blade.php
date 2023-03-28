@@ -243,7 +243,7 @@
 
             var mainPrice = parseFloat($('#mainPrice').val());
             var newPrice = total+mainPrice;
-            $('#totalPrice').text(newPrice);
+            $('#totalPrice').text(newPrice.toFixed(2));
         })
 
         $('#qtyAdd').click(function() {
