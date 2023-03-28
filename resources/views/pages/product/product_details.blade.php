@@ -228,7 +228,7 @@
             let price = values.map(({
                 price
             }, element) => {
-                return parseFloat(price.toFixed(2)) ?? 0;
+                return price ?? 0;
             });
 
             console.log(price);
