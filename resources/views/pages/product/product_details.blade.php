@@ -225,7 +225,7 @@
 
 
 
-            let price = values.map(({
+            var price = values.map(({
                 price
             }, element) => {
                 return parseFloat(price);
@@ -235,10 +235,15 @@
                 values,
                 price
             });
-            let total = price.reduce((partialSum, a) => partialSum + a, 0)
-            let mainPrice = $('#mainPrice').val();
-            let newPrice = parseInt(total) + parseInt(mainPrice);
-            $('#totalPrice').text(newPrice.toFixed(2));
+            var total = price.reduce((partialSum, a) => partialSum + a, 0);
+            // var total = 0;
+            // $.each(price,function(){total+=this || 0; });
+
+            // alert(total);
+
+            var mainPrice = parseFloat($('#mainPrice').val());
+            var newPrice = total+mainPrice;
+            $('#totalPrice').text(newPrice);
         })
 
         $('#qtyAdd').click(function() {
