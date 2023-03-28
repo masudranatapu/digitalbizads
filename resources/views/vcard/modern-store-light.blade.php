@@ -392,12 +392,26 @@
                 },
                 success: function(data) {
                     console.log(data);
-                    if (data.status == true) {
-                        successAlert(data.message);
-                    } else {
-                        successAlert('Something wrong please try again');
-                    }
 
+                    const {
+                        message,
+                        total_product
+                    } = data;
+
+                    if (data.status == true) {
+                        successAlert(message);
+
+                        if (total_product > 0) {
+
+                            $("#badge").text(total_product);
+
+                        } else {
+                            $("#badge").text(0);
+
+
+                        }
+
+                    }
                 },
                 error: function(error) {
                     console.log(error);
@@ -420,7 +434,8 @@
                 var total_price = 0;
                 total_price = cart[j].qty * Number(cart[j].price);
                 grandTotal += Number(total_price);
-                cart_items += '<div class="p-4 bg-white rounded"><img class="rounded bp-2" src="' + cart[j].product_image +
+                cart_items += '<div class="p-4 bg-white rounded"><img class="rounded bp-2" src="' + cart[j]
+                    .product_image +
                     '"><div class="flex mb-6 mt-1 justify-between items-center"><div><h3 class="text-sm font-medium">' +
                     cart[j].product_name + '</h3> <span class="text-xs text-gray-500">' + cart[j].subtitle +
                     '</span></div></div><div class="flex mb-2 justify-between items-center"><h4 class="text-xl font-bold">' +
@@ -627,7 +642,8 @@
 
 
 
-                var link = "https://api.whatsapp.com/send/?phone=" + whatsAppNumber + "&text=" + encodeURI(waShareContent);
+                var link = "https://api.whatsapp.com/send/?phone=" + whatsAppNumber + "&text=" + encodeURI(
+                    waShareContent);
                 window.open(link, '_blank');
 
                 successAlert('{{ __('Order Placed!') }}');

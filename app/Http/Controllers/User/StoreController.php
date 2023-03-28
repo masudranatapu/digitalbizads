@@ -9,6 +9,7 @@ use App\Setting;
 use App\Currency;
 use App\BusinessCard;
 use App\StoreProduct;
+use App\VariantOption;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -322,16 +323,25 @@ class StoreController extends Controller
         $iso_code = json_decode($business_cards->description, true);
         $currency = Currency::where('iso_code', $iso_code['currency'])->first();
 
-
-
-
-
-
-
         $settings = Setting::where('status', 1)->first();
+        $variantProductQuantity = [];
 
 
-        return view('user.cards.products', compact('business_cards', 'settings', 'currency'));
+        foreach ($business_cards->hasProduct as $product) {
+            if ($product->is_variant) {
+                $variantOptionStock = VariantOption::where('product_id', $product->product_id)->pluck('stock')->toArray();
+                $sum = array_sum($variantOptionStock);
+
+                $variantProductQuantity[$product->id] = [
+                    'quantity' => $sum,
+                ];
+            }
+        }
+
+
+
+
+        return view('user.cards.products', compact('business_cards', 'settings', 'currency', 'variantProductQuantity'));
     }
 
     public function addProducts($id)

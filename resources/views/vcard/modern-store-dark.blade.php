@@ -360,7 +360,7 @@
         var whatsAppMessage = "{{ $whatsapp_msg }}";
         var currency = "{{ $currency }}";
 
-        $("#badge").hide();
+
         $("#place-order").hide();
         $("#place-order-email").hide();
         $("#empty-cart").show();
@@ -399,10 +399,10 @@
                         if (total_product > 0) {
 
                             $("#badge").text(total_product);
-                            $("#badge").show();
+
                         } else {
-                            $("#badge").text("");
-                            $("#badge").hide();
+                            $("#badge").text(0);
+
 
                         }
 
