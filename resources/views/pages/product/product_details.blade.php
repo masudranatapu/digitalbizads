@@ -178,6 +178,16 @@
     <script src="{{ asset('assets/js/swiper-bundle.min.js') }}"></script>
     <script src="{{ asset('frontend/whatsapp-store/js/script.js') }}"></script>
 
+    @if ($product->is_variant)
+
+    <script>
+         $(document).ready(function() {
+            getVariantPrice();
+         })
+    </script>
+
+    @endif
+
     <!-- lightgallery  -->
     <script type="text/javascript">
         $(document).ready(function() {
@@ -219,11 +229,15 @@
 
     <script>
         $("select[name^='option[]']").change(function() {
+            getVariantPrice();
+
+        })
+
+
+        function  getVariantPrice() {
             var values = $("select[name^='option[]']").map(function(idx, ele) {
                 return $(ele).children('option:selected').data();
             }).get();
-
-
 
             var price = values.map(({
                 price
@@ -236,15 +250,12 @@
                 price
             });
             var total = price.reduce((partialSum, a) => partialSum + a, 0);
-            // var total = 0;
-            // $.each(price,function(){total+=this || 0; });
-
-            // alert(total);
 
             var mainPrice = parseFloat($('#mainPrice').val());
             var newPrice = total+mainPrice;
             $('#totalPrice').text(newPrice.toFixed(2));
-        })
+        }
+
 
         $('#qtyAdd').click(function() {
             let qty = $('#qty').val();
