@@ -99,13 +99,13 @@
                                         <td class="text-end text-lg text-primary" data-th="Grand Total" colspan="3">
                                             @if (session()->has('tax'))
                                                 @php
-
+                                                    
                                                     $total = $total + session()->get('tax');
                                                 @endphp
                                             @endif
                                             @if (session()->has('shippingCost'))
                                                 @php
-
+                                                    
                                                     $total = $total + session()->get('shippingCost');
                                                 @endphp
                                             @endif
@@ -141,16 +141,16 @@
                                 <form id="paymentMethodForm" action="#" method="post">
                                     <div class="payment">
 
-                                        @if (isset($user->paypal_public_key) && isset($user->paypal_secret_key))
+                                        {{-- @if (isset($user->paypal_public_key) && isset($user->paypal_secret_key))
                                             <input id="paypal" name="paymentMethod" type="radio" value="PayPal">
                                             <label for="paypal">
-                                                {{-- <a href="#"> --}}
+
                                                 <img class="img-fluid" src="{{ asset('assets/images/paypal.png') }}"
                                                     alt="Paypal">
                                                 <span>Paypal</span>
-                                                {{-- </a> --}}
+
                                             </label>
-                                        @endif
+                                        @endif --}}
                                         @if (isset($user->stripe_public_key) && isset($user->stripe_secret_key))
                                             <input id="stripe" name="paymentMethod" type="radio" value="Stripe">
                                             <label for="stripe">
@@ -185,10 +185,12 @@
     </div>
 
     <form id="paypalPaymentFrom"
-        action="{{ route('checkout.payment.paypal.store', ['cardUrl' => $business_card_details->card_url]) }}" method="POST">
+        action="{{ route('checkout.payment.paypal.store', ['cardUrl' => $business_card_details->card_url]) }}"
+        method="POST">
         @csrf</form>
 
-    <div class="modal modal-blur fade" id="stripeModal" role="dialog" aria-hidden="true" tabindex="-1">
+    <div class="modal modal-blur fade" id="stripeModal" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
+        aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal modal-dialog-centered" role="document">
 
             <div class="modal-content rounded p-1">
@@ -298,7 +300,7 @@
 
             form.addEventListener('submit', function(event) {
                 event.preventDefault();
-                $('.card-footer button').html(
+                $('#card-button').html(
                     '<div class="d-flex justify-content-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>'
                 ).prop('disabled', true);
 
@@ -313,7 +315,7 @@
                             // Inform the user if there was an error.
                             var errorElement = document.getElementById('card-errors');
                             errorElement.textContent = result.error.message;
-                            $('.card-footer button').html("Pay Now").prop('disabled', false);
+                            $('#card-button').html("Pay Now").prop('disabled', false);
 
                         } else {
                             console.log(result);

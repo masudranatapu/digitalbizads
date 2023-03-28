@@ -462,10 +462,21 @@
                                 </p>
                             </td>
                         </tr>
+                        <tr>
+                            <td></td>
+                            <td class="d-flex justify-content" colspan="2">
+                                <a class="btn btn-primary mt-3"
+                                    href="{{ route('payment.invoice', ['cardUrl' => $businessCard->card_url, 'orderid' => $order->order_number]) }}">Check
+                                    Your Invoice</a>
+                            </td>
+
+                        </tr>
 
                     </table>
+
                 </tr><!-- end tr -->
                 <!-- 1 Column Text + Button : END -->
+
             </table>
         </div>
     </center>

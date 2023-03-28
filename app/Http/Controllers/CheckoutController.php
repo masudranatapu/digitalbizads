@@ -16,7 +16,6 @@ use App\ProductOrderTransaction;
 use App\ShippingCost;
 use App\State;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +23,15 @@ use Illuminate\Support\Facades\Session;
 
 use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Api\Amount;
+use PayPal\Api\Details;
+use PayPal\Api\Item;
+use PayPal\Api\ItemList;
+use PayPal\Api\Payer;
+use PayPal\Api\Payment;
+use PayPal\Api\PaymentExecution;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\Transaction;
 
 
 
@@ -37,27 +45,23 @@ class CheckoutController extends Controller
         if (isset($cardUrl)) {
 
             $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
-        } else {
-            
+            $paypalConf = User::find($business_card_details->user_id);
+
+            $this->apiContext = new ApiContext(
+                new OAuthTokenCredential(
+                    $paypalConf->paypal_public_key,
+                    $paypalConf->paypal_secret_key
+                )
+            );
+
+            $this->apiContext->setConfig([
+                'mode' => 'sandbox',
+                'http.ConnectionTimeOut' => 30,
+                'log.LogEnabled' => true,
+                'log.FileName' => storage_path() . '/logs/product_puchase_paypal.log',
+                'log.LogLevel' => 'DEBUG',
+            ]);
         }
-
-
-        // $paypalConf = User::find(Session::get('store_user_id'));
-
-        // $this->apiContext = new ApiContext(
-        //     new OAuthTokenCredential(
-        //         $paypalConf['paypal_public_key'],
-        //         $paypalConf['paypal_secret_key']
-        //     )
-        // );
-
-        // $this->apiContext->setConfig([
-        //     'mode' => 'sanbox',
-        //     'http.ConnectionTimeOut' => 30,
-        //     'log.LogEnabled' => true,
-        //     'log.FileName' => storage_path() . '/logs/paypal.log',
-        //     'log.LogLevel' => 'DEBUG',
-        // ]);
     }
 
 
@@ -380,13 +384,13 @@ class CheckoutController extends Controller
                 $order = new Order();
                 $order->transaction_id = $productOrderTransaction->id;
                 $order->store_id = $business_card_details->card_id;
+                $order->order_number = uniqid('order_');
                 $order->quantity = $totalQuantity;
                 $order->total_price = $totalPrice;
                 $order->payment_fee = 0;
                 $order->vat = $tax;
                 $order->shipping_cost = $shippingCost;
                 $order->grand_total = $totalPrice;
-                $order->order_date = now();
                 $order->order_date = now();
                 $order->shipping_details = json_encode(Session::get('shipping'));
                 $order->billing_details = json_encode(Session::get('billing'));
@@ -447,7 +451,7 @@ class CheckoutController extends Controller
                 Session::forget('shippingCost');
 
 
-                return redirect()->route('card.preview', $business_card_details->card_url);
+                return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number]);
             } catch (\Throwable $th) {
 
                 dd($th->getMessage());
@@ -459,7 +463,67 @@ class CheckoutController extends Controller
     }
 
 
-    public function checkoutPaymentPaypalStore(Request $request)
+    public function checkoutPaymentPaypalStore(Request $request, $cardUrl)
     {
+        $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
+
+        $payer = new Payer();
+        $payer->setPaymentMethod('paypal');
+
+        $items = [
+            new Item([
+                'name' => 'Item Name',
+                'price' => 10 * 10,
+                'quantity' => 1,
+            ]),
+        ];
+
+        $itemList = new ItemList();
+        $itemList->setItems($items);
+
+        $details = new Details();
+        $details->setSubtotal(10);
+
+        $amount = new Amount();
+        $amount->setCurrency('USD')
+            ->setTotal(10.00)
+            ->setDetails($details);
+
+        $transaction = new Transaction();
+        $transaction->setAmount($amount)
+            ->setItemList($itemList)
+            ->setDescription('Payment Description')
+            ->setInvoiceNumber(uniqid());
+
+        $redirectUrls = new RedirectUrls();
+        $redirectUrls->setReturnUrl(route('card.preview', $business_card_details->card_url))
+            ->setCancelUrl(route('card.preview', $business_card_details->card_url));
+
+        $payment = new Payment();
+        $payment->setIntent('sale')
+            ->setPayer($payer)
+            ->setRedirectUrls($redirectUrls)
+            ->setTransactions([$transaction]);
+
+        try {
+            $payment->create($this->apiContext);
+
+            return redirect()->route('card.preview', $business_card_details->card_url);
+        } catch (\Exception $e) {
+            dd($e);
+        }
+    }
+
+    public function paymentInvoice(Request $request, $card_url, $order_id)
+    {
+        $orders = Order::with('orderDetails')->where('order_number', $order_id)->first();
+        $shipping = json_decode($orders->shipping_details, true);
+        $shippingArea = ShippingCost::find($shipping['ship_area']);
+        $shippingState = State::find($shipping['ship_state']);
+        $shipping['shipping_area'] = $shippingArea->name;
+        $shipping['shipping_states'] = $shippingState->name;
+        $business_card_details = BusinessCard::where('card_url', $card_url)->first();
+
+        return view('pages.invoice', compact('orders', 'shipping', 'business_card_details'));
     }
 }

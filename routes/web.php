@@ -377,9 +377,10 @@ Route::get('{cardUrl}/checkout/payment', [CheckoutController::class, 'checkoutPa
 Route::get('{cardUrl}/checkout/payment/stripe', [CheckoutController::class, 'checkoutPaymentSrtipe'])->name('checkout.payment.stripe');
 Route::post('{cardUrl}/checkout/payment/stripe/{paymentId}', [CheckoutController::class, 'checkoutPaymentSrtipeStore'])->name('checkout.payment.stripe.store');
 Route::post('{cardUrl}/checkout/payment/paypal/', [CheckoutController::class, 'checkoutPaymentPaypalStore'])->name('checkout.payment.paypal.store');
+Route::get('{cardUrl}/invoice/{orderid}', [CheckoutController::class, 'paymentInvoice'])->name('payment.invoice');
 
 
 // getpreview
-Route::get('{cardurl}', [HomeController::class, 'getPreview'])->name('card.preview');
 Route::post('/place-email-order', [HomeController::class, 'placeEmailOrder'])->name('place.email.order');
 Route::get('download/{id}', [HomeController::class, 'downloadVcard'])->name('download.vCard');
+Route::get('{cardurl}', [HomeController::class, 'getPreview'])->name('card.preview');

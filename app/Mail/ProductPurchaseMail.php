@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\BusinessCard;
 use App\Order;
 use App\ShippingCost;
 use App\State;
@@ -41,8 +42,11 @@ class ProductPurchaseMail extends Mailable
         $shipping['shipping_area'] = $shippingArea->name;
         $shipping['shipping_states'] = $shippingState->name;
         $orders = Order::with('orderDetails')->find($this->order->id);
+        $business_card_details = BusinessCard::where('card_id', $orders->store_id)->first();
+
 
         return $this->subject('Product purchase invoice.')->view('emails.strore-product-invoice')
+            ->with('businessCard', $business_card_details)
             ->with('productOrderTransaction', $this->productOrderTransaction)
             ->with('order', $orders)
             ->with('shipping', $shipping)

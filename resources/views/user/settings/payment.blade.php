@@ -21,7 +21,7 @@
                             <div class="dropdown">
 
                                 <a type="button" href="{{ route('user.card.subscriber.export', ['card' => $cardId]) }}">
-                                    <button type="button" class="btn btn btn-primary">
+                                    <button class="btn btn btn-primary" type="button">
                                         <i class="fas fa-file-excel"></i> &ensp;
                                         {{ __('Export To Excel') }}
                                     </button>
@@ -62,7 +62,7 @@
                                         <div class="col-md-6 col-xl-6">
                                             <div class="mb-3">
                                                 <label class="form-label required">Client Key</label>
-                                                <input type="text" class="form-control" name="paypal_client_key"
+                                                <input class="form-control" name="paypal_client_key" type="text"
                                                     value="{{ Auth::user()->paypal_public_key ?? '' }}"
                                                     placeholder="Client Key...">
                                             </div>
@@ -70,8 +70,8 @@
                                         <div class="col-md-6 col-xl-6">
                                             <div class="mb-3">
                                                 <label class="form-label required">Secret</label>
-                                                <input type="text" class="form-control" name="paypal_secret"
-                                                    value="{{ Auth::user()->paypal_public_key ?? '' }}"
+                                                <input class="form-control" name="paypal_secret" type="text"
+                                                    value="{{ Auth::user()->paypal_secret_key ?? '' }}"
                                                     placeholder="Secret...">
                                             </div>
                                         </div>
@@ -82,7 +82,7 @@
                                         <div class="col-md-6 col-xl-6">
                                             <div class="mb-3">
                                                 <label class="form-label required">Publishable Key</label>
-                                                <input type="text" class="form-control" name="stripe_publishable_key"
+                                                <input class="form-control" name="stripe_publishable_key" type="text"
                                                     value="{{ Auth::user()->stripe_public_key ?? '' }}"
                                                     placeholder="Publishable Key...">
                                             </div>
@@ -90,14 +90,14 @@
                                         <div class="col-md-6 col-xl-6">
                                             <div class="mb-3">
                                                 <label class="form-label required">Secret</label>
-                                                <input type="text" class="form-control" name="stripe_secret"
+                                                <input class="form-control" name="stripe_secret" type="text"
                                                     value="{{ Auth::user()->stripe_secret_key ?? '' }}"
                                                     placeholder="Secret...">
                                             </div>
                                         </div>
                                         <div class="text-end">
                                             <div class="d-flex">
-                                                <button type="submit" class="btn btn-primary btn-md ms-auto">
+                                                <button class="btn btn-primary btn-md ms-auto" type="submit">
                                                     Update
                                                 </button>
                                             </div>
@@ -113,8 +113,6 @@
 
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none p-2">
             <div class="row">
-
-
 
                 <div class="card">
                     <form action="{{ route('user.setting.payment.update') }}" method="post" enctype="multipart/form-data">
@@ -139,14 +137,14 @@
                             <div class="col-md-6 col-xl-6">
                                 <div class="mb-3">
                                     <label class="form-label required">Client Key</label>
-                                    <input type="text" class="form-control" name="paypal_client_key"
+                                    <input class="form-control" name="paypal_client_key" type="text"
                                         value="{{ Auth::user()->paypal_public_key ?? '' }}" placeholder="Client Key...">
                                 </div>
                             </div>
                             <div class="col-md-6 col-xl-6">
                                 <div class="mb-3">
                                     <label class="form-label required">Secret</label>
-                                    <input type="text" class="form-control" name="paypal_secret"
+                                    <input class="form-control" name="paypal_secret" type="text"
                                         value="{{ Auth::user()->paypal_public_key ?? '' }}" placeholder="Secret...">
                                 </div>
                             </div>
@@ -157,7 +155,7 @@
                             <div class="col-md-6 col-xl-6">
                                 <div class="mb-3">
                                     <label class="form-label required">Publishable Key</label>
-                                    <input type="text" class="form-control" name="stripe_publishable_key"
+                                    <input class="form-control" name="stripe_publishable_key" type="text"
                                         value="{{ Auth::user()->stripe_public_key ?? '' }}"
                                         placeholder="Publishable Key...">
                                 </div>
@@ -165,13 +163,13 @@
                             <div class="col-md-6 col-xl-6">
                                 <div class="mb-3">
                                     <label class="form-label required">Secret</label>
-                                    <input type="text" class="form-control" name="stripe_secret"
+                                    <input class="form-control" name="stripe_secret" type="text"
                                         value="{{ Auth::user()->stripe_secret_key ?? '' }}" placeholder="Secret...">
                                 </div>
                             </div>
                             <div class="text-end">
                                 <div class="d-flex">
-                                    <button type="submit" class="btn btn-primary btn-md ms-auto">
+                                    <button class="btn btn-primary btn-md ms-auto" type="submit">
                                         Update
                                     </button>
                                 </div>
