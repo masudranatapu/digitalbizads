@@ -223,14 +223,16 @@
                 return $(ele).children('option:selected').data();
             }).get();
 
-            console.log(values);
-            return false;
+
 
             let price = values.map(({
                 price
             }, element) => {
                 return parseFloat(price.toFixed(2)) ?? 0;
             });
+
+            console.log(price);
+            return false;
             console.dir({
                 values,
                 price
