@@ -257,7 +257,7 @@
                                             <div class="col-md-6 col-xl-6">
                                                 <div class="mb-3">
                                                     <label class="form-label required">{{ __('WhatsApp Number') }}</label>
-                                                    <input class="form-control" name="whatsapp_no" type="number"
+                                                    <input class="form-control" name="whatsapp_no" type="text"
                                                         value="{{ old('whatsapp_no') ?? $store_details->whatsapp_no }}"
                                                         placeholder="{{ __('For example: 919876543210 (With country code)') }}...">
                                                 </div>
