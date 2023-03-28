@@ -376,6 +376,7 @@ Route::post('{cardUrl}/checkout/billing-address', [CheckoutController::class, 'c
 Route::get('{cardUrl}/checkout/payment', [CheckoutController::class, 'checkoutPayment'])->name('checkout.payment');
 Route::get('{cardUrl}/checkout/payment/stripe', [CheckoutController::class, 'checkoutPaymentSrtipe'])->name('checkout.payment.stripe');
 Route::post('{cardUrl}/checkout/payment/stripe/{paymentId}', [CheckoutController::class, 'checkoutPaymentSrtipeStore'])->name('checkout.payment.stripe.store');
+Route::post('{cardUrl}/checkout/payment/paypal/', [CheckoutController::class, 'checkoutPaymentPaypalStore'])->name('checkout.payment.paypal.store');
 
 
 // getpreview

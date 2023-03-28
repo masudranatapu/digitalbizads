@@ -248,6 +248,7 @@ class HomeController extends Controller
                     $store_card = BusinessCard::where('is_store_show', 1)->where('user_id', $business_card_details->user_id)->first();
                     $productCategories = ProductCategory::orderBy('category_name', 'asc')
                         ->where('user_id', $business_card_details->user_id)->get();
+                    Session::put('store_user_id', $business_card_details->user_id);
 
 
                     if ($card_details->theme_id == "7ccc432a06hty") {

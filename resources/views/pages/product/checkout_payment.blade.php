@@ -99,13 +99,13 @@
                                         <td class="text-end text-lg text-primary" data-th="Grand Total" colspan="3">
                                             @if (session()->has('tax'))
                                                 @php
-                                                    
+
                                                     $total = (int) $total + (int) session()->get('tax');
                                                 @endphp
                                             @endif
                                             @if (session()->has('shippingCost'))
                                                 @php
-                                                    
+
                                                     $total = (int) $total + (int) session()->get('shippingCost');
                                                 @endphp
                                             @endif
@@ -183,6 +183,11 @@
             </div>
         </div>
     </div>
+
+    <form id="paypalPaymentFrom"
+        action="{{ route('checkout.payment.paypal.store', ['cardUrl' => $business_card_details->card_url]) }}" method="POST">
+        @csrf</form>
+
     <div class="modal modal-blur fade" id="stripeModal" role="dialog" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal modal-dialog-centered" role="document">
 
@@ -239,6 +244,8 @@
                 $("#stripeModal").modal('show');
 
             } else {
+
+                $('#paypalPaymentFrom').submit();
 
             }
         })

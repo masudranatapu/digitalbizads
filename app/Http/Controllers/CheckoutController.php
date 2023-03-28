@@ -19,13 +19,46 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
+
+use PayPal\Rest\ApiContext;
+use PayPal\Auth\OAuthTokenCredential;
 
 
 
 class CheckoutController extends Controller
 {
+    private $apiContext;
 
+    public function __construct(Request $request)
+    {
+        $cardUrl = $request->segment(1);
+        if (isset($cardUrl)) {
+
+            $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
+        } else {
+            
+        }
+
+
+        // $paypalConf = User::find(Session::get('store_user_id'));
+
+        // $this->apiContext = new ApiContext(
+        //     new OAuthTokenCredential(
+        //         $paypalConf['paypal_public_key'],
+        //         $paypalConf['paypal_secret_key']
+        //     )
+        // );
+
+        // $this->apiContext->setConfig([
+        //     'mode' => 'sanbox',
+        //     'http.ConnectionTimeOut' => 30,
+        //     'log.LogEnabled' => true,
+        //     'log.FileName' => storage_path() . '/logs/paypal.log',
+        //     'log.LogLevel' => 'DEBUG',
+        // ]);
+    }
 
 
     public function checkout($cardUrl)
@@ -426,5 +459,10 @@ class CheckoutController extends Controller
             alert()->error(trans('Something wrong.'));
             return redirect()->route('card.preview', $business_card_details->card_url);
         }
+    }
+
+
+    public function checkoutPaymentPaypalStore(Request $request)
+    {
     }
 }

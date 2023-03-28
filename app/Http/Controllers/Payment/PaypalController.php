@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Payment;
 
-use URL;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Config;
 use App\Plan;
 use App\User;
-use Redirect;
+use Illuminate\Support\Facades\Redirect;
 use PayPal\Api\Item;
 use App\BusinessCard;
 use PayPal\Api\Payer;
@@ -26,17 +27,21 @@ use Illuminate\Support\Facades\Mail;
 use PayPal\Auth\OAuthTokenCredential;
 use Illuminate\Support\Facades\Session;
 use App\Transaction as TransactionModel;
+use Illuminate\Http\Client\ConnectionException;
 
 class PaypalController extends Controller
 {
 
+    public $_api_context;
     // PayPal
     public function __construct()
     {
         /** PayPal api context **/
         $paypal_configuration = DB::table('config')->get();
 
+
         $this->_api_context = new ApiContext(new OAuthTokenCredential($paypal_configuration[4]->config_value, $paypal_configuration[5]->config_value));
+
         $this->_api_context->setConfig(array(
             'mode' => $paypal_configuration[3]->config_value,
             'http.ConnectionTimeOut' => 30,
@@ -93,13 +98,13 @@ class PaypalController extends Controller
                     ->setTransactions(array($transaction));
                 try {
                     $payment->create($this->_api_context);
-                } catch (\PayPal\Exception\PPConnectionException $ex) {
-                    if (\Config::get('app.debug')) {
-                        \Session::put('error', 'Connection timeout');
+                } catch (PPConnectionException $ex) {
+                    if (Config::get('app.debug')) {
+                        Session::put('error', 'Connection timeout');
                         alert()->error(trans("Payment failed, Something went wrong!"));
                         return redirect()->route('user.plans');
                     } else {
-                        \Session::put('error', 'Some error occur, sorry for inconvenient');
+                        Session::put('error', 'Some error occur, sorry for inconvenient');
                         alert()->error(trans("Payment failed, Something went wrong!"));
                         return redirect()->route('user.plans');
                     }
@@ -154,13 +159,13 @@ class PaypalController extends Controller
                 $transaction->save();
 
                 /** add payment ID to session **/
-                \Session::put('paypal_payment_id', $payment->getId());
+                Session::put('paypal_payment_id', $payment->getId());
                 if (isset($redirect_url)) {
                     /** redirect to paypal **/
                     return Redirect::away($redirect_url);
                 }
 
-                \Session::put('error', 'Unknown error occurred');
+                Session::put('error', 'Unknown error occurred');
                 alert()->error(trans("Payment failed, Something went wrong!"));
                 return redirect()->route('user.plans');
             }
