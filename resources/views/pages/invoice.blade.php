@@ -50,7 +50,7 @@
 
                                         <div class="row">
                                             @php
-
+                                                
                                                 $billing = json_decode($orders->billing_details, true);
                                             @endphp
                                             <div class="col-6">
@@ -78,7 +78,7 @@
                                                     </p>
 
                                                     <p><strong>State :
-                                                        </strong><span>{{ $shipping['ship_states'] ?? 'Not Available' }}</span>
+                                                        </strong><span>{{ $shipping['shipping_states'] ?? 'Not Available' }}</span>
                                                     </p>
 
                                                     <p><strong>Zip :
@@ -152,7 +152,7 @@
                                                     @php
                                                         $variant = json_decode($orderDetails->variant_id, true);
                                                         $variantOption = json_decode($orderDetails->variant_option_id, true);
-
+                                                        
                                                     @endphp
                                                     <tr>
                                                         <td class="d-flex justify-content-between">
@@ -210,7 +210,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         @php
-
+                                            
                                             $shipping = json_decode($orders->shipping_details, true);
                                             $billing = json_decode($orders->billing_details, true);
                                         @endphp
@@ -310,7 +310,7 @@
                                                 @php
                                                     $variant = json_decode($orderDetails->variant_id, true);
                                                     $variantOption = json_decode($orderDetails->variant_option_id, true);
-
+                                                    
                                                 @endphp
                                                 <tr>
                                                     <td class="d-flex justify-content-between">
