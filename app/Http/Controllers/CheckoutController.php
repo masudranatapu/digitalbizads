@@ -54,7 +54,7 @@ class CheckoutController extends Controller
             $this->apiContext = new ApiContext(new OAuthTokenCredential($paypalConf->paypal_public_key, $paypalConf->paypal_secret_key));
 
             $this->apiContext->setConfig(array(
-                'mode' => "sandbox",
+                'mode' => $paypalConf->paypal_mode,
                 'http.ConnectionTimeOut' => 30,
                 'log.LogEnabled' => true,
                 'log.FileName' => storage_path() . '/logs/product_puchase_paypal.log',
