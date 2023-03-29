@@ -18,7 +18,7 @@ class OrderController extends Controller
     {
         $settings = Setting::first();
         $businessCard = BusinessCard::where('card_id', $card_id)->where('status', 1)->first();
-        $orders = Order::with('hasTransection')->where('store_id', $businessCard->card_id)->get();
+        $orders = Order::with('hasTransection')->where('store_id', $businessCard->card_id)->orderBy('created_at', 'desc')->get();
 
         return view('user.order.index', compact('settings', 'orders', 'card_id'));
     }
