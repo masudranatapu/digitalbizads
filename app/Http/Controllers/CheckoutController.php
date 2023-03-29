@@ -404,7 +404,8 @@ class CheckoutController extends Controller
                 return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number]);
             } catch (\Throwable $th) {
 
-                dd($th->getMessage());
+                alert()->error(trans('Something wrong.'));
+                return redirect()->route('card.preview', $business_card_details->card_url);
             }
         } else {
             alert()->error(trans('Something wrong.'));
