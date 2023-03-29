@@ -276,62 +276,6 @@ class CheckoutController extends Controller
     }
 
 
-
-
-
-    // public function checkoutPaymentSrtipe($cardUrl)
-    // {
-    //     $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
-    //     $iso_code = json_decode($business_card_details->description, true);
-    //     $currency = Currency::where('iso_code', $iso_code['currency'])->first();
-    //     $shiping = Session::get('shipping');
-    //     $total = 0;
-    //     foreach (session('cart') as $id => $details) {
-    //         $total += $details['price'] * $details['quantity'];
-    //     }
-
-    //     //Todo Shipping And Vat Add Korte hobe
-
-    //     if (session()->has('tax')) {
-    //         $total = (int) $total + (int) session()->get('tax');
-    //     }
-    //     if (session()->has('shippingCost')) {
-
-    //         $total = (int) $total + (int) session()->get('shippingCost');
-    //     }
-
-
-
-
-
-
-    //     $user = User::find($business_card_details->user_id);
-
-    //     \Stripe\Stripe::setApiKey($user->stripe_secret_key);
-    //     $payment_intent = \Stripe\PaymentIntent::create([
-    //         'description' => "Product purchase",
-    //         'shipping' => [
-    //             'name' => $shiping['ship_first_name'],
-    //             'address' => [
-    //                 'line1' => $shiping['ship_address1'],
-    //                 'postal_code' => $shiping['ship_zip'],
-    //                 'city' => $shiping['ship_city'],
-    //                 'state' =>  $shiping['ship_state'],
-    //                 'country' =>  $shiping['ship_city'],
-    //             ],
-    //         ],
-    //         'amount' => intval($total) * 100,
-    //         'currency' => $currency->iso_code,
-    //         'payment_method_types' => ['card'],
-    //     ]);
-    //     $intent = $payment_intent->client_secret;
-    //     $paymentId = $payment_intent->id;
-
-    //     return view('pages.product.stripe', compact('business_card_details', 'intent', 'user', 'paymentId'));
-    // }
-
-
-
     public function checkoutPaymentSrtipeStore($cardUrl, $paymentId)
     {
         $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
@@ -373,10 +317,18 @@ class CheckoutController extends Controller
 
                 $totalPrice = 0;
                 $totalQuantity = 0;
+                $grandTotal = 0;
                 foreach ($products as $key => $product) {
 
                     $totalPrice += $product['price'] * $product['quantity'];
                     $totalQuantity +=  $product['quantity'];
+                }
+                if (session()->has('tax')) {
+
+                    $grandTotal = $totalPrice + session()->get('tax');
+                }
+                if (session()->has('shippingCost')) {
+                    $grandTotal = $grandTotal + session()->get('shippingCost');
                 }
 
                 $order = new Order();
@@ -388,7 +340,7 @@ class CheckoutController extends Controller
                 $order->payment_fee = 0;
                 $order->vat = $tax;
                 $order->shipping_cost = $shippingCost;
-                $order->grand_total = $totalPrice;
+                $order->grand_total = $grandTotal;
                 $order->order_date = now();
                 $order->shipping_details = json_encode(Session::get('shipping'));
                 $order->billing_details = json_encode(Session::get('billing'));
@@ -474,24 +426,20 @@ class CheckoutController extends Controller
         $products = Session::get('cart');
         $totalPrice = 0;
         $totalQuantity = 0;
+        $grandTotal = 0;
         foreach ($products as $key => $product) {
-
             $totalPrice += $product['price'] * $product['quantity'];
             $totalQuantity +=  $product['quantity'];
         }
 
         if (session()->has('tax')) {
 
-            $totalPrice = $totalPrice + session()->get('tax');
+            $grandTotal = $totalPrice + session()->get('tax');
         }
-
-
-
-
         if (session()->has('shippingCost')) {
-            $totalPrice = $totalPrice + session()->get('shippingCost');
+            $grandTotal = $grandTotal + session()->get('shippingCost');
         }
-        $amountToBePaid = $totalPrice;
+        $amountToBePaid = $grandTotal;
 
         $payer = new Payer();
         $payer->setPaymentMethod('paypal');
@@ -548,14 +496,6 @@ class CheckoutController extends Controller
         try {
 
             $products = Session::get('cart');
-
-            $totalPrice = 0;
-            $totalQuantity = 0;
-            foreach ($products as $key => $product) {
-
-                $totalPrice += $product['price'] * $product['quantity'];
-                $totalQuantity +=  $product['quantity'];
-            }
             $tax = Session::has('tax') ? Session::get('tax') : 0;
             $shippingCost = Session::has('shippingCost') ? Session::get('shippingCost') : 0;
 
@@ -568,7 +508,7 @@ class CheckoutController extends Controller
             $order->payment_fee = 0;
             $order->vat = $tax;
             $order->shipping_cost = $shippingCost;
-            $order->grand_total = $totalPrice;
+            $order->grand_total = $amountToBePaid;
             $order->order_date = now();
             $order->shipping_details = json_encode(Session::get('shipping'));
             $order->billing_details = json_encode(Session::get('billing'));
