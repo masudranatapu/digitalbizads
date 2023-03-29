@@ -34,6 +34,7 @@ use App\Http\Controllers\Payment\RazorpayController;
 use App\Http\Controllers\User\ShippingAreaController;
 use App\Http\Controllers\Admin\TransactionsController;
 use App\Http\Controllers\Admin\PaymentMethodController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\User\ProductCategoryController;
 use App\Http\Controllers\User\AccountController as userAccount;
 use App\Http\Controllers\User\DashboardController as userDashboard;
@@ -264,13 +265,14 @@ Route::group(['middleware' => 'Installer'], function () {
             // Edit Store
             Route::get('edit-store/{id}', [StoreController::class, 'editStore'])->name('edit.store');
             Route::post('update-store/{id}', [StoreController::class, 'updateStore'])->name('update.store');
+
             // Product
-            Route::get('products-list/{id}', [StoreController::class, 'storeProductsList'])->name('products.list');
-            Route::get('add-products/{id}', [StoreController::class, 'addProducts'])->name('products.add');
-            Route::post('store-products/{id}', [StoreController::class, 'storeProducts'])->name('products.store');
-            Route::get('edit-products/{id}', [StoreController::class, 'editProducts'])->name('products.edit');
-            Route::post('update-products/{id}', [StoreController::class, 'updateProducts'])->name('products.update');
-            Route::get('delete-products/{id}', [StoreController::class, 'deleteProducts'])->name('products.delete');
+            Route::get('products-list/{id}', [ProductController::class, 'storeProductsList'])->name('products.list');
+            Route::get('add-products/{id}', [ProductController::class, 'addProducts'])->name('products.add');
+            Route::post('store-products/{id}', [ProductController::class, 'storeProducts'])->name('products.store');
+            Route::get('edit-products/{id}', [ProductController::class, 'editProducts'])->name('products.edit');
+            Route::post('update-products/{id}', [ProductController::class, 'updateProducts'])->name('products.update');
+            Route::get('delete-products/{id}', [ProductController::class, 'deleteProducts'])->name('products.delete');
             // Product variant
             Route::get('{card_id}/product/{product_id}/variants', [VariantController::class, 'index'])->name('product.variants');
             Route::post('product/{product_id}/variants/store', [VariantController::class, 'store'])->name('product.variants.store');
@@ -378,6 +380,10 @@ Route::get('{cardUrl}/checkout/payment/stripe', [CheckoutController::class, 'che
 Route::post('{cardUrl}/checkout/payment/stripe/{paymentId}', [CheckoutController::class, 'checkoutPaymentSrtipeStore'])->name('checkout.payment.stripe.store');
 Route::post('{cardUrl}/checkout/payment/paypal/', [CheckoutController::class, 'checkoutPaymentPaypalStore'])->name('checkout.payment.paypal.store');
 Route::get('{cardUrl}/invoice/{orderid}', [CheckoutController::class, 'paymentInvoice'])->name('payment.invoice');
+Route::get('{cardUrl}/paypal/execute-payment', 'CheckoutController@executePayment')->name('payment.success');
+Route::get('{cardUrl}/paypal/failed-payment', 'CheckoutController@cancelPayment')->name('payment.failed');
+Route::get('{cardUrl}/paypal/cancel-payment', 'CheckoutController@cancelPayment')->name('payment.cancel');
+
 
 
 // getpreview
