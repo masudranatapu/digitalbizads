@@ -626,7 +626,7 @@
                                                     class="social_item_in form-control cin @error('phone') is-invalid @enderror"
                                                     id="phone" name="phone_number" data-attr="tel:"
                                                     data-type="phone_number" data-preview="preview_phone_number"
-                                                    type="number" value="{{ old('phone_number') }}"
+                                                    type="text" value="{{ old('phone_number') }}"
                                                     tabindex="{{ $tabindex++ }}" placeholder="your phone" required>
                                                 @if ($errors->has('phone_number'))
                                                     <span
@@ -642,7 +642,7 @@
                                                     class="social_item_in form-control cin @error('email') is-invalid @enderror"
                                                     id="email" name="email" data-attr="mailto:"
                                                     data-type="user_email" data-type="email" data-preview="preview_email"
-                                                    type="email" value="{{ old('email') }}"
+                                                    type="email" value="{{ old('email') ?? Auth::user()->email }}"
                                                     tabindex="{{ $tabindex++ }}" placeholder="your email" required>
                                                 @if ($errors->has('email'))
                                                     <span
@@ -741,7 +741,7 @@
                                                 <input
                                                     class="social_item_in form-control cin @error('location') is-invalid @enderror"
                                                     id="location" name="location" data-preview="preview_location"
-                                                    data-attr="" data-type="map" type="text"
+                                                    data-attr="" data-type="map" type="url"
                                                     value="{{ old('location') }}" tabindex="{{ $tabindex++ }}"
                                                     placeholder="location">
                                                 @if ($errors->has('location'))

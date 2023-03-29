@@ -147,9 +147,9 @@
                                                                 <a class="dropdown-item text-success"
                                                                     href="{{ route('user.edit.store', $row->card_id) }}">{{ __('Edit') }}</a>
 
-                                                                <a class="dropdown-item text-success"
+                                                                {{-- <a class="dropdown-item text-success"
                                                                     href="{{ route('user.view.preview', $row->card_id) }}"
-                                                                    target="_blank">{{ __('Preview') }}</a>
+                                                                    target="_blank">{{ __('Preview') }}</a> --}}
 
                                                                 <a class="dropdown-item text-success"
                                                                     href="{{ route('card.preview', $row->card_url) }}"

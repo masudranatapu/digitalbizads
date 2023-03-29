@@ -842,7 +842,7 @@
                                                     <input
                                                         class="social_item_in form-control cin @error('phone') is-invalid @enderror"
                                                         id="phone" name="phone_number" data-type="phone_number"
-                                                        data-preview="preview_phone_number" type="number"
+                                                        data-preview="preview_phone_number" type="text"
                                                         value="{{ $card->phone_number }}" tabindex="{{ $tabindex++ }}"
                                                         placeholder="your phone" required>
                                                     @if ($errors->has('phone_number'))
