@@ -602,6 +602,14 @@ class CheckoutController extends Controller
 
             alert()->success(trans('Proudct purchase successfully'));
 
+            Mail::to(Session::get('shipping')['ship_email'])->send(new ProductPurchaseMail($productOrderTransaction, $order, $orderDetails));
+            Session::forget('shipping');
+            Session::forget('billing');
+            Session::forget('cart');
+            Session::forget('tax');
+            Session::forget('shippingCost');
+            Session::forget('paypal_payment_id');
+            Session::forget('last_transection');
 
 
             Session::flash('success', 'Product Purchase Successfull');
