@@ -522,13 +522,20 @@ class CheckoutController extends Controller
         try {
 
             $products = Session::get('cart');
-
             $totalPrice = 0;
             $totalQuantity = 0;
+            $grandTotal = 0;
             foreach ($products as $key => $product) {
-
                 $totalPrice += $product['price'] * $product['quantity'];
                 $totalQuantity +=  $product['quantity'];
+            }
+
+            if (session()->has('tax')) {
+
+                $grandTotal = $totalPrice + session()->get('tax');
+            }
+            if (session()->has('shippingCost')) {
+                $grandTotal = $grandTotal + session()->get('shippingCost');
             }
             $tax = Session::has('tax') ? Session::get('tax') : 0;
             $shippingCost = Session::has('shippingCost') ? Session::get('shippingCost') : 0;
@@ -542,7 +549,7 @@ class CheckoutController extends Controller
             $order->payment_fee = 0;
             $order->vat = $tax;
             $order->shipping_cost = $shippingCost;
-            $order->grand_total = $totalPrice;
+            $order->grand_total = $grandTotal;
             $order->order_date = now();
             $order->shipping_details = json_encode(Session::get('shipping'));
             $order->billing_details = json_encode(Session::get('billing'));
