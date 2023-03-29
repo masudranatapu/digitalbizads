@@ -564,7 +564,7 @@ body {
 
 .cart_page table {
     margin: 0;
-    min-width: 980px;
+    /* min-width: 980px; */
 }
 
 .cart_page .btn-primary {
