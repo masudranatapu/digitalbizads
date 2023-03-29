@@ -490,8 +490,9 @@ class CheckoutController extends Controller
             $productOrderTransaction->save();
 
             Session::put('last_transection', $productOrderTransaction->id);
-        } catch (PPConnectionException $ex) {
-            dd($ex);
+        } catch (Exception $ex) {
+            Session::flash('alert', 'Something worng');
+            return redirect()->route('card.preview', $cardUrl);
         }
 
 
