@@ -1460,7 +1460,7 @@ class CardController extends Controller
 
         $card->delete();
         alert()->success(trans('Your store and store product has successfully deleted'));
-        return redirect()->route('user.stores');
+        return redirect()->back();
     }
 
     public function subscriber($cardId)

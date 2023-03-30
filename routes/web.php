@@ -189,7 +189,7 @@ Route::group(['middleware' => 'Installer'], function () {
             // Business Cards
             Route::get('cards', [CardController::class, 'cards'])->name('cards');
             Route::get('card-status/{id}', [CardController::class, 'cardStatus'])->name('card.status');
-            Route::get('card-delete/{card}', [CardController::class, 'cardDelete'])->name('card.delete');
+            Route::get('card-delete/{card:card_id}', [CardController::class, 'cardDelete'])->name('card.delete');
             Route::get('card-store/{id}/{status}', [CardController::class, 'cardStoreStatus'])->name('card.storestatus');
             Route::get('card-subscriber/{card}', [CardController::class, 'subscriber'])->name('card.subscriber');
             Route::post('send-mail-subscriber', [CardController::class, 'sendMail'])->name('card.subscriber.send.mail');

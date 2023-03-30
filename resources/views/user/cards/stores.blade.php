@@ -20,8 +20,8 @@
 
                             @if (count($business_cards) == 0)
                                 <a type="button" href="{{ route('user.create.store') }}">
-                                    <button type="button" class="btn btn btn-primary">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-plus"
+                                    <button class="btn btn btn-primary" type="button">
+                                        <svg class="icon icon-tabler icon-tabler-plus" xmlns="http://www.w3.org/2000/svg"
                                             width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                                             stroke="currentColor" fill="none" stroke-linecap="round"
                                             stroke-linejoin="round">
@@ -95,7 +95,7 @@
                                                                     href="#openModel">{{ __('Enable') }}</a>
                                                             @endif
                                                             <a class="delete-model btn btn-danger btn-sm"
-                                                                data-id="{{ $business_card->id }}"
+                                                                data-id="{{ $business_card->card_id }}"
                                                                 href="javascript:void(0)">{{ __('Delete') }}</a>
                                                         </div>
                                                     </td>
@@ -135,8 +135,9 @@
 
                                                     <div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7">
                                                         <div class="dropdown text-end">
-                                                            <button type="button" class="btn btn-primary dropdown-toggle"
-                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <button class="btn btn-primary dropdown-toggle"
+                                                                data-bs-toggle="dropdown" type="button"
+                                                                aria-expanded="false">
                                                                 Actions
                                                             </button>
                                                             <div class="dropdown-menu" style="">
@@ -187,7 +188,7 @@
         @include('user.includes.footer')
     </div>
 
-    <div class="modal modal-blur fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="deleteModal" role="dialog" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
@@ -195,15 +196,15 @@
                     <div>{{ __('If you proceed, you will enabled/disabled this card.') }}</div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-link link-secondary me-auto"
-                        data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal"
+                        type="button">{{ __('Cancel') }}</button>
                     <a class="btn btn-danger" id="plan_id">{{ __('Yes, proceed') }}</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal modal-blur fade" id="deleteStoreModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="deleteStoreModal" role="dialog" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
@@ -211,15 +212,15 @@
                     <div>{{ __('If you proceed, you will delete this store and product also.') }}</div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-link link-secondary me-auto"
-                        data-bs-dismiss="modal">{{ __('Cancel') }}</button>
+                    <button class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal"
+                        type="button">{{ __('Cancel') }}</button>
                     <a class="btn btn-danger" id="delete_store_id">{{ __('Yes, proceed') }}</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal modal-blur fade" id="openQR" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="openQR" role="dialog" aria-hidden="true" tabindex="-1">
         <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
