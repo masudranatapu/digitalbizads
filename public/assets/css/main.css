@@ -752,11 +752,12 @@ body {
     display: none;
 }
 
-.payment input[type="radio"]:checked + label {
+.payment input[type="radio"]:checked+label {
     color: #206bc4;
     background: rgba(32, 107, 196, 0.25);
     border-color: #90b5e2;
 }
+
 .payment label img {
     max-width: 100px;
     height: 52px;
