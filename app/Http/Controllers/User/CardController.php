@@ -134,6 +134,30 @@ class CardController extends Controller
         }
     }
 
+    public function CreateNewCard(){
+        $themes = Theme::where('theme_description', 'vCard')->where('status', 1)->get();
+        $settings = Setting::where('status', 1)->first();
+        $old_cards = BusinessCard::where('user_id', Auth::user()->id)->count();
+        $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
+        $plan_details = json_decode($plan->plan_details);
+
+        if ($plan_details->no_of_vcards == 999) {
+            $no_card_limit = 999999;
+        } else {
+            $no_card_limit = (int) $plan_details->no_of_vcards;
+        }
+
+        // dd($old_cards);
+
+
+        if ($old_cards < $no_card_limit) {
+            return view('user.cards.create_new_card', compact('themes', 'settings', 'plan_details'));
+        } else {
+            alert()->error(trans('Maximum card creation limit is exceeded, Please upgrade your plan.'));
+            return redirect()->route('user.cards');
+        }
+    }
+
     // Save card
     public function postStore(Request $request)
     {
