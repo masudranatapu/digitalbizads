@@ -35,7 +35,7 @@ class DashboardController extends Controller
         $plan = User::where('user_id', Auth::user()->user_id)->first();
         $active_plan = json_decode($plan->plan_details);
         $settings = Setting::where('status', 1)->first();
-        $business_card = BusinessCard::where('user_id', Auth::user()->id)->count();
+        $business_card = BusinessCard::where('user_id', Auth::user()->id)->where('card_type','vcard')->count();
 
 
 
