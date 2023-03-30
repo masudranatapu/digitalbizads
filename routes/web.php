@@ -379,7 +379,7 @@ Route::get('{cardUrl}/checkout/payment', [CheckoutController::class, 'checkoutPa
 Route::get('{cardUrl}/checkout/payment/stripe', [CheckoutController::class, 'checkoutPaymentSrtipe'])->name('checkout.payment.stripe');
 Route::post('{cardUrl}/checkout/payment/stripe/{paymentId}', [CheckoutController::class, 'checkoutPaymentSrtipeStore'])->name('checkout.payment.stripe.store');
 Route::post('{cardUrl}/checkout/payment/paypal/', [CheckoutController::class, 'checkoutPaymentPaypalStore'])->name('checkout.payment.paypal.store');
-Route::get('{cardUrl}/invoice/{orderid}', [CheckoutController::class, 'paymentInvoice'])->name('payment.invoice');
+Route::get('{cardUrl}/invoice/{orderid}/{status?}', [CheckoutController::class, 'paymentInvoice'])->name('payment.invoice');
 Route::get('{cardUrl}/paypal/execute-payment', 'CheckoutController@executePayment')->name('payment.success');
 Route::get('{cardUrl}/paypal/failed-payment', 'CheckoutController@cancelPayment')->name('payment.failed');
 Route::get('{cardUrl}/paypal/cancel-payment', 'CheckoutController@cancelPayment')->name('payment.cancel');

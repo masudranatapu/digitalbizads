@@ -401,7 +401,7 @@ class CheckoutController extends Controller
                 Session::forget('shippingCost');
 
 
-                return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number]);
+                return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number, 'status' => true]);
             } catch (\Throwable $th) {
 
                 alert()->error(trans('Something wrong.'));
@@ -615,7 +615,7 @@ class CheckoutController extends Controller
 
 
             Session::flash('success', 'Product Purchase Successfull');
-            return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number]);
+            return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number, 'status' => true]);
         } catch (Exception $th) {
 
             Session::flash('alert', 'Something worng');
@@ -638,8 +638,9 @@ class CheckoutController extends Controller
         return redirect()->route('card.preview', $cardUrl);
     }
 
-    public function paymentInvoice(Request $request, $card_url, $order_id)
+    public function paymentInvoice(Request $request, $card_url, $order_id, $status = null)
     {
+
         $orders = Order::with('orderDetails')->where('order_number', $order_id)->first();
         $shipping = json_decode($orders->shipping_details, true);
         $shippingArea = ShippingCost::find($shipping['ship_area']);
@@ -648,6 +649,6 @@ class CheckoutController extends Controller
         $shipping['shipping_states'] = $shippingState->name;
         $business_card_details = BusinessCard::where('card_url', $card_url)->first();
 
-        return view('pages.invoice', compact('orders', 'shipping', 'business_card_details'));
+        return view('pages.invoice', compact('orders', 'shipping', 'business_card_details', 'status'));
     }
 }
