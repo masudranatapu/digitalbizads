@@ -193,7 +193,7 @@
                                                 </tr>
                                                 <tr class="text-end">
                                                     <th colspan="3">Discount :</th>
-                                                    <td>{{ getPrice($orders->discount ?? 0) }}</td>
+                                                    <td>-{{ getPrice($orders->discount ?? 0) }}</td>
                                                 </tr>
                                                 <tr class="text-end">
                                                     <th colspan="3">Grand Total :</th>
@@ -355,7 +355,7 @@
                                             </tr>
                                             <tr class="text-end">
                                                 <th colspan="3">Discount :</th>
-                                                <td>{{ getPrice($orders->discount ?? 0) }}</td>
+                                                <td>-{{ getPrice($orders->discount ?? 0) }}</td>
                                             </tr>
                                             <tr class="text-end">
                                                 <th colspan="3">Grand Total :</th>
