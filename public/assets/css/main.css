@@ -780,3 +780,66 @@ body {
     color: #4f4f4f;
     font-weight: 500;
 }
+
+.social_share {
+    padding-left: 1.15rem;
+    padding-right: 1.15rem;
+    border-top: 1px solid #e1e4e8;
+    border-bottom: 2px solid #e1e4e8;
+}
+
+.social_share .title h4 {
+    margin: 0;
+    color: #717171;
+    padding: 18px 0px;
+    font-size: 18px;
+    font-weight: 500;
+    font-family: 'Poppins';
+}
+
+.copyright p {
+    margin: 0;
+    font-size: 14px;
+    color: #212121;
+    font-weight: 500;
+}
+
+.social_list ul li {
+    display: inline-block;
+    margin-right: 85px;
+}
+
+.social_list ul li:last-child {
+    margin-right: 0;
+}
+
+.social_list ul li a {
+    width: 46px;
+    height: 46px;
+    display: inline-block;
+    text-align: center;
+    font-size: 15px;
+    line-height: 45px;
+    border-radius: 50px;
+    color: #fff !important;
+    background: #00c6ff;
+    background: -webkit-linear-gradient(to right, #0072ff, #00c6ff);
+    background: linear-gradient(to right, #698fd8, #4273D5);
+}
+
+.social_list {
+    margin-top: 24px;
+}
+
+@media screen and (max-width:767px) {
+    .social_list ul li {
+        margin-right: 46px;
+    }
+}
+
+@media screen and (max-width:575px) {
+    .social_list ul li {
+        margin-right: 30px;
+        margin-bottom: 8px;
+    }
+}
