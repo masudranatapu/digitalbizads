@@ -35,8 +35,10 @@
                                             @if (session('cart'))
                                                 @foreach (session('cart') as $id => $details)
                                                     @php
+                                                        
                                                         $total += $details['price'] * $details['quantity'];
                                                         $line_total = $details['price'] * $details['quantity'];
+                                                        
                                                     @endphp
 
                                                     <tr class="align-middle" data-id="{{ $id }}">
@@ -59,6 +61,7 @@
                                                                 type="number" value="{{ $details['quantity'] }}" />
                                                         </td>
                                                         <td class="text-center" data-th="Subtotal">
+
                                                             {{ getPrice($line_total) }}
                                                         </td>
                                                         <td class="actions" data-th="">
@@ -87,6 +90,74 @@
                                                     </td>
                                                     <td class="text-center">{{ getPrice($total) }}</td>
                                                     <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>
+                                                        @if (session()->has('coupon'))
+                                                            <p>Remove coupon</p>
+                                                        @else
+                                                            <p>Apply coupon</p>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <input class="form-control" id="couponCode" type="text"
+                                                            value="{{ session('coupon')->coupon_code ?? '' }}"
+                                                            @if (session()->has('coupon')) disabled @endif
+                                                            placeholder="Enter coupon code">
+
+                                                    </td>
+                                                    <td class="text-center" id="cupponPrice">
+
+                                                        @if (session()->has('coupon'))
+                                                            @if (session('coupon')->type == 'amount')
+                                                                - {{ getPrice(session('coupon')->amount) }}
+                                                            @elseif (session('coupon')->type == 'percent')
+                                                                - {{ getPrice(($total * session('coupon')->amount) / 100) }}
+                                                            @endif
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if (session()->has('coupon'))
+                                                            <button class="btn btn-primary" id="couponRemove"
+                                                                type="button">Remove</button>
+                                                        @else
+                                                            <button class="btn btn-primary" id="couponApply"
+                                                                type="button">Apply</button>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-end" colspan="4">
+                                                        <h5><strong>Grand Total : </strong></h5>
+                                                    </td>
+                                                    <td class="text-center">
+
+                                                        @if (session()->has('coupon'))
+                                                            @if (session('coupon')->type == 'amount')
+                                                                <h5>{{ getprice($total - session('coupon')->amount) }}</h5>
+                                                            @elseif (session('coupon')->type == 'percent')
+                                                                <h5>
+                                                                    <strong>{{ getprice($total - ($total * session('coupon')->amount) / 100) }}
+                                                                    </strong><span>
+                                                                        (-{{ session('coupon')->amount }}%)
+                                                                    </span>
+                                                                </h5>
+                                                            @else
+                                                                <h5>
+                                                                    {{ getprice($total) }}
+                                                                </h5>
+                                                            @endif
+                                                        @else
+                                                            <h5>
+                                                                {{ getprice($total) }}
+                                                            </h5>
+                                                        @endif
+
+                                                    </td>
+                                                    <td></td>
+
                                                 </tr>
                                             </tfoot>
                                         @endif
@@ -149,8 +220,7 @@
                                             Quantity:<span><input
                                                     class="form-control quantity update-cart allownumericwithoutdecimalMobile"
                                                     type="number" value="{{ $details['quantity'] }}"
-                                                    {{-- style="width: 70px" --}}
-                                                     /></span><br>
+                                                    {{-- style="width: 70px" --}} /></span><br>
 
                                             <strong>Price : </strong><span>{{ getPrice($details['price']) }}</span><br>
 
@@ -181,6 +251,42 @@
                                     </td>
                                     <td class="text-center">{{ getPrice($total) }}</td>
 
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        @if (session()->has('coupon'))
+                                            <p>Remove coupon</p>
+                                        @else
+                                            <p>Apply coupon</p>
+                                        @endif
+                                    </td>
+                                    <td></td>
+                                    <td colspan="2">
+                                        <input class="form-control" id="couponCode" type="text"
+                                            value="{{ session('coupon')->coupon_code ?? '' }}"
+                                            @if (session()->has('coupon')) disabled @endif
+                                            placeholder="Enter coupon code">
+
+                                    </td>
+                                    <td class="text-center" id="cupponPrice">
+                                        @dump(session('coupon'))
+                                        @if (session()->has('coupon'))
+                                            @if (session('coupon')->type == 'amount')
+                                                - {{ getPrice(session('coupon')->amount) }}
+                                            @elseif (session('coupon')->type == 'percent')
+                                                - {{ getPrice(($total * session('coupon')->amount) / 100) }}
+                                            @endif
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if (session()->has('coupon'))
+                                            <button class="btn btn-primary" id="couponRemove"
+                                                type="button">Remove</button>
+                                        @else
+                                            <button class="btn btn-primary" id="couponApply"
+                                                type="button">Apply</button>
+                                        @endif
+                                    </td>
                                 </tr>
                             </tfoot>
                         @endif
@@ -237,6 +343,7 @@
             $(".update-cart").change(function(e) {
                 e.preventDefault();
                 var ele = $(this);
+
                 $.ajax({
                     url: '{{ route('update.cart') }}',
                     method: "patch",
@@ -246,7 +353,20 @@
                         quantity: ele.parents("tr").find(".quantity").val()
                     },
                     success: function(response) {
-                        window.location.reload();
+                        const {
+                            status,
+                            message,
+                            total_product
+                        } = response;
+
+                        if (status == true) {
+                            successAlert(message);
+
+                            window.location.reload();
+                        } else {
+                            errorAlert(message);
+
+                        }
                     }
                 });
             });
@@ -265,7 +385,21 @@
                     },
                     success: function(response) {
 
-                        window.location.reload();
+                        const {
+                            status,
+                            message,
+                            total_product
+                        } = response;
+
+                        if (status == true) {
+                            successAlert(message);
+
+                            window.location.reload();
+                        } else {
+                            errorAlert(message);
+
+                        }
+
                     }
                 });
             });
@@ -295,6 +429,70 @@
                     });
                 }
             });
+
+            $('#couponApply').click(function() {
+                let code = $('#couponCode').val();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('check.coupon') }}",
+                    data: {
+                        code: code
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        if (data) {
+                            const {
+                                status,
+                                message
+                            } = data;
+
+                            if (status) {
+                                successAlert(message);
+                                window.location.reload();
+
+                            } else {
+                                errorAlert(message);
+                            }
+
+                        }
+                    }
+                });
+            });
+
+            $('#couponRemove').click(function() {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('remove.coupon') }}",
+                    success: function(data) {
+                        console.log(data);
+                        if (data) {
+                            const {
+                                status,
+                                message
+                            } = data;
+
+                            if (status) {
+                                successAlert(message);
+                                window.location.reload();
+
+                            } else {
+                                errorAlert(message);
+                            }
+
+                        }
+                    }
+                });
+            })
         </script>
     @endpush
 @endsection

@@ -62,6 +62,7 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
+
         $id = $request->pid;
         $qty = $request->qty;
         $product = StoreProduct::findOrFail($id);
@@ -72,6 +73,31 @@ class CartController extends Controller
         $variantTotalPrice = 0;
 
 
+
+
+        if ($product->product_stock < $qty) {
+            $data['status']  = false;
+            $data['message']  = 'Out Of Stock';
+            return Response::json($data);
+        }
+
+        if (session()->has('cart')) {
+
+            $existingProducts = session()->get('cart');
+
+            foreach ($existingProducts as $key => $existingProduct) {
+                $cartProduct = StoreProduct::find($key);
+
+                if ($cartProduct->card_id != $product->card_id) {
+                    $data['status']  = false;
+                    $data['message']  = 'You can not add to cart products from different store.Please remove your products from the cart.';
+                    return Response::json($data);
+                }
+            }
+        }
+
+
+        
         if (isset($request->options)) {
             $incomingVariant = $request->options;
             for ($i = 0; $i < count($incomingVariant); $i++) {
@@ -102,6 +128,7 @@ class CartController extends Controller
             }
         }
 
+
         if ($option) {
             $price = $product->sales_price != $product->regular_price ? ($product->sales_price + $variantTotalPrice) : ($product->regular_price + $variantTotalPrice);
         } else {
@@ -127,6 +154,13 @@ class CartController extends Controller
     public function cartUpdate(Request $request)
 
     {
+        $product = StoreProduct::findOrFail($request->id);
+
+        if ($product->product_stock < $request->quantity) {
+            $data['status']  = false;
+            $data['message']  = 'Item Out Of Stock';
+            return Response::json($data);
+        }
 
         if ($request->id && $request->quantity) {
 
@@ -136,6 +170,9 @@ class CartController extends Controller
 
             session()->put('cart', $cart);
             Session::flash('success', 'Update cart successfully');
+            $data['status']  = true;
+            $data['message']  = 'Update cart successfully';
+            return Response::json($data);
         }
     }
 
@@ -152,6 +189,4 @@ class CartController extends Controller
             Session::flash('success', 'Remove form the cart successfully');
         }
     }
-
-    
 }

@@ -72,22 +72,13 @@
                                                     <td class="text-muted">
                                                         {{ $product->hasCategory->category_name ?? '' }}</td>
                                                     <td class="text-muted">
-                                                        @if ($product->is_variant)
-                                                            @if ($variantProductQuantity[$product->id]['quantity'] <= 0)
-                                                                <span class="badge bg-red">{{ __('Out of stock') }}</span>
-                                                            @else
-                                                                <span class="badge bg-green">{{ __('In-stock') }}
-                                                                    ({{ $variantProductQuantity[$product->id]['quantity'] }})
-                                                                </span>
-                                                            @endif
+
+                                                        @if ($product->product_stock <= 0)
+                                                            <span class="badge bg-red">{{ __('Out of stock') }}</span>
                                                         @else
-                                                            @if ($product->product_stock <= 0)
-                                                                <span class="badge bg-red">{{ __('Out of stock') }}</span>
-                                                            @else
-                                                                <span class="badge bg-green">{{ __('In-stock') }}
-                                                                    ({{ $product->product_stock }})
-                                                                </span>
-                                                            @endif
+                                                            <span class="badge bg-green">{{ __('In-stock') }}
+                                                                ({{ $product->product_stock }})
+                                                            </span>
                                                         @endif
 
                                                     </td>

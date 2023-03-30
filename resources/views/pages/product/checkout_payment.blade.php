@@ -94,18 +94,18 @@
                                     </tr>
                                     <tr>
                                         <td class="text-lg text-primary">
-                                            Grand Total
+                                            Total
                                         </td>
                                         <td class="text-end text-lg text-primary" data-th="Grand Total" colspan="3">
                                             @if (session()->has('tax'))
                                                 @php
-
+                                                    
                                                     $total = $total + session()->get('tax');
                                                 @endphp
                                             @endif
                                             @if (session()->has('shippingCost'))
                                                 @php
-
+                                                    
                                                     $total = $total + session()->get('shippingCost');
                                                 @endphp
                                             @endif
@@ -113,6 +113,48 @@
 
                                         </td>
 
+                                    </tr>
+                                    <tr>
+                                        <td class="text-lg text-primary">Coupon Discount</td>
+                                        <td colspan="2"></td>
+
+                                        <td class="text-end text-lg  text-primary" id="cupponPrice">
+
+                                            @if (session()->has('coupon'))
+                                                @if (session('coupon')->type == 'amount')
+                                                    - {{ getPrice(session('coupon')->amount) }}
+                                                @elseif (session('coupon')->type == 'percent')
+                                                    - {{ getPrice(($total * session('coupon')->amount) / 100) }}
+                                                @endif
+                                            @endif
+                                    </tr>
+                                    <tr>
+                                        <td class="text-lg text-primary">Grand Total</td>
+                                        <td colspan="2"></td>
+                                        <td class="text-end text-lg  text-primary">
+
+                                            @if (session()->has('coupon'))
+                                                @if (session('coupon')->type == 'amount')
+                                                    <p>{{ getprice($total - session('coupon')->amount) }}</p>
+                                                @elseif (session('coupon')->type == 'percent')
+                                                    <p>
+                                                        <strong>{{ getprice($total - ($total * session('coupon')->amount) / 100) }}
+                                                        </strong><span>
+                                                            (-{{ session('coupon')->amount }}%)
+                                                        </span>
+                                                    </p>
+                                                @else
+                                                    <p>
+                                                        {{ getprice($total) }}
+                                                    </p>
+                                                @endif
+                                            @else
+                                                <p>
+                                                    {{ getprice($total) }}
+                                                </p>
+                                            @endif
+
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

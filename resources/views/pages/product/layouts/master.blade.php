@@ -12,26 +12,26 @@
         $settings = getSetting();
     @endphp
     @if ($business_card_details->profile)
-        <link rel="icon" href="{{ url('/') }}{{ $business_card_details->profile }}" sizes="96x96"
-            type="image/png" />
+        <link type="image/png" href="{{ url('/') }}{{ $business_card_details->profile }}" rel="icon"
+            sizes="96x96" />
     @else
-        <link rel="icon" href="{{ url('/') }}{{ $settings->favicon }}" sizes="96x96" type="image/png" />
+        <link type="image/png" href="{{ url('/') }}{{ $settings->favicon }}" rel="icon" sizes="96x96" />
     @endif
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+        rel="stylesheet">
     <script src="{{ asset('frontend/whatsapp-store/js/main.js') }}"></script>
     <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('css/fontawesome.min.css') }}" />
+    <link href="{{ asset('css/fontawesome.min.css') }}" rel="stylesheet" />
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
     <script src="{{ asset('vendor/sweetalert/sweetalert.all.js') }}"></script>
     @stack('css')
     <style>
@@ -48,8 +48,6 @@
     @include('pages.product.includes.nav')
 
     @yield('content')
-
-
 
     {{-- footer --}}
     <footer class="footer">
@@ -89,9 +87,6 @@
         </div>
     </footer>
 
-
-
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('frontend/whatsapp-store/js/script.js') }}"></script>
     @stack('script')
@@ -102,7 +97,7 @@
     @endif
     @if (session()->has('alert'))
         <script>
-            successAlert("{{ session()->geT('alert') }}");
+            errorAlert("{{ session()->geT('alert') }}");
         </script>
     @endif
 

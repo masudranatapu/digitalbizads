@@ -80,7 +80,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class='col-md-6 col-xl-6'>
+                                                {{-- <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
                                                         <label class="form-label required"
                                                             for="stock">{{ __('Option Stock') }}</label>
@@ -94,7 +94,7 @@
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
                                                     </div>
-                                                </div>
+                                                </div> --}}
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
                                                         <label class="form-label required"

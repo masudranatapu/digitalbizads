@@ -84,7 +84,7 @@
                                         @else
                                             <tr class="font-weight-bold">
                                                 <td class="text-center" colspan="4">
-                                                    {{ __('No Product Variant Found.') }}
+                                                    {{ __('No Product Variant Option Found.') }}
                                                 </td>
                                             </tr>
                                         @endif

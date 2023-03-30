@@ -15,6 +15,7 @@ use App\OrderDetail;
 use App\ProductOrderTransaction;
 use App\ShippingCost;
 use App\State;
+use App\StoreProduct;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -71,15 +72,31 @@ class CheckoutController extends Controller
         if (!Session::has('cart')) {
             alert()->error(trans('No proudct in the cart'));
             return redirect()->route('card.preview', ['cardurl' => $cardUrl]);
+        } else {
+            $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
+
+
+            if (session()->has('cart')) {
+
+                $existingProducts = session()->get('cart');
+
+                foreach ($existingProducts as $key => $existingProduct) {
+                    $cartProduct = StoreProduct::findOrFail($key);
+                    if ($cartProduct->card_id != $business_card_details->card_id) {
+                        $message  = 'You can not checkout products from different store.Please remove your products from the cart.';
+                        Session::flash('alert', $message);
+                        return redirect()->route('cart', ['cardUrl' => $cardUrl]);
+                    }
+                }
+            }
+
+
+
+
+            $states = State::where('user_id', $business_card_details->user_id)->where('status', true)->get();
+            $shippingAreas = ShippingCost::where('user_id', $business_card_details->user_id)->where('status', true)->get();
+            return view('pages.product.checkout', compact('business_card_details', 'states', 'shippingAreas'));
         }
-
-        $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
-        $states = State::where('user_id', $business_card_details->user_id)->where('status', true)->get();
-        $shippingAreas = ShippingCost::where('user_id', $business_card_details->user_id)->where('status', true)->get();
-
-
-
-        return view('pages.product.checkout', compact('business_card_details', 'states', 'shippingAreas'));
     }
 
     public function checkoutBilling($cardUrl)
@@ -242,6 +259,13 @@ class CheckoutController extends Controller
 
             $total = (int) $total + (int) session()->get('shippingCost');
         }
+        if (session()->has('coupon')) {
+            if (session('coupon')->type == 'amount') {
+                $total = $total  - session('coupon')->amount;
+            } elseif (session('coupon')->type == 'percent') {
+                $total = $total  - ($total  * session('coupon')->amount) / 100;
+            }
+        }
 
         $user = User::find($business_card_details->user_id);
 
@@ -318,6 +342,7 @@ class CheckoutController extends Controller
                 $totalPrice = 0;
                 $totalQuantity = 0;
                 $grandTotal = 0;
+                $discount = 0;
                 foreach ($products as $key => $product) {
 
                     $totalPrice += $product['price'] * $product['quantity'];
@@ -330,6 +355,25 @@ class CheckoutController extends Controller
                 if (session()->has('shippingCost')) {
                     $grandTotal = $grandTotal + session()->get('shippingCost');
                 }
+                if (session()->has('coupon')) {
+                    if (session('coupon')->type == 'amount') {
+                        $grandTotal = $grandTotal  - session('coupon')->amount;
+                    } elseif (session('coupon')->type == 'percent') {
+                        $grandTotal = $grandTotal  - ($grandTotal  * session('coupon')->amount) / 100;
+                    }
+                }
+                if (session()->has('coupon')) {
+
+
+                    if (session('coupon')->type == 'amount') {
+
+                        $discount = session('coupon')->amount;
+                    } elseif (session('coupon')->type == 'percent') {
+
+                        $discount = ($grandTotal * session('coupon')->amount) / 100;
+                    }
+                }
+
 
                 $order = new Order();
                 $order->transaction_id = $productOrderTransaction->id;
@@ -337,6 +381,7 @@ class CheckoutController extends Controller
                 $order->order_number = uniqid('order_');
                 $order->quantity = $totalQuantity;
                 $order->total_price = $totalPrice;
+                $order->discount = $discount;
                 $order->payment_fee = 0;
                 $order->vat = $tax;
                 $order->shipping_cost = $shippingCost;
@@ -388,7 +433,12 @@ class CheckoutController extends Controller
                         $orderDetails->variant_option_id = null;
                         $orderDetails->save();
                     }
+                    $storeProduct = StoreProduct::find($product_id);
+                    $storeProduct->product_stock = $storeProduct->product_stock - $product['quantity'];
+                    $storeProduct->save();
                 }
+
+
 
 
                 alert()->success(trans('Proudct purchase successfully'));
@@ -399,9 +449,11 @@ class CheckoutController extends Controller
                 Session::forget('cart');
                 Session::forget('tax');
                 Session::forget('shippingCost');
+                Session::forget('coupon');
 
 
-                return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number]);
+
+                return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number, 'status' => true]);
             } catch (\Throwable $th) {
 
                 alert()->error(trans('Something wrong.'));
@@ -440,7 +492,14 @@ class CheckoutController extends Controller
         if (session()->has('shippingCost')) {
             $grandTotal = $grandTotal + session()->get('shippingCost');
         }
-        $amountToBePaid = $grandTotal;
+
+        if (session()->has('coupon')) {
+            if (session('coupon')->type == 'amount') {
+                $grandTotal = $grandTotal  - session('coupon')->amount;
+            } elseif (session('coupon')->type == 'percent') {
+                $grandTotal = $grandTotal  - ($grandTotal  * session('coupon')->amount) / 100;
+            }
+        }
 
         $payer = new Payer();
         $payer->setPaymentMethod('paypal');
@@ -450,7 +509,7 @@ class CheckoutController extends Controller
             /** item name **/
             ->setCurrency($currency->iso_code)
             ->setQuantity(1)
-            ->setPrice($amountToBePaid);
+            ->setPrice($grandTotal);
         /** unit price **/
 
         $item_list = new ItemList();
@@ -458,7 +517,7 @@ class CheckoutController extends Controller
 
         $amount = new Amount();
         $amount->setCurrency($currency->iso_code)
-            ->setTotal($amountToBePaid);
+            ->setTotal($grandTotal);
         $redirect_urls = new RedirectUrls();
         /** Specify return URL **/
         $redirect_urls->setReturnUrl(URL::route('payment.success', ['cardUrl' => $business_card_details->card_url]))
@@ -483,7 +542,7 @@ class CheckoutController extends Controller
             $productOrderTransaction->transection_date = now();
             $productOrderTransaction->provider = "Paypal";
             $productOrderTransaction->currency = $currency->iso_code;
-            $productOrderTransaction->trsnsection_amount = $amountToBePaid;
+            $productOrderTransaction->trsnsection_amount = $grandTotal;
             $productOrderTransaction->invoice = $totalTransaction + 1;
             $productOrderTransaction->invoice_details = json_encode(Session::get('shipping'));
             $productOrderTransaction->payment_status = "created";
@@ -527,6 +586,7 @@ class CheckoutController extends Controller
             $totalPrice = 0;
             $totalQuantity = 0;
             $grandTotal = 0;
+            $discount = 0;
             foreach ($products as $key => $product) {
                 $totalPrice += $product['price'] * $product['quantity'];
                 $totalQuantity +=  $product['quantity'];
@@ -539,6 +599,27 @@ class CheckoutController extends Controller
             if (session()->has('shippingCost')) {
                 $grandTotal = $grandTotal + session()->get('shippingCost');
             }
+            if (session()->has('coupon')) {
+                if (session('coupon')->type == 'amount') {
+                    $grandTotal = $grandTotal  - session('coupon')->amount;
+                } elseif (session('coupon')->type == 'percent') {
+                    $grandTotal = $grandTotal  - ($grandTotal  * session('coupon')->amount) / 100;
+                }
+            }
+
+
+            if (session()->has('coupon')) {
+
+
+                if (session('coupon')->type == 'amount') {
+
+                    $discount = session('coupon')->amount;
+                } elseif (session('coupon')->type == 'percent') {
+
+                    $discount = ($grandTotal * session('coupon')->amount) / 100;
+                }
+            }
+
             $tax = Session::has('tax') ? Session::get('tax') : 0;
             $shippingCost = Session::has('shippingCost') ? Session::get('shippingCost') : 0;
 
@@ -548,6 +629,8 @@ class CheckoutController extends Controller
             $order->order_number = uniqid('order_');
             $order->quantity = $totalQuantity;
             $order->total_price = $totalPrice;
+            $order->discount = $discount;
+
             $order->payment_fee = 0;
             $order->vat = $tax;
             $order->shipping_cost = $shippingCost;
@@ -564,7 +647,7 @@ class CheckoutController extends Controller
                 $totalPrice += $product['price'] * $product['quantity'];
                 $totalQuantity +=  $product['quantity'];
 
-                $order_id = $order->id;
+
                 $product_id = $key;
 
                 if (count($product['option']) > 0) {
@@ -599,9 +682,11 @@ class CheckoutController extends Controller
                     $orderDetails->variant_option_id = null;
                     $orderDetails->save();
                 }
+
+                $storeProduct = StoreProduct::find($product_id);
+                $storeProduct->product_stock = $storeProduct->product_stock - $product['quantity'];
+                $storeProduct->save();
             }
-
-
             alert()->success(trans('Proudct purchase successfully'));
 
             Mail::to(Session::get('shipping')['ship_email'])->send(new ProductPurchaseMail($productOrderTransaction, $order, $orderDetails));
@@ -612,10 +697,9 @@ class CheckoutController extends Controller
             Session::forget('shippingCost');
             Session::forget('paypal_payment_id');
             Session::forget('last_transection');
-
-
+            Session::forget('coupon');
             Session::flash('success', 'Product Purchase Successfull');
-            return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number]);
+            return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number, 'status' => true]);
         } catch (Exception $th) {
 
             Session::flash('alert', 'Something worng');
@@ -638,8 +722,9 @@ class CheckoutController extends Controller
         return redirect()->route('card.preview', $cardUrl);
     }
 
-    public function paymentInvoice(Request $request, $card_url, $order_id)
+    public function paymentInvoice(Request $request, $card_url, $order_id, $status = null)
     {
+
         $orders = Order::with('orderDetails')->where('order_number', $order_id)->first();
         $shipping = json_decode($orders->shipping_details, true);
         $shippingArea = ShippingCost::find($shipping['ship_area']);
@@ -648,6 +733,6 @@ class CheckoutController extends Controller
         $shipping['shipping_states'] = $shippingState->name;
         $business_card_details = BusinessCard::where('card_url', $card_url)->first();
 
-        return view('pages.invoice', compact('orders', 'shipping', 'business_card_details'));
+        return view('pages.invoice', compact('orders', 'shipping', 'business_card_details', 'status'));
     }
 }

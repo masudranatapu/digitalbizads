@@ -192,6 +192,10 @@
                                                     <td>{{ getPrice($orders->vat) }}</td>
                                                 </tr>
                                                 <tr class="text-end">
+                                                    <th colspan="3">Discount :</th>
+                                                    <td>-{{ getPrice($orders->discount ?? 0) }}</td>
+                                                </tr>
+                                                <tr class="text-end">
                                                     <th colspan="3">Grand Total :</th>
                                                     <td>{{ getPrice($orders->grand_total) }}</td>
                                                 </tr>
@@ -350,6 +354,10 @@
                                                 <td>{{ getPrice($orders->vat) }}</td>
                                             </tr>
                                             <tr class="text-end">
+                                                <th colspan="3">Discount :</th>
+                                                <td>-{{ getPrice($orders->discount ?? 0) }}</td>
+                                            </tr>
+                                            <tr class="text-end">
                                                 <th colspan="3">Grand Total :</th>
                                                 <td>{{ getPrice($orders->total_price) }}</td>
 
@@ -364,6 +372,7 @@
             </div>
         </div>
     </div>
+
 @endsection
 
 @push('script')
@@ -381,4 +390,30 @@
 
         }
     </script>
+
+    @if (isset($status) && $status)
+        @php
+            $store_description = json_decode($business_card_details->description, true);
+            
+        @endphp
+        @if (isset($store_description['whatsapp_no']))
+            <script>
+                $(document).ready(function() {
+
+                    let whatsAppNumber = "{{ $store_description['whatsapp_no'] }}";
+
+                    let invoiceLink =
+                        "{{ route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $orders->order_number]) }}";
+
+                    let userName = "{{ $shipping['ship_first_name'] . ' ' . $shipping['ship_last_name'] }}"
+
+                    let waShareContent = "You got a new order from " + userName + ".Check Order " + invoiceLink;
+
+                    var link = "https://api.whatsapp.com/send/?phone=" + whatsAppNumber + "&text=" + encodeURI(
+                        waShareContent);
+                    window.open(link, '_blank');
+                })
+            </script>
+        @endif
+    @endif
 @endpush

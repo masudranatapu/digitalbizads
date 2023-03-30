@@ -189,7 +189,7 @@ Route::group(['middleware' => 'Installer'], function () {
             // Business Cards
             Route::get('cards', [CardController::class, 'cards'])->name('cards');
             Route::get('card-status/{id}', [CardController::class, 'cardStatus'])->name('card.status');
-            Route::get('card-delete/{card}', [CardController::class, 'cardDelete'])->name('card.delete');
+            Route::get('card-delete/{card:card_id}', [CardController::class, 'cardDelete'])->name('card.delete');
             Route::get('card-store/{id}/{status}', [CardController::class, 'cardStoreStatus'])->name('card.storestatus');
             Route::get('card-subscriber/{card}', [CardController::class, 'subscriber'])->name('card.subscriber');
             Route::post('send-mail-subscriber', [CardController::class, 'sendMail'])->name('card.subscriber.send.mail');
@@ -214,6 +214,9 @@ Route::group(['middleware' => 'Installer'], function () {
             Route::get('create-card', [CardController::class, 'CreateCard'])->name('create.card');
             Route::get('edit-card/{id}', [CardController::class, 'editCard'])->name('edit.card');
             Route::get('card/gallery-delete/{id}', [CardController::class, 'getDeleteGallery'])->name('card.gallery-delete');
+
+
+            Route::get('create-card-2', [CardController::class, 'CreateNewCard'])->name('create.card');
 
             // v card
             if (env('APP_TYPE') == 'VCARD' || env('APP_TYPE') == 'BOTH') {
@@ -370,6 +373,12 @@ Route::patch('update-cart', [CartController::class, 'cartUpdate'])->name('update
 Route::delete('remove-from-cart', [CartController::class, 'cartRemove'])->name('remove.from.cart');
 Route::post('addtocart', [CartController::class, 'addToCart'])->name('addtocart');
 
+
+// coupon
+
+Route::post('check/coupon', [ProductController::class, 'checkCoupon'])->name('check.coupon');
+Route::post('remove/coupon', [ProductController::class, 'removeCoupon'])->name('remove.coupon');
+
 // checkout
 Route::get('{cardUrl}/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 Route::post('{cardUrl}/checkout', [CheckoutController::class, 'checkoutStore'])->name('checkout.store');
@@ -379,7 +388,7 @@ Route::get('{cardUrl}/checkout/payment', [CheckoutController::class, 'checkoutPa
 Route::get('{cardUrl}/checkout/payment/stripe', [CheckoutController::class, 'checkoutPaymentSrtipe'])->name('checkout.payment.stripe');
 Route::post('{cardUrl}/checkout/payment/stripe/{paymentId}', [CheckoutController::class, 'checkoutPaymentSrtipeStore'])->name('checkout.payment.stripe.store');
 Route::post('{cardUrl}/checkout/payment/paypal/', [CheckoutController::class, 'checkoutPaymentPaypalStore'])->name('checkout.payment.paypal.store');
-Route::get('{cardUrl}/invoice/{orderid}', [CheckoutController::class, 'paymentInvoice'])->name('payment.invoice');
+Route::get('{cardUrl}/invoice/{orderid}/{status?}', [CheckoutController::class, 'paymentInvoice'])->name('payment.invoice');
 Route::get('{cardUrl}/paypal/execute-payment', 'CheckoutController@executePayment')->name('payment.success');
 Route::get('{cardUrl}/paypal/failed-payment', 'CheckoutController@cancelPayment')->name('payment.failed');
 Route::get('{cardUrl}/paypal/cancel-payment', 'CheckoutController@cancelPayment')->name('payment.cancel');
