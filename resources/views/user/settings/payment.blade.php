@@ -46,20 +46,21 @@
                                         <h2 class="page-title my-3">
                                             Paypal Settings
                                         </h2>
-                                        {{-- <div class="col-md-4 col-xl-4">
+                                        <div class="col-md-4 col-xl-4">
                                             <div class="mb-3">
                                                 <label class="form-label required">Mode</label>
-                                                <select type="text" class="form-select"
-                                                    placeholder="Select a payment mode" id="select-tags-advanced"
-                                                    name="paypal_mode" required="">
-                                                    <option value="sandbox">
+                                                <select class="form-select" id="select-tags-advanced" name="paypal_mode"
+                                                    type="text" placeholder="Select a payment mode" required="">
+                                                    <option value="sandbox"
+                                                        @if (Auth::user()->paypal_mode == 'sandbox') selected @endif>
                                                         Sandbox</option>
-                                                    <option value="live">
+                                                    <option value="live"
+                                                        @if (Auth::user()->paypal_mode == 'live') selected @endif>
                                                         Live</option>
                                                 </select>
                                             </div>
-                                        </div> --}}
-                                        <div class="col-md-6 col-xl-6">
+                                        </div>
+                                        <div class="col-md-4 col-xl-4">
                                             <div class="mb-3">
                                                 <label class="form-label required">Client Key</label>
                                                 <input class="form-control" name="paypal_client_key" type="text"
@@ -67,7 +68,7 @@
                                                     placeholder="Client Key...">
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-xl-6">
+                                        <div class="col-md-4 col-xl-4">
                                             <div class="mb-3">
                                                 <label class="form-label required">Secret</label>
                                                 <input class="form-control" name="paypal_secret" type="text"
@@ -121,19 +122,18 @@
                             <h2 class="page-title my-3">
                                 Paypal Settings
                             </h2>
-                            {{-- <div class="col-md-4 col-xl-4">
-                                            <div class="mb-3">
-                                                <label class="form-label required">Mode</label>
-                                                <select type="text" class="form-select"
-                                                    placeholder="Select a payment mode" id="select-tags-advanced"
-                                                    name="paypal_mode" required="">
-                                                    <option value="sandbox">
-                                                        Sandbox</option>
-                                                    <option value="live">
-                                                        Live</option>
-                                                </select>
-                                            </div>
-                                        </div> --}}
+                            <div class="col-md-4 col-xl-4">
+                                <div class="mb-3">
+                                    <label class="form-label required">Mode</label>
+                                    <select class="form-select" id="select-tags-advanced" name="paypal_mode" type="text"
+                                        placeholder="Select a payment mode" required="">
+                                        <option value="sandbox" @if (Auth::user()->paypal_mode == 'sandbox') selected @endif>
+                                            Sandbox</option>
+                                        <option value="live" @if (Auth::user()->paypal_mode == 'live') selected @endif>
+                                            Live</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-6 col-xl-6">
                                 <div class="mb-3">
                                     <label class="form-label required">Client Key</label>

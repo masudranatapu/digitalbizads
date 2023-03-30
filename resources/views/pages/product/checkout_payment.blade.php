@@ -99,13 +99,13 @@
                                         <td class="text-end text-lg text-primary" data-th="Grand Total" colspan="3">
                                             @if (session()->has('tax'))
                                                 @php
-                                                    
+
                                                     $total = $total + session()->get('tax');
                                                 @endphp
                                             @endif
                                             @if (session()->has('shippingCost'))
                                                 @php
-                                                    
+
                                                     $total = $total + session()->get('shippingCost');
                                                 @endphp
                                             @endif
@@ -141,7 +141,7 @@
                                 <form id="paymentMethodForm" action="#" method="post">
                                     <div class="payment">
 
-                                        {{-- @if (isset($user->paypal_public_key) && isset($user->paypal_secret_key))
+                                        @if (isset($user->paypal_public_key) && isset($user->paypal_secret_key))
                                             <input id="paypal" name="paymentMethod" type="radio" value="PayPal">
                                             <label for="paypal">
 
@@ -150,7 +150,7 @@
                                                 <span>Paypal</span>
 
                                             </label>
-                                        @endif --}}
+                                        @endif
                                         @if (isset($user->stripe_public_key) && isset($user->stripe_secret_key))
                                             <input id="stripe" name="paymentMethod" type="radio" value="Stripe">
                                             <label for="stripe">

@@ -15,12 +15,16 @@ use App\OrderDetail;
 use App\ProductOrderTransaction;
 use App\ShippingCost;
 use App\State;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-
+use Illuminate\Support\Facades\URL;
 use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Api\Amount;
@@ -47,20 +51,15 @@ class CheckoutController extends Controller
             $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
             $paypalConf = User::find($business_card_details->user_id);
 
-            $this->apiContext = new ApiContext(
-                new OAuthTokenCredential(
-                    $paypalConf->paypal_public_key,
-                    $paypalConf->paypal_secret_key
-                )
-            );
+            $this->apiContext = new ApiContext(new OAuthTokenCredential($paypalConf->paypal_public_key, $paypalConf->paypal_secret_key));
 
-            $this->apiContext->setConfig([
-                'mode' => 'sandbox',
+            $this->apiContext->setConfig(array(
+                'mode' => $paypalConf->paypal_mode,
                 'http.ConnectionTimeOut' => 30,
                 'log.LogEnabled' => true,
                 'log.FileName' => storage_path() . '/logs/product_puchase_paypal.log',
                 'log.LogLevel' => 'DEBUG',
-            ]);
+            ));
         }
     }
 
@@ -277,62 +276,6 @@ class CheckoutController extends Controller
     }
 
 
-
-
-
-    public function checkoutPaymentSrtipe($cardUrl)
-    {
-        $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
-        $iso_code = json_decode($business_card_details->description, true);
-        $currency = Currency::where('iso_code', $iso_code['currency'])->first();
-        $shiping = Session::get('shipping');
-        $total = 0;
-        foreach (session('cart') as $id => $details) {
-            $total += $details['price'] * $details['quantity'];
-        }
-
-        //Todo Shipping And Vat Add Korte hobe
-
-        if (session()->has('tax')) {
-            $total = (int) $total + (int) session()->get('tax');
-        }
-        if (session()->has('shippingCost')) {
-
-            $total = (int) $total + (int) session()->get('shippingCost');
-        }
-
-
-
-
-
-
-        $user = User::find($business_card_details->user_id);
-
-        \Stripe\Stripe::setApiKey($user->stripe_secret_key);
-        $payment_intent = \Stripe\PaymentIntent::create([
-            'description' => "Product purchase",
-            'shipping' => [
-                'name' => $shiping['ship_first_name'],
-                'address' => [
-                    'line1' => $shiping['ship_address1'],
-                    'postal_code' => $shiping['ship_zip'],
-                    'city' => $shiping['ship_city'],
-                    'state' =>  $shiping['ship_state'],
-                    'country' =>  $shiping['ship_city'],
-                ],
-            ],
-            'amount' => intval($total) * 100,
-            'currency' => $currency->iso_code,
-            'payment_method_types' => ['card'],
-        ]);
-        $intent = $payment_intent->client_secret;
-        $paymentId = $payment_intent->id;
-
-        return view('pages.product.stripe', compact('business_card_details', 'intent', 'user', 'paymentId'));
-    }
-
-
-
     public function checkoutPaymentSrtipeStore($cardUrl, $paymentId)
     {
         $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
@@ -359,7 +302,6 @@ class CheckoutController extends Controller
             $productOrderTransaction->payment_status = $payment['status'];
             $productOrderTransaction->status = true;
             $productOrderTransaction->save();
-            Log::alert("success");
         } catch (\Exception $e) {
             $payment = new \stdClass();
             $payment->status = "error";
@@ -375,10 +317,18 @@ class CheckoutController extends Controller
 
                 $totalPrice = 0;
                 $totalQuantity = 0;
+                $grandTotal = 0;
                 foreach ($products as $key => $product) {
 
                     $totalPrice += $product['price'] * $product['quantity'];
                     $totalQuantity +=  $product['quantity'];
+                }
+                if (session()->has('tax')) {
+
+                    $grandTotal = $totalPrice + session()->get('tax');
+                }
+                if (session()->has('shippingCost')) {
+                    $grandTotal = $grandTotal + session()->get('shippingCost');
                 }
 
                 $order = new Order();
@@ -390,7 +340,7 @@ class CheckoutController extends Controller
                 $order->payment_fee = 0;
                 $order->vat = $tax;
                 $order->shipping_cost = $shippingCost;
-                $order->grand_total = $totalPrice;
+                $order->grand_total = $grandTotal;
                 $order->order_date = now();
                 $order->shipping_details = json_encode(Session::get('shipping'));
                 $order->billing_details = json_encode(Session::get('billing'));
@@ -454,7 +404,8 @@ class CheckoutController extends Controller
                 return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number]);
             } catch (\Throwable $th) {
 
-                dd($th->getMessage());
+                alert()->error(trans('Something wrong.'));
+                return redirect()->route('card.preview', $business_card_details->card_url);
             }
         } else {
             alert()->error(trans('Something wrong.'));
@@ -466,52 +417,225 @@ class CheckoutController extends Controller
     public function checkoutPaymentPaypalStore(Request $request, $cardUrl)
     {
         $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
+        $config = DB::table('config')->get();
+
+        $iso_code = json_decode($business_card_details->description, true);
+        $currency = Currency::where('iso_code', $iso_code['currency'])->first();
+        $totalTransaction = ProductOrderTransaction::count();
+
+
+        $products = Session::get('cart');
+        $totalPrice = 0;
+        $totalQuantity = 0;
+        $grandTotal = 0;
+        foreach ($products as $key => $product) {
+            $totalPrice += $product['price'] * $product['quantity'];
+            $totalQuantity +=  $product['quantity'];
+        }
+
+        if (session()->has('tax')) {
+
+            $grandTotal = $totalPrice + session()->get('tax');
+        }
+        if (session()->has('shippingCost')) {
+            $grandTotal = $grandTotal + session()->get('shippingCost');
+        }
+        $amountToBePaid = $grandTotal;
 
         $payer = new Payer();
         $payer->setPaymentMethod('paypal');
 
-        $items = [
-            new Item([
-                'name' => 'Item Name',
-                'price' => 10 * 10,
-                'quantity' => 1,
-            ]),
-        ];
+        $item_1 = new Item();
+        $item_1->setName("Product Purchase")
+            /** item name **/
+            ->setCurrency($currency->iso_code)
+            ->setQuantity(1)
+            ->setPrice($amountToBePaid);
+        /** unit price **/
 
-        $itemList = new ItemList();
-        $itemList->setItems($items);
-
-        $details = new Details();
-        $details->setSubtotal(10);
+        $item_list = new ItemList();
+        $item_list->setItems(array($item_1));
 
         $amount = new Amount();
-        $amount->setCurrency('USD')
-            ->setTotal(10.00)
-            ->setDetails($details);
+        $amount->setCurrency($currency->iso_code)
+            ->setTotal($amountToBePaid);
+        $redirect_urls = new RedirectUrls();
+        /** Specify return URL **/
+        $redirect_urls->setReturnUrl(URL::route('payment.success', ['cardUrl' => $business_card_details->card_url]))
+            ->setCancelUrl(URL::route('payment.cancel', ['cardUrl' => $business_card_details->card_url]));
 
         $transaction = new Transaction();
         $transaction->setAmount($amount)
-            ->setItemList($itemList)
-            ->setDescription('Payment Description')
-            ->setInvoiceNumber(uniqid());
-
-        $redirectUrls = new RedirectUrls();
-        $redirectUrls->setReturnUrl(route('card.preview', $business_card_details->card_url))
-            ->setCancelUrl(route('card.preview', $business_card_details->card_url));
+            ->setItemList($item_list)
+            ->setDescription("Product Purchase");
 
         $payment = new Payment();
-        $payment->setIntent('sale')
+        $payment->setIntent('Sale')
             ->setPayer($payer)
-            ->setRedirectUrls($redirectUrls)
-            ->setTransactions([$transaction]);
-
+            ->setRedirectUrls($redirect_urls)
+            ->setTransactions(array($transaction));
         try {
             $payment->create($this->apiContext);
 
-            return redirect()->route('card.preview', $business_card_details->card_url);
-        } catch (\Exception $e) {
-            dd($e);
+            $productOrderTransaction = new ProductOrderTransaction();
+            $productOrderTransaction->store_id = $business_card_details->card_id;
+            $productOrderTransaction->transection_id = $payment->getId();
+            $productOrderTransaction->transection_date = now();
+            $productOrderTransaction->provider = "Paypal";
+            $productOrderTransaction->currency = $currency->iso_code;
+            $productOrderTransaction->trsnsection_amount = $amountToBePaid;
+            $productOrderTransaction->invoice = $totalTransaction + 1;
+            $productOrderTransaction->invoice_details = json_encode(Session::get('shipping'));
+            $productOrderTransaction->payment_status = "created";
+            $productOrderTransaction->status = true;
+            $productOrderTransaction->save();
+
+            Session::put('last_transection', $productOrderTransaction->id);
+        } catch (Exception $ex) {
+            Session::flash('alert', 'Something worng');
+            return redirect()->route('card.preview', $cardUrl);
         }
+
+
+
+
+        foreach ($payment->getLinks() as $link) {
+            if ($link->getRel() == 'approval_url') {
+                $redirect_url = $link->getHref();
+                break;
+            }
+        }
+        if (isset($redirect_url)) {
+            /** redirect to paypal **/
+            return Redirect::away($redirect_url);
+        }
+        Session::put('paypal_payment_id', $payment->getId());
+    }
+
+    public function executePayment(Request $request, $cardUrl)
+    {
+        $payment_id = request()->paymentId;
+        $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
+        $productOrderTransaction = ProductOrderTransaction::where('transection_id', $payment_id)->first();
+        $productOrderTransaction->payment_status = "success";
+        $productOrderTransaction->save();
+
+
+        try {
+
+            $products = Session::get('cart');
+            $totalPrice = 0;
+            $totalQuantity = 0;
+            $grandTotal = 0;
+            foreach ($products as $key => $product) {
+                $totalPrice += $product['price'] * $product['quantity'];
+                $totalQuantity +=  $product['quantity'];
+            }
+
+            if (session()->has('tax')) {
+
+                $grandTotal = $totalPrice + session()->get('tax');
+            }
+            if (session()->has('shippingCost')) {
+                $grandTotal = $grandTotal + session()->get('shippingCost');
+            }
+            $tax = Session::has('tax') ? Session::get('tax') : 0;
+            $shippingCost = Session::has('shippingCost') ? Session::get('shippingCost') : 0;
+
+            $order = new Order();
+            $order->transaction_id = $productOrderTransaction->id;
+            $order->store_id = $business_card_details->card_id;
+            $order->order_number = uniqid('order_');
+            $order->quantity = $totalQuantity;
+            $order->total_price = $totalPrice;
+            $order->payment_fee = 0;
+            $order->vat = $tax;
+            $order->shipping_cost = $shippingCost;
+            $order->grand_total = $grandTotal;
+            $order->order_date = now();
+            $order->shipping_details = json_encode(Session::get('shipping'));
+            $order->billing_details = json_encode(Session::get('billing'));
+            $order->payment_method = "Paypal";
+            $order->payment_status = 1;
+            $order->save();
+            foreach ($products as $key => $product) {
+                $totalPrice = 0;
+                $totalQuantity = 0;
+                $totalPrice += $product['price'] * $product['quantity'];
+                $totalQuantity +=  $product['quantity'];
+
+                $order_id = $order->id;
+                $product_id = $key;
+
+                if (count($product['option']) > 0) {
+                    $varints = [];
+                    $optionsDetails = [];
+                    foreach ($product['option'] as $option) {
+
+                        $varints[] = [
+                            "id" => $option['variant_id'],
+                            "name" => $option['variant_name']
+                        ];
+                        $optionsDetails[] = [
+                            "id" => $option['id'],
+                            "name" => $option['name'],
+                        ];
+                    }
+                    $orderDetails = new OrderDetail();
+                    $orderDetails->order_id = $order->id;
+                    $orderDetails->product_id = $product_id;
+                    $orderDetails->quantity = $product['quantity'];
+                    $orderDetails->unit_price = $product['price'];
+                    $orderDetails->variant_id = json_encode($varints);
+                    $orderDetails->variant_option_id = json_encode($optionsDetails);
+                    $orderDetails->save();
+                } else {
+                    $orderDetails = new OrderDetail();
+                    $orderDetails->order_id = $order->id;
+                    $orderDetails->product_id = $product_id;
+                    $orderDetails->quantity = $product['quantity'];
+                    $orderDetails->unit_price = $product['price'];
+                    $orderDetails->variant_id = null;
+                    $orderDetails->variant_option_id = null;
+                    $orderDetails->save();
+                }
+            }
+
+
+            alert()->success(trans('Proudct purchase successfully'));
+
+            Mail::to(Session::get('shipping')['ship_email'])->send(new ProductPurchaseMail($productOrderTransaction, $order, $orderDetails));
+            Session::forget('shipping');
+            Session::forget('billing');
+            Session::forget('cart');
+            Session::forget('tax');
+            Session::forget('shippingCost');
+            Session::forget('paypal_payment_id');
+            Session::forget('last_transection');
+
+
+            Session::flash('success', 'Product Purchase Successfull');
+            return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number]);
+        } catch (Exception $th) {
+
+            Session::flash('alert', 'Something worng');
+            return redirect()->route('card.preview', $cardUrl);
+        }
+
+
+
+        return redirect()->route('card.preview', $cardUrl);
+    }
+    public function cancelPayment(Request $request, $cardUrl)
+    {
+
+        $id = Session::get('last_transection');
+        $productOrderTransaction = ProductOrderTransaction::find($id);
+        $productOrderTransaction->payment_status = "cancel";
+        $productOrderTransaction->save();
+        Session::flash('success', 'Payment Cancel');
+
+        return redirect()->route('card.preview', $cardUrl);
     }
 
     public function paymentInvoice(Request $request, $card_url, $order_id)

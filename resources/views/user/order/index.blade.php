@@ -1,7 +1,6 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
 @section('store-nav', 'active')
 
-
 @section('content')
     <div class="page-wrapper">
         <div class="container-xl">
@@ -50,7 +49,7 @@
                                                     <td>{{ $shippinfDetails['ship_first_name'] . ' ' . $shippinfDetails['ship_last_name'] }}
                                                     </td>
                                                     <td>{{ $order->hasTransection->transection_id }}</td>
-                                                    <td>{{ getPrice($order->total_price) }}</td>
+                                                    <td>{{ getPrice($order->grand_total) }}</td>
                                                     <td class="text-uppercase">{{ $order->hasTransection->currency }}</td>
                                                     <td>{{ date('d-M-Y', strtotime($order->order_date)) }}</td>
                                                     <td>
@@ -73,7 +72,6 @@
                                         @else
                                             <tr class="font-weight-bold">
 
-
                                                 <td class="text-center" colspan="8">
                                                     {{ __('No Product Variant Found.') }}</td>
 
@@ -84,7 +82,6 @@
                             </div>
                         </div>
                     </div>
-
 
                     @if (isset($orders))
                         <div
@@ -111,14 +108,14 @@
                                                                 @endif
                                                             </td>
 
-
                                                         </h3>
                                                     </div>
 
                                                     <div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">
                                                         <div class="dropdown text-end">
-                                                            <button type="button" class="btn btn-primary dropdown-toggle"
-                                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <button class="btn btn-primary dropdown-toggle"
+                                                                data-bs-toggle="dropdown" type="button"
+                                                                aria-expanded="false">
                                                                 Actions
                                                             </button>
                                                             <div class="dropdown-menu" style="">
@@ -220,6 +217,5 @@
             </div>
         </div>
     </div> --}}
-
 
 @endsection

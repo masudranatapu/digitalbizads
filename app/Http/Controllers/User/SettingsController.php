@@ -20,6 +20,7 @@ class SettingsController extends Controller
     public function paymentUpdate(Request $request)
     {
         $request->validate([
+            "paypal_mode" => 'nullable',
             "paypal_client_key" => 'nullable',
             "paypal_secret" => 'nullable',
             "stripe_publishable_key" => 'nullable',
@@ -27,6 +28,7 @@ class SettingsController extends Controller
         ]);
 
         $user = User::find(Auth::id());
+        $user->paypal_mode = $request->paypal_mode;
         $user->paypal_public_key = $request->paypal_client_key;
         $user->paypal_secret_key = $request->paypal_secret;
         $user->stripe_public_key = $request->stripe_publishable_key;

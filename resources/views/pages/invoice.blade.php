@@ -78,7 +78,7 @@
                                                     </p>
 
                                                     <p><strong>State :
-                                                        </strong><span>{{ $shipping['ship_states'] ?? 'Not Available' }}</span>
+                                                        </strong><span>{{ $shipping['shipping_states'] ?? 'Not Available' }}</span>
                                                     </p>
 
                                                     <p><strong>Zip :
@@ -193,7 +193,7 @@
                                                 </tr>
                                                 <tr class="text-end">
                                                     <th colspan="3">Grand Total :</th>
-                                                    <td>{{ getPrice($orders->total_price) }}</td>
+                                                    <td>{{ getPrice($orders->grand_total) }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

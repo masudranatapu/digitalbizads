@@ -114,7 +114,6 @@
                                 </div>
                             </div>
 
-
                         </div>
                     </div>
                     <div class="col-sm-6 col-lg-6">
@@ -143,12 +142,9 @@
         </div>
         @include('user.includes.footer')
     </div>
-
-
-
 @endsection
 
-@push('scripts')
+@push('script')
     <script>
         "use strict";
         const labels = [

@@ -27,7 +27,7 @@
 <body class="antialiased bg-black text-body font-body"
     dir="{{ App::isLocale('ar') || App::isLocale('ur') || App::isLocale('he') ? 'rtl' : 'ltr' }}">
     <div>
-       
+
         @if ($business_card_details != null)
             <div id="profile"
                 class="leading-tight min-h-screen lg:bg-{{ $business_card_details->theme_color }}-800 bg-grey-lighter p-1">

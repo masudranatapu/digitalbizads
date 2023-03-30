@@ -51,6 +51,47 @@
 
 
 
+    {{-- footer --}}
+    <footer class="footer">
+        <div class="social_share">
+            <div class="container-fluid">
+                <div class="title">
+                    <h4>Share on</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+
+            <div class="social_list ps-3">
+                <ul>
+                    <li>
+                        <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+                    </li>
+                    <li>
+                        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                    </li>
+                    <li>
+                        <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    </li>
+                    <li>
+                        <a href="#" target="_blank"><i class="fab fa-telegram"></i></a>
+                    </li>
+                    <li>
+                        <a href="#" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="copyright mt-5 pb-3 text-center">
+                <p>Copyright © Big Store .</p>
+            </div>
+        </div>
+    </footer>
+
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('frontend/whatsapp-store/js/script.js') }}"></script>
     @stack('script')
