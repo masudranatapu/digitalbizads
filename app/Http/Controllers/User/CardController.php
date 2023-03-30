@@ -1456,6 +1456,7 @@ class CardController extends Controller
 
     public function cardDelete(BusinessCard $card)
     {
+        dd($card);
         StoreProduct::where('card_id', $card->card_id)->delete();
 
         $card->delete();
