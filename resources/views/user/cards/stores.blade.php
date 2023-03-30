@@ -105,7 +105,7 @@
                                             <tr class="font-weight-bold">
                                                 <td></td>
                                                 <td></td>
-                                                <td></td>
+                                             
                                                 <td>{{ __('No Store Found.') }}</td>
                                                 <td></td>
                                                 <td></td>

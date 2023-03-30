@@ -73,7 +73,7 @@
                                             <tr class="font-weight-bold">
 
                                                 <td class="text-center" colspan="8">
-                                                    {{ __('No Product Variant Found.') }}</td>
+                                                    {{ __('No Order available.') }}</td>
 
                                             </tr>
                                         @endif
