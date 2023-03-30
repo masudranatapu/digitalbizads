@@ -24,7 +24,7 @@
                                     @php
                                         $total = 0;
                                         $grandTotal = 0;
-
+                                        
                                     @endphp
                                     @if (session('cart'))
                                         @foreach (session('cart') as $id => $details)
@@ -33,19 +33,19 @@
                                                 $line_total = $details['price'] * $details['quantity'];
                                             @endphp
 
-                                            <tr data-id="{{ $id }}" class="align-middle">
+                                            <tr class="align-middle" data-id="{{ $id }}">
 
                                                 <td data-th="Product">
                                                     <span>{{ $details['product']['product_name'] }}</span>
                                                 </td>
                                                 <td data-th="Price">{{ getPrice($details['price']) }}</td>
-                                                <td data-th="Quantity">
+                                                <td class="text-center" data-th="Quantity">
                                                     {{ $details['quantity'] }}
                                                 </td>
-                                                <td data-th="Subtotal" class="text-center">
+                                                <td class="text-center" data-th="Subtotal">
                                                     {{ getPrice($line_total) }}
                                                 </td>
-                                                
+
                                             </tr>
                                         @endforeach
                                     @else
@@ -57,7 +57,6 @@
                                         </tr>
                                     @endif
 
-
                                     {{-- <tr class=" set__state_price_tr">
                                         <td>State tax:</td>
                                         <td class="text-gray-dark set__state_price">$23.80</td>
@@ -68,9 +67,53 @@
                                     </tr> --}}
                                     <tr>
                                         <td class="text-lg text-primary">Order total</td>
-                                        <td colspan="3" class="text-lg text-end text-primary grand_total_set">
+                                        <td colspan="2"></td>
+                                        <td class="text-lg text-center text-primary grand_total_set">
                                             {{ getPrice($total) }}</td>
                                     </tr>
+                                    <tr>
+                                        <td class="text-lg text-primary">Coupon Discount</td>
+                                        <td colspan="2"></td>
+
+                                        <td class="text-center text-lg  text-primary" id="cupponPrice">
+
+                                            @if (session()->has('coupon'))
+                                                @if (session('coupon')->type == 'amount')
+                                                    - {{ getPrice(session('coupon')->amount) }}
+                                                @elseif (session('coupon')->type == 'percent')
+                                                    - {{ getPrice(($total * session('coupon')->amount) / 100) }}
+                                                @endif
+                                            @endif
+                                    </tr>
+                                    <tr>
+                                        <td class="text-lg text-primary">Grand Total</td>
+                                        <td colspan="2"></td>
+                                        <td class="text-center text-lg  text-primary">
+
+                                            @if (session()->has('coupon'))
+                                                @if (session('coupon')->type == 'amount')
+                                                    <p>{{ getprice($total - session('coupon')->amount) }}</p>
+                                                @elseif (session('coupon')->type == 'percent')
+                                                    <p>
+                                                        <strong>{{ getprice($total - ($total * session('coupon')->amount) / 100) }}
+                                                        </strong><span>
+                                                            (-{{ session('coupon')->amount }}%)
+                                                        </span>
+                                                    </p>
+                                                @else
+                                                    <p>
+                                                        {{ getprice($total) }}
+                                                    </p>
+                                                @endif
+                                            @else
+                                                <p>
+                                                    {{ getprice($total) }}
+                                                </p>
+                                            @endif
+
+                                        </td>
+                                    </tr>
+                                    </td>
                                 </tbody>
                             </table>
                         </div>
@@ -81,8 +124,9 @@
                         <div class="checkout_form">
                             <div class="checkout_step mb-4">
                                 <ul>
-                                    <li><a href="{{ route('checkout', ['cardUrl' => $business_card_details->card_url]) }}"
-                                            class="active">Shipping Address <i class="fa fa-angle-right"></i></a></li>
+                                    <li><a class="active"
+                                            href="{{ route('checkout', ['cardUrl' => $business_card_details->card_url]) }}">Shipping
+                                            Address <i class="fa fa-angle-right"></i></a></li>
                                     <li><a
                                             href="{{ route('checkout.billing', ['cardUrl' => $business_card_details->card_url]) }}">Billing
                                             Address <i class="fa fa-angle-right"></i></a></li>
@@ -94,20 +138,18 @@
                             <form action="{{ route('checkout.store', ['cardUrl' => $business_card_details->card_url]) }}"
                                 method="post">
 
-
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-6 mb-4">
                                         <div class="form-group">
-                                            <label for="ship_first_name" class="form-label">First Name <span
+                                            <label class="form-label" for="ship_first_name">First Name <span
                                                     class="text-danger">*</span></label>
 
-                                            <input type="text"
-                                                class="form-control @error('ship_first_name') border-danger @enderror"
-                                                name="ship_first_name" required="" id="ship_first_name"
+                                            <input class="form-control @error('ship_first_name') border-danger @enderror"
+                                                id="ship_first_name" name="ship_first_name" type="text"
                                                 value="@if (old('ship_first_name')) {{ old('ship_first_name') }}
                                                 @elseif(session()->has('shipping')){{ session('shipping')['ship_first_name'] }} @endif"
-                                                placeholder="First Name">
+                                                required="" placeholder="First Name">
                                             @error('ship_first_name')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -115,14 +157,14 @@
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <div class="form-group">
-                                            <label for="ship_last_name" class="form-label">Last Name <span
+                                            <label class="form-label" for="ship_last_name">Last Name <span
                                                     class="text-danger">*</span></label>
 
                                             <input class="form-control @error('ship_last_name') border-danger @enderror"
-                                                name="ship_last_name" required="" type="text" id="ship_last_name"
+                                                id="ship_last_name" name="ship_last_name" type="text"
                                                 value="@if (old('ship_last_name')) {{ old('ship_last_name') }}
                                                 @elseif(session()->has('shipping')){{ session('shipping')['ship_last_name'] }} @endif"
-                                                placeholder="Last Name">
+                                                required="" placeholder="Last Name">
                                             @error('ship_last_name')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -130,13 +172,13 @@
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <div class="form-group">
-                                            <label for="ship_email" class="form-label">E-mail Address <span
+                                            <label class="form-label" for="ship_email">E-mail Address <span
                                                     class="text-danger">*</span></label>
                                             <input class="form-control @error('ship_email') border-danger @enderror"
-                                                name="ship_email" required="" type="email" id="ship_email"
+                                                id="ship_email" name="ship_email" type="email"
                                                 value="@if (old('ship_email')) {{ old('ship_email') }}
                                                 @elseif(session()->has('shipping')){{ session('shipping')['ship_email'] }} @endif"
-                                                placeholder="E-mail Address">
+                                                required="" placeholder="E-mail Address">
                                             @error('ship_email')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -144,13 +186,13 @@
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <div class="form-group">
-                                            <label for="ship_phone" class="form-label">Phone Number <span
+                                            <label class="form-label" for="ship_phone">Phone Number <span
                                                     class="text-danger">*</span></label>
                                             <input class="form-control @error('ship_phone') border-danger @enderror"
-                                                name="ship_phone" required="" type="text" id="ship_phone"
+                                                id="ship_phone" name="ship_phone" type="text"
                                                 value="@if (old('ship_phone')) {{ old('ship_phone') }}
                                                 @elseif(session()->has('shipping')){{ session('shipping')['ship_phone'] }} @endif"
-                                                placeholder="Phone Number"
+                                                required="" placeholder="Phone Number"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');">
                                             @error('ship_phone')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -159,13 +201,13 @@
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <div class="form-group">
-                                            <label for="ship_address1" class="form-label">Address <span
+                                            <label class="form-label" for="ship_address1">Address <span
                                                     class="text-danger">*</span></label>
                                             <input class="form-control @error('ship_address1') border-danger @enderror"
-                                                name="ship_address1" required="" type="text" id="ship_address1"
+                                                id="ship_address1" name="ship_address1" type="text"
                                                 value="@if (old('ship_address1')) {{ old('ship_address1') }}
                                                 @elseif(session()->has('shipping')){{ session('shipping')['ship_address1'] }} @endif"
-                                                placeholder="Address">
+                                                required="" placeholder="Address">
                                             @error('ship_address1')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -173,13 +215,13 @@
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <div class="form-group">
-                                            <label for="ship_city" class="form-label">City <span
+                                            <label class="form-label" for="ship_city">City <span
                                                     class="text-danger">*</span></label>
                                             <input class="form-control @error('ship_city') border-danger @enderror"
-                                                name="ship_city" required="" type="text" id="ship_city"
+                                                id="ship_city" name="ship_city" type="text"
                                                 value="@if (old('ship_city')) {{ old('ship_city') }}
                                                 @elseif(session()->has('shipping')){{ session('shipping')['ship_city'] }} @endif"
-                                                placeholder="City">
+                                                required="" placeholder="City">
                                             @error('ship_city')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -187,12 +229,12 @@
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <div class="form-group">
-                                            <label for="ship_state" class="form-label">State <span
+                                            <label class="form-label" for="ship_state">State <span
                                                     class="text-danger">*</span></label>
                                             <select class="form-control @error('ship_state') border-danger @enderror"
-                                                name="ship_state" required="" id="ship_state">
+                                                id="ship_state" name="ship_state" required="">
 
-                                                <option value="" class="d-none">Select State</option>
+                                                <option class="d-none" value="">Select State</option>
                                                 @foreach ($states as $state)
                                                     <option value="{{ $state->id }}"
                                                         @if (old('ship_state')) {{ old('ship_state') == $state->id ? 'selected' : '' }}
@@ -209,13 +251,13 @@
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <div class="form-group">
-                                            <label for="ship_zip" class="form-label">Zip Code <span
+                                            <label class="form-label" for="ship_zip">Zip Code <span
                                                     class="text-danger">*</span></label>
                                             <input class="form-control @error('ship_zip') border-danger @enderror"
-                                                name="ship_zip" type="text" required="" id="ship_zip"
+                                                id="ship_zip" name="ship_zip" type="text"
                                                 value="@if (old('ship_zip')) {{ old('ship_zip') }}
                                                 @elseif(session()->has('shipping')){{ session('shipping')['ship_zip'] }} @endif"
-                                                placeholder="Zip Code">
+                                                required="" placeholder="Zip Code">
                                             @error('ship_zip')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -224,12 +266,12 @@
 
                                     <div class="col-md-6 mb-4">
                                         <div class="form-group">
-                                            <label for="ship_state" class="form-label">Shiping Area<span
+                                            <label class="form-label" for="ship_state">Shiping Area<span
                                                     class="text-danger">*</span></label>
                                             <select class="form-control @error('ship_area') border-danger @enderror"
-                                                name="ship_area" required="" id="ship_area">
+                                                id="ship_area" name="ship_area" required="">
 
-                                                <option value="" class="d-none">Select area</option>
+                                                <option class="d-none" value="">Select area</option>
                                                 @foreach ($shippingAreas as $shippingArea)
                                                     <option value="{{ $shippingArea->id }}"
                                                         @if (old('ship_area')) {{ old('ship_area') == $shippingArea->id ? 'selected' : '' }}
@@ -247,9 +289,9 @@
 
                                     <div class="col-12 mb-4">
                                         <div class="form-group">
-                                            <label for="order_note" class="form-label">Order notes
+                                            <label class="form-label" for="order_note">Order notes
                                                 (optional)</label>
-                                            <textarea class="form-control @error('order_note') border-danger @enderror" name="order_note" id="order_note"
+                                            <textarea class="form-control @error('order_note') border-danger @enderror" id="order_note" name="order_note"
                                                 placeholder="Order Notes">
 @if (old('order_note'))
 {{ old('order_note') }}
@@ -266,8 +308,8 @@
                                     <div class="col-md-6 mb-4">
                                         <div class="form-group">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="same_as_shipping"
-                                                    id="same_as_shipping"
+                                                <input class="form-check-input" id="same_as_shipping"
+                                                    name="same_as_shipping" type="checkbox"
                                                     @if (session()->has('shipping')) {{ session('shipping')['same_as_shipping'] ? 'checked' : '' }} @endif>
                                                 <label class="form-check-label" for="same_as_shipping">
                                                     Billing address is same as shipping address.
@@ -275,7 +317,6 @@
                                             </div>
                                         </div>
                                     </div>
-
 
                                     <div class="d-flex justify-content-between paddin-top-1x">
                                         <a class="btn btn-primary btn-sm"
@@ -286,7 +327,7 @@
                                             </span>
                                         </a>
 
-                                        <button type="submit" class="btn btn-primary btn-sm">
+                                        <button class="btn btn-primary btn-sm" type="submit">
                                             <span class="hidden-xs-down">
                                                 Continue
                                                 <i class="fa fa-angle-right"></i>
@@ -301,8 +342,6 @@
             </div>
         </div>
     </div>
-
-
 
 @endsection
 

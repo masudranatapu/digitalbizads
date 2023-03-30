@@ -259,6 +259,13 @@ class CheckoutController extends Controller
 
             $total = (int) $total + (int) session()->get('shippingCost');
         }
+        if (session()->has('coupon')) {
+            if (session('coupon')->type == 'amount') {
+                $total = $total  - session('coupon')->amount;
+            } elseif (session('coupon')->type == 'percent') {
+                $total = $total  - ($total  * session('coupon')->amount) / 100;
+            }
+        }
 
         $user = User::find($business_card_details->user_id);
 
@@ -335,6 +342,7 @@ class CheckoutController extends Controller
                 $totalPrice = 0;
                 $totalQuantity = 0;
                 $grandTotal = 0;
+                $discount = 0;
                 foreach ($products as $key => $product) {
 
                     $totalPrice += $product['price'] * $product['quantity'];
@@ -347,6 +355,25 @@ class CheckoutController extends Controller
                 if (session()->has('shippingCost')) {
                     $grandTotal = $grandTotal + session()->get('shippingCost');
                 }
+                if (session()->has('coupon')) {
+                    if (session('coupon')->type == 'amount') {
+                        $grandTotal = $grandTotal  - session('coupon')->amount;
+                    } elseif (session('coupon')->type == 'percent') {
+                        $grandTotal = $grandTotal  - ($grandTotal  * session('coupon')->amount) / 100;
+                    }
+                }
+                if (session()->has('coupon')) {
+
+
+                    if (session('coupon')->type == 'amount') {
+
+                        $discount = session('coupon')->amount;
+                    } elseif (session('coupon')->type == 'percent') {
+
+                        $discount = ($grandTotal * session('coupon')->amount) / 100;
+                    }
+                }
+
 
                 $order = new Order();
                 $order->transaction_id = $productOrderTransaction->id;
@@ -354,6 +381,7 @@ class CheckoutController extends Controller
                 $order->order_number = uniqid('order_');
                 $order->quantity = $totalQuantity;
                 $order->total_price = $totalPrice;
+                $order->discount = $discount;
                 $order->payment_fee = 0;
                 $order->vat = $tax;
                 $order->shipping_cost = $shippingCost;
@@ -421,6 +449,8 @@ class CheckoutController extends Controller
                 Session::forget('cart');
                 Session::forget('tax');
                 Session::forget('shippingCost');
+                Session::forget('coupon');
+
 
 
                 return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number, 'status' => true]);
@@ -462,7 +492,14 @@ class CheckoutController extends Controller
         if (session()->has('shippingCost')) {
             $grandTotal = $grandTotal + session()->get('shippingCost');
         }
-        $amountToBePaid = $grandTotal;
+
+        if (session()->has('coupon')) {
+            if (session('coupon')->type == 'amount') {
+                $grandTotal = $grandTotal  - session('coupon')->amount;
+            } elseif (session('coupon')->type == 'percent') {
+                $grandTotal = $grandTotal  - ($grandTotal  * session('coupon')->amount) / 100;
+            }
+        }
 
         $payer = new Payer();
         $payer->setPaymentMethod('paypal');
@@ -472,7 +509,7 @@ class CheckoutController extends Controller
             /** item name **/
             ->setCurrency($currency->iso_code)
             ->setQuantity(1)
-            ->setPrice($amountToBePaid);
+            ->setPrice($grandTotal);
         /** unit price **/
 
         $item_list = new ItemList();
@@ -480,7 +517,7 @@ class CheckoutController extends Controller
 
         $amount = new Amount();
         $amount->setCurrency($currency->iso_code)
-            ->setTotal($amountToBePaid);
+            ->setTotal($grandTotal);
         $redirect_urls = new RedirectUrls();
         /** Specify return URL **/
         $redirect_urls->setReturnUrl(URL::route('payment.success', ['cardUrl' => $business_card_details->card_url]))
@@ -505,7 +542,7 @@ class CheckoutController extends Controller
             $productOrderTransaction->transection_date = now();
             $productOrderTransaction->provider = "Paypal";
             $productOrderTransaction->currency = $currency->iso_code;
-            $productOrderTransaction->trsnsection_amount = $amountToBePaid;
+            $productOrderTransaction->trsnsection_amount = $grandTotal;
             $productOrderTransaction->invoice = $totalTransaction + 1;
             $productOrderTransaction->invoice_details = json_encode(Session::get('shipping'));
             $productOrderTransaction->payment_status = "created";
@@ -549,6 +586,7 @@ class CheckoutController extends Controller
             $totalPrice = 0;
             $totalQuantity = 0;
             $grandTotal = 0;
+            $discount = 0;
             foreach ($products as $key => $product) {
                 $totalPrice += $product['price'] * $product['quantity'];
                 $totalQuantity +=  $product['quantity'];
@@ -561,6 +599,27 @@ class CheckoutController extends Controller
             if (session()->has('shippingCost')) {
                 $grandTotal = $grandTotal + session()->get('shippingCost');
             }
+            if (session()->has('coupon')) {
+                if (session('coupon')->type == 'amount') {
+                    $grandTotal = $grandTotal  - session('coupon')->amount;
+                } elseif (session('coupon')->type == 'percent') {
+                    $grandTotal = $grandTotal  - ($grandTotal  * session('coupon')->amount) / 100;
+                }
+            }
+
+
+            if (session()->has('coupon')) {
+
+
+                if (session('coupon')->type == 'amount') {
+
+                    $discount = session('coupon')->amount;
+                } elseif (session('coupon')->type == 'percent') {
+
+                    $discount = ($grandTotal * session('coupon')->amount) / 100;
+                }
+            }
+
             $tax = Session::has('tax') ? Session::get('tax') : 0;
             $shippingCost = Session::has('shippingCost') ? Session::get('shippingCost') : 0;
 
@@ -570,6 +629,8 @@ class CheckoutController extends Controller
             $order->order_number = uniqid('order_');
             $order->quantity = $totalQuantity;
             $order->total_price = $totalPrice;
+            $order->discount = $discount;
+
             $order->payment_fee = 0;
             $order->vat = $tax;
             $order->shipping_cost = $shippingCost;
@@ -636,6 +697,7 @@ class CheckoutController extends Controller
             Session::forget('shippingCost');
             Session::forget('paypal_payment_id');
             Session::forget('last_transection');
+            Session::forget('coupon');
             Session::flash('success', 'Product Purchase Successfull');
             return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number, 'status' => true]);
         } catch (Exception $th) {
