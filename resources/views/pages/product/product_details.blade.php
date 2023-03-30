@@ -308,12 +308,19 @@
                     "_token": "{{ csrf_token() }}",
                 },
                 success: function(data) {
-                    console.log(data);
-                    if (data.status == true) {
-                        successAlert(data.message);
-                        $('.cartCounter').html(data.total_product)
+                    const {
+                        status,
+                        message,
+                        total_product
+                    } = data;
+
+
+                    if (status == true) {
+                        successAlert(message);
+                        $('.cartCounter').html(total_product)
                     } else {
-                        successAlert('Something wrong please try again');
+                        errorAlert(message);
+
                     }
 
                 },

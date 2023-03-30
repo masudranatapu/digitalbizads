@@ -152,7 +152,7 @@ class CartController extends Controller
 
         if ($product->product_stock < $request->quantity) {
             $data['status']  = false;
-            $data['message']  = 'Out Of Stock';
+            $data['message']  = 'Item Out Of Stock';
             return Response::json($data);
         }
 
