@@ -192,6 +192,10 @@
                                                     <td>{{ getPrice($orders->vat) }}</td>
                                                 </tr>
                                                 <tr class="text-end">
+                                                    <th colspan="3">Discount :</th>
+                                                    <td>{{ getPrice($orders->discount ?? 0) }}</td>
+                                                </tr>
+                                                <tr class="text-end">
                                                     <th colspan="3">Grand Total :</th>
                                                     <td>{{ getPrice($orders->grand_total) }}</td>
                                                 </tr>
@@ -348,6 +352,10 @@
                                             <tr class="text-end">
                                                 <th colspan="3">Vat :</th>
                                                 <td>{{ getPrice($orders->vat) }}</td>
+                                            </tr>
+                                            <tr class="text-end">
+                                                <th colspan="3">Discount :</th>
+                                                <td>{{ getPrice($orders->discount ?? 0) }}</td>
                                             </tr>
                                             <tr class="text-end">
                                                 <th colspan="3">Grand Total :</th>

@@ -449,6 +449,8 @@ class CheckoutController extends Controller
                 Session::forget('cart');
                 Session::forget('tax');
                 Session::forget('shippingCost');
+                Session::forget('coupon');
+
 
 
                 return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number, 'status' => true]);
@@ -695,6 +697,7 @@ class CheckoutController extends Controller
             Session::forget('shippingCost');
             Session::forget('paypal_payment_id');
             Session::forget('last_transection');
+            Session::forget('coupon');
             Session::flash('success', 'Product Purchase Successfull');
             return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number, 'status' => true]);
         } catch (Exception $th) {
