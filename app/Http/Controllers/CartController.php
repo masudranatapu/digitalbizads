@@ -62,6 +62,7 @@ class CartController extends Controller
 
     public function addToCart(Request $request)
     {
+
         $id = $request->pid;
         $qty = $request->qty;
         $product = StoreProduct::findOrFail($id);
@@ -70,6 +71,8 @@ class CartController extends Controller
         $data['message'] = 'Add to cart successfully';
         $option = [];
         $variantTotalPrice = 0;
+
+
 
 
         if ($product->product_stock < $qty) {
@@ -83,7 +86,8 @@ class CartController extends Controller
             $existingProducts = session()->get('cart');
 
             foreach ($existingProducts as $key => $existingProduct) {
-                $cartProduct = StoreProduct::findOrFail($key);
+                $cartProduct = StoreProduct::find($key);
+
                 if ($cartProduct->card_id != $product->card_id) {
                     $data['status']  = false;
                     $data['message']  = 'You can not add to cart products from different store.Please remove your products from the cart.';
@@ -93,6 +97,7 @@ class CartController extends Controller
         }
 
 
+        
         if (isset($request->options)) {
             $incomingVariant = $request->options;
             for ($i = 0; $i < count($incomingVariant); $i++) {
@@ -122,6 +127,7 @@ class CartController extends Controller
                 $cart[$id]['quantity'] = 1;
             }
         }
+
 
         if ($option) {
             $price = $product->sales_price != $product->regular_price ? ($product->sales_price + $variantTotalPrice) : ($product->regular_price + $variantTotalPrice);

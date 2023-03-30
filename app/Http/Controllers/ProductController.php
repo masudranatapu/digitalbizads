@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\BusinessCard;
+use App\Coupon;
 use App\Currency;
 use App\Medias;
 use App\ProductCategory;
@@ -12,6 +13,8 @@ use App\VariantOption;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class ProductController extends Controller
 {
@@ -209,5 +212,63 @@ class ProductController extends Controller
         $business_card = BusinessCard::where('card_id', $storeProduct->card_id)->first();
         alert()->success(trans('Products delete successfully.'));
         return redirect()->route('user.products.list', ['id' => $business_card->card_id]);
+    }
+
+
+
+    public function checkCoupon(Request $request)
+    {
+        $result = Coupon::where('coupon_code', $request->code)->first();
+
+        if (isset($result)) {
+            $date = date('Y-m-d');
+            $date = date('Y-m-d', strtotime($date));
+            $couponValidDateBegin = date('Y-m-d', strtotime($result->from_date));
+            $couponValidDateEnd = date('Y-m-d', strtotime($result->to_date));
+
+            if (($date >= $couponValidDateBegin) && ($date <= $couponValidDateEnd)) {
+
+
+
+                if ($result->type == "amount" || $result->type == "percent") {
+                    Session::put('coupon', $result);
+                    return response()->json(['status' => true, 'message' => 'Coupon Applied']);
+                } elseif ($result->type == 2 || $result->type == 3) {
+                    if ($result->type == 3) {
+                        $totalPrice = $this->getTotal();
+                        Log::alert([$totalPrice, $result->condition_price]);
+                        if ($totalPrice > $result->condition_price) {
+                            Session::put('coupon', $result);
+                            Session::forget('shiping');
+                            return response()->json(['status' => true, 'message' => 'Coupon Applied']);
+                        } else {
+                            return response()->json(['status' => false, 'message' => 'Please spend minimum ' . getPrice($result->condition_price)]);
+                        }
+                    } else {
+                        Session::put('coupon', $result);
+                        Session::forget('shiping');
+                        return response()->json(['status' => true, 'message' => 'Coupon Applied']);
+                    }
+                }
+            } else {
+                return response()->json(['status' => false, 'message' => 'Coupon Expired']);
+            }
+        } else {
+            return response()->json(['status' => false, 'message' => 'Invalid Coupon']);
+        }
+    }
+
+
+    public function removeCoupon()
+    {
+
+        $coupon = session()->get('coupon');
+
+        if ($coupon->discount_type == 2 || $coupon->discount_type == 3) {
+            $this->getShiping();
+        }
+
+        Session::forget('coupon');
+        return response()->json(['status' => true, 'message' => 'Coupon removed']);
     }
 }

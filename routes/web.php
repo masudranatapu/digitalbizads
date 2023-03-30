@@ -370,6 +370,12 @@ Route::patch('update-cart', [CartController::class, 'cartUpdate'])->name('update
 Route::delete('remove-from-cart', [CartController::class, 'cartRemove'])->name('remove.from.cart');
 Route::post('addtocart', [CartController::class, 'addToCart'])->name('addtocart');
 
+
+// coupon
+
+Route::post('check/coupon', [ProductController::class, 'checkCoupon'])->name('check.coupon');
+Route::post('remove/coupon', [ProductController::class, 'removeCoupon'])->name('remove.coupon');
+
 // checkout
 Route::get('{cardUrl}/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 Route::post('{cardUrl}/checkout', [CheckoutController::class, 'checkoutStore'])->name('checkout.store');
