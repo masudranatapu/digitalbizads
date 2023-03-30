@@ -428,41 +428,49 @@
                                         <div class="mb-3 form-input">
                                             <label class="form-label" for="">Logo Type(Biz Name) <span
                                                     class="text-danger">*</span></label></label>
-                                            <select class="form-control" id="selectField1" name="headline"
-                                                tabindex="{{ $tabindex++ }}" required>
-                                                <option value="text">Text</option>
-                                                <option value="logo">Logo</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                            <div class="input-group">
+                                                <div class="input-group-text p-0">
+                                                    <select class="form-control border-0 pe-3 ps-3" id="selectField1" name="headline"
+                                                tabindex="{{ $tabindex++ }}" required style="height: 43px !important;">
+                                                        <option value="text">Text</option>
+                                                        <option value="logo">Logo</option>
+                                                    </select>
+                                                </div>
 
-                                    <div class="col-12" id="headline">
-                                        <label class="form-label" for="text">Biz Ad Name</label>
-                                        <div class="input-group mb-3">
-                                            <input
-                                                class="form-control cin preview_name @error('text') is-invalid @enderror"
+                                                {{-- text field --}}
+                                                <input id="headline" class="form-control cin preview_name @error('text') is-invalid @enderror"
                                                 id="text" name="text" data-preview="preview_name"
                                                 data-concat="preview_name" type="text"
                                                 value="{{ old('text') }}" tabindex="{{ $tabindex++ }}"
                                                 placeholder="Biz Ad Name">
+                                                <div class="input-group-text p-0" id="headline2">
+                                                    <select class="form-control border-0" id="header_font_family"
+                                                    name="header_font_family" style="height: 43px !important;">
+                                                        @foreach ($font_family as $font_)
+                                                            <option value="{{ $font_ }}">{{ $font_ }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                @if ($errors->has('text'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('text') }}</span>
+                                                @endif
 
-                                            <div class="input-group-text p-0">
-                                                <select class="form-control border-0" id="header_font_family"
-                                                name="header_font_family" style="height: 43px !important;">
-                                                @foreach ($font_family as $font_)
-                                                    <option value="{{ $font_ }}">{{ $font_ }}</option>
-                                                @endforeach
-                                            </select>
+                                        {{-- logo field --}}
+                                        <input id="logofield" class="form-control d-none @error('logo') is-invalid @enderror"
+                                                 name="logo" type="file"
+                                                tabindex="{{ $tabindex++ }}" onchange="readURL(this);">
+                                            @if ($errors->has('logo'))
+                                                <span
+                                                    class="help-block text-danger">{{ $errors->first('logo') }}</span>
+                                            @endif
+
                                             </div>
 
-                                            @if ($errors->has('text'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('text') }}</span>
-                                            @endif
                                         </div>
                                     </div>
 
-                                    <div class="col-12">
+                                    {{-- <div class="col-12">
                                         <div class="mb-3 d-none form-input" id="logofield">
                                             <div id="logofield1"></div>
                                             <label class="form-label" for="logo">Logo<span
@@ -482,22 +490,63 @@
                                                     class="help-block text-danger">{{ $errors->first('logo') }}</span>
                                             @endif
                                         </div>
-                                    </div>
+                                    </div> --}}
 
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="mb-3 form-input">
-                                                <label class="form-label" for="selectField2">Banner <span
-                                                        class="text-danger">*</span></label></label>
-                                                <select class="form-control" id="selectField2" name="gallery_type"
+
+                                    <div class="col-12">
+                                        <div class="mb-3 form-group">
+                                            <label class="form-label" for="selectField2">Banner <span
+                                                class="text-danger">*</span></label></label>
+                                            <div class="input-group">
+
+                                                <div class="input-group-text p-0">
+                                                    <select class="form-control border-0 " id="selectField2" name="gallery_type"
+                                                        tabindex="{{ $tabindex++ }}" required style="height: 43px !important;">
+                                                        {{-- <option value="gallery">Gallery</option> --}}
+                                                        <option value="banner">Photo</option>
+                                                        <option value="videourl">Video Url</option>
+                                                        <option value="videosource">Uplaod Video</option>
+                                                    </select>
+                                                </div>
+
+                                                {{-- banner --}}
+                                                <input id="galleryfield" class="form-control @error('banner') is-invalid @enderror"
+                                                      name="banner" type="file"
                                                     tabindex="{{ $tabindex++ }}" required>
-                                                    {{-- <option value="gallery">Gallery</option> --}}
-                                                    <option value="banner">Photo</option>
-                                                    <option value="videourl">Video Url</option>
-                                                    <option value="videosource">Uplaod Video</option>
-                                                </select>
+                                                @if ($errors->has('banner'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('banner') }}</span>
+                                                @endif
+
+                                                {{-- video url --}}
+                                                <input id="videourl" class="form-control d-none @error('video') is-invalid @enderror"
+                                                      name="video" type="url"
+                                                    value="{{ old('video') }}" tabindex="{{ $tabindex++ }}"
+                                                    placeholder="your video url">
+                                                @if ($errors->has('video'))
+                                                    <span class="help-block text-danger">{{ $errors->first('video') }}</span>
+                                                @endif
+
+                                                {{-- video source --}}
+                                                <input id="videosource" class="form-control d-none @error('video') is-invalid @enderror"
+                                                     name="video" type="file"
+                                                    tabindex="{{ $tabindex++ }}" placeholder="upload your video">
+                                                @if ($errors->has('video'))
+                                                    <span
+                                                        class="help-block text-danger">{{ $errors->first('video') }}</span>
+                                                @endif
+
+
                                             </div>
                                         </div>
+                                    </div>
+
+
+
+
+
+                                    {{-- <div class="row">
+
                                         <div class="col-6">
                                             <div class="mb-3 form-input" id="galleryfield">
                                                 <div id="galleryfield1"></div>
@@ -538,7 +587,7 @@
                                                 @endif
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="row mb-3">
                                         <div class="col-12">
@@ -973,9 +1022,11 @@
                 var selected = $(this).val();
                 if (selected === "logo") {
                     $('#headline').addClass('d-none');
+                    $('#headline2').addClass('d-none');
                     $('#logofield').removeClass('d-none');
                 } else {
                     $('#headline').removeClass('d-none');
+                    $('#headline2').removeClass('d-none');
                     $('#logofield').addClass('d-none');
                 }
             });
