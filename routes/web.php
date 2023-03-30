@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\WebToolsController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\StateController;
 use App\Http\Controllers\User\StoreController;
 use App\Http\Controllers\Admin\ThemeController;
+use App\Http\Controllers\User\CouponController;
 use App\Http\Controllers\Admin\UpdateController;
 use App\Http\Controllers\User\VariantController;
 use App\Http\Controllers\Admin\AccountController;
@@ -34,7 +36,6 @@ use App\Http\Controllers\Payment\RazorpayController;
 use App\Http\Controllers\User\ShippingAreaController;
 use App\Http\Controllers\Admin\TransactionsController;
 use App\Http\Controllers\Admin\PaymentMethodController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\User\ProductCategoryController;
 use App\Http\Controllers\User\AccountController as userAccount;
 use App\Http\Controllers\User\DashboardController as userDashboard;
@@ -204,6 +205,7 @@ Route::group(['middleware' => 'Installer'], function () {
             Route::post('upload-media', [MediaController::class, 'uploadMedia'])->name('upload.media');
             Route::get('delete-media/{id}', [MediaController::class, 'deleteMedia'])->name('media.delete');
 
+
             // Upload media images
             Route::post('multiple', [MediaController::class, 'multipleImages'])->name('multiple');
             Route::post('card/store', [CardController::class, 'postStore'])->name('card.store');
@@ -322,6 +324,18 @@ Route::group(['middleware' => 'Installer'], function () {
                 Route::post('/{id}/update', [ShippingAreaController::class, 'update'])->name('update');
                 Route::get('/{id}/delete', [ShippingAreaController::class, 'delete'])->name('delete');
             });
+
+             // coupon
+             Route::prefix('/coupon')->name('coupon.')->group(function () {
+                Route::get('/', [CouponController::class, 'index'])->name('index');
+                Route::get('/create', [CouponController::class, 'create'])->name('create');
+                Route::post('store', [CouponController::class, 'store'])->name('store');
+                Route::get('/{id}/edit', [CouponController::class, 'edit'])->name('edit');
+                Route::post('/{id}/update', [CouponController::class, 'update'])->name('update');
+                Route::get('/{id}/delete', [CouponController::class, 'delete'])->name('delete');
+            });
+
+
         });
         // Transactions
         Route::get('transactions', [userTransactions::class, 'indexTransactions'])->name('transactions');

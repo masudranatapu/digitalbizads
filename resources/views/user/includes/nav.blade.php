@@ -44,7 +44,7 @@
                     @php
                         $userPlan = getUserPlan();
                         $store = getUserStore();
-                        
+
                     @endphp
                     @if (isset($userPlan['is_whatsapp_store']) && $userPlan['is_whatsapp_store'] == '1')
                         <li class="nav-item dropdown @yield('store-nav')">
@@ -179,6 +179,9 @@
 
                             <a class="dropdown-item @if (request()->routeIs('user.shipping_area*')) active @endif"
                                 href="{{ route('user.shipping_area.index') }}">{{ __('Shipping Area & cost') }}</a>
+
+                            <a class="dropdown-item @if (request()->routeIs('user.coupon*')) active @endif" href="{{ route('user.coupon.index') }}">{{ __('Coupons') }}</a>
+
                         </div>
                     </li>
 
