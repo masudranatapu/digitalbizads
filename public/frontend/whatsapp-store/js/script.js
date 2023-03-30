@@ -10,6 +10,7 @@ function successAlert(msg) {
         showConfirmButton: false,
         timer: 2500,
         timerProgressBar: true,
+        showCloseButton: true,
     });
 }
 function errorAlert(msg) {
@@ -22,5 +23,6 @@ function errorAlert(msg) {
         showConfirmButton: false,
         timer: 2500,
         timerProgressBar: true,
+        showCloseButton: true,
     });
 }

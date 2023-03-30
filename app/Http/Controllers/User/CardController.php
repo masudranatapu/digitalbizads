@@ -367,7 +367,7 @@ class CardController extends Controller
         $user_details = User::where('user_id', Auth::user()->user_id)->first();
         $plan_details = json_decode($user_details->plan_details);
 
-        if ($plan_details->personalized_link == '1'){
+        if ($plan_details->personalized_link == '1') {
             $checkCardUrl = BusinessCard::where('card_url', $request->personalized_link)->whereNotIn('id', [$id])->first();
             if (!empty($checkCardUrl)) {
                 alert()->error(trans('Personalized link must be unique'));

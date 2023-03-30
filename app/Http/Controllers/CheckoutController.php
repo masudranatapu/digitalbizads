@@ -405,13 +405,12 @@ class CheckoutController extends Controller
                         $orderDetails->variant_option_id = null;
                         $orderDetails->save();
                     }
-                }
-
-                foreach ($orderDetails as $orderDetail) {
-                    $storeProduct = StoreProduct::find($orderDetail->product_id);
-                    $storeProduct->product_stock = $storeProduct->product_stock - $orderDetail->quantity;
+                    $storeProduct = StoreProduct::find($product_id);
+                    $storeProduct->product_stock = $storeProduct->product_stock - $product['quantity'];
                     $storeProduct->save();
                 }
+
+
 
 
                 alert()->success(trans('Proudct purchase successfully'));
@@ -622,10 +621,9 @@ class CheckoutController extends Controller
                     $orderDetails->variant_option_id = null;
                     $orderDetails->save();
                 }
-            }
-            foreach ($orderDetails as $orderDetail) {
-                $storeProduct = StoreProduct::find($orderDetail->product_id);
-                $storeProduct->product_stock = $storeProduct->product_stock - $orderDetail->quantity;
+
+                $storeProduct = StoreProduct::find($product_id);
+                $storeProduct->product_stock = $storeProduct->product_stock - $product['quantity'];
                 $storeProduct->save();
             }
             alert()->success(trans('Proudct purchase successfully'));
