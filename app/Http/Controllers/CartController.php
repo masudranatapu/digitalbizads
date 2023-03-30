@@ -72,6 +72,27 @@ class CartController extends Controller
         $variantTotalPrice = 0;
 
 
+        if ($product->product_stock < $qty) {
+            $data['status']  = false;
+            $data['message']  = 'Out Of Stock';
+            return Response::json($data);
+        }
+
+        if (session()->has('cart')) {
+
+            $existingProducts = session()->get('cart');
+
+            foreach ($existingProducts as $key => $existingProduct) {
+                $cartProduct = StoreProduct::findOrFail($key);
+                if ($cartProduct->card_id != $product->card_id) {
+                    $data['status']  = false;
+                    $data['message']  = 'You can not add to cart products from different store.Please remove your products from the cart.';
+                    return Response::json($data);
+                }
+            }
+        }
+
+
         if (isset($request->options)) {
             $incomingVariant = $request->options;
             for ($i = 0; $i < count($incomingVariant); $i++) {
@@ -127,6 +148,13 @@ class CartController extends Controller
     public function cartUpdate(Request $request)
 
     {
+        $product = StoreProduct::findOrFail($request->id);
+
+        if ($product->product_stock < $request->quantity) {
+            $data['status']  = false;
+            $data['message']  = 'Out Of Stock';
+            return Response::json($data);
+        }
 
         if ($request->id && $request->quantity) {
 
@@ -136,6 +164,9 @@ class CartController extends Controller
 
             session()->put('cart', $cart);
             Session::flash('success', 'Update cart successfully');
+            $data['status']  = true;
+            $data['message']  = 'Update cart successfully';
+            return Response::json($data);
         }
     }
 
@@ -152,6 +183,4 @@ class CartController extends Controller
             Session::flash('success', 'Remove form the cart successfully');
         }
     }
-
-    
 }

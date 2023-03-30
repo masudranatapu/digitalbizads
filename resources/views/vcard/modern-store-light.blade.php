@@ -248,6 +248,17 @@
                                             @endif
                                         </h4>
                                         <h4 class="text-sm mb-3">
+                                            @if ($product->product_stock <= 0)
+                                                <span
+                                                    class="py-1 px-2 bg-red-500 rounded text-xs text-white">{{ __('Out of stock') }}</span>
+                                            @else
+                                                <span
+                                                    class="py-1 px-2 bg-green-500 rounded text-xs text-white">{{ __('Stock : ') }}
+                                                    ({{ $product->product_stock }})
+                                                </span>
+                                            @endif
+                                        </h4>
+                                        <h4 class="text-sm mb-3">
                                             @if (isset($product->hasCategory->category_name))
                                                 <span class="py-1 text-sm font-bold text-dark">Category
                                                     : {{ $product->hasCategory->category_name ?? '' }}</span>
@@ -411,6 +422,8 @@
 
                         }
 
+                    } else {
+                        errorAlert(message)
                     }
                 },
                 error: function(error) {

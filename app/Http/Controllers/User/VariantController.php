@@ -75,7 +75,7 @@ class VariantController extends Controller
     {
         $request->validate([
             "option_name" => 'required',
-            "option_stock" => 'required|integer',
+            // "option_stock" => 'required|integer',
             "option_price" => 'required|integer',
             "option_image" => 'required',
 
@@ -85,7 +85,7 @@ class VariantController extends Controller
         $variantOption->product_id = $product_id;
         $variantOption->variant_id = $variant;
         $variantOption->name = $request->option_name;
-        $variantOption->stock = $request->option_stock;
+        // $variantOption->stock = $request->option_stock;
         $variantOption->price = $request->option_price;
         $variantOption->photo = $request->option_image;
         $variantOption->save();
@@ -107,7 +107,7 @@ class VariantController extends Controller
     {
         $request->validate([
             "option_name" => 'required',
-            "option_stock" => 'required|integer',
+            // "option_stock" => 'required|integer',
             "option_price" => 'required|integer',
             "option_image" => 'required',
 
@@ -115,7 +115,7 @@ class VariantController extends Controller
         ]);
 
         $option->name = $request->option_name;
-        $option->stock = $request->option_stock;
+        // $option->stock = $request->option_stock;
         $option->price = $request->option_price;
         $option->photo = $request->option_image;
         $option->save();

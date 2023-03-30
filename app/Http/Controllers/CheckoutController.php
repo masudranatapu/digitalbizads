@@ -15,6 +15,7 @@ use App\OrderDetail;
 use App\ProductOrderTransaction;
 use App\ShippingCost;
 use App\State;
+use App\StoreProduct;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -71,15 +72,31 @@ class CheckoutController extends Controller
         if (!Session::has('cart')) {
             alert()->error(trans('No proudct in the cart'));
             return redirect()->route('card.preview', ['cardurl' => $cardUrl]);
+        } else {
+            $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
+
+
+            if (session()->has('cart')) {
+
+                $existingProducts = session()->get('cart');
+
+                foreach ($existingProducts as $key => $existingProduct) {
+                    $cartProduct = StoreProduct::findOrFail($key);
+                    if ($cartProduct->card_id != $business_card_details->card_id) {
+                        $message  = 'You can not checkout products from different store.Please remove your products from the cart.';
+                        Session::flash('alert', $message);
+                        return redirect()->route('cart', ['cardUrl' => $cardUrl]);
+                    }
+                }
+            }
+
+
+
+
+            $states = State::where('user_id', $business_card_details->user_id)->where('status', true)->get();
+            $shippingAreas = ShippingCost::where('user_id', $business_card_details->user_id)->where('status', true)->get();
+            return view('pages.product.checkout', compact('business_card_details', 'states', 'shippingAreas'));
         }
-
-        $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
-        $states = State::where('user_id', $business_card_details->user_id)->where('status', true)->get();
-        $shippingAreas = ShippingCost::where('user_id', $business_card_details->user_id)->where('status', true)->get();
-
-
-
-        return view('pages.product.checkout', compact('business_card_details', 'states', 'shippingAreas'));
     }
 
     public function checkoutBilling($cardUrl)
@@ -390,6 +407,12 @@ class CheckoutController extends Controller
                     }
                 }
 
+                foreach ($orderDetails as $orderDetail) {
+                    $storeProduct = StoreProduct::find($orderDetail->product_id);
+                    $storeProduct->product_stock = $storeProduct->product_stock - $orderDetail->quantity;
+                    $storeProduct->save();
+                }
+
 
                 alert()->success(trans('Proudct purchase successfully'));
 
@@ -564,7 +587,7 @@ class CheckoutController extends Controller
                 $totalPrice += $product['price'] * $product['quantity'];
                 $totalQuantity +=  $product['quantity'];
 
-                $order_id = $order->id;
+
                 $product_id = $key;
 
                 if (count($product['option']) > 0) {
@@ -600,8 +623,11 @@ class CheckoutController extends Controller
                     $orderDetails->save();
                 }
             }
-
-
+            foreach ($orderDetails as $orderDetail) {
+                $storeProduct = StoreProduct::find($orderDetail->product_id);
+                $storeProduct->product_stock = $storeProduct->product_stock - $orderDetail->quantity;
+                $storeProduct->save();
+            }
             alert()->success(trans('Proudct purchase successfully'));
 
             Mail::to(Session::get('shipping')['ship_email'])->send(new ProductPurchaseMail($productOrderTransaction, $order, $orderDetails));
@@ -612,8 +638,6 @@ class CheckoutController extends Controller
             Session::forget('shippingCost');
             Session::forget('paypal_payment_id');
             Session::forget('last_transection');
-
-
             Session::flash('success', 'Product Purchase Successfull');
             return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number, 'status' => true]);
         } catch (Exception $th) {

@@ -221,9 +221,12 @@
                             <div class="w-1/1 lg:w-1/3 p-4">
                                 <div class="p-4 bg-white shadow-lg rounded-lg" style="height:100%;">
                                     <div class="w-full mb-2 text-dark">
-                                        <img class="w-full pb-2" id="{{ $product->product_id }}_product_image"
-                                            src="{{ asset($product->product_image) }}"
-                                            alt="{{ $product->product_name }}">
+                                        <a
+                                            href="{{ route('product.details', ['id' => $product->id, 'cardUrl' => $business_card_details->card_url]) }}">
+                                            <img class="w-full pb-2" id="{{ $product->product_id }}_product_image"
+                                                src="{{ asset($product->product_image) }}"
+                                                alt="{{ $product->product_name }}">
+                                        </a>
                                     </div>
                                     <span
                                         class="py-1 px-2 bg-red-500 rounded text-xs text-white">{{ $product->badge }}</span>
@@ -244,6 +247,17 @@
                                             @if ($product->sales_price != $product->regular_price)
                                                 <span class="text-xs line-through text-red-500 font-bold">
                                                     {{ $currency }}{{ $product->regular_price }}</span>
+                                            @endif
+                                        </h4>
+                                        <h4 class="text-sm mb-3">
+                                            @if ($product->product_stock <= 0)
+                                                <span
+                                                    class="py-1 px-2 bg-red-500 rounded text-xs text-white">{{ __('Out of stock') }}</span>
+                                            @else
+                                                <span
+                                                    class="py-1 px-2 bg-green-500 rounded text-xs text-white">{{ __('Stock : ') }}
+                                                    ({{ $product->product_stock }})
+                                                </span>
                                             @endif
                                         </h4>
                                         <h4 class="text-sm mb-3">
@@ -402,13 +416,11 @@
 
                         } else {
                             $("#badge").text(0);
-
-
                         }
 
 
                     } else {
-                        successAlert('Something wrong please try again');
+                        errorAlert(message);
                     }
 
                 },

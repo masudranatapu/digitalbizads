@@ -174,7 +174,7 @@ class HomeController extends Controller
 
                 if ($business_card_details) {
 
-                    $query = StoreProduct::with('hasCategory')->where('card_id', $card_details->card_id)->where('status', true);
+                    $query = StoreProduct::with('hasCategory')->where('card_id', $card_details->card_id)->where('status', true)->where('product_stock', '>', 0);
 
 
                     if (isset($request->category)) {

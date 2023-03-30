@@ -50,7 +50,7 @@
 
                                         <div class="row">
                                             @php
-
+                                                
                                                 $billing = json_decode($orders->billing_details, true);
                                             @endphp
                                             <div class="col-6">
@@ -152,7 +152,7 @@
                                                     @php
                                                         $variant = json_decode($orderDetails->variant_id, true);
                                                         $variantOption = json_decode($orderDetails->variant_option_id, true);
-
+                                                        
                                                     @endphp
                                                     <tr>
                                                         <td class="d-flex justify-content-between">
@@ -210,7 +210,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         @php
-
+                                            
                                             $shipping = json_decode($orders->shipping_details, true);
                                             $billing = json_decode($orders->billing_details, true);
                                         @endphp
@@ -310,7 +310,7 @@
                                                 @php
                                                     $variant = json_decode($orderDetails->variant_id, true);
                                                     $variantOption = json_decode($orderDetails->variant_option_id, true);
-
+                                                    
                                                 @endphp
                                                 <tr>
                                                     <td class="d-flex justify-content-between">
@@ -364,6 +364,7 @@
             </div>
         </div>
     </div>
+
 @endsection
 
 @push('script')
@@ -382,10 +383,29 @@
         }
     </script>
 
-    @if ($status)
-    <script>
-        $()
-    </script>
+    @if (isset($status) && $status)
+        @php
+            $store_description = json_decode($business_card_details->description, true);
+            
+        @endphp
+        @if (isset($store_description['whatsapp_no']))
+            <script>
+                $(document).ready(function() {
 
+                    let whatsAppNumber = "{{ $store_description['whatsapp_no'] }}";
+
+                    let invoiceLink =
+                        "{{ route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $orders->order_number]) }}";
+
+                    let userName = "{{ $shipping['ship_first_name'] . ' ' . $shipping['ship_last_name'] }}"
+
+                    let waShareContent = "You got a new order from " + userName + ".Check Order " + invoiceLink;
+
+                    var link = "https://api.whatsapp.com/send/?phone=" + whatsAppNumber + "&text=" + encodeURI(
+                        waShareContent);
+                    window.open(link, '_blank');
+                })
+            </script>
+        @endif
     @endif
 @endpush

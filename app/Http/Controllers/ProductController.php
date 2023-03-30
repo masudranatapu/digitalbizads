@@ -26,24 +26,11 @@ class ProductController extends Controller
         $currency = Currency::where('iso_code', $iso_code['currency'])->first();
 
         $settings = Setting::where('status', 1)->first();
-        $variantProductQuantity = [];
-
-
-        foreach ($business_cards->hasProduct as $product) {
-            if ($product->is_variant) {
-                $variantOptionStock = VariantOption::where('product_id', $product->product_id)->pluck('stock')->toArray();
-                $sum = array_sum($variantOptionStock);
-
-                $variantProductQuantity[$product->id] = [
-                    'quantity' => $sum,
-                ];
-            }
-        }
 
 
 
 
-        return view('user.cards.products', compact('business_cards', 'settings', 'currency', 'variantProductQuantity'));
+        return view('user.cards.products', compact('business_cards', 'settings', 'currency'));
     }
 
     public function addProducts($id)
@@ -103,12 +90,7 @@ class ProductController extends Controller
                     $product->product_subtitle = $request->product_subtitle;
                     $product->regular_price = $request->regular_price;
                     $product->sales_price = $request->sales_price;
-                    if (!$request->product_type) {
-
-                        $product->product_stock = $request->stock;
-                    } else {
-                        $product->product_stock = 0;
-                    }
+                    $product->product_stock = $request->stock;
                     $product->category_id = $request->category;
                     $product->is_variant = $request->product_type;
                     $product->status = $request->status;
@@ -118,7 +100,7 @@ class ProductController extends Controller
                     $activeCards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
 
                     if ($activeCards <= $plan_details->no_of_vcards) {
-                        BusinessCard::where('user_id', Auth::user()->user_id)->where('card_id', $id)->update([
+                        BusinessCard::where('user_id', Auth::user()->id)->where('card_id', $id)->update([
                             'card_status' => 'activated',
                         ]);
                         alert()->success(trans('Products save successfully.'));
@@ -131,13 +113,13 @@ class ProductController extends Controller
                     return redirect()->route('user.products.list', ['id' => $business_card->card_id]);
                 }
             } else {
-                $activeCards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
+                $activeCards = BusinessCard::where('user_id', Auth::user()->id)->where('card_status', 'activated')->count();
 
                 $plan = DB::table('users')->where('user_id', Auth::user()->user_id)->where('status', 1)->first();
                 $plan_details = json_decode($plan->plan_details);
 
                 if ($activeCards <= $plan_details->no_of_vcards) {
-                    BusinessCard::where('user_id', Auth::user()->user_id)->where('card_id', $id)->update([
+                    BusinessCard::where('user_id', Auth::user()->id)->where('card_id', $id)->update([
                         'card_status' => 'activated',
                     ]);
                     alert()->success(trans('Products save successfully'));
@@ -196,12 +178,7 @@ class ProductController extends Controller
         $product->product_subtitle = $request->product_subtitle;
         $product->regular_price = $request->regular_price;
         $product->sales_price = $request->sales_price;
-        if (!$request->product_type) {
-
-            $product->product_stock = $request->stock;
-        } else {
-            $product->product_stock = 0;
-        }
+        $product->product_stock = $request->stock;
         $product->category_id = $request->category;
         $product->is_variant = $request->product_type;
         $product->status = $request->status;
@@ -209,10 +186,10 @@ class ProductController extends Controller
         $product->save();
 
 
-        $activeCards = BusinessCard::where('user_id', Auth::user()->user_id)->where('card_status', 'activated')->count();
+        $activeCards = BusinessCard::where('user_id', Auth::user()->id)->where('card_status', 'activated')->count();
 
         if ($activeCards <= $plan_details->no_of_vcards) {
-            BusinessCard::where('user_id', Auth::user()->user_id)->where('card_id', $product->card_id)->update([
+            BusinessCard::where('user_id', Auth::user()->id)->where('card_id', $product->card_id)->update([
                 'card_status' => 'activated',
             ]);
             alert()->success(trans('Products save successfully.'));

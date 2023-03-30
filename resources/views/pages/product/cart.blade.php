@@ -35,8 +35,10 @@
                                             @if (session('cart'))
                                                 @foreach (session('cart') as $id => $details)
                                                     @php
+                                                        
                                                         $total += $details['price'] * $details['quantity'];
                                                         $line_total = $details['price'] * $details['quantity'];
+                                                        
                                                     @endphp
 
                                                     <tr class="align-middle" data-id="{{ $id }}">
@@ -59,6 +61,7 @@
                                                                 type="number" value="{{ $details['quantity'] }}" />
                                                         </td>
                                                         <td class="text-center" data-th="Subtotal">
+
                                                             {{ getPrice($line_total) }}
                                                         </td>
                                                         <td class="actions" data-th="">
@@ -149,8 +152,7 @@
                                             Quantity:<span><input
                                                     class="form-control quantity update-cart allownumericwithoutdecimalMobile"
                                                     type="number" value="{{ $details['quantity'] }}"
-                                                    {{-- style="width: 70px" --}}
-                                                     /></span><br>
+                                                    {{-- style="width: 70px" --}} /></span><br>
 
                                             <strong>Price : </strong><span>{{ getPrice($details['price']) }}</span><br>
 
@@ -237,6 +239,7 @@
             $(".update-cart").change(function(e) {
                 e.preventDefault();
                 var ele = $(this);
+
                 $.ajax({
                     url: '{{ route('update.cart') }}',
                     method: "patch",
@@ -246,7 +249,20 @@
                         quantity: ele.parents("tr").find(".quantity").val()
                     },
                     success: function(response) {
-                        window.location.reload();
+                        const {
+                            status,
+                            message,
+                            total_product
+                        } = response;
+
+                        if (status == true) {
+                            successAlert(message);
+
+                            window.location.reload();
+                        } else {
+                            errorAlert(message);
+
+                        }
                     }
                 });
             });
@@ -265,7 +281,21 @@
                     },
                     success: function(response) {
 
-                        window.location.reload();
+                        const {
+                            status,
+                            message,
+                            total_product
+                        } = response;
+
+                        if (status == true) {
+                            successAlert(message);
+
+                            window.location.reload();
+                        } else {
+                            errorAlert(message);
+
+                        }
+
                     }
                 });
             });

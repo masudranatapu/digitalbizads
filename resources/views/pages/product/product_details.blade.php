@@ -71,6 +71,13 @@
                             <p>
                                 {{ $product->product_subtitle }}
                             </p>
+                            @if ($product->product_stock <= 0)
+                                <span class="badge text-bg-danger">{{ __('Out of stock') }}</span>
+                            @else
+                                <span class="badge text-bg-success">{{ __('Stock') }}
+                                    ({{ $product->product_stock }})
+                                </span>
+                            @endif
                             @if ($product->is_variant)
 
                                 @if (isset($product->hasVariant) && $product->hasVariant->count() > 0)
@@ -179,13 +186,11 @@
     <script src="{{ asset('frontend/whatsapp-store/js/script.js') }}"></script>
 
     @if ($product->is_variant)
-
-    <script>
-         $(document).ready(function() {
-            getVariantPrice();
-         })
-    </script>
-
+        <script>
+            $(document).ready(function() {
+                getVariantPrice();
+            })
+        </script>
     @endif
 
     <!-- lightgallery  -->
@@ -234,7 +239,7 @@
         })
 
 
-        function  getVariantPrice() {
+        function getVariantPrice() {
             var values = $("select[name^='option[]']").map(function(idx, ele) {
                 return $(ele).children('option:selected').data();
             }).get();
@@ -252,7 +257,7 @@
             var total = price.reduce((partialSum, a) => partialSum + a, 0);
 
             var mainPrice = parseFloat($('#mainPrice').val());
-            var newPrice = total+mainPrice;
+            var newPrice = total + mainPrice;
             $('#totalPrice').text(newPrice.toFixed(2));
         }
 
