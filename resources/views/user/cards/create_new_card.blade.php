@@ -456,41 +456,17 @@
                                                         class="help-block text-danger">{{ $errors->first('text') }}</span>
                                                 @endif
 
-                                        {{-- logo field --}}
-                                        <input id="logofield" class="form-control d-none @error('logo') is-invalid @enderror"
-                                                 name="logo" type="file"
-                                                tabindex="{{ $tabindex++ }}" onchange="readURL(this);">
-                                            @if ($errors->has('logo'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('logo') }}</span>
-                                            @endif
-
+                                                {{-- logo field --}}
+                                                <input id="logofield" class="form-control d-none @error('logo') is-invalid @enderror"
+                                                        name="logo" type="file"
+                                                        tabindex="{{ $tabindex++ }}" onchange="readURL(this);">
+                                                    @if ($errors->has('logo'))
+                                                        <span
+                                                            class="help-block text-danger">{{ $errors->first('logo') }}</span>
+                                                    @endif
+                                                    </div>
                                             </div>
-
-                                        </div>
                                     </div>
-
-                                    {{-- <div class="col-12">
-                                        <div class="mb-3 d-none form-input" id="logofield">
-                                            <div id="logofield1"></div>
-                                            <label class="form-label" for="logo">Logo<span
-                                                    class="text-danger">(Recommended size (140x48)</span>
-                                                <button class="tooltip_icon" data-bs-toggle="tooltip"
-                                                    data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                                    data-bs-title="Let us design your BizAd Advertisement to properly fit to the correct size or have your designer do it, Thanks Admin"
-                                                    type="button">
-                                                    <i class="fa fa-info"></i>
-                                                </button>
-                                            </label>
-                                            <input class="form-control @error('logo') is-invalid @enderror"
-                                                id="logo" name="logo" type="file"
-                                                tabindex="{{ $tabindex++ }}" onchange="readURL(this);">
-                                            @if ($errors->has('logo'))
-                                                <span
-                                                    class="help-block text-danger">{{ $errors->first('logo') }}</span>
-                                            @endif
-                                        </div>
-                                    </div> --}}
 
 
                                     <div class="col-12">
@@ -541,53 +517,6 @@
                                         </div>
                                     </div>
 
-
-
-
-
-                                    {{-- <div class="row">
-
-                                        <div class="col-6">
-                                            <div class="mb-3 form-input" id="galleryfield">
-                                                <div id="galleryfield1"></div>
-                                                <label class="form-label" for="banner">Banner <span class="text-danger">(Recommended size (450x600)</span>
-                                                    <button class="tooltip_icon" data-bs-toggle="tooltip"
-                                                        data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-                                                        data-bs-title="Let us design your BizAd Advertisement to properly fit to the correct size or have your designer do it, Thanks Admin"
-                                                        type="button">
-                                                        <i class="fa fa-info"></i>
-                                                    </button>
-                                                </label>
-                                                <input class="form-control @error('banner') is-invalid @enderror"
-                                                    id="banner" name="banner" type="file"
-                                                    tabindex="{{ $tabindex++ }}" required>
-                                                @if ($errors->has('banner'))
-                                                    <span
-                                                        class="help-block text-danger">{{ $errors->first('banner') }}</span>
-                                                @endif
-                                            </div>
-                                            <div class="mb-3 d-none form-input" id="videourl">
-                                                <label class="form-label" for="video">Video Url</label>
-                                                <input class="form-control @error('video') is-invalid @enderror"
-                                                    id="video_url" name="video" type="url"
-                                                    value="{{ old('video') }}" tabindex="{{ $tabindex++ }}"
-                                                    placeholder="your video url">
-                                                @if ($errors->has('video'))
-                                                    <span class="help-block text-danger">{{ $errors->first('video') }}</span>
-                                                @endif
-                                            </div>
-                                            <div class="mb-3 form-input d-none" id="videosource">
-                                                <label class="form-label" for="video">Uplaod Video</label>
-                                                <input class="form-control @error('video') is-invalid @enderror"
-                                                    id="video_file" name="video" type="file"
-                                                    tabindex="{{ $tabindex++ }}" placeholder="upload your video">
-                                                @if ($errors->has('video'))
-                                                    <span
-                                                        class="help-block text-danger">{{ $errors->first('video') }}</span>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div> --}}
 
                                     <div class="row mb-3">
                                         <div class="col-12">
