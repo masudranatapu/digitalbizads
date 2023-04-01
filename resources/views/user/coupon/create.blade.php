@@ -74,7 +74,7 @@
                                             <input class="form-control @error('amount') border-danger @enderror"
                                                 name="amount" type="number" value="{{ old('amount') }}"
                                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
-                                                min="0" required placeholder="Amount" autocomplete="off">
+                                                min="0" required placeholder="Amount" autocomplete="off" required>
                                         </div>
 
                                         <div class="col-md-4">
