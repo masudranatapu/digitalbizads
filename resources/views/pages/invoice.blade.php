@@ -233,6 +233,8 @@
 
                                         <div class="col-12">
                                             <address>
+                                                <h4 class="text-center">{{ $business_card_details->title }}</h4>
+                                                <hr>
 
                                                 <h2>Shipping</h2>
                                                 <p><strong>Name :

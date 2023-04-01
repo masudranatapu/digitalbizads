@@ -1,3 +1,31 @@
+@php
+    $card_details = $business_card_details;
+    $store_details = json_decode($business_card_details->description, true);
+    $config = DB::table('config')->get();
+    if ($store_details['whatsapp_no'] != null) {
+        $enquiry_button = $store_details['whatsapp_no'];
+    } else {
+        $enquiry_button = null;
+    }
+    
+    $whatsapp_msg = $store_details['whatsapp_msg'];
+    $currency = $store_details['currency'];
+    
+    $url = URL::to('/') . '/' . strtolower(preg_replace('/\s+/', '-', $card_details->card_url));
+    $business_name = $card_details->title;
+    $profile = URL::to('/') . '/' . $business_card_details->profile;
+    
+    $shareContent = $config[30]->config_value;
+    $shareContent = str_replace('{ business_name }', $business_name, $shareContent);
+    $shareContent = str_replace('{ business_url }', $url, $shareContent);
+    $shareContent = str_replace('{ appName }', $config[0]->config_value, $shareContent);
+    $shareComponent['facebook'] = "https://www.facebook.com/sharer/sharer.php?u=$url&quote=$shareContent";
+    $shareComponent['twitter'] = "https://twitter.com/intent/tweet?text=$shareContent";
+    $shareComponent['linkedin'] = "https://www.linkedin.com/shareArticle?mini=true&url=$url";
+    $shareComponent['telegram'] = "https://telegram.me/share/url?text=$shareContent&url=$url";
+    $shareComponent['whatsapp'] = "https://api.whatsapp.com/send/?phone&text=$shareContent";
+@endphp
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -64,25 +92,25 @@
             <div class="social_list ps-3">
                 <ul>
                     <li>
-                        <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="{{ $shareComponent['facebook'] }}" target="_blank"><i class="fab fa-facebook"></i></a>
                     </li>
                     <li>
-                        <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="{{ $shareComponent['facebook'] }}" target="_blank"><i class="fab fa-twitter"></i></a>
                     </li>
                     <li>
-                        <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="{{ $shareComponent['facebook'] }}" target="_blank"><i class="fab fa-linkedin"></i></a>
                     </li>
                     <li>
-                        <a href="#" target="_blank"><i class="fab fa-telegram"></i></a>
+                        <a href="{{ $shareComponent['facebook'] }}" target="_blank"><i class="fab fa-telegram"></i></a>
                     </li>
                     <li>
-                        <a href="#" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="{{ $shareComponent['facebook'] }}" target="_blank"><i class="fab fa-whatsapp"></i></a>
                     </li>
                 </ul>
             </div>
 
             <div class="copyright mt-5 pb-3 text-center">
-                <p>Copyright © Big Store .</p>
+                <p>Copyright © {{ $business_card_details->title }}</p>
             </div>
         </div>
     </footer>
