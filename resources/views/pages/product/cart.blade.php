@@ -246,30 +246,29 @@
                         @if (session('cart'))
                             <tfoot>
                                 <tr>
-                                    <td class="text-end">
-                                        <h5><strong> Total : </strong></h5>
-                                    </td>
-                                    <td class="text-center">{{ getPrice($total) }}</td>
-
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
+                                    <td>
                                         @if (session()->has('coupon'))
                                             <p>Remove coupon</p>
                                         @else
                                             <p>Apply coupon</p>
                                         @endif
-                                    </td>
-                                    <td></td>
-                                    <td colspan="2">
-                                        <input class="form-control" id="couponCode" type="text"
+
+                                        <input class="form-control" id="couponCodeMobile" type="text"
                                             value="{{ session('coupon')->coupon_code ?? '' }}"
                                             @if (session()->has('coupon')) disabled @endif
                                             placeholder="Enter coupon code">
 
+                                        @if (session()->has('coupon'))
+                                            <button class="btn btn-primary mt-2" id="couponRemoveMobile"
+                                                type="button">Remove</button>
+                                        @else
+                                            <button class="btn btn-primary mt-2" id="couponApplyMobile"
+                                                type="button">Apply</button>
+                                        @endif
+
                                     </td>
                                     <td class="text-center" id="cupponPrice">
-                                        @dump(session('coupon'))
+
                                         @if (session()->has('coupon'))
                                             @if (session('coupon')->type == 'amount')
                                                 - {{ getPrice(session('coupon')->amount) }}
@@ -277,17 +276,29 @@
                                                 - {{ getPrice(($total * session('coupon')->amount) / 100) }}
                                             @endif
                                         @endif
-                                    </td>
-                                    <td>
                                         @if (session()->has('coupon'))
-                                            <button class="btn btn-primary" id="couponRemove"
-                                                type="button">Remove</button>
-                                        @else
-                                            <button class="btn btn-primary" id="couponApply"
-                                                type="button">Apply</button>
+                                            @if (session('coupon')->type == 'amount')
+                                                @php
+                                                    $total = $total - session('coupon')->amount;
+                                                @endphp
+                                            @elseif (session('coupon')->type == 'percent')
+                                                @php
+                                                    $total = $total - ($total * session('coupon')->amount) / 100;
+                                                @endphp
+                                            @endif
                                         @endif
                                     </td>
+
                                 </tr>
+                                <tr>
+                                    <td class="text-end">
+                                        <h5><strong> Total : </strong></h5>
+                                    </td>
+
+                                    <td class="text-center">{{ getPrice($total) }}</td>
+
+                                </tr>
+
                             </tfoot>
                         @endif
                     </table>
@@ -465,6 +476,69 @@
             });
 
             $('#couponRemove').click(function() {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('remove.coupon', ['cardUrl' => $business_card_details->card_url]) }}",
+                    success: function(data) {
+                        console.log(data);
+                        if (data) {
+                            const {
+                                status,
+                                message
+                            } = data;
+
+                            if (status) {
+                                successAlert(message);
+                                window.location.reload();
+
+                            } else {
+                                errorAlert(message);
+                            }
+
+                        }
+                    }
+                });
+            })
+            $('#couponApplyMobile').click(function() {
+                let code = $('#couponCodeMobile').val();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    type: 'POST',
+                    url: "{{ route('check.coupon', ['cardUrl' => $business_card_details->card_url]) }}",
+                    data: {
+                        code: code
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        if (data) {
+                            const {
+                                status,
+                                message
+                            } = data;
+
+                            if (status) {
+                                successAlert(message);
+                                window.location.reload();
+
+                            } else {
+                                errorAlert(message);
+                            }
+
+                        }
+                    }
+                });
+            });
+
+            $('#couponRemoveMobile').click(function() {
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

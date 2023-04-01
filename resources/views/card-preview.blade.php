@@ -7,15 +7,15 @@
     <meta name="Developed By" content="Arobil limited" />
     <meta name="Designer" content="Rabin Mia" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
+    <meta id="csrf-token" name="csrf-token" content="{{ csrf_token() }}">
     {{--
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset($cardinfo->logo) }}"> --}}
-    <link rel="icon" href="{{ $settings->favicon }}" sizes="96x96" type="image/png" />
+    <link type="image/png" href="{{ $settings->favicon }}" rel="icon" sizes="96x96" />
     <!-- css file -->
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    <link rel="stylesheet" href="{{ asset('assets/css/swiper-bundle.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+    <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <link href="{{ asset('assets/css/swiper-bundle.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet">
     <script type="text/javascript" src="{{ asset('js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/sweetalert.min.js') }}"></script>
     <title>{{ $cardinfo->adsname }}</title>
@@ -38,9 +38,7 @@
 
         .social_item i {
             background-color: rgba({{ $theme_bg }});
-
             border-color: {{ $cardinfo->icon_border_color }};
-
             color: {{ $cardinfo->header_text_color }};
             /* border-color: {{ $cardinfo->icon_border_color ?? '#000000' }};
             color:{{ $cardinfo->header_text_color }}; */
@@ -182,7 +180,6 @@
             z-index: 5;
             position: relative;
             background: ;
-
         }
 
         @media screen and (max-width:380px) {
@@ -212,12 +209,12 @@
                     </h2>
                 @endif
                 <div class="float-end">
-                    <a href="javascript:void(0)" style="color: {{ $cardinfo->header_text_color ?? '#ffffff' }};"
-                        class="gallery-btn" data-bs-toggle="modal" data-bs-target="#galleryModal">
+                    <a class="gallery-btn" data-bs-toggle="modal" data-bs-target="#galleryModal"
+                        href="javascript:void(0)" style="color: {{ $cardinfo->header_text_color ?? '#ffffff' }};">
                         <i class="fas fa-images"></i>
                     </a>
-                    <a style="color: {{ $cardinfo->header_text_color ?? '#ffffff' }};" href="javascript:void(0)"
-                        class="login_btn" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <a class="login_btn" data-bs-toggle="modal" data-bs-target="#loginModal" href="javascript:void(0)"
+                        style="color: {{ $cardinfo->header_text_color ?? '#ffffff' }};">
                         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24"
                             fill="none" stroke="{{ $cardinfo->header_text_color ?? '#ffffff' }}" stroke-width="1"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -229,16 +226,13 @@
                 </div>
             </div>
 
-
-
-
             @if ($cardinfo->card_status == 'activated')
 
                 @if (!empty($cardinfo->banner_content))
                     @if ($cardinfo->banner_type == 'videourl')
                         <div class="video_wrapper">
                             <div class="ratio ratio-1x1">
-                                <iframe width="100%" src="{{ $cardinfo->banner_content }}" frameborder="0"
+                                <iframe src="{{ $cardinfo->banner_content }}" width="100%" frameborder="0"
                                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                     allowfullscreen></iframe>
                             </div>
@@ -247,8 +241,8 @@
                         <!-- Video -->
                         <div class="video_wrapper">
                             <div class="ratio ratio-1x1">
-                                <video autoplay="" loop="" muted="" playsinline="" data-wf-ignore="true"
-                                    data-object-fit="cover" controls>
+                                <video data-wf-ignore="true" data-object-fit="cover" autoplay="" loop=""
+                                    muted="" playsinline="" controls>
                                     <source src="{{ $cardinfo->banner_content }}" type="video/mp4">
                                     <source src="{{ $cardinfo->banner_content }}" type="video/ogg">
                                 </video>
@@ -256,7 +250,7 @@
                         </div>
                     @elseif ($cardinfo->banner_type == 'banner')
                         <div class="carousel-inner">
-                            <img src="{{ $cardinfo->banner_content }}" class="d-block w-100" alt="image">
+                            <img class="d-block w-100" src="{{ $cardinfo->banner_content }}" alt="image">
                         </div>
                     @endif
                 @endif
@@ -267,11 +261,11 @@
 @endif
 </div> --}}
                 <div class="purchase_btn save_contact">
-                    <a href="{{ route('download.vCard', $cardinfo->card_id) }}"
-                        class="text-decoration-none save-contact d-inline-block">Save Contact</a>
+                    <a class="text-decoration-none save-contact d-inline-block"
+                        href="{{ route('download.vCard', $cardinfo->card_id) }}">Save Contact</a>
                     @if (isset($store_details->card_url) && $cardinfo->is_store_show == 1)
-                        <a href="{{ URL::to('/') . '/' . $store_details->card_url }}" target="_blank"
-                            class="text-decoration-none d-inline-block btn-secondary">
+                        <a class="text-decoration-none d-inline-block btn-secondary"
+                            href="{{ URL::to('/') . '/' . $store_details->card_url }}" target="_blank">
                             {{ $store_details->shop_link_name ?? 'SHOP' }}
                         </a>
                     @endif
@@ -325,8 +319,8 @@
                             <!-- Qr code icon -->
                             <div class="col">
                                 <div class="social_item qrcode_icon">
-                                    <a href="javascript:void(0)" target="_blank" data-bs-toggle="modal"
-                                        data-bs-target="#qrcodeModal">
+                                    <a data-bs-toggle="modal" data-bs-target="#qrcodeModal" href="javascript:void(0)"
+                                        target="_blank">
                                         <img src="{{ asset('assets/images/icon/qr-code.svg') }}" alt="qr-code">
                                     </a>
                                 </div>
@@ -335,8 +329,8 @@
                             @if (isset($cardinfo->about_us))
                                 <div class="col">
                                     <div class="social_item">
-                                        <a href="javascript:void(0)" data-bs-toggle="modal"
-                                            data-bs-target="#aboutUsModal">
+                                        <a data-bs-toggle="modal" data-bs-target="#aboutUsModal"
+                                            href="javascript:void(0)">
                                             <i class="fas fa-user"></i>
                                         </a>
                                     </div>
@@ -378,7 +372,6 @@
                                 @endforeach
                             @endif
 
-
                             {{-- <div class="col">
             <div class="social_item">
                 <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#SocialModal">
@@ -394,13 +387,13 @@
                 <div class="subscribe mb-3">
                     <form action="{{ route('card.subscriber') }}" method="post">
                         @csrf
-                        <input type="hidden" id="" name="card_id" value="{{ $cardinfo->id }}">
+                        <input id="" name="card_id" type="hidden" value="{{ $cardinfo->id }}">
                         <div class="input-group">
-                            <input type="email" name="subscriber_email" id="subscriber_email"
-                                class="form-control @error('subscriber_email') is-invalid @enderror"
+                            <input class="form-control @error('subscriber_email') is-invalid @enderror"
+                                id="subscriber_email" name="subscriber_email" type="email"
                                 placeholder="Enter your emaill..." required>
-                            <button type="submit"
-                                class="input-group-text btn btn-primary subscribe-btn">Subscribe</button>
+                            <button class="input-group-text btn btn-primary subscribe-btn"
+                                type="submit">Subscribe</button>
                         </div>
                         {{-- @if ($errors->has('subscriber_email'))
     <span class="help-block text-danger d-block">{{ $errors->first('subscriber_email') }}</span>
@@ -414,12 +407,10 @@
                 </div>
             @else
                 <div class="text-center text-light d-flex align-items-center" style="min-height: 90vh">
-                    <h4>Your Bizad is currently Inactive. Please activate.</h4>
+                    <h4>Your Bizad is currently inactive. Please activate.</h4>
                 </div>
 
             @endif
-
-
 
             <div class="text-center text-light pb-3">
                 @if (isFreePlan($cardinfo->user_id))
@@ -434,13 +425,13 @@
     </div>
 
     <div class="about_us_modal email_modal">
-        <div class="modal fade animate__animated animate__fadeIn" id="aboutUsModal" tabindex="-1"
-            data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade animate__animated animate__fadeIn" id="aboutUsModal" data-bs-backdrop="static"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered modal-xl">
                 <div class="modal-content ">
                     <div class="modal-header">
                         <h5 class="modal-title">{{ __('About The Bussiness') }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        <button class="btn-close" data-bs-dismiss="modal" type="button"
                             aria-label="Close"></button>
                     </div>
                     <div class="modal_body">
@@ -452,13 +443,13 @@
     </div>
 
     <!-- Qrcode Modal -->
-    <div class="qrcode_modal modal fade" id="qrcodeModal" tabindex="-1" aria-labelledby="qrcodeModalLabel"
-        aria-hidden="true">
+    <div class="qrcode_modal modal fade" id="qrcodeModal" aria-labelledby="qrcodeModalLabel" aria-hidden="true"
+        tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="qrcodeModalLabel">Scan QR Code</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="qe_code text-center">
@@ -469,42 +460,41 @@
         </div>
     </div>
     <!-- Login Modal -->
-    <div class="login_modal modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel"
-        aria-hidden="true">
+    <div class="login_modal modal fade" id="loginModal" aria-labelledby="loginModalLabel" aria-hidden="true"
+        tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="loginModalLabel">Login</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form action="{{ route('login') }}" method="post">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label" for="email">Email</label>
-                            <input type="text" name="email" id="email" value="{{ old('email') }}"
-                                class="form-control @error('email') is-invalid @enderror" placeholder="Email Address"
-                                required>
+                            <input class="form-control @error('email') is-invalid @enderror" id="email"
+                                name="email" type="text" value="{{ old('email') }}"
+                                placeholder="Email Address" required>
                             @if ($errors->has('email'))
                                 <span class="help-block text-danger">{{ $errors->first('email') }}</span>
                             @endif
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="password">Password</label>
-                            <input type="password" name="password" id="password"
-                                class="form-control @error('password') is-invalid @enderror" placeholder="Password"
-                                required>
+                            <input class="form-control @error('password') is-invalid @enderror" id="password"
+                                name="password" type="password" placeholder="Password" required>
                             @if ($errors->has('password'))
                                 <span class="help-block text-danger">{{ $errors->first('password') }}</span>
                             @endif
                         </div>
                         <div class="text-center mb-3">
-                            <button type="submit" class="btn btn-primary">Login</button>
+                            <button class="btn btn-primary" type="submit">Login</button>
                         </div>
 
                         <div class="dont_have_account text-center">
-                            <p>Don't have an Account? <a href="javascript:void(0)" data-bs-toggle="modal"
-                                    data-bs-target="#signupModal">Signup</a></p>
+                            <p>Don't have an Account? <a data-bs-toggle="modal" data-bs-target="#signupModal"
+                                    href="javascript:void(0)">Signup</a></p>
                         </div>
 
                     </form>
@@ -513,17 +503,15 @@
         </div>
     </div>
 
-
-
     <!-- Social Modal modal -->
     <div class="share_modal email_modal">
-        <div class="modal animate__animated animate__fadeIn" id="SocialModal" tabindex="-1"
-            data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal animate__animated animate__fadeIn" id="SocialModal" data-bs-backdrop="static"
+            aria-labelledby="exampleModalLabel" aria-hidden="true" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content ">
                     <div class="modal-header">
                         <h5 class="modal-title text-uppercase">{{ __('Share my biz Ad') }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        <button class="btn-close" data-bs-dismiss="modal" type="button"
                             aria-label="Close"></button>
                     </div>
                     <div class="modal_body">
@@ -531,10 +519,9 @@
                             <div>
                                 <label class="py-2" for="send_to">Send To</label>
                                 <div class="input-group">
-                                    <input type="text" name="send_to" id="send_to"
-                                        class="form-control @error('send_to') is-invalid @enderror"
-                                        placeholder="Send to phone no" required>
-                                    <a href="sms:;" class="input-group-text btn btn-dark sendto-btn">Send</a>
+                                    <input class="form-control @error('send_to') is-invalid @enderror" id="send_to"
+                                        name="send_to" type="text" placeholder="Send to phone no" required>
+                                    <a class="input-group-text btn btn-dark sendto-btn" href="sms:;">Send</a>
                                 </div>
                             </div>
                         </div>
@@ -545,30 +532,30 @@
     </div>
 
     <!-- Signup Modal -->
-    <div class="login_modal modal fade" id="signupModal" tabindex="-1" aria-labelledby="loginModalLabel"
-        aria-hidden="true">
+    <div class="login_modal modal fade" id="signupModal" aria-labelledby="loginModalLabel" aria-hidden="true"
+        tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="loginModalLabel">Sign Up</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form method="POST" action="{{ route('post-register') }}">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label" for="full_name">Full Name</label>
-                            <input type="text" name="reg_name" id="full_name" value="{{ old('reg_name') }}"
-                                class="form-control @error('reg_name') is-invalid @enderror" placeholder="Full Name"
-                                required>
+                            <input class="form-control @error('reg_name') is-invalid @enderror" id="full_name"
+                                name="reg_name" type="text" value="{{ old('reg_name') }}"
+                                placeholder="Full Name" required>
                             @if ($errors->has('reg_name'))
                                 <span class="help-block text-danger">{{ $errors->first('reg_name') }}</span>
                             @endif
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="user_email">Email</label>
-                            <input type="email" name="reg_email" id="user_email" value="{{ old('user_email') }}"
-                                class="form-control @error('user_email') is-invalid @enderror"
+                            <input class="form-control @error('user_email') is-invalid @enderror" id="user_email"
+                                name="reg_email" type="email" value="{{ old('user_email') }}"
                                 placeholder="Email Address" required>
                             @if ($errors->has('reg_email'))
                                 <span class="help-block text-danger">{{ $errors->first('reg_email') }}</span>
@@ -576,8 +563,8 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="reg_password">Password</label>
-                            <input type="password" name="reg_password" value="{{ old('reg_password') }}"
-                                id="reg_password" class="form-control @error('reg_password') is-invalid @enderror"
+                            <input class="form-control @error('reg_password') is-invalid @enderror" id="reg_password"
+                                name="reg_password" type="password" value="{{ old('reg_password') }}"
                                 placeholder="Password" required>
                             @if ($errors->has('reg_password'))
                                 <span class="help-block text-danger">{{ $errors->first('reg_password') }}</span>
@@ -585,21 +572,20 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="reg_password_confirmation">Confirm Password</label>
-                            <input type="password" name="reg_password_confirmation"
-                                value="{{ old('reg_password_confirmation') }}" id="reg_password_confirmation"
-                                class="form-control @error('reg_password_confirmation') is-invalid @enderror"
-                                placeholder="Password" required>
+                            <input class="form-control @error('reg_password_confirmation') is-invalid @enderror"
+                                id="reg_password_confirmation" name="reg_password_confirmation" type="password"
+                                value="{{ old('reg_password_confirmation') }}" placeholder="Password" required>
                             @if ($errors->has('reg_password_confirmation'))
                                 <span
                                     class="help-block text-danger">{{ $errors->first('reg_password_confirmation') }}</span>
                             @endif
                         </div>
                         <div class="text-center mb-3">
-                            <button type="submit" class="btn btn-primary">Sign up</button>
+                            <button class="btn btn-primary" type="submit">Sign up</button>
                         </div>
                         <div class="dont_have_account text-center">
-                            <p>Already have an Account? <a href="javascript:void(0)" data-bs-toggle="modal"
-                                    data-bs-target="#loginModal">Login</a></p>
+                            <p>Already have an Account? <a data-bs-toggle="modal" data-bs-target="#loginModal"
+                                    href="javascript:void(0)">Login</a></p>
                         </div>
                     </form>
                 </div>
@@ -607,15 +593,14 @@
         </div>
     </div>
 
-
     <!-- Modal -->
-    <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalLabel"
-        aria-hidden="true">
+    <div class="modal fade" id="galleryModal" aria-labelledby="galleryModalLabel" aria-hidden="true"
+        tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content pb-0">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="galleryModalLabel">Gallery</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button class="btn-close" data-bs-dismiss="modal" type="button" aria-label="Close"></button>
                 </div>
                 <div class="product-item__gallery single_product">
                     <div class="swiper mySwiper2">
@@ -631,7 +616,7 @@
                         <div class="swiper-button-next"></div>
                         <div class="swiper-button-prev"></div>
                     </div>
-                    <div thumbsSlider="" class="swiper mySwiper" style="height: 125px">
+                    <div class="swiper mySwiper" style="height: 125px" thumbsSlider="">
                         <div class="swiper-wrapper">
                             @if (!empty($cardinfo->gallery))
                                 @foreach ($cardinfo->gallery as $key => $gallery)
@@ -646,8 +631,6 @@
             </div>
         </div>
     </div>
-
-
 
     <!-- js file -->
     @include('sweet::alert')
