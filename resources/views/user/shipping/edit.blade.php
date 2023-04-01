@@ -18,7 +18,7 @@
                     <div class="col-auto ms-auto d-print-none">
                         <div class="dropdown">
                             <a type="button" href="{{ route('user.shipping_area.index') }}">
-                                <button type="button" class="btn btn btn-primary">
+                                <button class="btn btn btn-primary" type="button">
                                     {{ __('Back') }}
                                 </button>
                             </a>
@@ -38,22 +38,29 @@
                                     <div class="row">
                                         <div class="col-md-4">
                                             <label for="">Area Name <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control @error('name') is-invalid @enderror" required value="{{ $shippingarea->name }}" name="name" placeholder="Area name" autocomplete="off">
+                                            <input class="form-control @error('name') is-invalid @enderror" name="name"
+                                                type="text" value="{{ $shippingarea->name }}" required
+                                                placeholder="Area name" autocomplete="off">
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="">Amount </label>
-                                            <input type="number" min="0"  class="form-control @error('amount') is-invalid @enderror" required value="{{ $shippingarea->amount }}" name="amount"  placeholder="Amount" autocomplete="off">
+                                            <label for="">Amount {{ $currency_symbol }}</label>
+                                            <input class="form-control @error('amount') is-invalid @enderror" name="amount"
+                                                type="number" value="{{ $shippingarea->amount }}" min="0" required
+                                                placeholder="Amount" autocomplete="off">
                                         </div>
                                         <div class="col-md-4">
                                             <label for="">Status </label>
-                                            <select name="status" class="form-control @error('status') is-invalid @enderror" required>
+                                            <select class="form-control @error('status') is-invalid @enderror"
+                                                name="status" required>
                                                 <option class="d-none">Active</option>
-                                                <option value="1" @if($shippingarea->status == 1) selected @endif>Active</option>
-                                                <option value="0" @if($shippingarea->status == 0) selected @endif>Inactive</option>
+                                                <option value="1" @if ($shippingarea->status == 1) selected @endif>
+                                                    Active</option>
+                                                <option value="0" @if ($shippingarea->status == 0) selected @endif>
+                                                    Inactive</option>
                                             </select>
                                         </div>
                                         <div class="col-md-12 text-center mt-4">
-                                            <button type="submit" class="btn btn-info">Update</button>
+                                            <button class="btn btn-info" type="submit">Update</button>
                                         </div>
                                     </div>
                                 </div>
@@ -61,35 +68,53 @@
                         </div>
                     </div>
                     {{-- mobile  --}}
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none">
+                    <div
+                        class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none">
                         <div class="row">
                             <div class="">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row row-deck row-cards">
                                             <div class="col-sm-12 col-lg-12">
-                                                <form action="{{ route('user.shipping_area.update', $shippingarea->id) }}" method="POST">
+                                                <form action="{{ route('user.shipping_area.update', $shippingarea->id) }}"
+                                                    method="POST">
                                                     @csrf
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <div class="col-md-4">
-                                                                <label for="">Area Name <span class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control @error('name') is-invalid @enderror" required value="{{ $shippingarea->name }}" name="name" placeholder="Area name" autocomplete="off">
+                                                                <label for="">Area Name <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input
+                                                                    class="form-control @error('name') is-invalid @enderror"
+                                                                    name="name" type="text"
+                                                                    value="{{ $shippingarea->name }}" required
+                                                                    placeholder="Area name" autocomplete="off">
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <label for="">Amount </label>
-                                                                <input type="number" min="0"  class="form-control @error('amount') is-invalid @enderror" required value="{{ $shippingarea->amount }}" name="amount"  placeholder="Amount" autocomplete="off">
+                                                                <label for="">Amount {{ $currency_symbol }}</label>
+
+                                                                <input
+                                                                    class="form-control @error('amount') is-invalid @enderror"
+                                                                    name="amount" type="number"
+                                                                    value="{{ $shippingarea->amount }}" min="0"
+                                                                    required placeholder="Amount" autocomplete="off">
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <label for="">Status </label>
-                                                                <select name="status" class="form-control @error('status') is-invalid @enderror" required>
+                                                                <select
+                                                                    class="form-control @error('status') is-invalid @enderror"
+                                                                    name="status" required>
                                                                     <option class="d-none">Active</option>
-                                                                    <option value="1" @if($shippingarea->status == 1) selected @endif>Active</option>
-                                                                    <option value="0" @if($shippingarea->status == 0) selected @endif>Inactive</option>
+                                                                    <option value="1"
+                                                                        @if ($shippingarea->status == 1) selected @endif>
+                                                                        Active</option>
+                                                                    <option value="0"
+                                                                        @if ($shippingarea->status == 0) selected @endif>
+                                                                        Inactive</option>
                                                                 </select>
                                                             </div>
                                                             <div class="col-md-12 text-center mt-4">
-                                                                <button type="submit" class="btn btn-info">Update</button>
+                                                                <button class="btn btn-info" type="submit">Update</button>
                                                             </div>
                                                         </div>
                                                     </div>

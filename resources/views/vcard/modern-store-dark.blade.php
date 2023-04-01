@@ -51,8 +51,6 @@
             font-size: 14px;
             font-weight: 500;
         }
-
-
     </style>
     <script src="{{ asset('frontend/whatsapp-store/js/main.js') }}"></script>
     <script src="{{ asset('js/jquery.min.js') }}"></script>
@@ -213,7 +211,8 @@
                                     <div class="w-full mb-2 text-dark">
                                         <a
                                             href="{{ route('product.details', ['id' => $product->id, 'cardUrl' => $business_card_details->card_url]) }}">
-                                            <img class="h-28 sm:h-44 w-full pb-2" id="{{ $product->product_id }}_product_image"
+                                            <img class="h-28 sm:h-44 w-full pb-2"
+                                                id="{{ $product->product_id }}_product_image"
                                                 src="{{ asset($product->product_image) }}"
                                                 alt="{{ $product->product_name }}">
                                         </a>
@@ -259,8 +258,7 @@
 
                                         @if ($product->is_variant)
                                             <a class="mt-2 inline-block cursor-pointer text-center py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
-                                                href="{{ route('product.details', ['id' => $product->id, 'cardUrl' => $business_card_details->card_url]) }}"
-                                               >{{ __('Choose') }}</a>
+                                                href="{{ route('product.details', ['id' => $product->id, 'cardUrl' => $business_card_details->card_url]) }}">{{ __('Choose') }}</a>
                                         @else
                                             <a class="mt-2 inline-block cursor-pointer text-xs lg:text-lg py-1 px-3 lg:py-2 lg:px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
                                                 onclick="addToCart('{{ $product->id }}',1)">{{ __('Add to Cart') }}</a>
@@ -335,7 +333,7 @@
             </div>
         @else
             <div class="text-center text-light d-flex align-items-center" style="min-height: 90vh">
-                <h2 style="color: #ffffff ;font-size:25px;">Your Whatsapp store is currently Inactive</h2>
+                <h2 style="color: #ffffff ;font-size:25px;">Your store is currently inactive.</h2>
             </div>
         @endif
 

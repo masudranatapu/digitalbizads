@@ -215,38 +215,39 @@
                 <div class="container mx-auto px-4">
                     <div class="flex flex-wrap -m-4">
                         @foreach ($products as $product)
-                        <div class="w-1/2 lg:w-1/3 p-2 lg:gap-12">
-                            <div class="p-2 lg:p-4 bg-white h-full shadow-md rounded-md space-y-3">
-                                <div class="w-full mb-2 text-dark">
-                                    <a
-                                        href="{{ route('product.details', ['id' => $product->id, 'cardUrl' => $business_card_details->card_url]) }}">
-                                        <img class="h-28 sm:h-44 w-full pb-2" id="{{ $product->product_id }}_product_image"
-                                            src="{{ asset($product->product_image) }}"
-                                            alt="{{ $product->product_name }}">
-                                    </a>
-                                </div>
-                                <span
-                                    class="py-1 px-2 bg-red-500 rounded text-xs text-white">{{ $product->badge }}</span>
-                                <div class="w-full mb-1 mt-1 justify-between items-center">
-                                    <div>
-                                        <h3 class="text-sm font-medium text-dark"
-                                            id="{{ $product->product_id }}_product_name">
-                                            {{ $product->product_name }}</h3>
-                                        {{-- <span class="text-xs text-dark"
-                                            id="{{ $product->product_id }}_subtitle">{{ $product->product_subtitle }}</span> --}}
+                            <div class="w-1/2 lg:w-1/3 p-2 lg:gap-12">
+                                <div class="p-2 lg:p-4 bg-white h-full shadow-md rounded-md space-y-3">
+                                    <div class="w-full mb-2 text-dark">
+                                        <a
+                                            href="{{ route('product.details', ['id' => $product->id, 'cardUrl' => $business_card_details->card_url]) }}">
+                                            <img class="h-28 sm:h-44 w-full pb-2"
+                                                id="{{ $product->product_id }}_product_image"
+                                                src="{{ asset($product->product_image) }}"
+                                                alt="{{ $product->product_name }}">
+                                        </a>
                                     </div>
-                                </div>
-                                <div class="w-full mb-1 justify-between items-center">
-                                    <h4 class="text-sm font-bold text-dark"><span
-                                            id="{{ $product->product_id }}_currency">{{ $currency }}</span>
-                                        <span
-                                            id="{{ $product->product_id }}_price">{{ $product->sales_price }}</span>
-                                        @if ($product->sales_price != $product->regular_price)
-                                            <span class="text-xs line-through text-red-500 font-bold">
-                                                {{ $currency }}{{ $product->regular_price }}</span>
-                                        @endif
-                                    </h4>
-                                    {{-- <h4 class="text-sm mb-3">
+                                    <span
+                                        class="py-1 px-2 bg-red-500 rounded text-xs text-white">{{ $product->badge }}</span>
+                                    <div class="w-full mb-1 mt-1 justify-between items-center">
+                                        <div>
+                                            <h3 class="text-sm font-medium text-dark"
+                                                id="{{ $product->product_id }}_product_name">
+                                                {{ $product->product_name }}</h3>
+                                            {{-- <span class="text-xs text-dark"
+                                            id="{{ $product->product_id }}_subtitle">{{ $product->product_subtitle }}</span> --}}
+                                        </div>
+                                    </div>
+                                    <div class="w-full mb-1 justify-between items-center">
+                                        <h4 class="text-sm font-bold text-dark"><span
+                                                id="{{ $product->product_id }}_currency">{{ $currency }}</span>
+                                            <span
+                                                id="{{ $product->product_id }}_price">{{ $product->sales_price }}</span>
+                                            @if ($product->sales_price != $product->regular_price)
+                                                <span class="text-xs line-through text-red-500 font-bold">
+                                                    {{ $currency }}{{ $product->regular_price }}</span>
+                                            @endif
+                                        </h4>
+                                        {{-- <h4 class="text-sm mb-3">
                                         @if ($product->product_stock <= 0)
                                             <span
                                                 class="py-1 px-2 bg-red-500 rounded text-xs text-white">{{ __('Out of stock') }}</span>
@@ -257,25 +258,24 @@
                                             </span>
                                         @endif
                                     </h4> --}}
-                                    <h4 class="text-sm mb-3">
-                                        @if (isset($product->hasCategory->category_name))
-                                            <span class="py-1 text-sm font-bold text-dark">Category
-                                                : {{ $product->hasCategory->category_name ?? '' }}</span>
+                                        <h4 class="text-sm mb-3">
+                                            @if (isset($product->hasCategory->category_name))
+                                                <span class="py-1 text-sm font-bold text-dark">Category
+                                                    : {{ $product->hasCategory->category_name ?? '' }}</span>
+                                            @endif
+                                        </h4>
+
+                                        @if ($product->is_variant)
+                                            <a class="mt-2 inline-block cursor-pointer text-center py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
+                                                href="{{ route('product.details', ['id' => $product->id, 'cardUrl' => $business_card_details->card_url]) }}">{{ __('Choose') }}</a>
+                                        @else
+                                            <a class="mt-2 inline-block cursor-pointer text-xs lg:text-lg py-1 px-3 lg:py-2 lg:px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
+                                                onclick="addToCart('{{ $product->id }}',1)">{{ __('Add to Cart') }}</a>
                                         @endif
-                                    </h4>
 
-                                    @if ($product->is_variant)
-                                        <a class="mt-2 inline-block cursor-pointer text-center py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
-                                            href="{{ route('product.details', ['id' => $product->id, 'cardUrl' => $business_card_details->card_url]) }}"
-                                           >{{ __('Choose') }}</a>
-                                    @else
-                                        <a class="mt-2 inline-block cursor-pointer text-xs lg:text-lg py-1 px-3 lg:py-2 lg:px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
-                                            onclick="addToCart('{{ $product->id }}',1)">{{ __('Add to Cart') }}</a>
-                                    @endif
-
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         @endforeach
 
                     </div>
@@ -283,7 +283,7 @@
             </section>
         @else
             <div class="text-center text-light d-flex align-items-center" style="min-height: 90vh">
-                <h2 style="color: #000000 ;font-size:25px;">Your Whatsapp store is currently Inactive</h2>
+                <h2 style="color: #000000 ;font-size:25px;">Your store is currently Inactive</h2>
             </div>
         @endif
 
