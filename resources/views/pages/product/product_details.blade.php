@@ -94,14 +94,14 @@
                                                                 name="option[]">
 
                                                                 @foreach ($variant->hasOption as $option)
-                                                                    @if ($option->stock > 0)
+                                                                    
                                                                         <option data-price="{{ $option->price }}"
                                                                             data-variant="{{ $variant->name }}"
                                                                             value="{{ $option->id }}">
                                                                             {{ $option->name }}
                                                                             ({{ getPrice($option->price) }})
                                                                         </option>
-                                                                    @endif
+                                                                    
                                                                 @endforeach
 
                                                             </select>
