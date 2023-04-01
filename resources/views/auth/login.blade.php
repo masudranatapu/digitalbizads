@@ -1,14 +1,20 @@
 @extends('layouts.web', ['nav' => false, 'banner' => false, 'footer' => false, 'cookie' => false, 'setting' => false, 'title' => true, 'title' => __('Sign In')])
 
+@section('custom-script')
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+@endsection
+
 @section('content')
     <section>
         <div class="flex flex-wrap">
             <div class="mt-10 pt-6 lg:pt-16 pb-6 w-full lg:w">
                 <div class="max-w-md mx-auto login-box">
-                    <div class="mb-6 lg:mb-20 w-full px-3 flex items-center justify-between"><a
-                            class="text-3xl font-bold leading-none" href="{{ url('/') }}">{{ config('app.name') }}</a><a
-                            class="py-2 px-6 text-lg rounded-l-xl rounded-t-xl bg-{{ $config[11]->config_value }}-600 hover:bg-{{ $config[11]->config_value }}-700 text-white font-bold transition duration-200"
-                            href="{{ route('register') }}">{{ __('Sign Up') }}</a></div>
+                    <div class="mb-6 lg:mb-20 w-full px-3 flex items-center justify-between">
+                        <a class="text-3xl font-bold leading-none" href="{{ url('/') }}">{{ config('app.name') }}</a>
+                        <a class="py-2 px-6 text-lg rounded-l-xl rounded-t-xl bg-{{ $config[11]->config_value }}-600 hover:bg-{{ $config[11]->config_value }}-700 text-white font-bold transition duration-200"
+                            href="{{ route('register') }}">{{ __('Sign Up') }}
+                        </a>
+                    </div>
                     <div>
                         <div class="mb-6 px-3">
                             <span class="text-gray-500">{{ __('Sign In') }}</span>
@@ -20,6 +26,7 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
+
                         @error('password')
                             <span class="ml-3 invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -58,17 +65,35 @@
                                 </svg>
                             </div>
 
-                            @if ($settings->recaptcha_configuration['RECAPTCHA_ENABLE'] == 'on')
+                            {{-- @if ($settings->recaptcha_configuration['RECAPTCHA_ENABLE'] == 'on')
                                 <div class="mb-3 w-full lg:w-1/2 px-2">
                                     {!! htmlFormSnippet() !!}
                                 </div>
+                            @endif --}}
+
+                            {{-- recaptcha --}}
+
+                            {{-- @dd(env('RECAPTCHA_SITE_KEY')); --}}
+                            {{-- @dd(env('RECAPTCHA_SECRET_KEY')); --}}
+                            @if ($settings->recaptcha_enable == 'on')
+                                <div class="mb-2 flex p-2">
+                                    <div class="g-recaptcha" data-sitekey="{{ $settings->recaptcha_site_key }}">
+                                    </div>
+                                </div>
+
+                                @error('g-recaptcha-response')
+                                    <small style="color: red;">
+                                        {{ $message }}
+                                    </small>
+                                @enderror
                             @endif
 
                             @if (Route::has('password.request'))
-                                <p class="mb-4 ml-3 text-lg text-gray-400"><a class="underline hover:text-gray-500"
-                                        href="{{ route('password.request') }}">
+                                <p class="mb-4 ml-3 text-lg text-gray-400">
+                                    <a class="underline hover:text-gray-500" href="{{ route('password.request') }}">
                                         {{ __('Forgot Your Password?') }}
-                                    </a></p>
+                                    </a>
+                                </p>
                             @endif
 
                             <div class="px-3 text-center">
@@ -98,19 +123,26 @@
             </div>
         </div>
     </section>
-    @push('script')
-        <script>
-            function mouseoverPass(obj) {
-                "use strict";
-                var obj = document.getElementById('password');
-                obj.type = "text";
-            }
-
-            function mouseoutPass(obj) {
-                "use strict";
-                var obj = document.getElementById('password');
-                obj.type = "password";
-            }
-        </script>
-    @endpush
 @endsection
+
+@push('script')
+    {{-- <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+    <script type="text/javascript">
+        var onloadCallback = function() {
+            alert("grecaptcha is ready!");
+        };
+    </script> --}}
+    <script>
+        function mouseoverPass(obj) {
+            "use strict";
+            var obj = document.getElementById('password');
+            obj.type = "text";
+        }
+
+        function mouseoutPass(obj) {
+            "use strict";
+            var obj = document.getElementById('password');
+            obj.type = "password";
+        }
+    </script>
+@endpush

@@ -52,7 +52,7 @@ Create New DigitalBizAds Card
 
     .gallery-btn {
         position: absolute;
-        top: 13px;
+        top: 15px;
         right: 52px;
         font-size: 20px;
     }
@@ -85,7 +85,7 @@ Create New DigitalBizAds Card
 
     .login_btn {
         position: absolute;
-        top: 6px;
+        top: 9px;
         right: 0;
     }
 
@@ -178,12 +178,10 @@ Create New DigitalBizAds Card
                                         </a>
                                     </h2>
                                 </div>
-                                <div class="card_title p-2 pt-3 d-none" id="logoDiv">
+                                <div class="card_title p-2 d-none" id="logoDiv">
                                     <h2 class="">
-                                        <div>
-                                            <img id="previewLogo" src="{{ asset('assets/images/bizads.png') }}"
+                                        <img id="previewLogo" src="{{ asset('assets/images/bizads.png') }}"
                                                 alt="logo" width="140">
-                                        </div>
                                         <a class="gallery-btn" data-bs-toggle="modal" data-bs-target="#galleryModal"
                                             href="javascript:void(0)">
                                             <i class="fas fa-images"></i>
@@ -221,7 +219,7 @@ Create New DigitalBizAds Card
 
                                 <div class="video_wrapper d-none" id="digitalBizEmbad">
                                     <div class="ratio ratio-1x1">
-                                        <iframe id="youtube_video_preview"
+                                        <iframe class="ratio ratio-16x9" id="youtube_video_preview"
                                             src="https://www.youtube.com/embed/Fhskvloj1gE" title="YouTube video player"
                                             width="100%" height="315" frameborder="0"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -371,7 +369,8 @@ Create New DigitalBizAds Card
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label class="form-label" for="email">Email <span
-                                                    class="text-danger">*</span></label></label>
+                                                    class="text-danger">*</span>
+                                                </label>
                                             <input
                                                 class="social_item_in form-control cin @error('email') is-invalid @enderror"
                                                 id="email" name="email" data-attr="mailto:" data-type="user_email"
@@ -387,7 +386,8 @@ Create New DigitalBizAds Card
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label class="form-label" for="phone_number">Phone <span
-                                                    class="text-danger">*</span></label></label>
+                                                    class="text-danger">*</span>
+                                                </label>
                                             <input
                                                 class="social_item_in form-control cin @error('phone') is-invalid @enderror"
                                                 id="phone" name="phone_number" data-attr="tel:" data-type="phone_number"
@@ -404,7 +404,8 @@ Create New DigitalBizAds Card
                                     <div class="col-md-6">
                                         <div class="mb-3 form-input">
                                             <label class="form-label" for="whatsapp">Whatsapp <span
-                                                    class="text-danger">*</span></label></label>
+                                                    class="text-danger">*</span>
+                                                </label>
 
                                             <input type="text" name="whatsapp" id="whatsapp" class="form-control"
                                                 placeholder="Whatsapp" required>
@@ -418,8 +419,14 @@ Create New DigitalBizAds Card
 
                                 <div class="col-12">
                                     <div class="mb-3 form-input">
-                                        <label class="form-label" for="">Logo Type(Biz Name) <span
-                                                class="text-danger">*</span></label></label>
+                                        <label class="form-label" for="">Logo Type(Biz Name) <span class="text-danger">*</span>
+                                            <button class="tooltip_icon" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                data-bs-title="Logo recommended size (140X48)"
+                                                type="button">
+                                                <i class="fa fa-info"></i>
+                                            </button>
+                                        </label>
                                         <div class="input-group">
                                             <div class="input-group-text p-0">
                                                 <select class="form-control form-select border-0 ps-3"
@@ -465,7 +472,14 @@ Create New DigitalBizAds Card
                                 <div class="col-12">
                                     <div class="mb-3 form-group">
                                         <label class="form-label" for="selectField2">Banner <span
-                                                class="text-danger">*</span></label></label>
+                                                class="text-danger">*</span>
+                                            <button class="tooltip_icon" data-bs-toggle="tooltip"
+                                                data-bs-placement="top" data-bs-custom-class="custom-tooltip"
+                                                data-bs-title="Photo recommended size (500X700)"
+                                                type="button">
+                                                <i class="fa fa-info"></i>
+                                            </button>
+                                        </label>
                                         <div class="input-group">
 
                                             <div class="input-group-text p-0">
@@ -484,7 +498,7 @@ Create New DigitalBizAds Card
                                                 class="form-control @error('banner') is-invalid @enderror" name="banner"
                                                 type="file" tabindex="{{ $tabindex++ }}" required>
                                             @if ($errors->has('banner'))
-                                            <span class="help-block text-danger">{{ $errors->first('banner') }}</span>
+                                                <span class="help-block text-danger">{{ $errors->first('banner') }}</span>
                                             @endif
 
                                             {{-- video url --}}
@@ -493,7 +507,7 @@ Create New DigitalBizAds Card
                                                 name="video" type="url" value="{{ old('video') }}"
                                                 tabindex="{{ $tabindex++ }}" placeholder="your video url">
                                             @if ($errors->has('video'))
-                                            <span class="help-block text-danger">{{ $errors->first('video') }}</span>
+                                                <span class="help-block text-danger">{{ $errors->first('video') }}</span>
                                             @endif
 
                                             {{-- video source --}}
@@ -502,7 +516,7 @@ Create New DigitalBizAds Card
                                                 name="video" type="file" tabindex="{{ $tabindex++ }}"
                                                 placeholder="upload your video">
                                             @if ($errors->has('video'))
-                                            <span class="help-block text-danger">{{ $errors->first('video') }}</span>
+                                                <span class="help-block text-danger">{{ $errors->first('video') }}</span>
                                             @endif
 
 
@@ -618,7 +632,7 @@ Create New DigitalBizAds Card
                                             id="about_us" name="about_us" data-type="about"
                                             data-preview="preview_about_us" data-attr="" type="text"
                                             tabindex="{{ $tabindex++ }}" placeholder="About Your Bussiness" cols="30"
-                                            rows="10">{{ old('about_us') }}</textarea>
+                                            rows="4">{{ old('about_us') }}</textarea>
                                         @if ($errors->has('about_us'))
                                         <span class="help-block text-danger">{{ $errors->first('about_us') }}</span>
                                         @endif

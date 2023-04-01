@@ -223,8 +223,13 @@ class SettingsController extends Controller
     // Update Google Setting
     public function changeGoogleSettings(Request $request)
     {
+
         Setting::where('id', '1')->update([
-            'google_analytics_id' => $request->google_analytics_id, 'google_adsense_code' => $request->google_adsense_code
+            'google_analytics_id' => $request->google_analytics_id,
+            'google_adsense_code' => $request->google_adsense_code,
+            'recaptcha_enable' => $request->recaptcha_enable,
+            'recaptcha_site_key' => $request->recaptcha_site_key,
+            'recaptcha_secret_key' => $request->recaptcha_secret_key,
         ]);
 
         // Page redirect

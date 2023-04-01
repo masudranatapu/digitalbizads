@@ -1,5 +1,9 @@
 @extends('layouts.web', ['nav' => false, 'banner' => false, 'footer' => false, 'cookie' => false, 'setting' => false, 'title' => true, 'title' => 'Sign Up'])
 
+@section('custom-script')
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+@endsection
+
 @section('content')
     <section>
         <div class="flex flex-wrap">
@@ -94,11 +98,29 @@
                                     </span>
                                 @enderror
 
-                                @if ($settings->recaptcha_configuration['RECAPTCHA_ENABLE'] == 'on')
+                                {{-- @if ($settings->recaptcha_configuration['RECAPTCHA_ENABLE'] == 'on')
                                     <div class="mb-3 w-full lg:w-1/2 px-2">
                                         {!! htmlFormSnippet() !!}
                                     </div>
+                                @endif --}}
+
+                                {{-- recaptcha --}}
+
+                                {{-- @dd(env('RECAPTCHA_SITE_KEY')); --}}
+                                {{-- @dd(env('RECAPTCHA_SECRET_KEY')); --}}
+                                @if ($settings->recaptcha_enable == 'on')
+                                    <div class="mb-2 flex p-2">
+                                        <div class="g-recaptcha" data-sitekey="{{ $settings->recaptcha_site_key }}">
+                                        </div>
+                                    </div>
+
+                                    @error('g-recaptcha-response')
+                                        <small style="color: red;">
+                                            {{ $message }}
+                                        </small>
+                                    @enderror
                                 @endif
+
                             </div>
 
                             <div class="px-3 text-center">
@@ -116,19 +138,20 @@
             </div>
         </div>
     </section>
-    @push('script')
-        <script>
-            function mouseoverPass(obj) {
-                "use strict";
-                var obj = document.getElementById('password');
-                obj.type = "text";
-            }
-
-            function mouseoutPass(obj) {
-                "use strict";
-                var obj = document.getElementById('password');
-                obj.type = "password";
-            }
-        </script>
-    @endpush
 @endsection
+
+@push('script')
+    <script>
+        function mouseoverPass(obj) {
+            "use strict";
+            var obj = document.getElementById('password');
+            obj.type = "text";
+        }
+
+        function mouseoutPass(obj) {
+            "use strict";
+            var obj = document.getElementById('password');
+            obj.type = "password";
+        }
+    </script>
+@endpush
