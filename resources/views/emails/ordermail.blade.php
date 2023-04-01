@@ -352,10 +352,6 @@
                                         <p>Name: {{ $customer_info[0] }}</p>
                                         <p>Phone : {{ $customer_info[1] }}</p>
                                         <p>Address : {{ $customer_info[2] }}</p>
-
-
-
-
                                     </div>
                                 </td>
                             </tr>

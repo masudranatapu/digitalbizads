@@ -61,10 +61,10 @@
                                                 name="type" required>
 
                                                 <option value="amount" {{ old('type') == 'amount' ? 'selected' : '' }}>
-                                                    Amount
+                                                    $
                                                 </option>
                                                 <option value="percent" {{ old('type') == 'percent' ? 'selected' : '' }}>
-                                                    Percent
+                                                    %
                                                 </option>
                                             </select>
                                         </div>
@@ -149,11 +149,11 @@
 
                                                                     <option value="amount"
                                                                         {{ old('type') == 'amount' ? 'selected' : '' }}>
-                                                                        Amount
+                                                                        $
                                                                     </option>
                                                                     <option value="percent"
                                                                         {{ old('type') == 'percent' ? 'selected' : '' }}>
-                                                                        Percent
+                                                                        %
                                                                     </option>
                                                                 </select>
                                                             </div>

@@ -4,6 +4,10 @@
 @push('css')
     <link href="{{ asset('assets/css/print.min.css') }}" rel="stylesheet">
     <style>
+        address p {
+            margin: 0px !important;
+        }
+
         @media print {
             .card {
                 --tblr-card-border-radius: 4px;
@@ -12,6 +16,10 @@
                 background: var(--tblr-card-bg, #fff);
                 border-radius: var(--tblr-card-border-radius);
                 transition: transform 0.3s ease-out, opacity 0.3s ease-out, box-shadow 0.3s ease-out;
+            }
+
+            table {
+                border: 1px-solid-black
             }
         }
     </style>
@@ -24,7 +32,7 @@
             <div class="page-header d-print-none">
                 <div class="row align-items-center">
                     <!-- Page title actions -->
-                    <div class="col-auto ms-auto d-print-none">
+                    <div class="col-auto ms-auto d-print-none mt-3">
                         <div class="dropdown">
 
                             <button class="btn btn btn-primary" type="button" onclick="printPdf()">
@@ -47,6 +55,9 @@
                             <div class="card card-lg rounded-0">
                                 <div id="invoice">
                                     <div class="card-body">
+
+                                        <h4 class="text-center">{{ $business_card_details->title }}</h4>
+                                        <hr>
 
                                         <div class="row">
                                             @php
@@ -89,7 +100,7 @@
                                                         </strong><span>{{ $shipping['shipping_area'] ?? 'Not Available' }}</span>
                                                     </p>
 
-                                                    <p><strong>Payment Provider :
+                                                    <p><strong>Payment By :
                                                         </strong><span>{{ $orders->payment_method }}</span>
                                                     </p>
                                                 </address>
@@ -200,6 +211,8 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        <p class="text-end">{{ env('APP_NAME') }}</p>
+
                                     </div>
                                 </div>
                             </div>
@@ -257,7 +270,7 @@
                                                 <p><strong>Note :
                                                     </strong><span>{{ $shipping['order_note'] ?? 'Not Available' }}</span>
                                                 </p>
-                                                <p><strong>Payment Provider :
+                                                <p><strong>Payment By :
                                                     </strong><span>{{ $orders->payment_method }}</span>
                                                 </p>
 
@@ -362,11 +375,12 @@
                                             </tr>
                                             <tr class="text-end">
                                                 <th colspan="3">Grand Total :</th>
-                                                <td>{{ getPrice($orders->total_price) }}</td>
+                                                <td>{{ getPrice($orders->grand_total) }}</td>
 
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <p class="text-end">{{ env('APP_NAME') }}</p>
                                 </div>
                             </div>
                         </div>

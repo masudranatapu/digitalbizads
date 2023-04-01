@@ -83,9 +83,9 @@
                                                 <div class='col-md-6 col-xl-6'>
                                                     <div class='mb-3'>
                                                         <label
-                                                            class='form-label required'>{{ __('Product Sub Title') }}</label>
+                                                            class='form-label required'>{{ __('Product Description') }}</label>
                                                         <textarea class='form-control' name='product_subtitle' data-bs-toggle='autosize'
-                                                            placeholder='{{ __('Product Sub Title') }}...' required>{{ $products->product_subtitle }}</textarea>
+                                                            placeholder='{{ __('Product Description') }}...' required>{{ $products->product_subtitle }}</textarea>
                                                     </div>
                                                 </div>
                                                 <div class='col-md-6 col-xl-6'>

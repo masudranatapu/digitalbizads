@@ -305,10 +305,7 @@ class CheckoutController extends Controller
         $business_card_details = BusinessCard::where('card_url', $cardUrl)->first();
         $user = User::find($business_card_details->user_id);
         $totalTransaction = ProductOrderTransaction::count();
-        $shippingCost = Session::has('shippingCost') ? Session::get('shippingCost') : 0;
 
-
-        $tax = Session::has('tax') ? Session::get('tax') : 0;
         try {
             $stripe = new \Stripe\StripeClient($user->stripe_secret_key);
             $payment = $stripe->paymentIntents->retrieve($paymentId, []);
@@ -338,16 +335,15 @@ class CheckoutController extends Controller
             try {
 
                 $products = Session::get('cart');
-
                 $totalPrice = 0;
                 $totalQuantity = 0;
                 $grandTotal = 0;
                 $discount = 0;
                 foreach ($products as $key => $product) {
-
                     $totalPrice += $product['price'] * $product['quantity'];
                     $totalQuantity +=  $product['quantity'];
                 }
+
                 if (session()->has('tax')) {
 
                     $grandTotal = $totalPrice + session()->get('tax');
@@ -361,14 +357,18 @@ class CheckoutController extends Controller
                     } elseif (session('coupon')->type == 'percent') {
                         $grandTotal = $grandTotal  - ($grandTotal  * session('coupon')->amount) / 100;
                     }
-                }
-                if (session()->has('coupon')) {
+
                     if (session('coupon')->type == 'amount') {
+
                         $discount = session('coupon')->amount;
                     } elseif (session('coupon')->type == 'percent') {
+
                         $discount = ($grandTotal * session('coupon')->amount) / 100;
                     }
                 }
+
+                $tax = Session::has('tax') ? Session::get('tax') : 0;
+                $shippingCost = Session::has('shippingCost') ? Session::get('shippingCost') : 0;
 
 
                 $order = new Order();

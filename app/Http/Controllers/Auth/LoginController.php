@@ -55,7 +55,7 @@ class LoginController extends Controller
             return redirect('/user/dashboard');
         } else {
             Auth::logout();
-            alert()->error("Your inactive by admin.Please contact with support or admin.")->persistent('Close');
+            alert()->error("BizAd is temporarily disabled your account , please contact with Admin")->persistent('Close');
             return redirect('login');
         }
     }
@@ -88,7 +88,7 @@ class LoginController extends Controller
     {
         $settings = Setting::first();
 
-        if ($settings->recaptcha_enable == 'on'){
+        if ($settings->recaptcha_enable == 'on') {
 
             $request->validate([
                 $this->username() => 'required|string',
@@ -97,14 +97,12 @@ class LoginController extends Controller
             ], [
                 'g-recaptcha-response.required' =>  'Google recaptcha must be required',
             ]);
-
         } else {
 
             $request->validate([
                 $this->username() => 'required|string',
                 'password' => 'required|string',
             ]);
-
         }
     }
 

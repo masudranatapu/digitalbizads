@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\BusinessCard;
+use App\Currency;
 use App\Http\Controllers\Controller;
 use App\Setting;
 use App\ShippingCost;
@@ -16,22 +17,29 @@ class ShippingAreaController extends Controller
     public function index()
     {
         $user_id =  Auth::user()->id;
-        $shippingarea = ShippingCost::where('user_id',$user_id)->orderBy('name', 'asc')->latest()->get();
+        $shippingarea = ShippingCost::where('user_id', $user_id)->orderBy('name', 'asc')->latest()->get();
         $settings = Setting::where('status', 1)->first();
-        $store = BusinessCard::where('user_id',$user_id)->where('card_type','store')->first();
+        $store = BusinessCard::where('user_id', $user_id)->where('card_type', 'store')->first();
         $currency_symbol = null;
-        if($store){
+        if ($store) {
             $store_details = json_decode($store->description);
             $currency_symbol = $store_details->currency ?? null;
-
         }
-        return view('user.shipping.index', compact('shippingarea', 'settings','currency_symbol'));
+        return view('user.shipping.index', compact('shippingarea', 'settings', 'currency_symbol'));
     }
 
     public function create()
     {
         $settings = Setting::where('status', 1)->first();
-        return view('user.shipping.create', compact('settings'));
+        $user_id =  Auth::user()->id;
+        $store = BusinessCard::where('user_id', $user_id)->where('card_type', 'store')->first();
+        $currency_symbol = null;
+        if ($store) {
+            $store_details = json_decode($store->description);
+            $currency_symbol = Currency::where('iso_code', $store_details->currency)->first()->symbol ?? null;
+        }
+
+        return view('user.shipping.create', compact('settings', 'currency_symbol'));
     }
 
     public function store(Request $request)
@@ -59,6 +67,13 @@ class ShippingAreaController extends Controller
         $user_id =  Auth::user()->id;
         $settings = Setting::where('status', 1)->first();
         $shippingarea = ShippingCost::where('user_id', $user_id)->where('id', $id)->first();
+        $currency_symbol = null;
+        $store = BusinessCard::where('user_id', $user_id)->where('card_type', 'store')->first();
+        $currency_symbol = null;
+        if ($store) {
+            $store_details = json_decode($store->description);
+            $currency_symbol = Currency::where('iso_code', $store_details->currency)->first()->symbol ?? null;
+        }
         return view('user.shipping.edit', compact('shippingarea', 'settings'));
     }
 
@@ -93,7 +108,5 @@ class ShippingAreaController extends Controller
         alert()->success(trans('Shipping area successfully delete'));
 
         return redirect()->back();
-
     }
-
 }

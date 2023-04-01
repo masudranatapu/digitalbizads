@@ -14,6 +14,10 @@
                 transition: transform 0.3s ease-out, opacity 0.3s ease-out, box-shadow 0.3s ease-out;
             }
         }
+
+        address p {
+            margin: 0px;
+        }
     </style>
 @endpush
 
@@ -98,6 +102,9 @@
 
                                                             <p><strong>Note :
                                                                 </strong><span>{{ $shipping['order_note'] ?? 'Not Available' }}</span>
+                                                            </p>
+                                                            <p><strong>Payment Provider :
+                                                                </strong><span>{{ $order->payment_method }}</span>
                                                             </p>
 
                                                         </address>
