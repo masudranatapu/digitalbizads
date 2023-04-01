@@ -1,4 +1,9 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
+@section('setting-nav', 'active')
+
+@push('css')
+    <link href="{{ asset('assets/css/jquery-ui.css') }}" rel="stylesheet">
+@endpush
 
 @section('content')
     <div class="page-wrapper">
@@ -11,14 +16,14 @@
                             {{ __('Overview') }}
                         </div>
                         <h2 class="page-title">
-                            {{ __('Edit shipping area') }}
+                            {{ __('Edit Coupon') }}
                         </h2>
                     </div>
                     <!-- Page title actions -->
                     <div class="col-auto ms-auto d-print-none">
                         <div class="dropdown">
-                            <a type="button" href="{{ route('user.shipping_area.index') }}">
-                                <button type="button" class="btn btn btn-primary">
+                            <a type="button" href="{{ route('user.coupon.index') }}">
+                                <button class="btn btn btn-primary" type="button">
                                     {{ __('Back') }}
                                 </button>
                             </a>
@@ -32,28 +37,78 @@
                 <div class="row row-deck row-cards">
                     <div class="col-sm-12 col-lg-12 d-none d-md-block">
                         <div class="card">
-                            <form action="{{ route('user.shipping_area.update', $shippingarea->id) }}" method="POST">
+                            <form action="{{ route('user.coupon.update', $row->id) }}" method="POST">
                                 @csrf
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-4">
-                                            <label for="">Area Name <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control @error('name') is-invalid @enderror" required value="{{ $shippingarea->name }}" name="name" placeholder="Area name" autocomplete="off">
+                                            <label class="form-label" for="">Name <span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control @error('name') border-danger @enderror"
+                                                name="name" type="text" value="{{ old('name') ?? $row->name }}"
+                                                required placeholder="Name" autocomplete="off">
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="">Amount </label>
-                                            <input type="number" min="0"  class="form-control @error('amount') is-invalid @enderror" required value="{{ $shippingarea->amount }}" name="amount"  placeholder="Amount" autocomplete="off">
+                                            <label class="form-label" for="">Code<span
+                                                    class="text-danger">*</span></label>
+                                            <input class="form-control @error('coupon_code') border-danger @enderror"
+                                                name="coupon_code" type="text"
+                                                value="{{ old('coupon_code') ?? $row->coupon_code }}" required
+                                                placeholder="Coupon code" autocomplete="off">
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="">Status </label>
-                                            <select name="status" class="form-control @error('status') is-invalid @enderror" required>
-                                                <option class="d-none">Active</option>
-                                                <option value="1" @if($shippingarea->status == 1) selected @endif>Active</option>
-                                                <option value="0" @if($shippingarea->status == 0) selected @endif>Inactive</option>
+                                            <label class="form-label" for="">Discount Type</label>
+                                            <select class="form-control @error('type') border-danger @enderror"
+                                                name="type" required>
+
+                                                <option value="amount"
+                                                    {{ (old('type') ?? $row->type) == 'amount' ? 'selected' : '' }}>
+                                                    Amount
+                                                </option>
+                                                <option value="percent"
+                                                    {{ (old('type') ?? $row->type) == 'percent' ? 'selected' : '' }}>
+                                                    Percent
+                                                </option>
                                             </select>
                                         </div>
+
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="">Amount </label>
+                                            <input class="form-control @error('amount') border-danger @enderror"
+                                                name="amount" type="number" value="{{ old('amount') ?? $row->amount }}"
+                                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                                min="0" required placeholder="Amount" autocomplete="off">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="">Status </label>
+                                            <select class="form-control @error('status') border-danger @enderror"
+                                                name="status" required>
+
+                                                <option value="1" {{ $row->status == '1' ? 'selected' : '' }}>
+                                                    Active
+                                                </option>
+                                                <option value="0" {{ $row->status == '0' ? 'selected' : '' }}>
+                                                    Inactive
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="from_date">Valid Form</label>
+                                            <input class="form-control @error('from_date') border-danger @enderror"
+                                                id="from_date" name="from_date" type="text"
+                                                value="{{ old('from_date') ?? date('d-M-Y', strtotime($row->from_date)) }}"
+                                                required placeholder="Valid form">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label" for="">Expire Date</label>
+                                            <input class="form-control @error('to_date') border-danger @enderror"
+                                                id="to_date" name="to_date" type="text"
+                                                value="{{ old('to_date') ?? date('d-M-Y', strtotime($row->to_date)) }}"
+                                                required placeholder="Expire Date">
+                                        </div>
                                         <div class="col-md-12 text-center mt-4">
-                                            <button type="submit" class="btn btn-info">Update</button>
+                                            <button class="btn btn-info" type="submit">Update</button>
                                         </div>
                                     </div>
                                 </div>
@@ -61,35 +116,102 @@
                         </div>
                     </div>
                     {{-- mobile  --}}
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none">
+                    <div
+                        class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 d-block d-sm-block d-md-none d-lg-none d-xl-none">
                         <div class="row">
                             <div class="">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row row-deck row-cards">
                                             <div class="col-sm-12 col-lg-12">
-                                                <form action="{{ route('user.shipping_area.update', $shippingarea->id) }}" method="POST">
+                                                <form action="{{ route('user.coupon.update', $row->id) }}" method="POST">
                                                     @csrf
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <div class="col-md-4">
-                                                                <label for="">Area Name <span class="text-danger">*</span></label>
-                                                                <input type="text" class="form-control @error('name') is-invalid @enderror" required value="{{ $shippingarea->name }}" name="name" placeholder="Area name" autocomplete="off">
+                                                                <label class="form-label" for="">Name <span
+                                                                        class="text-danger">*</span></label>
+                                                                <input
+                                                                    class="form-control @error('name') border-danger @enderror"
+                                                                    name="name" type="text"
+                                                                    value="{{ old('name') ?? $row->name }}" required
+                                                                    placeholder="Name" autocomplete="off">
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <label for="">Amount </label>
-                                                                <input type="number" min="0"  class="form-control @error('amount') is-invalid @enderror" required value="{{ $shippingarea->amount }}" name="amount"  placeholder="Amount" autocomplete="off">
+                                                                <label class="form-label" for="">Code<span
+                                                                        class="text-danger">*</span></label>
+                                                                <input
+                                                                    class="form-control @error('coupon_code') border-danger @enderror"
+                                                                    name="coupon_code" type="text"
+                                                                    value="{{ old('coupon_code') ?? $row->coupon_code }}"
+                                                                    required placeholder="Coupon code" autocomplete="off">
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <label for="">Status </label>
-                                                                <select name="status" class="form-control @error('status') is-invalid @enderror" required>
-                                                                    <option class="d-none">Active</option>
-                                                                    <option value="1" @if($shippingarea->status == 1) selected @endif>Active</option>
-                                                                    <option value="0" @if($shippingarea->status == 0) selected @endif>Inactive</option>
+                                                                <label class="form-label" for="">Discount
+                                                                    Type</label>
+                                                                <select
+                                                                    class="form-control @error('type') border-danger @enderror"
+                                                                    name="type" required>
+
+                                                                    <option value="amount"
+                                                                        {{ (old('type') ?? $row->type) == 'amount' ? 'selected' : '' }}>
+                                                                        Amount
+                                                                    </option>
+                                                                    <option value="percent"
+                                                                        {{ (old('type') ?? $row->type) == 'percent' ? 'selected' : '' }}>
+                                                                        Percent
+                                                                    </option>
                                                                 </select>
                                                             </div>
+
+                                                            <div class="col-md-4">
+                                                                <label class="form-label" for="">Amount </label>
+                                                                <input
+                                                                    class="form-control @error('amount') border-danger @enderror"
+                                                                    name="amount" type="number"
+                                                                    value="{{ old('amount') ?? $row->amount }}"
+                                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"
+                                                                    min="0" required placeholder="Amount"
+                                                                    autocomplete="off">
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <label class="form-label" for="">Status </label>
+                                                                <select
+                                                                    class="form-control @error('status') border-danger @enderror"
+                                                                    name="status" required>
+
+                                                                    <option value="1"
+                                                                        {{ $row->status == '1' ? 'selected' : '' }}>
+                                                                        Active
+                                                                    </option>
+                                                                    <option value="0"
+                                                                        {{ $row->status == '0' ? 'selected' : '' }}>
+                                                                        Inactive
+                                                                    </option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label class="form-label" for="from_date">Valid
+                                                                    Form</label>
+                                                                <input
+                                                                    class="form-control @error('from_date') border-danger @enderror"
+                                                                    id="from_date" name="from_date" type="text"
+                                                                    value="{{ old('from_date') ?? date('d-M-Y', strtotime($row->from_date)) }}"
+                                                                    required placeholder="Valid form">
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label class="form-label" for="">Expire
+                                                                    Date</label>
+                                                                <input
+                                                                    class="form-control @error('to_date') border-danger @enderror"
+                                                                    id="to_date" name="to_date" type="text"
+                                                                    value="{{ old('to_date') ?? date('d-M-Y', strtotime($row->to_date)) }}"
+                                                                    required placeholder="Expire Date">
+                                                            </div>
                                                             <div class="col-md-12 text-center mt-4">
-                                                                <button type="submit" class="btn btn-info">Update</button>
+                                                                <button class="btn btn-info"
+                                                                    type="submit">Update</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -108,3 +230,40 @@
         @include('user.includes.footer')
     </div>
 @endsection
+
+@push('script')
+    <script src="{{ asset('assets/js/jquery-ui.js') }}"></script>
+    <script>
+        $(function() {
+            $("#from_date").datepicker({
+                // dateFormat: "dd-mm-yy",
+                altFormat: "yy-mm-dd",
+                onSelect: function() {
+                    $('#to_date').datepicker('option', 'minDate', $("#from_date").datepicker(
+                        "getDate"));
+                }
+            });
+            $("#to_date").datepicker({
+                dateFormat: "dd-mm-yy",
+                altFormat: "yy-mm-dd",
+                minDate: $("#from_date").datepicker("getDate"),
+            });
+        });
+        $(function() {
+            $("#mobile_from_date").datepicker({
+                // dateFormat: "dd-mm-yy",
+
+                onSelect: function() {
+                    $('#mobile_to_date').datepicker('option', 'minDate', $("#mobile_from_date")
+                        .datepicker(
+                            "getDate"));
+                }
+            });
+            $("#mobile_to_date").datepicker({
+                dateFormat: "dd-mm-yy",
+                altFormat: "yy-mm-dd",
+                minDate: $("#mobile_from_date").datepicker("getDate"),
+            });
+        });
+    </script>
+@endpush
