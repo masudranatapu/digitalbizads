@@ -57,18 +57,25 @@
                                         </tr>
                                     @endif
 
-                                    {{-- <tr class=" set__state_price_tr">
-                                        <td>State tax:</td>
-                                        <td class="text-gray-dark set__state_price">$23.80</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Shipping:</td>
-                                        <td class="text-gray-dark">$0.00</td>
-                                    </tr> --}}
+                                    
                                     <tr>
                                         <td class="">Order total</td>
                                         <td class="text-end grand_total_set" colspan="3">
                                             {{ getPrice($total) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-lg text-primary">Coupon Discount</td>
+                                        <td colspan="2"></td>
+
+                                        <td class="text-end text-lg  text-primary" id="cupponPrice">
+
+                                            @if (session()->has('coupon'))
+                                                @if (session('coupon')->type == 'amount')
+                                                    - {{ getPrice(session('coupon')->amount) }}
+                                                @elseif (session('coupon')->type == 'percent')
+                                                    - {{ getPrice(($total * session('coupon')->amount) / 100) }}
+                                                @endif
+                                            @endif
                                     </tr>
                                     <tr>
                                         <td>
@@ -99,13 +106,13 @@
                                         <td class="text-end text-lg text-primary" data-th="Grand Total" colspan="3">
                                             @if (session()->has('tax'))
                                                 @php
-                                                    
+
                                                     $total = $total + session()->get('tax');
                                                 @endphp
                                             @endif
                                             @if (session()->has('shippingCost'))
                                                 @php
-                                                    
+
                                                     $total = $total + session()->get('shippingCost');
                                                 @endphp
                                             @endif
@@ -114,20 +121,7 @@
                                         </td>
 
                                     </tr>
-                                    <tr>
-                                        <td class="text-lg text-primary">Coupon Discount</td>
-                                        <td colspan="2"></td>
 
-                                        <td class="text-end text-lg  text-primary" id="cupponPrice">
-
-                                            @if (session()->has('coupon'))
-                                                @if (session('coupon')->type == 'amount')
-                                                    - {{ getPrice(session('coupon')->amount) }}
-                                                @elseif (session('coupon')->type == 'percent')
-                                                    - {{ getPrice(($total * session('coupon')->amount) / 100) }}
-                                                @endif
-                                            @endif
-                                    </tr>
                                     <tr>
                                         <td class="text-lg text-primary">Grand Total</td>
                                         <td colspan="2"></td>

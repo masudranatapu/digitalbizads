@@ -252,9 +252,9 @@ class HomeController extends Controller
 
 
                     if ($card_details->theme_id == "7ccc432a06hty") {
-                        return view('vcard.modern-store-light', compact('card_details', 'productCategories', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency', 'store_card'));
+                        return view('vcard.modern-store-light', compact('card_details', 'shareContent', 'productCategories', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency', 'store_card'));
                     } else if ($card_details->theme_id == "7ccc432a06hju") {
-                        return view('vcard.modern-store-dark', compact('card_details', 'productCategories', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency', 'store_card'));
+                        return view('vcard.modern-store-dark', compact('card_details', 'shareContent', 'productCategories', 'plan_details', 'store_details', 'business_card_details', 'products', 'settings', 'shareComponent', 'shareContent', 'config', 'enquiry_button', 'whatsapp_msg', 'currency', 'store_card'));
                     }
                 }
             }

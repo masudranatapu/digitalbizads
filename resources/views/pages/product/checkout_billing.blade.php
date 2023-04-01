@@ -69,6 +69,20 @@
                                             {{ getPrice($total) }}</td>
                                     </tr>
                                     <tr>
+                                        <td class="text-lg text-primary">Coupon Discount</td>
+                                        <td colspan="2"></td>
+
+                                        <td class="text-end text-lg  text-primary" id="cupponPrice">
+
+                                            @if (session()->has('coupon'))
+                                                @if (session('coupon')->type == 'amount')
+                                                    - {{ getPrice(session('coupon')->amount) }}
+                                                @elseif (session('coupon')->type == 'percent')
+                                                    - {{ getPrice(($total * session('coupon')->amount) / 100) }}
+                                                @endif
+                                            @endif
+                                    </tr>
+                                    <tr>
                                         <td>
                                             State Tax
                                         </td>
@@ -114,20 +128,6 @@
 
                                     </tr>
 
-                                    <tr>
-                                        <td class="text-lg text-primary">Coupon Discount</td>
-                                        <td colspan="2"></td>
-
-                                        <td class="text-end text-lg  text-primary" id="cupponPrice">
-
-                                            @if (session()->has('coupon'))
-                                                @if (session('coupon')->type == 'amount')
-                                                    - {{ getPrice(session('coupon')->amount) }}
-                                                @elseif (session('coupon')->type == 'percent')
-                                                    - {{ getPrice(($total * session('coupon')->amount) / 100) }}
-                                                @endif
-                                            @endif
-                                    </tr>
                                     <tr>
                                         <td class="text-lg text-primary">Grand Total</td>
                                         <td colspan="2"></td>

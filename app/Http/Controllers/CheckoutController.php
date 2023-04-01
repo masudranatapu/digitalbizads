@@ -343,6 +343,8 @@ class CheckoutController extends Controller
                     $totalPrice += $product['price'] * $product['quantity'];
                     $totalQuantity +=  $product['quantity'];
                 }
+                $tax = Session::has('tax') ? Session::get('tax') : 0;
+                $shippingCost = Session::has('shippingCost') ? Session::get('shippingCost') : 0;
 
                 if (session()->has('tax')) {
 
@@ -367,9 +369,10 @@ class CheckoutController extends Controller
                     }
                 }
 
-                $tax = Session::has('tax') ? Session::get('tax') : 0;
-                $shippingCost = Session::has('shippingCost') ? Session::get('shippingCost') : 0;
 
+
+
+                dd(["totalPrice" => $totalPrice, "discount" => $discount, "tax" => $tax, "shippingCost" => $shippingCost, "grandTotal" => $grandTotal]);
 
                 $order = new Order();
                 $order->transaction_id = $productOrderTransaction->id;
