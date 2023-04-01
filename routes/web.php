@@ -218,7 +218,7 @@ Route::group(['middleware' => 'Installer'], function () {
             Route::get('card/gallery-delete/{id}', [CardController::class, 'getDeleteGallery'])->name('card.gallery-delete');
 
 
-            Route::get('create-card-2', [CardController::class, 'CreateNewCard'])->name('create.card');
+            Route::get('create-card-2', [CardController::class, 'CreateNewCard'])->name('create.card2');
 
             // v card
             if (env('APP_TYPE') == 'VCARD' || env('APP_TYPE') == 'BOTH') {
@@ -325,8 +325,8 @@ Route::group(['middleware' => 'Installer'], function () {
                 Route::get('/{id}/delete', [ShippingAreaController::class, 'delete'])->name('delete');
             });
 
-             // coupon
-             Route::prefix('/coupon')->name('coupon.')->group(function () {
+            // coupon
+            Route::prefix('/coupon')->name('coupon.')->group(function () {
                 Route::get('/', [CouponController::class, 'index'])->name('index');
                 Route::get('/create', [CouponController::class, 'create'])->name('create');
                 Route::post('store', [CouponController::class, 'store'])->name('store');
@@ -334,8 +334,6 @@ Route::group(['middleware' => 'Installer'], function () {
                 Route::post('/{id}/update', [CouponController::class, 'update'])->name('update');
                 Route::get('/{id}/delete', [CouponController::class, 'delete'])->name('delete');
             });
-
-
         });
         // Transactions
         Route::get('transactions', [userTransactions::class, 'indexTransactions'])->name('transactions');
@@ -390,8 +388,8 @@ Route::post('addtocart', [CartController::class, 'addToCart'])->name('addtocart'
 
 // coupon
 
-Route::post('check/coupon', [ProductController::class, 'checkCoupon'])->name('check.coupon');
-Route::post('remove/coupon', [ProductController::class, 'removeCoupon'])->name('remove.coupon');
+Route::post('{cardUrl}/check/coupon', [CouponController::class, 'checkCoupon'])->name('check.coupon');
+Route::post('{cardUrl}/remove/coupon', [CouponController::class, 'removeCoupon'])->name('remove.coupon');
 
 // checkout
 Route::get('{cardUrl}/checkout', [CheckoutController::class, 'checkout'])->name('checkout');

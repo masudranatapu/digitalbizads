@@ -81,7 +81,7 @@ a {
 
 .card_title {
     background: #ffc107;
-
+    height: 58px;
 }
 
 .card_title h2 {
@@ -93,6 +93,7 @@ a {
     margin: 0px;
     width: 82%;
     display: block;
+    margin-top:3px;
 }
 
 .card_title h2 img {

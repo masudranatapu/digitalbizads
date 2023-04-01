@@ -363,13 +363,9 @@ class CheckoutController extends Controller
                     }
                 }
                 if (session()->has('coupon')) {
-
-
                     if (session('coupon')->type == 'amount') {
-
                         $discount = session('coupon')->amount;
                     } elseif (session('coupon')->type == 'percent') {
-
                         $discount = ($grandTotal * session('coupon')->amount) / 100;
                     }
                 }
@@ -454,9 +450,10 @@ class CheckoutController extends Controller
 
 
                 return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number, 'status' => true]);
-            } catch (\Throwable $th) {
+            } catch (Exception $th) {
 
                 alert()->error(trans('Something wrong.'));
+                dd($th);
                 return redirect()->route('card.preview', $business_card_details->card_url);
             }
         } else {
@@ -630,7 +627,6 @@ class CheckoutController extends Controller
             $order->quantity = $totalQuantity;
             $order->total_price = $totalPrice;
             $order->discount = $discount;
-
             $order->payment_fee = 0;
             $order->vat = $tax;
             $order->shipping_cost = $shippingCost;
