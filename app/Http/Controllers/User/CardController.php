@@ -134,7 +134,8 @@ class CardController extends Controller
         }
     }
 
-    public function CreateNewCard(){
+    public function CreateNewCard()
+    {
         $themes = Theme::where('theme_description', 'vCard')->where('status', 1)->get();
         $settings = Setting::where('status', 1)->first();
         $old_cards = BusinessCard::where('user_id', Auth::user()->id)->count();

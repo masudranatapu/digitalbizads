@@ -343,6 +343,17 @@ class UserController extends Controller
         } else {
             $status = 0;
         }
+
+        if ($status) {
+
+            $bussiness_card = BusinessCard::where('user_id', $user_details->id)->update([
+                'card_status' => "activated"
+            ]);
+        } else {
+            $bussiness_card = BusinessCard::where('user_id', $user_details->id)->update([
+                'card_status' => "inactive"
+            ]);
+        }
         User::where('user_id', $request->query('id'))->update(['status' => $status]);
         return redirect()->route('admin.users')->with('success', 'User Status Updated Successfully!');
     }

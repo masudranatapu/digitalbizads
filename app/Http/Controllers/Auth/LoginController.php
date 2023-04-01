@@ -49,7 +49,14 @@ class LoginController extends Controller
             return redirect('/admin/dashboard');
         }
 
-        return redirect('/user/dashboard');
+        if (Auth::check() && Auth::user()->status) {
+
+            return redirect('/user/dashboard');
+        } else {
+            Auth::logout();
+            alert()->error("Your inactive by admin.Please contact with support or admin.")->persistent('Close');
+            return redirect('login');
+        }
     }
 
     public function showLoginForm()
@@ -91,16 +98,15 @@ class LoginController extends Controller
 
         // check if they're an existing user
         $existingUser = User::where('email', $user->email)->first();
-        if($existingUser){
-            if($existingUser->status == 1){
+        if ($existingUser) {
+            if ($existingUser->status == 1) {
                 // log them in
                 auth()->login($existingUser, true);
-            }else{
-                  return redirect('/login');
+            } else {
+                return redirect('/login');
             }
-
         } else {
-        // create a new user
+            // create a new user
             $newUser = new User;
             $newUser->name = $user->name;
             $newUser->email = $user->email;
@@ -114,5 +120,4 @@ class LoginController extends Controller
         }
         return redirect()->to('/user/dashboard');
     }
-
 }
