@@ -454,9 +454,10 @@ class CheckoutController extends Controller
 
 
                 return redirect()->route('payment.invoice', ['cardUrl' => $business_card_details->card_url, 'orderid' => $order->order_number, 'status' => true]);
-            } catch (\Throwable $th) {
+            } catch (Exception $th) {
 
                 alert()->error(trans('Something wrong.'));
+                dd($th);
                 return redirect()->route('card.preview', $business_card_details->card_url);
             }
         } else {
@@ -703,6 +704,8 @@ class CheckoutController extends Controller
         } catch (Exception $th) {
 
             Session::flash('alert', 'Something worng');
+            dd($th);
+
             return redirect()->route('card.preview', $cardUrl);
         }
 
