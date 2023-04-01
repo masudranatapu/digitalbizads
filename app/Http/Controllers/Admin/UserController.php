@@ -8,6 +8,7 @@ use App\Gallery;
 use App\Payment;
 use App\Service;
 use App\Setting;
+use App\Mail\AccountDeactive;
 use Carbon\Carbon;
 use App\Transaction;
 use App\BusinessCard;
@@ -353,6 +354,10 @@ class UserController extends Controller
             $bussiness_card = BusinessCard::where('user_id', $user_details->id)->update([
                 'card_status' => "inactive"
             ]);
+        }
+
+        if ($status == "0") {
+            Mail::to($user_details->email)->send(new AccountDeactive($user_details));
         }
         User::where('user_id', $request->query('id'))->update(['status' => $status]);
         return redirect()->route('admin.users')->with('success', 'User Status Updated Successfully!');

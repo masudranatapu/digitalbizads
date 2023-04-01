@@ -52,16 +52,7 @@
             font-weight: 500;
         }
 
-        @media screen and (max-width:500px) {
-            .shop_filter .float-right {
-                float: inherit !important;
-            }
 
-            .grid-cols-2 {
-                grid-template-columns: repeat(1, minmax(0, 1fr));
-                text-align: center;
-            }
-        }
     </style>
     <script src="{{ asset('frontend/whatsapp-store/js/main.js') }}"></script>
     <script src="{{ asset('js/jquery.min.js') }}"></script>
@@ -174,12 +165,12 @@
             @endif
             <div class="container px-2 mx-auto">
                 <form class="shop_filter" action="{{ url()->current() }}">
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="">
-                            <div class="filter_form">
+                    <div class="sm:flex justify-between gap-5 text-center">
+                        <div>
+                            <div class="filter_form mb-2 sm:mb-0">
                                 <div class="input-group">
                                     {{-- <span class="input-group-text">Category:</span> --}}
-                                    <select class="form-control" id="category" name="category">
+                                    <select class="form-control w-56 sm:w-full" id="category" name="category">
                                         <option value="">All Category</option>
                                         @foreach ($productCategories as $productCategory)
                                             <option value="{{ $productCategory->id }}"
@@ -190,8 +181,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="">
-                            <div class="filter_form float-right">
+                        <div>
+                            <div class="filter_form">
                                 <div class="input-group">
                                     <span class="input-group-text">Sort By:</span>
                                     <select class="form-control" id="sort_order" name="sort_order">
@@ -216,10 +207,9 @@
             <section class="py-8" id="shop">
                 <div class="container px-4 mx-auto">
                     <div class="flex flex-wrap -m-4">
-
                         @foreach ($products as $product)
-                            <div class="w-1/1 lg:w-1/3 p-4">
-                                <div class="p-4 bg-white shadow-lg rounded-lg" style="height:100%;">
+                            <div class="w-1/2 lg:w-1/3 p-2 lg:gap-12">
+                                <div class="p-2 lg:p-4 bg-white h-full shadow-md rounded-md space-y-3">
                                     <div class="w-full mb-2 text-dark">
                                         <a
                                             href="{{ route('product.details', ['id' => $product->id, 'cardUrl' => $business_card_details->card_url]) }}">
@@ -235,8 +225,8 @@
                                             <h3 class="text-sm font-medium text-dark"
                                                 id="{{ $product->product_id }}_product_name">
                                                 {{ $product->product_name }}</h3>
-                                            <span class="text-xs text-dark"
-                                                id="{{ $product->product_id }}_subtitle">{{ $product->product_subtitle }}</span>
+                                            {{-- <span class="text-xs text-dark"
+                                                id="{{ $product->product_id }}_subtitle">{{ $product->product_subtitle }}</span> --}}
                                         </div>
                                     </div>
                                     <div class="w-full mb-1 justify-between items-center">
@@ -249,7 +239,7 @@
                                                     {{ $currency }}{{ $product->regular_price }}</span>
                                             @endif
                                         </h4>
-                                        <h4 class="text-sm mb-3">
+                                        {{-- <h4 class="text-sm mb-3">
                                             @if ($product->product_stock <= 0)
                                                 <span
                                                     class="py-1 px-2 bg-red-500 rounded text-xs text-white">{{ __('Out of stock') }}</span>
@@ -259,7 +249,7 @@
                                                     ({{ $product->product_stock }})
                                                 </span>
                                             @endif
-                                        </h4>
+                                        </h4> --}}
                                         <h4 class="text-sm mb-3">
                                             @if (isset($product->hasCategory->category_name))
                                                 <span class="py-1 text-sm font-bold text-dark">Category
@@ -268,12 +258,11 @@
                                         </h4>
 
                                         @if ($product->is_variant)
-                                            <a class="text-center py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
+                                            <a class="mt-2 inline-block cursor-pointer text-center py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
                                                 href="{{ route('product.details', ['id' => $product->id, 'cardUrl' => $business_card_details->card_url]) }}"
-                                                style="cursor: pointer; min-width: 120px; display: inline-block;">{{ __('Choose') }}</a>
+                                               >{{ __('Choose') }}</a>
                                         @else
-                                            <a class="py-2 px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
-                                                style="cursor: pointer; min-width: 120px;"
+                                            <a class="mt-2 inline-block cursor-pointer text-xs lg:text-lg py-1 px-3 lg:py-2 lg:px-4 bg-{{ $business_card_details->theme_color }}-500 hover:bg-{{ $business_card_details->theme_color }}-600 rounded text-md text-white transition duration-200"
                                                 onclick="addToCart('{{ $product->id }}',1)">{{ __('Add to Cart') }}</a>
                                         @endif
 
