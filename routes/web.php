@@ -218,7 +218,7 @@ Route::group(['middleware' => 'Installer'], function () {
             Route::get('card/gallery-delete/{id}', [CardController::class, 'getDeleteGallery'])->name('card.gallery-delete');
 
 
-            Route::get('create-card-2', [CardController::class, 'CreateNewCard'])->name('create.card');
+            Route::get('create-card-2', [CardController::class, 'CreateNewCard'])->name('create.card2');
 
             // v card
             if (env('APP_TYPE') == 'VCARD' || env('APP_TYPE') == 'BOTH') {
