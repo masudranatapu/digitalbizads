@@ -167,7 +167,7 @@
                     <div class="container px-4 mx-auto">
                         <div class="rounded bg-white overflow-hidden text-dark">
                             <img class="rounded pb-2" src="{{ url('/') }}{{ $business_card_details->cover }}"
-                                alt="{{ $business_card_details->title }}">
+                                alt="{{ $business_card_details->title }}" style="margin: 0 auto;">
                         </div>
                     </div>
                 </section>

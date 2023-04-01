@@ -164,7 +164,7 @@
                     <div class="container mx-auto">
                         <div class="rounded overflow-hidden">
                             <img class="rounded pb-2" src="{{ url('/') }}{{ $business_card_details->cover }}"
-                                alt="{{ $business_card_details->title }}">
+                                alt="{{ $business_card_details->title }}" style="margin: 0 auto;">
                         </div>
                     </div>
                 </section>
@@ -222,7 +222,7 @@
                                             href="{{ route('product.details', ['id' => $product->id, 'cardUrl' => $business_card_details->card_url]) }}">
                                             <img class="rounded pb-2" id="{{ $product->id }}_product_image"
                                                 src="{{ asset($product->product_image) }}"
-                                                alt="{{ $product->product_name }}">
+                                                alt="{{ $product->product_name }}" style="margin: 0 auto;">
                                         </a>
                                     </div>
                                     <span
