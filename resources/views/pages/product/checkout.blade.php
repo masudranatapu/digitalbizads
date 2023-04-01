@@ -24,7 +24,7 @@
                                     @php
                                         $total = 0;
                                         $grandTotal = 0;
-                                        
+
                                     @endphp
                                     @if (session('cart'))
                                         @foreach (session('cart') as $id => $details)
@@ -66,7 +66,7 @@
                                         <td class="text-gray-dark">$0.00</td>
                                     </tr> --}}
                                     <tr>
-                                        <td class="text-lg text-primary">Order total</td>
+                                        <td class="text-lg text-primary">Total</td>
                                         <td colspan="2"></td>
                                         <td class="text-lg text-center text-primary grand_total_set">
                                             {{ getPrice($total) }}</td>
@@ -96,9 +96,8 @@
                                                 @elseif (session('coupon')->type == 'percent')
                                                     <p>
                                                         <strong>{{ getprice($total - ($total * session('coupon')->amount) / 100) }}
-                                                        </strong><span>
-                                                            (-{{ session('coupon')->amount }}%)
-                                                        </span>
+                                                        </strong>
+                                                        {{-- <span>(-{{ session('coupon')->amount }}%)</span> --}}
                                                     </p>
                                                 @else
                                                     <p>
@@ -119,6 +118,8 @@
                         </div>
                     </div>
                 </div>
+
+
                 <div class="col-lg-7 order-lg-1">
                     <div class="checkout">
                         <div class="checkout_form">
@@ -291,14 +292,14 @@
                                         <div class="form-group">
                                             <label class="form-label" for="order_note">Order notes
                                                 (optional)</label>
-                                            <textarea class="form-control @error('order_note') border-danger @enderror" id="order_note" name="order_note"
+                                                <textarea class="form-control @error('order_note') border-danger @enderror" id="order_note" name="order_note"
                                                 placeholder="Order Notes">
-@if (old('order_note'))
-{{ old('order_note') }}
-@elseif(session()->has('shipping'))
-{{ session('shipping')['order_note'] }}
-@endif
-</textarea>
+                                                @if (old('order_note'))
+                                                {{ old('order_note') }}
+                                                @elseif(session()->has('shipping'))
+                                                {{ session('shipping')['order_note'] }}
+                                                @endif
+                                                </textarea>
                                             @error('order_note')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror

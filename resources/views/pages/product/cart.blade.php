@@ -35,10 +35,10 @@
                                             @if (session('cart'))
                                                 @foreach (session('cart') as $id => $details)
                                                     @php
-                                                        
+
                                                         $total += $details['price'] * $details['quantity'];
                                                         $line_total = $details['price'] * $details['quantity'];
-                                                        
+
                                                     @endphp
 
                                                     <tr class="align-middle" data-id="{{ $id }}">
@@ -140,9 +140,8 @@
                                                             @elseif (session('coupon')->type == 'percent')
                                                                 <h5>
                                                                     <strong>{{ getprice($total - ($total * session('coupon')->amount) / 100) }}
-                                                                    </strong><span>
-                                                                        (-{{ session('coupon')->amount }}%)
-                                                                    </span>
+                                                                    </strong>
+                                                                    {{-- <span>(-{{ session('coupon')->amount }}%)</span> --}}
                                                                 </h5>
                                                             @else
                                                                 <h5>

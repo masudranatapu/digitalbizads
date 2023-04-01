@@ -24,7 +24,7 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                        $total = 0;
+                                        $total = $tax = $shippingCost = $grand_total = $coupon_discount = 0;
                                     @endphp
                                     @if (session('cart'))
                                         @foreach (session('cart') as $id => $details)
@@ -52,17 +52,42 @@
                                         <tr>
                                             <td class="text-center text-danger" colspan="5">
                                                 <h4>No product available in the cart</h4>
-
                                             </td>
                                         </tr>
                                     @endif
 
-                                    
-                                    <tr>
-                                        <td class="">Order total</td>
-                                        <td class="text-end grand_total_set" colspan="3">
-                                            {{ getPrice($total) }}</td>
+                                    {{-- <tr class=" set__state_price_tr">
+                                        <td>State tax:</td>
+                                        <td class="text-gray-dark set__state_price">$23.80</td>
                                     </tr>
+                                    <tr>
+                                        <td>Shipping:</td>
+                                        <td class="text-gray-dark">$0.00</td>
+                                    </tr> --}}
+                                    <tr>
+                                        <td class="">Total</td>
+                                        <td class="text-end grand_total_set" colspan="3">{{ getPrice($total) }}</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>State Tax</td>
+                                        <td class="text-end" data-th="Vat" colspan="3">
+                                            @if (session()->has('tax'))
+                                                @php $tax = session()->get('tax'); @endphp
+                                                {{ getPrice($tax) }}
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Shipping Cost</td>
+                                        <td class="text-end" data-th="Shipping Cost" colspan="3">
+                                            @if (session()->has('shippingCost'))
+                                                @php $shippingCost = session()->get('shippingCost'); @endphp
+                                                {{ getPrice($shippingCost) }}
+                                            @endif
+                                        </td>
+                                    </tr>
+
                                     <tr>
                                         <td class="text-lg text-primary">Coupon Discount</td>
                                         <td colspan="2"></td>
@@ -70,83 +95,23 @@
                                         <td class="text-end text-lg  text-primary" id="cupponPrice">
 
                                             @if (session()->has('coupon'))
+
                                                 @if (session('coupon')->type == 'amount')
-                                                    - {{ getPrice(session('coupon')->amount) }}
+                                                    @php $coupon_discount = session('coupon')->amount; @endphp
                                                 @elseif (session('coupon')->type == 'percent')
-                                                    - {{ getPrice(($total * session('coupon')->amount) / 100) }}
+                                                    @php $coupon_discount = ($total * session('coupon')->amount)/100; @endphp
                                                 @endif
+
+                                                - {{ getPrice($coupon_discount) }}
                                             @endif
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            State Tax
-                                        </td>
-                                        <td class="text-end" data-th="Vat" colspan="3">
-                                            @if (session()->has('tax'))
-                                                {{ getPrice(session()->get('tax')) }}
-                                            @endif
-                                        </td>
-
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Shipping Cost
-                                        </td>
-                                        <td class="text-end" data-th="Shipping Cost" colspan="3">
-                                            @if (session()->has('shippingCost'))
-                                                {{ getPrice(session()->get('shippingCost')) }}
-                                            @endif
-                                        </td>
-
-                                    </tr>
-                                    <tr>
-                                        <td class="text-lg text-primary">
-                                            Total
-                                        </td>
-                                        <td class="text-end text-lg text-primary" data-th="Grand Total" colspan="3">
-                                            @if (session()->has('tax'))
-                                                @php
-
-                                                    $total = $total + session()->get('tax');
-                                                @endphp
-                                            @endif
-                                            @if (session()->has('shippingCost'))
-                                                @php
-
-                                                    $total = $total + session()->get('shippingCost');
-                                                @endphp
-                                            @endif
-                                            {{ getPrice($total) }}
-
-                                        </td>
-
                                     </tr>
 
                                     <tr>
-                                        <td class="text-lg text-primary">Grand Total</td>
+                                        <td class="text-lg text-primary">Grand Total {{ $total }}</td>
                                         <td colspan="2"></td>
                                         <td class="text-end text-lg  text-primary">
-
-                                            @if (session()->has('coupon'))
-                                                @if (session('coupon')->type == 'amount')
-                                                    <p>{{ getprice($total - session('coupon')->amount) }}</p>
-                                                @elseif (session('coupon')->type == 'percent')
-                                                    <p>
-                                                        <strong>{{ getprice($total - ($total * session('coupon')->amount) / 100) }}
-                                                        </strong><span>
-                                                            (-{{ session('coupon')->amount }}%)
-                                                        </span>
-                                                    </p>
-                                                @else
-                                                    <p>
-                                                        {{ getprice($total) }}
-                                                    </p>
-                                                @endif
-                                            @else
-                                                <p>
-                                                    {{ getprice($total) }}
-                                                </p>
-                                            @endif
+                                            @php $grand_total = $total+$tax+$shippingCost-$coupon_discount;  @endphp
+                                            <p> {{ getprice($grand_total) }}</p>
 
                                         </td>
                                     </tr>

@@ -335,69 +335,59 @@ class CheckoutController extends Controller
             try {
 
                 $products = Session::get('cart');
-                $totalPrice = 0;
-                $totalQuantity = 0;
-                $grandTotal = 0;
-                $discount = 0;
+                $total = $tax = $shippingCost = $grand_total = $coupon_discount = $totalQuantity = 0;
+
                 foreach ($products as $key => $product) {
-                    $totalPrice += $product['price'] * $product['quantity'];
+                    $total += $product['price'] * $product['quantity'];
                     $totalQuantity +=  $product['quantity'];
                 }
-                $tax = Session::has('tax') ? Session::get('tax') : 0;
-                $shippingCost = Session::has('shippingCost') ? Session::get('shippingCost') : 0;
+
+                $grand_total +=$total;
 
                 if (session()->has('tax')) {
-
-                    $grandTotal = $totalPrice + session()->get('tax');
+                    $tax = Session::get('tax');
+                    $grand_total += $tax;
                 }
+
                 if (session()->has('shippingCost')) {
-                    $grandTotal = $grandTotal + session()->get('shippingCost');
+                    $shippingCost = Session::get('shippingCost');
+                    $grand_total += $shippingCost;
                 }
+
                 if (session()->has('coupon')) {
-                    if (session('coupon')->type == 'amount') {
-                        $grandTotal = $grandTotal  - session('coupon')->amount;
-                    } elseif (session('coupon')->type == 'percent') {
-                        $grandTotal = $grandTotal  - ($grandTotal  * session('coupon')->amount) / 100;
+                    if (session('coupon')->type == 'amount'){
+                        $coupon_discount = session('coupon')->amount;
+                    }elseif (session('coupon')->type == 'percent'){
+                        $coupon_discount = ($total * session('coupon')->amount)/100;
                     }
-
-                    if (session('coupon')->type == 'amount') {
-
-                        $discount = session('coupon')->amount;
-                    } elseif (session('coupon')->type == 'percent') {
-
-                        $discount = ($grandTotal * session('coupon')->amount) / 100;
-                    }
+                    $grand_total = $grand_total - $coupon_discount;
                 }
 
-
-
-
-                dd(["totalPrice" => $totalPrice, "discount" => $discount, "tax" => $tax, "shippingCost" => $shippingCost, "grandTotal" => $grandTotal]);
 
                 $order = new Order();
-                $order->transaction_id = $productOrderTransaction->id;
-                $order->store_id = $business_card_details->card_id;
-                $order->order_number = uniqid('order_');
-                $order->quantity = $totalQuantity;
-                $order->total_price = $totalPrice;
-                $order->discount = $discount;
-                $order->payment_fee = 0;
-                $order->vat = $tax;
-                $order->shipping_cost = $shippingCost;
-                $order->grand_total = $grandTotal;
-                $order->order_date = now();
-                $order->shipping_details = json_encode(Session::get('shipping'));
-                $order->billing_details = json_encode(Session::get('billing'));
-                $order->payment_method = "Stripe";
-                $order->payment_status = $payment->status == "succeeded" ? 1 : 0;
+                $order->transaction_id  = $productOrderTransaction->id;
+                $order->store_id        = $business_card_details->card_id;
+                $order->order_number    = uniqid('order_');
+                $order->quantity        = $totalQuantity;
+                $order->total_price     = $total;
+                $order->discount        = $coupon_discount;
+                $order->payment_fee     = 0;
+                $order->vat             = $tax;
+                $order->shipping_cost   = $shippingCost;
+                $order->grand_total     = $grand_total;
+                $order->order_date      = now();
+                $order->shipping_details    = json_encode(Session::get('shipping'));
+                $order->billing_details     = json_encode(Session::get('billing'));
+                $order->payment_method      = "Stripe";
+                $order->payment_status      = 1;
                 $order->save();
-                foreach ($products as $key => $product) {
-                    $totalPrice = 0;
-                    $totalQuantity = 0;
-                    $totalPrice += $product['price'] * $product['quantity'];
-                    $totalQuantity +=  $product['quantity'];
 
-                    $order_id = $order->id;
+                foreach ($products as $key => $product) {
+                    $totalPrice = $totalQuantity = 0;
+
+                    $totalPrice     += $product['price'] * $product['quantity'];
+                    $totalQuantity  +=  $product['quantity'];
+
                     $product_id = $key;
 
                     if (count($product['option']) > 0) {
@@ -415,20 +405,20 @@ class CheckoutController extends Controller
                             ];
                         }
                         $orderDetails = new OrderDetail();
-                        $orderDetails->order_id = $order->id;
-                        $orderDetails->product_id = $product_id;
-                        $orderDetails->quantity = $product['quantity'];
-                        $orderDetails->unit_price = $product['price'];
-                        $orderDetails->variant_id = json_encode($varints);
+                        $orderDetails->order_id     = $order->id;
+                        $orderDetails->product_id   = $product_id;
+                        $orderDetails->quantity     = $product['quantity'];
+                        $orderDetails->unit_price   = $product['price'];
+                        $orderDetails->variant_id   = json_encode($varints);
                         $orderDetails->variant_option_id = json_encode($optionsDetails);
                         $orderDetails->save();
                     } else {
                         $orderDetails = new OrderDetail();
-                        $orderDetails->order_id = $order->id;
-                        $orderDetails->product_id = $product_id;
-                        $orderDetails->quantity = $product['quantity'];
-                        $orderDetails->unit_price = $product['price'];
-                        $orderDetails->variant_id = null;
+                        $orderDetails->order_id     = $order->id;
+                        $orderDetails->product_id   = $product_id;
+                        $orderDetails->quantity     = $product['quantity'];
+                        $orderDetails->unit_price   = $product['price'];
+                        $orderDetails->variant_id   = null;
                         $orderDetails->variant_option_id = null;
                         $orderDetails->save();
                     }
@@ -436,8 +426,6 @@ class CheckoutController extends Controller
                     $storeProduct->product_stock = $storeProduct->product_stock - $product['quantity'];
                     $storeProduct->save();
                 }
-
-
 
 
                 alert()->success(trans('Proudct purchase successfully'));
