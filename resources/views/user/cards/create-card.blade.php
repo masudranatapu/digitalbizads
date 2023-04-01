@@ -52,7 +52,7 @@
 
             .gallery-btn {
                 position: absolute;
-                top: 13px;
+                top: 15px;
                 right: 52px;
                 font-size: 20px;
             }
@@ -85,7 +85,7 @@
 
             .login_btn {
                 position: absolute;
-                top: 6px;
+                top: 9px;
                 right: 0;
             }
 
