@@ -98,6 +98,7 @@
             <!--End of Tawk.to Script-->
         @endif
     @endif
+    @include('sweet::alert')
 
     <script src="{{ asset('frontend/whatsapp-store/js/script.js') }}"></script>
 

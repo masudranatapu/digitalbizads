@@ -50,7 +50,14 @@ class LoginController extends Controller
             return redirect('/admin/dashboard');
         }
 
-        return redirect('/user/dashboard');
+        if (Auth::check() && Auth::user()->status) {
+
+            return redirect('/user/dashboard');
+        } else {
+            Auth::logout();
+            alert()->error("Your inactive by admin.Please contact with support or admin.")->persistent('Close');
+            return redirect('login');
+        }
     }
 
     public function showLoginForm()
