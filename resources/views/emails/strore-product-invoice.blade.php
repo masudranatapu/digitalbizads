@@ -441,7 +441,7 @@
                         <tr>
                             <td colspan="3">
                                 <p style="text-align:right ;color:#000;">
-                                    State Tax :
+                                    Vat :
                                 </p>
                             </td>
                             <td>
@@ -453,12 +453,24 @@
                         <tr>
                             <td colspan="3">
                                 <p style="text-align:right ;color:#000;">
+                                    Discount :
+                                </p>
+                            </td>
+                            <td>
+                                <p style="text-align:center;color:#000;">
+                                    <span>{{ getPrice($order->discount) }}</span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <p style="text-align:right ;color:#000;">
                                     Grand Total :
                                 </p>
                             </td>
                             <td>
                                 <p style="text-align:center;color:#000;">
-                                    <span>{{ getPrice($line_total + $order->shipping_cost + $order->vat) }}</span>
+                                    <span>{{ getPrice($order->grand_total) }}</span>
                                 </p>
                             </td>
                         </tr>
