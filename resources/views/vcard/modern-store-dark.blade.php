@@ -213,7 +213,7 @@
                                     <div class="w-full mb-2 text-dark">
                                         <a
                                             href="{{ route('product.details', ['id' => $product->id, 'cardUrl' => $business_card_details->card_url]) }}">
-                                            <img class="h-28 sm:h-44 w-full pb-2" id="{{ $product->product_id }}_product_image"
+                                            <img class="w-full pb-2" id="{{ $product->product_id }}_product_image"
                                                 src="{{ asset($product->product_image) }}"
                                                 alt="{{ $product->product_name }}">
                                         </a>
