@@ -172,12 +172,12 @@
 
             <div class="container mx-auto px-2">
                 <form class="shop_filter" action="{{ url()->current() }}">
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="">
-                            <div class="filter_form">
+                    <div class="sm:flex justify-between gap-5 text-center">
+                        <div>
+                            <div class="filter_form mb-2 sm:mb-0">
                                 <div class="input-group">
                                     {{-- <span class="input-group-text">Category:</span> --}}
-                                    <select class="form-control" id="category" name="category">
+                                    <select class="form-control w-56 sm:w-full" id="category" name="category">
                                         <option value="">All Category</option>
                                         @foreach ($productCategories as $productCategory)
                                             <option value="{{ $productCategory->id }}"
@@ -188,8 +188,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="">
-                            <div class="filter_form float-right">
+                        <div>
+                            <div class="filter_form">
                                 <div class="input-group">
                                     <span class="input-group-text">Sort By:</span>
                                     <select class="form-control" id="sort_order" name="sort_order">
