@@ -1,4 +1,5 @@
 @extends('layouts.user', ['header' => true, 'nav' => true, 'demo' => true, 'settings' => $settings])
+@section('setting-nav', 'active')
 
 @section('content')
     <div class="page-wrapper">
@@ -60,17 +61,16 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $row->name }}</td>
                                                     <td>
-                                                        {{ $row->code }}
+                                                        {{ $row->coupon_code }}
                                                     </td>
-                                                    <td>{{ $row->from_date }}</td>
-                                                    <td>{{ $row->to_date }}</td>
-                                                    <td>{{ $row->type }}</td>
+                                                    <td>{{ date('d-M-Y', strtotime($row->from_date)) }}</td>
+                                                    <td>{{ date('d-M-Y', strtotime($row->to_date)) }}</td>
+                                                    <td class="text-capitalize">{{ $row->type }}</td>
                                                     <td>
-                                                        @if($row->type == 'amount')
-                                                        {{ $currency_symbol }} {{ number_format($row->amount, 2) }}
+                                                        @if ($row->type == 'amount')
+                                                            {{ $currency_symbol }} {{ number_format($row->amount, 2) }}
                                                         @elseif($row->type == 'percent')
-
-                                                        {{ $row->amount }} %
+                                                            {{ $row->amount }} %
                                                         @endif
 
                                                     </td>

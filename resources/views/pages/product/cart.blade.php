@@ -439,7 +439,7 @@
                 });
                 $.ajax({
                     type: 'POST',
-                    url: "{{ route('check.coupon') }}",
+                    url: "{{ route('check.coupon', ['cardUrl' => $business_card_details->card_url]) }}",
                     data: {
                         code: code
                     },
@@ -472,7 +472,7 @@
                 });
                 $.ajax({
                     type: 'POST',
-                    url: "{{ route('remove.coupon') }}",
+                    url: "{{ route('remove.coupon', ['cardUrl' => $business_card_details->card_url]) }}",
                     success: function(data) {
                         console.log(data);
                         if (data) {
