@@ -422,7 +422,7 @@ Create New DigitalBizAds Card
                                                 class="text-danger">*</span></label></label>
                                         <div class="input-group">
                                             <div class="input-group-text p-0">
-                                                <select class="form-control form-select border-0 pe-3 ps-3"
+                                                <select class="form-control form-select border-0 ps-3"
                                                     id="selectField1" name="headline" tabindex="{{ $tabindex++ }}"
                                                     required style="height: 43px !important;">
                                                     <option value="text">Text</option>
