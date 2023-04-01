@@ -563,13 +563,13 @@
                                                         <div class="form-label">{{ __('reCAPTCHA Enable') }}</div>
                                                         <select class="form-select" id="recaptcha_enable"
                                                             name="recaptcha_enable"
-                                                            placeholder="{{ __('Select a reCAPTCHA') }}" disabled="">
-                                                            <option value="on"
-                                                                {{ $settings->recaptcha_configuration['RECAPTCHA_ENABLE'] == 'on' ? 'checked' : '' }}>
-                                                                {{ __('On') }}</option>
-                                                            <option value="off"
-                                                                {{ $settings->recaptcha_configuration['RECAPTCHA_ENABLE'] == 'off' ? 'checked' : '' }}>
-                                                                {{ __('Off') }}</option>
+                                                            placeholder="{{ __('Select a reCAPTCHA') }}">
+                                                            <option value="on" {{ $settings->recaptcha_enable == 'on' ? 'selected' : '' }}>
+                                                                {{ __('On') }}
+                                                            </option>
+                                                            <option value="off" {{ $settings->recaptcha_enable == 'off' ? 'selected' : '' }}>
+                                                                {{ __('Off') }}
+                                                            </option>
                                                         </select>
                                                     </div>
                                                     <span>{{ __('If you did not get a reCAPTCHA (v2 Checkbox), create a') }}
@@ -583,8 +583,8 @@
                                                         <label class="form-label">{{ __('reCAPTCHA Site Key') }}</label>
                                                         <input class="form-control" name="recaptcha_site_key"
                                                             type="text"
-                                                            value="{{ $settings->recaptcha_configuration['RECAPTCHA_SITE_KEY'] }}"
-                                                            placeholder="{{ __('reCAPTCHA Site Key') }}..." readonly>
+                                                            value="{{ $settings->recaptcha_site_key }}"
+                                                            placeholder="{{ __('reCAPTCHA Site Key') }}...">
                                                     </div>
                                                 </div>
 
@@ -595,8 +595,8 @@
                                                             class="form-label">{{ __('reCAPTCHA Secret Key') }}</label>
                                                         <input class="form-control" name="recaptcha_secret_key"
                                                             type="text"
-                                                            value="{{ $settings->recaptcha_configuration['RECAPTCHA_SECRET_KEY'] }}"
-                                                            placeholder="{{ __('reCAPTCHA Secret Key') }}..." readonly>
+                                                            value="{{ $settings->recaptcha_secret_key }}"
+                                                            placeholder="{{ __('reCAPTCHA Secret Key') }}...">
                                                     </div>
                                                 </div>
 

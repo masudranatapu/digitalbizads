@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -76,6 +77,30 @@ class LoginController extends Controller
         return view('auth.login', compact('config', 'settings'));
     }
 
+    protected function validateLogin(Request $request)
+    {
+        $settings = Setting::first();
+
+        if ($settings->recaptcha_enable == 'on'){
+
+            $request->validate([
+                $this->username() => 'required|string',
+                'password' => 'required|string',
+                'g-recaptcha-response' => 'required',
+            ], [
+                'g-recaptcha-response.required' =>  'Google recaptcha must be required',
+            ]);
+
+        } else {
+
+            $request->validate([
+                $this->username() => 'required|string',
+                'password' => 'required|string',
+            ]);
+
+        }
+    }
+
     public function redirectToProvider()
     {
         return Socialite::driver('google')->redirect();
@@ -91,16 +116,15 @@ class LoginController extends Controller
 
         // check if they're an existing user
         $existingUser = User::where('email', $user->email)->first();
-        if($existingUser){
-            if($existingUser->status == 1){
+        if ($existingUser) {
+            if ($existingUser->status == 1) {
                 // log them in
                 auth()->login($existingUser, true);
-            }else{
-                  return redirect('/login');
+            } else {
+                return redirect('/login');
             }
-
         } else {
-        // create a new user
+            // create a new user
             $newUser = new User;
             $newUser->name = $user->name;
             $newUser->email = $user->email;
@@ -114,5 +138,4 @@ class LoginController extends Controller
         }
         return redirect()->to('/user/dashboard');
     }
-
 }
