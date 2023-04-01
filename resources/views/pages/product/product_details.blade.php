@@ -88,11 +88,10 @@
                                                     <div class="col-6">
                                                         <div class="size">
                                                             <label class="form-label"
-                                                                for="size">{{ $variant->name }}</label>
+                                                                for="option">{{ $variant->name }}</label>
                                                             <select class="form-control"
                                                                 id="{{ str_replace(' ', '_', strtolower(trim($variant->name))) }}"
                                                                 name="option[]">
-
                                                                 @foreach ($variant->hasOption as $option)
                                                                     @if ($product->product_stock > 0)
                                                                         <option data-price="{{ $option->price }}"
@@ -103,7 +102,6 @@
                                                                         </option>
                                                                     @endif
                                                                 @endforeach
-
                                                             </select>
                                                         </div>
                                                     </div>

@@ -89,10 +89,9 @@
                                                         </strong><span>{{ $shipping['shipping_area'] ?? 'Not Available' }}</span>
                                                     </p>
 
-                                                    {{-- <p><strong>Note :
-                                                        </strong><span>{{ $shipping['order_note'] ?? 'Not Available' }}</span>
-                                                    </p> --}}
-
+                                                    <p><strong>Payment Provider :
+                                                        </strong><span>{{ $orders->payment_method }}</span>
+                                                    </p>
                                                 </address>
                                             </div>
                                             <div class="col-6">
@@ -258,6 +257,9 @@
                                                 <p><strong>Note :
                                                     </strong><span>{{ $shipping['order_note'] ?? 'Not Available' }}</span>
                                                 </p>
+                                                <p><strong>Payment Provider :
+                                                    </strong><span>{{ $orders->payment_method }}</span>
+                                                </p>
 
                                             </address>
                                         </div>
@@ -292,6 +294,7 @@
                                                 <p><strong>Order Date :
                                                     </strong><span>{{ date('d-M-Y', strtotime($orders->order_date)) }}</span>
                                                 </p>
+
                                             </address>
                                         </div>
                                     </div>
