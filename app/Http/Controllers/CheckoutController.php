@@ -363,13 +363,9 @@ class CheckoutController extends Controller
                     }
                 }
                 if (session()->has('coupon')) {
-
-
                     if (session('coupon')->type == 'amount') {
-
                         $discount = session('coupon')->amount;
                     } elseif (session('coupon')->type == 'percent') {
-
                         $discount = ($grandTotal * session('coupon')->amount) / 100;
                     }
                 }
@@ -631,7 +627,6 @@ class CheckoutController extends Controller
             $order->quantity = $totalQuantity;
             $order->total_price = $totalPrice;
             $order->discount = $discount;
-
             $order->payment_fee = 0;
             $order->vat = $tax;
             $order->shipping_cost = $shippingCost;
@@ -704,8 +699,6 @@ class CheckoutController extends Controller
         } catch (Exception $th) {
 
             Session::flash('alert', 'Something worng');
-            dd($th);
-
             return redirect()->route('card.preview', $cardUrl);
         }
 
