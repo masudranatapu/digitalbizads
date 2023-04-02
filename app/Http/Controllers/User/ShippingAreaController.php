@@ -74,7 +74,8 @@ class ShippingAreaController extends Controller
             $store_details = json_decode($store->description);
             $currency_symbol = Currency::where('iso_code', $store_details->currency)->first()->symbol ?? null;
         }
-        return view('user.shipping.edit', compact('shippingarea', 'settings'));
+
+        return view('user.shipping.edit', compact('shippingarea', 'settings', 'currency_symbol'));
     }
 
     public function update(Request $request, $id)

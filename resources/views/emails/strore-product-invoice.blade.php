@@ -429,6 +429,18 @@
                         <tr>
                             <td colspan="3">
                                 <p style="text-align:right ;color:#000;">
+                                    Total :
+                                </p>
+                            </td>
+                            <td>
+                                <p style="text-align:center;color:#000;">
+                                    <span>{{ getPrice($order->total_price) }}</span>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <p style="text-align:right ;color:#000;">
                                     Shiping Cost :
                                 </p>
                             </td>

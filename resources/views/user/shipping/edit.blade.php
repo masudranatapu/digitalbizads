@@ -43,7 +43,8 @@
                                                 placeholder="Area name" autocomplete="off">
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="">Amount {{ $currency_symbol }}</label>
+                                            <label for="">Amounts
+                                                ({{ $currency_symbol }})</label>
                                             <input class="form-control @error('amount') is-invalid @enderror" name="amount"
                                                 type="number" value="{{ $shippingarea->amount }}" min="0" required
                                                 placeholder="Amount" autocomplete="off">
@@ -91,7 +92,8 @@
                                                                     placeholder="Area name" autocomplete="off">
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <label for="">Amount {{ $currency_symbol }}</label>
+                                                                <label for="">Amounts
+                                                                    ({{ $currency_symbol }})</label>
 
                                                                 <input
                                                                     class="form-control @error('amount') is-invalid @enderror"
