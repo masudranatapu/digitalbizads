@@ -103,8 +103,8 @@
                                                             <p><strong>Note :
                                                                 </strong><span>{{ $shipping['order_note'] ?? 'Not Available' }}</span>
                                                             </p>
-                                                            <p><strong>Payment Provider :
-                                                                </strong><span>{{ $order->payment_method }}</span>
+                                                            <p><strong>Payment By :
+                                                                </strong><span>{{ $orders->payment_method }}</span>
                                                             </p>
 
                                                         </address>
@@ -266,8 +266,11 @@
                                                     </strong><span>{{ $shipping['shipping_area'] ?? 'Not Available' }}</span>
                                                 </p>
 
-                                                <p><strong>Note :
+                                                {{-- <p><strong>Note :
                                                     </strong><span>{{ $shipping['order_note'] ?? 'Not Available' }}</span>
+                                                </p> --}}
+                                                <p><strong>Payment By :
+                                                    </strong><span>{{ $orders->payment_method }}</span>
                                                 </p>
 
                                             </address>
