@@ -35,10 +35,10 @@
                                             @if (session('cart'))
                                                 @foreach (session('cart') as $id => $details)
                                                     @php
-
+                                                        
                                                         $total += $details['price'] * $details['quantity'];
                                                         $line_total = $details['price'] * $details['quantity'];
-
+                                                        
                                                     @endphp
 
                                                     <tr class="align-middle" data-id="{{ $id }}">
@@ -246,24 +246,27 @@
                             <tfoot>
                                 <tr>
                                     <td>
-                                        @if (session()->has('coupon'))
-                                            <p>Remove coupon</p>
-                                        @else
-                                            <p>Apply coupon</p>
-                                        @endif
 
                                         <input class="form-control" id="couponCodeMobile" type="text"
                                             value="{{ session('coupon')->coupon_code ?? '' }}"
                                             @if (session()->has('coupon')) disabled @endif
                                             placeholder="Enter coupon code">
 
+                                    </td>
+                                    <td>
                                         @if (session()->has('coupon'))
-                                            <button class="btn btn-primary mt-2" id="couponRemoveMobile"
+                                            <button class="btn btn-primary" id="couponRemoveMobile"
                                                 type="button">Remove</button>
                                         @else
-                                            <button class="btn btn-primary mt-2" id="couponApplyMobile"
+                                            <button class="btn btn-primary" id="couponApplyMobile"
                                                 type="button">Apply</button>
                                         @endif
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h5 class="text-end"><strong> Discount : </strong></h5>
 
                                     </td>
                                     <td class="text-center" id="cupponPrice">
@@ -287,7 +290,6 @@
                                             @endif
                                         @endif
                                     </td>
-
                                 </tr>
                                 <tr>
                                     <td class="text-end">

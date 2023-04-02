@@ -333,8 +333,8 @@
                                         <a href="{{ route('home-locale') }}">
                                             {{ config('app.name') }}
                                         </a>
-                                        <P>Hello {{ $shipping['ship_first_name'] . ' ' . $shipping['ship_last_name'] }}
-                                            thank you for purchasing form {{ config('app.name') }}, here is your invoice
+                                        <P>Hello {{ $shipping['ship_first_name'] . ' ' . $shipping['ship_last_name'] }},
+                                            thank you for purchasing form {{ $businessCard->title }}.
                                         </P>
                                     </h1>
                                 </td>

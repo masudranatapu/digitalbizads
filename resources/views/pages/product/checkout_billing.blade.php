@@ -105,7 +105,7 @@
                                     </tr>
 
                                     <tr>
-                                        <td class="text-lg text-primary">Grand Total {{ $total }}</td>
+                                        <td class="text-lg text-primary">Grand Total</td>
                                         <td colspan="2"></td>
                                         <td class="text-end text-lg  text-primary">
                                             @php $grand_total = $total+$tax+$shippingCost-$coupon_discount;  @endphp
@@ -129,7 +129,8 @@
                                     <li><a class="active"
                                             href="{{ route('checkout.billing', ['cardUrl' => $business_card_details->card_url]) }}">Billing
                                             Address <i class="fa fa-angle-right"></i></a></li>
-                                    <li><a href="{{ route('checkout.payment', ['cardUrl' => $business_card_details->card_url]) }}">Payment</a>
+                                    <li><a
+                                            href="{{ route('checkout.payment', ['cardUrl' => $business_card_details->card_url]) }}">Payment</a>
                                     </li>
                                 </ul>
                             </div>
