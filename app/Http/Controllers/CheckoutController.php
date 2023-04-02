@@ -674,9 +674,11 @@ class CheckoutController extends Controller
             }
             alert()->success(trans('Proudct purchase successfully'));
 
+            $storeEmail = json_decode($business_card_details->description, true);
+
             Mail::to(Session::get('shipping')['ship_email'])->send(new ProductPurchaseMail($productOrderTransaction, $order, $orderDetails));
-            if (isset($business_card_details->email)) {
-                Mail::to($business_card_details->email)->send(new ProductPurchaseMailSeller($productOrderTransaction, $order, $orderDetails));
+            if (isset($storeEmail['email'])) {
+                Mail::to($storeEmail['email'])->send(new ProductPurchaseMailSeller($productOrderTransaction, $order, $orderDetails));
             }
             Session::forget('shipping');
             Session::forget('billing');
