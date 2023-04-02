@@ -66,7 +66,7 @@ Route::get('clear', function () {
 Route::group(['middleware' => 'Installer'], function () {
 
     //cron route
-    Route::get('getsubscriber', [HomeController::class, 'getSubscriber'])->name('getsubscriber');
+    Route::get('checkvalidity', [HomeController::class, 'checkValidity'])->name('checkvalidity');
 
     Route::get('/', [HomeController::class, 'index'])->name('home-locale');
 

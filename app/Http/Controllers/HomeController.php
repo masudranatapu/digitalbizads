@@ -4,41 +4,42 @@ namespace App\Http\Controllers;
 
 use App\Plan;
 use App\User;
-use Illuminate\Support\Facades\Validator;
+use App\Order;
 use App\Gallery;
 use App\Setting;
 use App\Currency;
 use App\Subscriber;
+use App\OrderDetail;
 use App\BusinessCard;
+use App\StoreProduct;
 use App\BusinessField;
+use App\VariantOption;
 use App\Mail\OrderEmail;
 use App\ProductCategory;
-use App\VariantOption;
-use App\StoreProduct;
-use App\Order;
-use App\OrderDetail;
-use App\ProductOrderTransaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use App\ProductOrderTransaction;
+use JeroenDesloovere\VCard\VCard;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Artesaos\SEOTools\Facades\JsonLd;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Artesaos\SEOTools\Facades\SEOTools;
+use Illuminate\Support\Facades\Session;
 use Artesaos\SEOTools\Facades\OpenGraph;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Session;
-use JeroenDesloovere\VCard\VCard;
+use Illuminate\Support\Facades\Validator;
 
 
 class HomeController extends Controller
 {
 
-    public function getSubscriber(){
+    public function checkValidity(){
 
         $current_date = Carbon::now();
 
