@@ -51,17 +51,20 @@ class PlanExpiryCron extends Command
         // Check customers
         if ($users != null) {
             for ($i = 0; $i < count($users); $i++) {
-
+                $name =  $users[$i]->name;
+                $email = $users[$i]->email;
                 // Email message
                 $details = [
-                    'name' => $users[$i]->name,
-                    'email' => $users[$i]->email,
+                    'name' => $name,
+                    'email' => $email,
                 ];
+
+                DB::table('test_plan')->insert(['name' => $name, 'email' => $email, 'created_at' => now() ]);
 
                 // Send email
                 $mail = false;
                 try {
-                    Mail::to($users[$i]->email)->send(new \App\Mail\ExpiryPlanMail($details));
+                    Mail::to($email)->send(new \App\Mail\ExpiryPlanMail($details));
                     $mail = true;
                 } catch (\Exception $e) {
                 }
