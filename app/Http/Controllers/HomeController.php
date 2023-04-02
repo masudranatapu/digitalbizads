@@ -15,6 +15,7 @@ use App\StoreProduct;
 use App\BusinessField;
 use App\VariantOption;
 use App\Mail\OrderEmail;
+use App\Mail\SubscriptionRenewMail;
 use App\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -39,14 +40,18 @@ use Illuminate\Support\Facades\Validator;
 class HomeController extends Controller
 {
 
-    public function checkValidity(){
+    public function checkValidity()
+    {
 
         $current_date = Carbon::now();
 
         $users =  User::whereBetween('plan_validity', [Carbon::now(), Carbon::now()->addDays(5)])->where('role_id', 2)->get();
 
-        dd($users);
-
+        foreach ($users as $user) {
+            if (isset($user->email)) {
+                Mail::to($user->email)->send(new SubscriptionRenewMail($user));
+            }
+        }
     }
 
     public function index()
