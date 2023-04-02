@@ -10,6 +10,7 @@ use App\Currency;
 
 use App\BusinessCard;
 use App\Mail\ProductPurchaseMail;
+use App\Mail\ProductPurchaseMailSeller;
 use App\Order;
 use App\OrderDetail;
 use App\ProductOrderTransaction;
@@ -430,7 +431,12 @@ class CheckoutController extends Controller
 
                 alert()->success(trans('Proudct purchase successfully'));
 
+                $storeEmail = json_decode($business_card_details->description, true);
+
                 Mail::to(Session::get('shipping')['ship_email'])->send(new ProductPurchaseMail($productOrderTransaction, $order, $orderDetails));
+                if (isset($storeEmail['email'])) {
+                    Mail::to($storeEmail['email'])->send(new ProductPurchaseMailSeller($productOrderTransaction, $order, $orderDetails));
+                }
                 Session::forget('shipping');
                 Session::forget('billing');
                 Session::forget('cart');
@@ -668,7 +674,12 @@ class CheckoutController extends Controller
             }
             alert()->success(trans('Proudct purchase successfully'));
 
+            $storeEmail = json_decode($business_card_details->description, true);
+
             Mail::to(Session::get('shipping')['ship_email'])->send(new ProductPurchaseMail($productOrderTransaction, $order, $orderDetails));
+            if (isset($storeEmail['email'])) {
+                Mail::to($storeEmail['email'])->send(new ProductPurchaseMailSeller($productOrderTransaction, $order, $orderDetails));
+            }
             Session::forget('shipping');
             Session::forget('billing');
             Session::forget('cart');
