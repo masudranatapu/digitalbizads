@@ -1,6 +1,7 @@
 @extends('layouts.web', ['nav' => true, 'banner' => true, 'footer' => true, 'cookie' => true, 'setting' => true, 'config' => $config])
 
 @section('content')
+
     <section id="how-it-works">
         <div class="skew skew-top mr-for-radius">
             <svg class="h-8 md:h-12 lg:h-20 w-full text-gray-50" viewbox="0 0 10 10" preserveaspectratio="none">
