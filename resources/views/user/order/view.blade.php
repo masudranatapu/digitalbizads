@@ -59,6 +59,8 @@
                                     <div class="card card-lg">
                                         <div id="invoice">
                                             <div class="card-body">
+                                                <h1 class="text-center">{{ $businessCard->title }}</h1>
+                                                <hr>
                                                 <div class="row">
                                                     @php
                                                         
@@ -223,6 +225,8 @@
                         <div class="">
                             <div class="card">
                                 <div class="card-body">
+                                    <h1 class="text-center">{{ $businessCard->title }}</h1>
+                                    <hr>
                                     <div class="row">
                                         @php
                                             
@@ -363,9 +367,14 @@
                                                 <th colspan="3">Shipping Cost :</th>
                                                 <td>{{ getPrice($orders->shipping_cost) }}</td>
                                             </tr>
+
                                             <tr class="text-end">
                                                 <th colspan="3">Vat :</th>
                                                 <td>{{ getPrice($orders->vat) }}</td>
+                                            </tr>
+                                            <tr class="text-end">
+                                                <th colspan="3">Discount :</th>
+                                                <td>-{{ getPrice($orders->discount ?? 0) }}</td>
                                             </tr>
                                             <tr class="text-end">
                                                 <th colspan="3">Grand Total :</th>

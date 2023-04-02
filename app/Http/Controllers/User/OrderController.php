@@ -35,6 +35,8 @@ class OrderController extends Controller
         $settings = Setting::first();
 
         $orders = Order::with('orderDetails')->where('store_id', $card_id)->where('id', $id)->first();
+        $businessCard = BusinessCard::where('card_id', $card_id)->where('status', 1)->first();
+
         $shipping = json_decode($orders->shipping_details, true);
         $shippingArea = ShippingCost::find($shipping['ship_area']);
         $shippingState = State::find($shipping['ship_state']);
@@ -43,6 +45,6 @@ class OrderController extends Controller
 
 
 
-        return view('user.order.view', compact('settings', 'orders', 'shipping'));
+        return view('user.order.view', compact('settings', 'orders', 'shipping', 'businessCard'));
     }
 }
