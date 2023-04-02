@@ -369,7 +369,7 @@
                                             </tr>
                                             <tr class="text-end">
                                                 <th colspan="3">Grand Total :</th>
-                                                <td>{{ getPrice($orders->total_price) }}</td>
+                                                <td>{{ getPrice($orders->grand_total) }}</td>
 
                                             </tr>
                                         </tbody>
