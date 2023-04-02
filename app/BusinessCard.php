@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class BusinessCard extends Model
@@ -15,5 +16,10 @@ class BusinessCard extends Model
     public function hasProduct(): HasMany
     {
         return $this->hasMany(StoreProduct::class, 'card_id', 'card_id')->with(['hasCategory', 'hasVariant']);
+    }
+
+    public function hasUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }
