@@ -37,6 +37,17 @@ use JeroenDesloovere\VCard\VCard;
 
 class HomeController extends Controller
 {
+
+    public function getSubscriber(){
+
+        $current_date = Carbon::now();
+
+        $users =  User::whereBetween('plan_validity', [Carbon::now(), Carbon::now()->addDays(5)])->where('role_id', 2)->get();
+
+        dd($users);
+
+    }
+
     public function index()
     {
         // Auth::logout();

@@ -65,7 +65,11 @@ Route::get('clear', function () {
 // Installer Middleware
 Route::group(['middleware' => 'Installer'], function () {
 
+    //cron route
+    Route::get('getsubscriber', [HomeController::class, 'getSubscriber'])->name('getsubscriber');
+
     Route::get('/', [HomeController::class, 'index'])->name('home-locale');
+
     Auth::routes();
     // Pages
     Route::get('faq', [HomeController::class, 'faq'])->name('faq');
