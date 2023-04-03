@@ -21,8 +21,7 @@
                             <a class="btn btn btn-primary"
                                 href="{{ route('user.product.variants', ['card_id' => $product->card_id, 'product_id' => $product_id]) }}">
                                 <i class="fas fa-arrow-left"></i>&nbsp;
-                                Back
-                                to Variant</a>
+                                Back to Variant</a>
                             <a class="btn btn btn-primary"
                                 href="{{ route('user.product.variants.option.create', ['product_id' => $product_id, 'variant' => $variant]) }}">
 

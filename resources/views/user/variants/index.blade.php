@@ -124,7 +124,7 @@
                                                                     href="javascript:void(0)"
                                                                     onclick="editvariant(this)">{{ __('Edit') }}</a>
                                                                 <a class="dropdown-item text-info"
-                                                                    href="#">{{ __('Option') }}</a>
+                                                                    href="{{ route('user.product.variants.option', ['product_id' => $product_id, 'variant' => $row->id]) }}">{{ __('Option') }}</a>
 
                                                                 <a class="dropdown-item  text-danger delete-card"
                                                                     data-url="{{ route('user.product.variants.delete', ['variant' => $row->id]) }}"
