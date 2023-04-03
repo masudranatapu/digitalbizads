@@ -53,7 +53,7 @@
                                         <tr>
                                             <th style="width: 10%">{{ __('S.No') }}</th>
                                             <th>{{ __('Name') }}</th>
-                                            <th>{{ __('Stock') }}</th>
+
                                             <th>{{ __('Price') }}</th>
                                             {{-- <th>{{ __('Status') }}</th> --}}
                                             <th class="w-1">{{ __('Actions') }}</th>
@@ -65,7 +65,6 @@
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $variantOption->name }}</td>
-                                                    <td>{{ $variantOption->stock }}</td>
                                                     <td>{{ $variantOption->price }}</td>
 
                                                     <td>
