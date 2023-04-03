@@ -53,11 +53,13 @@ class VariantController extends Controller
     }
 
 
-    public function optionIndex($product_id, $variant)
+    public function optionIndex($product_id, $variant_id)
     {
         $settings = Setting::first();
-        $variantOptions = VariantOption::where('product_id', $product_id)->where('variant_id', $variant)->get();
 
+        $variantOptions = VariantOption::where('product_id', $product_id)->where('variant_id', $variant_id)->get();
+
+        $variant = Variants::where('id', $variant_id)->first();
         $product = StoreProduct::where('product_id', $product_id)->first();
 
 
@@ -119,8 +121,8 @@ class VariantController extends Controller
         $option->price = $request->option_price;
         $option->photo = $request->option_image;
         $option->save();
-        $total_stock = VariantOption::where('product_id', $option->product_id)->sum('stock');
-        StoreProduct::where('product_id', $option->product_id)->update(['product_stock' => $total_stock]);
+        // $total_stock = VariantOption::where('product_id', $option->product_id)->sum('stock');
+        // StoreProduct::where('product_id', $option->product_id)->update(['product_stock' => $total_stock]);
 
         alert()->success(trans('Product variant option update successfully.'));
         return redirect()->route('user.product.variants.option', ['product_id' => $option->product_id, 'variant' => $option->variant_id]);

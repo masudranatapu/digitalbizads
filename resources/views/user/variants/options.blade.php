@@ -7,23 +7,23 @@
             <!-- Page title -->
             <div class="page-header d-print-none">
                 <div class="row align-items-center">
-                    <div class="col">
+                    <div class="col-md-6 col-sm-12">
                         <div class="page-pretitle">
                             {{ __('Overview') }}
                         </div>
                         <h2 class="page-title">
-                            {{ __('Product Variant Options') }}
+                            {{ __('Product Variant Options') }} / {{ $variant->name }}
                         </h2>
                     </div>
                     <!-- Page title actions -->
-                    <div class="col-auto ms-auto d-print-none">
-                        <div class="dropdown">
+                    <div class="col-md-6 col-sm-12 ms-auto d-print-none">
+                        <div class="dropdown" style="float:right">
                             <a class="btn btn btn-primary"
                                 href="{{ route('user.product.variants', ['card_id' => $product->card_id, 'product_id' => $product_id]) }}">
                                 <i class="fas fa-arrow-left"></i>&nbsp;
                                 Back to Variant</a>
                             <a class="btn btn btn-primary"
-                                href="{{ route('user.product.variants.option.create', ['product_id' => $product_id, 'variant' => $variant]) }}">
+                                href="{{ route('user.product.variants.option.create', ['product_id' => $product_id, 'variant' => $variant->id]) }}">
 
                                 <svg class="icon icon-tabler icon-tabler-plus" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -119,15 +119,11 @@
                                                             <div class="dropdown-menu" style="">
 
                                                                 <a class="dropdown-item text-info"
-                                                                    data-url="{{ route('user.product.variants.update', ['variant' => $row->id]) }}"
-                                                                    data-value="{{ $row->name }}"
-                                                                    href="javascript:void(0)"
-                                                                    onclick="editvariant(this)">{{ __('Edit') }}</a>
-                                                                <a class="dropdown-item text-info"
-                                                                    href="#">{{ __('Option') }}</a>
+                                                                    href="{{ route('user.variants.option.edit', ['option' => $variantOption->id]) }}" >{{ __('Edit') }}</a>
+
 
                                                                 <a class="dropdown-item  text-danger delete-card"
-                                                                    data-url="{{ route('user.product.variants.delete', ['variant' => $row->id]) }}"
+                                                                    data-url="{{ route('user.variants.option.delete', ['option' => $variantOption->id]) }}"
                                                                     href="javascript:void(0)" onclick="deletevariant(this)">
                                                                     {{ __('Delete') }}
                                                                 </a>

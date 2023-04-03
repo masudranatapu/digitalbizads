@@ -22,17 +22,10 @@ class ProductController extends Controller
     public function storeProductsList($card)
     {
         $business_cards = BusinessCard::with('hasProduct')->where('card_id', $card)->first();
-
-
-
         $iso_code = json_decode($business_cards->description, true);
         $currency = Currency::where('iso_code', $iso_code['currency'])->first();
 
         $settings = Setting::where('status', 1)->first();
-
-
-
-
         return view('user.cards.products', compact('business_cards', 'settings', 'currency'));
     }
 
@@ -216,5 +209,5 @@ class ProductController extends Controller
 
 
 
-   
+
 }
