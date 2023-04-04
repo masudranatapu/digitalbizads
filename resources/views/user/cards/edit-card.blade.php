@@ -780,7 +780,9 @@
                                             </div>
                                             <div class="mb-3 form-input {{ $banner_type == 'videourl' ? 'd-block' : 'd-none' }}"
                                                 id="videourl">
-                                                <label class="form-label" for="video">Video Url</label>
+                                                <label class="form-label" for="video">Video Url <span
+                                                    class="text-danger">(Recommended ratio (1x1))</span>
+                                                </label>
                                                 <input class="form-control @error('video') is-invalid @enderror"
                                                     id="video_url" name="video" type="url" value=""
                                                     tabindex="{{ $tabindex++ }}" placeholder="your video url">
@@ -791,7 +793,9 @@
                                             </div>
                                             <div class="mb-3 form-input {{ $banner_type == 'videosource' ? 'd-block' : 'd-none' }}"
                                                 id="videosource">
-                                                <label class="form-label" for="video">Uplaod Video</label>
+                                                <label class="form-label" for="video">Uplaod Video <span
+                                                    class="text-danger">(Recommended ratio (1x1))</span>
+                                                </label>
                                                 <input class="form-control @error('video') is-invalid @enderror"
                                                     id="video_file" name="video" type="file"
                                                     tabindex="{{ $tabindex++ }}" placeholder="upload your video">
